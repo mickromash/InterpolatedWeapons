@@ -1,0 +1,65 @@
+Version "4.0"
+
+Class MRIntWeaps_Handler: EventHandler
+{
+	Static Const String Weapons[] = {"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun", "Chaingun", "PlasmaRifle"};
+	
+	Void GiveWeapons(Actor Plr)
+	{
+		if(!Plr)Return;
+		String Select;
+		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
+		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
+		For(int i=0;i<Weapons.Size();i++){
+			Let Weap = Plr.FindInventory(Weapons[i]);
+			if(Weap){Weap.Destroy();
+				if(!Plr.FindInventory("MRIntWeaps_"..Weapons[i]))Plr.A_GiveInventory("MRIntWeaps_"..Weapons[i]);}
+		}
+		
+		if(Select!="")Plr.A_SelectWeapon("MRIntWeaps_"..Select);
+	}
+	
+	Void TakeWeapons(Actor Plr)
+	{
+		if(!Plr)Return;
+		String Select;
+		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
+		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
+		For(int i=0;i<Weapons.Size();i++){
+			Let Weap = Plr.FindInventory("MRIntWeaps_"..Weapons[i]);
+			if(Weap){Weap.Destroy();
+				if(!Plr.FindInventory(Weapons[i]))Plr.A_GiveInventory(Weapons[i]);}
+		}
+		Select.Replace("MRIntWeaps_", "");
+		if(Select!="")Plr.A_SelectWeapon(Select);
+	}
+	
+	Override Void PlayerSpawned(PlayerEvent e)
+	{
+		GiveWeapons(Players[e.PlayerNumber].mo);
+	}
+	
+	Override Void NetworkProcess(ConsoleEvent e)
+	{
+		Let Plr = Players[e.Player].mo;
+		if(!Plr)Return;
+		
+		if(e.name ~== "MRIntWeaps_Give"){
+			GiveWeapons(Plr);
+			Return;
+		}
+		if(e.name ~== "MRIntWeaps_Take"){
+			TakeWeapons(Plr);
+		}
+	}
+}
+
+#include "MRSmooth/Casings.zsc"
+
+#include "MRSmooth/Fist.zsc"
+#include "MRSmooth/Chainsaw.zsc"
+#include "MRSmooth/Pistol.zsc"
+#include "MRSmooth/Shotgun.zsc"
+#include "MRSmooth/SuperShotgun.zsc"
+#include "MRSmooth/Chaingun.zsc"
+#include "MRSmooth/Plasmagun.zsc"

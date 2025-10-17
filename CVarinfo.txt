@@ -1,0 +1,2 @@
+nosave bool MRIntW_Casings = true;
+nosave bool MRIntW_LHand = true;

@@ -1,0 +1,11 @@
+GameInfo{
+	AddEventHandlers = "MRIntWeaps_Handler"
+	
+	/*weaponslot = 1, "MRIntWeaps_Fist", "MRIntWeaps_Chainsaw"
+    weaponslot = 2, "MRIntWeaps_Pistol"
+    weaponslot = 3, "MRIntWeaps_Shotgun", "MRIntWeaps_SuperShotgun"
+    weaponslot = 4, "MRIntWeaps_Chaingun"
+    weaponslot = 5, "MRIntWeaps_RocketLauncher"
+    weaponslot = 6, "MRIntWeaps_PlasmaRifle"
+    weaponslot = 7, "MRIntWeaps_BFG9000"*/
+}

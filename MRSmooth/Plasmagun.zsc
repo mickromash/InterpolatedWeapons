@@ -1,0 +1,12 @@
+Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
+{
+	Default{
+		Weapon.SlotNumber 6;
+		Weapon.BobStyle "Smooth";
+	}
+	Const Lay1 = 2;
+	Const Lay2 = PSP_FLASH+1;
+	
+	int BobState;
+	Double Muzzle;
+}
