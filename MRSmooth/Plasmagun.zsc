@@ -5,8 +5,180 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		Weapon.BobStyle "Smooth";
 	}
 	Const Lay1 = 2;
-	Const Lay2 = PSP_FLASH+1;
+	Const Lay2 = -2;
+	Const Lay3 = PSP_FLASH+1;
 	
 	int BobState;
-	Double Muzzle;
+	Double Muzzle, BodyScal;
+	Bool MuzzleCycle;
+	States{
+		Select:
+			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
+		Raise:
+			#### A 1 A_Raise();
+			Loop;
+		Deselect:
+			TNT1 A 0 A_Overlay(Lay1, "GunLower");
+		Lower:
+			TNT1 A 1 A_Lower();
+			Loop;
+		Ready:
+			TNT1 A 1 A_WeaponReady();
+			Loop;
+		GunMuzzle:
+			PLSO # 1{
+				//if(Player.GetPSprite(Lay1).Frame<1){
+					Player.GetPSprite(Lay2).OldX = Player.GetPSprite(Lay1).OldX;
+					Player.GetPSprite(Lay2).OldY = Player.GetPSprite(Lay1).OldY + invoker.Muzzle*3;
+					Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
+					Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y + invoker.Muzzle*3;
+					Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale + (.1,.1)*invoker.Muzzle;
+					Player.GetPSprite(Lay2).Scale.X -= invoker.BodyScal;
+					Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
+					Player.GetPSprite(Lay2).Pivot = Player.GetPSprite(Lay1).Pivot;
+				//}
+				Player.GetPSprite(Lay2).Frame = Player.GetPSprite(Lay1).Frame;
+			}
+			#### # 0 A_JumpIf(Player.GetPSprite(Lay1).Sprite == GetSpriteIndex("PLSRA0"), Null);
+			//#### # 0 {Player.GetPSprite(Lay2).bInterpolate = Player.GetPSprite(Lay1).bInterpolate;}
+			Loop;
+		
+		GunRaise:
+			TNT1 AAAAAAA 1 {
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
+				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayOffset(Lay1, -20, 130);
+				A_OverlayScale(Lay1, 1.1, 1.1);
+				A_OverlayRotate(Lay1, 4);
+			}
+			PLSR A 1;
+			PLSR ####### 1 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayOffset(Lay1, 10, -9, WOF_ADD);
+				A_OverlayScale(Lay1, -.04, -.04, WOF_ADD);
+				A_OverlayRotate(Lay1, -1, WOF_ADD);}
+			#### # 0 {
+				A_Overlay(Lay2, "GunMuzzle");
+				A_OverlayScale(Lay2, .95, .95);
+				A_OverlayRotate(Lay2, 0);
+				A_OverlayOffset(Lay2, 0, -6);
+			}
+			PLSG A 1 {A_OverlayFlags(Lay1, PSPF_ADDWEAPON , true);
+				A_OverlayOffset(Lay1, 0, 0);
+				A_OverlayScale(Lay1, 1, 1);
+				A_OverlayRotate(Lay1, 0);}
+		GunWait:
+			PLSG A 1 {
+				if(invoker.BobState>=0){
+					A_OverlayOffset(Lay1, CFRandom(-.005, .015), CFRandom(.01, .02), WOF_ADD);
+					if(invoker.BobState>90){invoker.BobState = -invoker.BobState;}
+					else invoker.BobState++;
+				}
+				else {
+					A_OverlayOffset(Lay1, -CFRandom(-.005, .015), -CFRandom(.01, .02), WOF_ADD);
+					if(Player.GetPSprite(Lay1).Y<0){A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
+					else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay1).Y>0))invoker.BobState++;
+				}
+				if(invoker.Muzzle>.1)invoker.Muzzle *= .5;
+				else invoker.Muzzle = 0;
+			}
+			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);}
+			Loop;
+		GunLower:
+			PLSG A 1 {A_OverlayOffset(Lay1, 0, 0);
+				A_OverlayRotate(Lay1, 0);
+				A_OverlayScale(Lay1, 1, 1);
+			}
+			#### # 0 A_ClearOverlays(Lay2, Lay2);
+			#### # 0 {
+				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 30, 20);
+			}
+			PLSR ###### 1 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayOffset(Lay1, -25, 14, WOF_ADD);
+				A_OverlayRotate(Lay1, 2, WOF_ADD);
+				A_OverlayScale(Lay1, .025, .025, WOF_ADD);
+			}
+			Stop;
+		Fire:
+			#### # 0 {Player.SetPsprite(Lay1, invoker.FindState("GunFire"));}
+			TNT1 A 3 A_FirePlasma();
+			TNT1 B 20 A_ReFire();
+			Goto Ready;
+		GunFire:
+			#### # 0 A_Overlay(Lay2, "GunMuzzle", true);
+			#### # 0 {invoker.Muzzle = -1.2;A_OverlayPivot(Lay1, .5, 1);A_OverlayPivot(Lay2, .5, 1);}
+			PLSG ### 1{
+				Vector2 Rand = (FRandom(-1, 1), FRandom(0, 1));
+				A_OverlayOffset(Lay1, Rand.X, Rand.Y, WOF_INTERPOLATE);
+				//A_OverlayOffset(Lay2, Rand.X, Rand.Y + invoker.Muzzle*3, WOF_INTERPOLATE);
+				//A_OverlayRotate(Lay1, FRandom(-.5, .5), WOF_INTERPOLATE);
+				Float Scal = FRandom(1, 1.1);
+				invoker.BodyScal = -FRandom(-.05, .05);
+				A_OverlayScale(Lay1, Scal+invoker.BodyScal, Scal, WOF_INTERPOLATE);
+				//A_OverlayScale(Lay2, Scal + .1*invoker.Muzzle, Scal + .1*invoker.Muzzle, WOF_INTERPOLATE);
+
+				invoker.Muzzle += .4;
+				if(Player.GetPSprite(Lay2).Frame<1)Player.GetPSprite(Lay2).Frame = 1;
+				if(invoker.MuzzleCycle){
+					if(Player.GetPSprite(Lay1).Frame<4)Player.GetPSprite(Lay1).Frame++;
+					else invoker.MuzzleCycle = false;
+				}
+				else {
+					if(Player.GetPSprite(Lay1).Frame>1)Player.GetPSprite(Lay1).Frame--;
+					else invoker.MuzzleCycle = true;
+				}
+				
+				
+				//Player.GetPSprite(Lay2).Frame = Player.GetPSprite(Lay1).Frame;
+				//if(Player.GetPSprite(Lay2).Frame>2)Player.GetPSprite(Lay2).Scale *= .97;
+				
+				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
+			}
+			#### # 0 {
+				A_ClearOverlays(Lay2, Lay2);
+				A_Overlay(Lay2, "GunMuzzle");
+				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);
+				Player.GetPSprite(Lay2).ResetInterpolation();
+				Player.GetPSprite(Lay2).OldX = Player.GetPSprite(Lay1).OldX;
+				Player.GetPSprite(Lay2).OldY = Player.GetPSprite(Lay1).OldY;
+				Player.GetPSprite(Lay2).bInterpolate = false;Player.GetPSprite(Lay2).firstTic = true;
+			}
+			PLSG A 1{
+				/*Player.GetPSprite(Lay2).firstTic = true;
+				Player.GetPSprite(Lay2).bInterpolate = false;*/
+				Player.GetPSprite(Lay1).X *= .5;
+				Player.GetPSprite(Lay1).Y *= .5;
+				//Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.5;
+				Player.GetPSprite(Lay1).Rotation *= .5;
+				invoker.Muzzle *= .7;
+			}
+			PLSG AA 1 {
+				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
+				Player.GetPSprite(Lay1).X *= .5;
+				Player.GetPSprite(Lay1).Y *= .5;
+				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.5;
+				Player.GetPSprite(Lay1).Rotation *= .5;
+				invoker.Muzzle *= .7;
+			}
+			PLSG A 10;
+			//#### # 0 A_ClearOverlays(Lay2, Lay2);
+			/*#### # 0 {
+				invoker.BodyScal = 0;
+				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 30, 20);
+			}
+			PLSR ## 1{
+			}*/
+			Goto GunWait;
+		Flash:
+			TNT1 A 4 A_Light1();
+			Goto LightDone;
+			TNT1 B 4 A_Light1();
+			Goto LightDone;
+	}
 }
