@@ -170,9 +170,13 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Goto GunWait;
 			
 		GunFlash:
-			CHGF A 1 BRIGHT {A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);Player.GetPSprite(Lay1).Scale = Player.GetPSprite(Lay1).Scale;
-				A_OverlayFlags(Lay2, PSPF_RENDERSTYLE|PSPF_ALPHA, true);A_OverlayAlpha(Lay2, .25);A_OverlayRenderStyle(Lay2, STYLE_ColorAdd);
-				A_OverlayPivot(Lay2, .5, 0);}
+			CHGF A 1 BRIGHT {
+				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				Player.GetPSprite(Lay1).Scale = Player.GetPSprite(Lay1).Scale;
+				A_OverlayFlags(Lay2, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_OverlayRenderStyle(Lay2, STYLE_ColorAdd);
+				A_OverlayPivot(Lay2, .5, 0);
+			}
 			CHGF BC 1 BRIGHT;
 			Stop;
 		Flash:
