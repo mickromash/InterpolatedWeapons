@@ -1,0 +1,189 @@
+class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
+{
+	Default
+	{
+		Weapon.SlotNumber 5;
+		Weapon.BobStyle "Smooth";
+	}
+	Const Lay1 = 2;//Main layer
+	Const Lay2 = PSP_FLASH+1;//Gun flash
+	Const Lay3 = -2;//Gun flash (explosion, behind the barrel)
+	
+	int BobState, Muzzle, Explosions;
+	Double RecoilDir;
+	States
+	{
+	Select:
+		TNT1 A 0 A_Overlay(Lay1, "GunRaise");
+	Raise:
+		#### A 1 A_Raise();
+		Loop;
+	Deselect:
+		TNT1 A 0 A_Overlay(Lay1, "GunLower");
+	Lower:
+		TNT1 A 1 A_Lower();
+		Loop;
+		
+	GunRaise:
+		TNT1 AAAAAAAA 1 {
+			A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
+			A_OverlayPivot(Lay1, .5, .5);
+			A_OverlayOffset(Lay1, 61, 80);
+			A_OverlayScale(Lay1, .5, .5);
+			A_OverlayRotate(Lay1, -30);
+		}
+		MISG C 1;
+		MISG CCCC 1 {
+			A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+			A_OverlayOffset(Lay1, -11, -14, WOF_ADD);
+			A_OverlayScale(Lay1, .1, .1, WOF_ADD);
+			A_OverlayRotate(Lay1, 4.3, WOF_ADD);
+		}
+		MISG CC 1 {
+			A_OverlayOffset(Lay1, -8, 4, WOF_ADD);
+			A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+			A_OverlayRotate(Lay1, 4.2, WOF_ADD);
+		}
+		MISG C 4 {
+			A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
+			A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+			A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+			invoker.Muzzle = 1;
+			invoker.BobState = 0;
+		}
+		#### # 0 {A_OverlayFlags(Lay1, PSPF_ADDWEAPON, true);A_OverlayOffset(Lay1, 0, 0);}
+	GunWait:
+		MISG # 1 {
+			if(invoker.BobState>=0){
+				A_OverlayOffset(Lay1, CFRandom(-.005, .015), CFRandom(.01, .02), WOF_ADD);
+				if(invoker.BobState>90){invoker.BobState = -invoker.BobState;}
+				else invoker.BobState++;
+			}
+			else {
+				A_OverlayOffset(Lay1, -CFRandom(-.005, .015), -CFRandom(.01, .02), WOF_ADD);
+				if(Player.GetPSprite(Lay1).Y<0){A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
+				else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay1).Y>0))invoker.BobState++;
+			}
+			Player.GetPSprite(Lay1).Frame = invoker.Muzzle;
+			
+			if(invoker.Muzzle>0)invoker.Muzzle--;
+		}
+		#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+		Loop;
+	GunLower:
+		MISG A 1 {
+			A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
+			A_OverlayPivot(Lay1, .5, .5);
+			A_OverlayOffset(Lay1, 0, Player.GetPSprite(PSP_WEAPON).Y);
+			A_OverlayRotate(Lay1, 0);
+			A_OverlayScale(Lay1, 1, 1);
+		}
+		MISG ## 1 {
+			A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+			A_OverlayOffset(Lay1, 5, -3, WOF_ADD);
+			A_OverlayRotate(Lay1, -4, WOF_ADD);
+		}
+		MISG #### 1 {
+			A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+			A_OverlayOffset(Lay1, 10, 14, WOF_ADD);
+			A_OverlayRotate(Lay1, 4, WOF_ADD);
+			A_OverlayScale(Lay1, -.1, -.1, WOF_ADD);
+		}
+		Stop;
+	
+	Ready:
+		TNT1 A 1 A_WeaponReady();
+		Loop;
+		
+	Fire:
+		TNT1 B 8 {A_GunFlash();A_Overlay(Lay1, "GunFire");}
+		TNT1 B 12 A_FireMissile();
+		TNT1 B 0 A_ReFire();
+		Goto Ready;
+		
+	GunFire:
+		MISG A 1 {A_OverlayOffset(Lay1, 0, 0);A_OverlayPivot(Lay1, .5, .5);}
+		MISG AABBCC 1 {A_OverlayOffset(Lay1, 0, .5, WOF_ADD);A_OverlayScale(Lay1, .01, .01, WOF_ADD);}
+		#### # 0 A_Overlay(Lay2, "GunFlash");
+		MISG C 1 {
+			A_OverlayPivot(Lay1, .5, 0);
+			A_OverlayPivot(Lay2, .5, 0);
+			Player.GetPSprite(Lay2).Scale = (1,1);
+			Player.GetPSprite(Lay2).Rotation = 0;
+			invoker.RecoilDir = CFRandom(-2, 2);
+		}
+		MISG CC 1 {//Shot
+			A_OverlayScale(Lay1, .3, .3, WOF_ADD);
+			A_OverlayOffset(Lay1, invoker.RecoilDir, 2, WOF_ADD);
+			A_OverlayRotate(Lay1, -invoker.RecoilDir, WOF_ADD);
+			A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			
+			A_OverlayScale(Lay2, .3, .3, WOF_ADD);
+			A_OverlayOffset(Lay2, invoker.RecoilDir, 2, WOF_ADD);
+			A_OverlayRotate(Lay2, -invoker.RecoilDir, WOF_ADD);
+			A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);
+		}
+		MISG CC 1{
+			A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+			A_OverlayScale(Lay1, .15, .15, WOF_ADD);
+			A_OverlayOffset(Lay1, invoker.RecoilDir*.5, 7, WOF_ADD);
+		}
+		MISG C 1;
+		MISG CCCCB 1{
+			Float Recover = CFRandom(.6, .7);
+			Player.GetPSprite(Lay1).X *= Recover;
+			Player.GetPSprite(Lay1).Y *= Recover;
+			Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
+			Player.GetPSprite(Lay1).Rotation *= Recover;
+		}
+		#### A 2{
+			A_OverlayOffset(Lay1, CFRandom(-4, 4), CFRandom(-2, 4), WOF_INTERPOLATE);
+			Float Scal = CFRandom(.93, 1.04);
+			A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
+		}
+		#### A 3{
+			A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
+			A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+			A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+		}
+		Goto GunWait;
+		
+	GunFlash:
+		MISF A 1 BRIGHT {
+			A_OverlayFlags(Lay2, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+			A_OverlayRenderStyle(Lay2, STYLE_ColorAdd);
+		}
+		MISF B 1 BRIGHT;
+		#### # 0 {
+			A_Overlay(Lay3-invoker.Explosions, "GunFlash2");
+			A_OverlayOffset(Lay3-invoker.Explosions, Player.GetPSprite(Lay2).X, Player.GetPSprite(Lay2).Y);
+			invoker.Explosions++;
+		}
+		Stop;
+	GunFlash2:
+		MISF CCC 1 BRIGHT {
+			A_OverlayPivot(OverlayId(), .5, .5);
+			A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCEALPHA, true);
+			Player.GetPSprite(OverlayId()).Alpha = .7;
+			A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+			A_OverlayScale(Overlayid(), 1, 1);
+		}
+		MISF DD 1 BRIGHT A_OverlayScale(OverlayId(), .1, .1, WOF_ADD);
+		#### # 0 A_OverlayScale(OverlayId(), 1, 1);
+		MISF E 1 BRIGHT;
+		MISF E 1 BRIGHT {A_OverlayScale(OverlayId(), .015, .015, WOF_ADD);A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);}
+		MISF EEEE 1 BRIGHT {
+			A_OverlayScale(OverlayId(), .025, .025, WOF_ADD);
+			Player.GetPSprite(OverlayId()).Alpha -= .2;
+		}
+		#### # 0 {invoker.Explosions--;}
+		Stop;
+		
+	Flash:
+		#### # 0 A_OverlayOffset(OverlayId(), 0, 100);
+		TNT1 A 3 A_Light1();
+		TNT1 A 4;
+		TNT1 AA 4 A_Light2();
+		Goto LightDone;
+	}
+}
