@@ -15,15 +15,19 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayFlags(RightLay, PSPF_ADDWEAPON , false);
 				A_OverlayPivot(RightLay, 0, 0);
 				A_OverlayOffset(RightLay, 40, 70);
-				A_OverlayScale(RightLay, 1.7, 1.7);}
+				A_OverlayScale(RightLay, 1.7, 1.7);
+			}
 			PUNG A 1;
 			PUNG AAAAAAA 1 {
 				A_OverlayFlags(RightLay, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(RightLay, -5, -5, WOF_ADD);
-				A_OverlayScale(RightLay, -.1, -.1, WOF_ADD);}
-			PUNG A 1 {A_OverlayFlags(RightLay, PSPF_ADDWEAPON , true);
-				A_OverlayOffset(RightLay, CFRandom(-4, -1), CFRandom(-1, 2));
-				A_OverlayScale(RightLay, 1, 1);}
+				A_OverlayScale(RightLay, -.1, -.1, WOF_ADD);
+			}
+			PUNG A 1 {
+				A_OverlayFlags(RightLay, PSPF_ADDWEAPON , true);
+				A_OverlayOffset(RightLay, CFRandom(-4, 1), CFRandom(-3, -1));
+				A_OverlayScale(RightLay, 1, 1);
+			}
 		RightHandWait:
 			#### # 0 A_OverlayFlags(RightLay, PSPF_INTERPOLATE, true);
 			PUNG A 2 A_OverlayOffset(RightLay, 0, 0, WOF_INTERPOLATE);
@@ -46,7 +50,8 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			PUNG AAAAAA 1 {
 				A_OverlayPivot(RightLay, 0, 0);
 				A_OverlayOffset(RightLay, 8, 5, WOF_ADD);
-				A_OverlayScale(RightLay, .06, .06, WOF_ADD);}
+				A_OverlayScale(RightLay, .06, .06, WOF_ADD);
+			}
 			Stop;
 		RightHandLowerFast:
 			PUNG A 1 {A_OverlayPivot(RightLay, 0, 0);A_OverlayScale(RightLay, 1, 1);A_OverlayOffset(RightLay, invoker.RightHand.X, invoker.RightHand.Y);}
@@ -54,25 +59,30 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayFlags(RightLay, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(RightLay, 15, 15, WOF_ADD);
 				A_OverlayScale(RightLay, .05, .05, WOF_ADD);
-				invoker.RightHand = (Player.GetPSprite(RightLay).X, Player.GetPSprite(RightLay).Y);}
+				invoker.RightHand = (Player.GetPSprite(RightLay).X, Player.GetPSprite(RightLay).Y);
+			}
 			Stop;
 		RightHandUp:
 			PUNG A 1 {A_OverlayPivot(RightLay, 0, 0);A_OverlayOffset(RightLay, 30, 30);A_OverlayScale(RightLay, 1.15, 1.15);invoker.RightHand = (Player.GetPSprite(RightLay).X, Player.GetPSprite(RightLay).Y);}
-			PUNG AAA 1{A_OverlayOffset(RightLay, -10, -10, WOF_ADD);
+			PUNG AAA 1{
+				A_OverlayOffset(RightLay, -CFRandom(9.5, 10.5), -CFRandom(9.5, 10.5), WOF_ADD);
 				A_OverlayScale(RightLay, -.05, -.05, WOF_ADD);
-				invoker.RightHand = (Player.GetPSprite(RightLay).X, Player.GetPSprite(RightLay).Y);}
-			PUNG A 1 {A_OverlayOffset(RightLay, CFRandom(-4, -1), CFRandom(-1, 2), WOF_INTERPOLATE);A_OverlayScale(RightLay, 1, 1, WOF_INTERPOLATE);}
+				invoker.RightHand = (Player.GetPSprite(RightLay).X, Player.GetPSprite(RightLay).Y);
+			}
+			PUNG A 1 {A_OverlayOffset(RightLay, CFRandom(-4, 1), CFRandom(-3, -1), WOF_INTERPOLATE);A_OverlayScale(RightLay, 1, 1, WOF_INTERPOLATE);}
 			Goto RightHandWait;
 		
 		LeftHandPunch:
 			PUNG C 2 {A_OverlayOffset(LeftLay, -20, 40);A_OverlayScale(LeftLay, 1.1, 1.1);A_OverlayPivot(LeftLay, 1, 0);}
 			PUNG C 1 A_OverlayOffset(LeftLay, 20, -20, WOF_ADD);
-			PUNG D 1 {A_OverlayOffset(LeftLay, 80, -76, WOF_ADD);A_OverlayScale(LeftLay, -.025, -.025, WOF_ADD);}//Punch
+			PUNG D 1 {A_OverlayOffset(LeftLay, CFRandom(77, 82), -CFRandom(73, 76), WOF_ADD);A_OverlayScale(LeftLay, -.025, -.025, WOF_ADD);}//Punch
 			PUNG DD 1 {A_OverlayOffset(LeftLay, CFRandom(-1, 1), CFRandom(-1, 1), WOF_ADD);A_OverlayScale(LeftLay, -.025, -.025, WOF_ADD);}
 			PUNG D 1 {A_OverlayOffset(LeftLay, CFRandom(-1, 1), CFRandom(-1, 1), WOF_ADD);A_OverlayFlags(LeftLay, PSPF_INTERPOLATE, true);}
-			PUNG DDDDD 1 {A_OverlayOffset(LeftLay, -24, 15, WOF_ADD);
-					A_OverlayRotate(LeftLay, 5, WOF_ADD);
-					A_OverlayScale(LeftLay, .05, .05, WOF_ADD);}
+			PUNG DDDDD 1 {
+				A_OverlayOffset(LeftLay, -24, 15, WOF_ADD);
+				A_OverlayRotate(LeftLay, 5, WOF_ADD);
+				A_OverlayScale(LeftLay, .05, .05, WOF_ADD);
+			}
 			Stop;
 			
 		Select:
