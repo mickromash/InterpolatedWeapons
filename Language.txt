@@ -1,0 +1,9 @@
+[en eng enu default]
+
+MRIntWeaps_Menu = "Interpolated weapons";
+MRIntW_LHand = "Left-handed";
+
+[ru]
+
+MRIntWeaps_Menu = "Интерполированное оружие";
+MRIntW_LHand = "Держать пистолет в левой руке";

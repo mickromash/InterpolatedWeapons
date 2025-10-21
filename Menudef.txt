@@ -1,0 +1,13 @@
+AddOptionMenu "OptionsMenu"
+{
+	StaticText ""
+	SubMenu "$MRIntWeaps_Menu", "MRIntWeaps_Menu"
+	StaticText ""
+}
+
+OptionMenu "MRIntWeaps_Menu"
+{
+	Title "$MRIntWeaps_Menu"
+	StaticText ""
+	Option "$MRIntW_LHand", "MRIntW_LHand", "YesNo"
+}
