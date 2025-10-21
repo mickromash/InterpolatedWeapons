@@ -2,12 +2,13 @@ Version "4.0"
 
 Class MRIntWeaps_Handler: EventHandler
 {
+	Bool Uninstalled;
 	Static Const String Weapons[] = {
 		"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun",
 		"Chaingun", "RocketLauncher", "PlasmaRifle"
 	};
 	
-	Void GiveWeapons(Actor Plr)
+	Void GiveWeapons(Actor Plr)//Replace player's vanilla weapons with the mods'
 	{
 		if(!Plr)Return;
 		String Select;
@@ -22,7 +23,7 @@ Class MRIntWeaps_Handler: EventHandler
 		if(Select!="")Plr.A_SelectWeapon("MRIntWeaps_"..Select);
 	}
 	
-	Void TakeWeapons(Actor Plr)
+	Void TakeWeapons(Actor Plr)//Replace player's weapons from the mod with vanilla ones
 	{
 		if(!Plr)Return;
 		String Select;
@@ -37,6 +38,28 @@ Class MRIntWeaps_Handler: EventHandler
 		if(Select!="")Plr.A_SelectWeapon(Select);
 	}
 	
+	Void RemoveWeapons()//Replace mods weapons on the level with vanilla ones
+	{
+		Let iter = ThinkerIterator.Create("Weapon");
+		Actor Weap;
+		
+		int Akhtung;
+		While(Weap = Weapon(iter.Next())){
+			Akhtung++;
+			if(Akhtung>2000)Break;
+
+			String ClassName = Weap.GetClassName();
+			ClassName = ClassName.MakeLower();
+
+			if(ClassName.IndexOf("mrintweaps_")>-1){
+				ClassName.Replace("mrintweaps_", "");
+				Let a = Weap.Spawn(ClassName, Weap.Pos);
+				a.Vel = Weap.Vel;
+				Weap.Destroy();
+			}
+		}
+	}
+	
 	Override Void PlayerSpawned(PlayerEvent e)
 	{
 		GiveWeapons(Players[e.PlayerNumber].mo);
@@ -44,6 +67,16 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Override Void NetworkProcess(ConsoleEvent e)
 	{
+		if(e.name ~== "MRIntWeaps_Uninstall"){
+			For(int i=0;i<MAXPLAYERS;i++){
+				if(Players[i].mo)TakeWeapons(Players[i].mo);
+			}
+			RemoveWeapons();
+			Uninstalled = true;
+			Destroy();
+			Return;
+		}
+		
 		Let Plr = Players[e.Player].mo;
 		if(!Plr)Return;
 		
@@ -53,7 +86,13 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 		if(e.name ~== "MRIntWeaps_Take"){
 			TakeWeapons(Plr);
+			Return;
 		}
+	}
+	
+	Override Void OnDestroy()
+	{
+		if(Uninstalled)Console.Printf(StringTable.Localize("$MRIntWeaps_Uninstalled"));
 	}
 }
 

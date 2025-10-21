@@ -2,8 +2,14 @@
 
 MRIntWeaps_Menu = "Interpolated weapons";
 MRIntW_LHand = "Left-handed";
+MRIntWeaps_Uninstall = "Uninstall mod";
+MRIntWeaps_UninstallPromt = "Remove the mod so the saved game could be loaded without it?";
+MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled.";
 
 [ru]
 
 MRIntWeaps_Menu = "Интерполированное оружие";
 MRIntW_LHand = "Держать пистолет в левой руке";
+MRIntWeaps_Uninstall = "Отключить мод";
+MRIntWeaps_UninstallPromt = "Удалить данные мода из игры?\nБлагодаря этому сохранённая игра сможет быть загружена без него";
+MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdМод успешно удалён.";
