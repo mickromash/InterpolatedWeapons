@@ -231,8 +231,15 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				A_OverlayRotate(Lay2, 0);
 			}
-			PLSG A 2 {A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayOffset(Lay2, 0, 0, WOF_INTERPOLATE);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
+			PLSG A 1 {
+				A_OverlayOffset(Lay1, CFRandom(-3, 2), CFRandom(0, 3), WOF_INTERPOLATE);
+				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y, WOF_INTERPOLATE);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+			}
 			#### # 0 {invoker.InterpolateMuzzle = true;}
+			#### # 2 {
+				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
+			}
 			Goto GunWait;
 		GunMuzzleReload:
 			PLSO F 1;
