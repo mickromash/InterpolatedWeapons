@@ -4,13 +4,14 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		Weapon.SlotNumber 6;
 		Weapon.BobStyle "Smooth";
 	}
-	Const Lay1 = 2;
-	Const Lay2 = -2;
-	Const Lay3 = PSP_FLASH+1;
+	Const Lay1 = 2;//Main frame (body)
+	Const Lay2 = -2;//Muzzle
 	
 	int BobState;
-	Double Muzzle, BodyScal;
-	Bool MuzzleCycle, InterpolateMuzzle;
+	Double Muzzle,//Muzzle position
+			BodyScal;//Rifle body sqiush during firing
+	Bool MuzzleCycle,//Firing frame
+		InterpolateMuzzle;
 	States{
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");

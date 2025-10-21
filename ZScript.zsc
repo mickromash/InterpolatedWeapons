@@ -2,8 +2,10 @@ Version "4.0"
 
 Class MRIntWeaps_Handler: EventHandler
 {
-	Static Const String Weapons[] = {"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun", 
-		"Chaingun", "RocketLauncher", "PlasmaRifle"};
+	Static Const String Weapons[] = {
+		"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun",
+		"Chaingun", "RocketLauncher", "PlasmaRifle"
+	};
 	
 	Void GiveWeapons(Actor Plr)
 	{
