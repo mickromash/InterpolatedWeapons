@@ -7,6 +7,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	Const Lay1 = 2;
 	
 	int SawFrame;
+	Float SawPos;
 	States{
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "SawRaise");
@@ -83,12 +84,14 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			SAWG # 1{Player.GetPSprite(Lay1).Frame = invoker.SawFrame;A_OverlayPivot(Lay1, .5, 1);}
 			#### # 1 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayScale(Lay1, 1, .8, WOF_INTERPOLATE);}
 		SawCutLoop:
-			SAWG BA 1{
-				A_OverlayPivot(Lay1, .5, .5);
-				A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(1, 2), WOF_INTERPOLATE);
+			#### # 0 {invoker.SawPos = 1;}
+			SAWG BABA 1{
+				A_OverlayPivot(Lay1, .7, .5);
+				A_OverlayOffset(Lay1, -invoker.SawPos*2, 6-invoker.SawPos*2.5, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-1, 1), WOF_INTERPOLATE);
-				Float Scal = CFRandom(.99, 1.07);
+				Float Scal = 1-.1*invoker.SawPos;
 				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
+				if(invoker.SawPos>0)invoker.SawPos -= .25;
 			}
 			Loop;
 		SawStopCut:
