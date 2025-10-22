@@ -1,0 +1,222 @@
+Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
+{
+	Default{
+		Weapon.SlotNumber 7;
+		Weapon.BobStyle "Smooth";
+	}
+	Const Lay1 = 2;//Main frame (body)
+	Const Lay2 = -2;//Muzzle
+	Const Lay3 = 3;//LEDs
+	Const Lay4 = -3;//Flash (explosion)
+	
+	int BobState;
+	Double Muzzle,//Muzzle position
+			Power;
+	Bool InterpolateMuzzle;
+	States{
+		Select:
+			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
+		Raise:
+			#### A 1 A_Raise();
+			Loop;
+		Deselect:
+			TNT1 A 0 A_Overlay(Lay1, "GunLower");
+		Lower:
+			TNT1 A 1 A_Lower();
+			Loop;
+		Ready:
+			TNT1 A 1 A_WeaponReady();
+			Loop;
+		GunMuzzle:
+			BFGM # 1{
+				if(invoker.InterpolateMuzzle){
+					Player.GetPSprite(Lay2).OldX = Player.GetPSprite(Lay1).OldX;
+					Player.GetPSprite(Lay2).OldY = Player.GetPSprite(Lay1).OldY + invoker.Muzzle*3;
+					Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
+					Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y + invoker.Muzzle*3;
+					Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;// + (.01,.01)*invoker.Muzzle;
+					Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
+					Player.GetPSprite(Lay2).Pivot = Player.GetPSprite(Lay1).Pivot;
+					A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
+				}
+				else {
+					Player.GetPSprite(OverlayId()).ResetInterpolation();
+				}
+				if(Player.GetPSprite(Lay1).Frame<2)Player.GetPSprite(Lay2).Frame = Player.GetPSprite(Lay1).Frame;
+			}
+			Loop;
+		
+		GunRaise:
+			TNT1 AAAAAA 1 {
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
+				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayOffset(Lay1, 0, 130);
+				A_OverlayScale(Lay1, .6, .6);
+				A_OverlayRotate(Lay1, 0);
+			}
+			BFG1 C 1;
+			BFG1 ####### 1{
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayOffset(Lay1, 0, -15, WOF_ADD);
+				A_OverlayScale(Lay1, .04, .04, WOF_ADD);
+			}
+			BFG1 ## 1{
+				A_OverlayOffset(Lay1, CFRandom(-1, 1), 8, WOF_ADD);
+				A_OverlayScale(Lay1, .08, .08, WOF_ADD);
+			}
+			BFG1 # 1 {
+				Player.GetPSprite(Lay1).X *= .6;
+				Player.GetPSprite(Lay1).Y -= .5;
+				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.6;
+			}
+			BFG1 # 1{
+				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, CFRandom(-1, 1), CFRandom(30, 34), WOF_INTERPOLATE);
+			}
+			BFG1 # 1 {
+				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
+				invoker.Muzzle = 1;
+				invoker.InterpolateMuzzle = false;
+				A_Overlay(Lay2, "GunMuzzle");
+				A_OverlayOffset(Lay2, 0, 0);
+				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);
+			}
+			#### # 0 {
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, true);
+				A_OverlayOffset(Lay1, 0, 0);
+			}
+		GunWait:
+			BFG1 A 1 {
+				if(invoker.BobState>=0){
+					A_OverlayOffset(Lay1, CFRandom(-.005, .015), CFRandom(.01, .02), WOF_ADD);
+					if(invoker.BobState>90){invoker.BobState = -invoker.BobState;}
+					else invoker.BobState++;
+				}
+				else {
+					A_OverlayOffset(Lay1, -CFRandom(-.005, .015), -CFRandom(.01, .02), WOF_ADD);
+					if(Player.GetPSprite(Lay1).Y<0){A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
+					else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay1).Y>0))invoker.BobState++;
+				}
+				if(invoker.Muzzle>.1)invoker.Muzzle *= .5;
+				else invoker.Muzzle = 0;
+			}
+			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);invoker.InterpolateMuzzle = true;}
+			Loop;
+		GunLower:
+			#### # 0 A_ClearOverlays(Lay2, Lay2);
+			BFG1 C 1 {
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
+				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayScale(Lay1, 1, 1);
+				A_OverlayOffset(Lay1, 0, 32);
+			}
+			BFG1 ## 1{
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayScale(Lay1, .07, .07, WOF_ADD);
+				A_OverlayOffset(Lay1, CFRandom(-1, 1), 5, WOF_ADD);
+			}
+			BFG1 ## 1{
+				A_OverlayOffset(Lay1, 0, -3, WOF_ADD);
+				A_OverlayScale(Lay1, -.1, -.1, WOF_ADD);
+			}
+			BFG1 #### 1 {
+				A_OverlayOffset(Lay1, -5, 20, WOF_ADD);
+				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
+			}
+			Stop;
+			
+		Fire:
+			TNT1 A 20 {A_BFGsound();A_Overlay(Lay1, "GunFire");}
+			TNT1 B 10 A_GunFlash();
+			TNT1 B 10 A_FireBFG();
+			TNT1 B 20 A_ReFire();
+			Goto Ready;
+		GunLEDs:
+			BFGO A 1 BRIGHT A_OverlayAlpha(Lay3, Min(.8, invoker.Power*.5));
+			Loop;
+		GunFlash:
+			BF1F A 1 BRIGHT{
+				A_OverlayOffset(Lay4, 0, 9);
+				A_OverlayFlags(Lay4, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_OverlayRenderStyle(Lay4, STYLE_ADD);
+				A_OverlayPivot(Lay4, .5, .5);
+				A_OverlayScale(Lay4, .1, .1);
+			}
+			BF1F AB 1 BRIGHT A_OverlayScale(Lay4, 1, 1, WOF_INTERPOLATE);
+			BF1F C 1 BRIGHT A_OverlayScale(Lay4, .9, .9);
+			BF1F CC 1 BRIGHT A_OverlayScale(Lay4, .1, .1, WOF_ADD);
+			BF1F CCCCCC 1 BRIGHT {A_OverlayScale(Lay4, -.05, -.2, WOF_ADD);Player.GetPSprite(Lay4).Alpha -= .15;}
+			Stop;
+			
+		GunFire:
+			BFG1 A 1{
+				A_Overlay(Lay2, "GunMuzzle", true);
+				A_OverlayOffset(Lay1, 0, 0);
+				A_OverlayOffset(Lay2, 0, 0);
+				invoker.Muzzle = 0;
+				A_OverlayScale(Lay1, 1, 1);
+				A_OverlayScale(Lay2, 1, 1);
+				invoker.InterpolateMuzzle = false;
+				invoker.Power = 0;
+				A_Overlay(Lay3, "GunLEDs");
+				A_OverlayFlags(Lay3, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_OverlayRenderStyle(Lay3, STYLE_ADD);
+				
+				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayPivot(Lay2, .5, 0);
+				A_OverlayPivot(Lay3, .5, 0);
+			}
+			BFG1 AAAAAAAAAAAAAAAAAAAAAAAA 1{
+				Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay3).X = CFRandom(-1, 1)*invoker.Power;
+				Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay3).Y = CFRandom(-1, 1)*invoker.Power;
+				
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X+CFRandom(-1, 1)*invoker.Power;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+CFRandom(0, 2)*invoker.Power;
+				invoker.Power+=.1;
+			}
+			#### # 0 {A_Overlay(Lay4, "GunFlash");A_ClearOverlays(Lay3, Lay3);}
+			#### # 1{
+				invoker.Muzzle++;
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+invoker.Muzzle*3;
+			}
+			BFG1 AAA 1{
+				invoker.Muzzle++;
+				Player.GetPSprite(Lay1).Y += CFRandom(6, 8);
+				Player.GetPSprite(Lay1).Scale *= CFRandom(1.03, 1.07);
+				
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+invoker.Muzzle*3;
+				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
+			}
+			BFG1 A 2{
+				invoker.Muzzle=5;
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+invoker.Muzzle*3;
+			}
+			BFG1 AAAAA 1{
+				invoker.Muzzle-=.5;
+				Player.GetPSprite(Lay1).X *= .7;
+				Player.GetPSprite(Lay1).Y *= .7;
+				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.7;
+				
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+invoker.Muzzle*3;
+				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
+			}
+			BFG1 A 1{
+				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
+				if(invoker.Muzzle>.1)invoker.Muzzle *= .5;
+				else invoker.Muzzle = 0;
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+invoker.Muzzle*3;
+				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
+			}
+			Goto GunWait;
+		
+		Flash:
+			TNT1 A 11;// A_Light1();
+			TNT1 A 6;// A_Light2();
+			Goto LightDone;
+	}
+}

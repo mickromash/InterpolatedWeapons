@@ -5,7 +5,7 @@ Class MRIntWeaps_Handler: EventHandler
 	Bool Uninstalled;
 	Static Const String Weapons[] = {
 		"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun",
-		"Chaingun", "RocketLauncher", "PlasmaRifle"
+		"Chaingun", "RocketLauncher", "PlasmaRifle", "BFG9000"
 	};
 	
 	Void GiveWeapons(Actor Plr)//Replace player's vanilla weapons with the mods'
@@ -106,3 +106,4 @@ Class MRIntWeaps_Handler: EventHandler
 #include "MRSmooth/Chaingun.zsc"
 #include "MRSmooth/RocketLauncher.zsc"
 #include "MRSmooth/Plasmagun.zsc"
+#include "MRSmooth/BFG9000.zsc"
