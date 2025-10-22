@@ -28,14 +28,14 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, .4, .4);
 				A_OverlayRotate(Lay1, 20);
 			}
-			SAWG E 1;
-			SAWG EEEEDDD 1 {
+			SAW1 E 1;
+			SAW1 EEEEDDD 1 {
 				A_OverlayOffset(Lay1, 1, -15, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayScale(Lay1, .09, .09, WOF_ADD);
 				A_OverlayRotate(Lay1, -3, WOF_ADD);
 			}
-			SAWG D 1 {
+			SAW1 D 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , true);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				A_OverlayOffset(Lay1, 0, 0);
@@ -45,10 +45,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				invoker.SawFrame = 2;
 			}
 		SawReady:
-			SAWG # 1 {A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(-.5, .5), WOF_INTERPOLATE);A_OverlayRotate(Lay1, CFRandom(-.25, .25), WOF_INTERPOLATE);
+			SAW1 # 1 {A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(-.5, .5), WOF_INTERPOLATE);A_OverlayRotate(Lay1, CFRandom(-.25, .25), WOF_INTERPOLATE);
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;A_OverlayScale(Lay1, CFRandom(1, 1.025), CFRandom(1, 1.025), WOF_INTERPOLATE);
 			}
-			SAWG ### 1 {
+			SAW1 ### 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(-.5, .5), WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-.25, .25), WOF_INTERPOLATE);
@@ -60,13 +60,13 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			#### # 0{A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayPivot(Lay1, .5, 1);}
 			Loop;
 		SawLower:
-			SAWG # 1 {
+			SAW1 # 1 {
 				A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(-.5, .5));
 				A_OverlayRotate(Lay1, CFRandom(-.5, .5));
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
 				A_OverlayScale(Lay1, CFRandom(1, 1.05), CFRandom(1, 1.05), WOF_INTERPOLATE);
 			}
-			SAWG ###### 1 {
+			SAW1 ###### 1 {
 				A_OverlayPivot(Lay1, .5, 0);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(Lay1, -4, 14, WOF_ADD);
@@ -81,11 +81,11 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			Loop;
 		
 		SawStartCut:
-			SAWG # 1{Player.GetPSprite(Lay1).Frame = invoker.SawFrame;A_OverlayPivot(Lay1, .5, 1);}
+			SAW1 # 1{Player.GetPSprite(Lay1).Frame = invoker.SawFrame;A_OverlayPivot(Lay1, .5, 1);}
 			#### # 1 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayScale(Lay1, 1, .8, WOF_INTERPOLATE);}
 		SawCutLoop:
 			#### # 0 {invoker.SawPos = 1;}
-			SAWG BABA 1{
+			SAW1 BABA 1{
 				A_OverlayPivot(Lay1, .7, .5);
 				A_OverlayOffset(Lay1, -invoker.SawPos*2, 6-invoker.SawPos*2.5, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-1, 1), WOF_INTERPOLATE);
@@ -95,13 +95,13 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 			Loop;
 		SawStopCut:
-			SAWG A 1;
-			SAWG # 1{
+			SAW1 A 1;
+			SAW1 # 1{
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayScale(Lay1, 1, .8);
 			}
-			SAWG ## 1{
+			SAW1 ## 1{
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayScale(Lay1, 0, .1, WOF_ADD);
 				if(GetAge()%2==0)invoker.SawFrame++;
@@ -114,7 +114,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			TNT1 A 0 A_Overlay(Lay1, "SawStartCut");
 		FireLoop:
 			TNT1 AA 4 A_Saw();
-			SAWG B 0 A_ReFire("FireLoop");
+			SAW1 B 0 A_ReFire("FireLoop");
 			TNT1 A 0 A_Overlay(Lay1, "SawStopCut");
 			Goto Ready;
 	}
