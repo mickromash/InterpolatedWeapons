@@ -1,3 +1,4 @@
 nosave bool MRIntW_Casings = true;
 nosave bool MRIntW_LHand = true;
 nosave bool MRIntW_Smoke = true;
+nosave bool MRIntW_IdleAnims = true;
