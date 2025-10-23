@@ -31,10 +31,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayRotate(Lay1, -10.5);
 			}
 			SH12 A 1{invoker.LowerOpen = false;if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH22A0");}
-			#### AAAAAAA 1 {
+			#### ####### 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(Lay1, -7, -8, WOF_ADD);
-				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
+				A_OverlayScale(Lay1, -.03, -.03, WOF_ADD);
 				A_OverlayRotate(Lay1, 1.5, WOF_ADD);
 			}
 			#### A 1 {
