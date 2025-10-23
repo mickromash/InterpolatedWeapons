@@ -76,17 +76,19 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			Loop;
 			
 		Fire:
-			TNT1 A 3 A_Overlay(Lay1, "GunFire");
+			TNT1 A 3 {A_Overlay(Lay1, "GunFire");if(MRIntW_InstantFire)A_SetTics(0);}
 			TNT1 A 7 {A_FireShotgun();A_Overlay(Lay2, "GunFlash");}
 			TNT1 BC 5;
 			TNT1 D 4;
 			TNT1 CB 5;
 			TNT1 A 3;
+			TNT1 A 3 A_JumpIf(!MRIntW_InstantFire, 1);
 			TNT1 A 7 A_ReFire();
 			Goto Ready;
 		GunFire:
-			SH1G A 1;
-			SH1G A 1 A_OverlayPivot(Lay1, .5, .5);
+			#### # 0 A_OverlayPivot(Lay1, .5, .5);
+			#### # 0 A_JumpIf(MRIntW_InstantFire, 3);
+			SH1G A 2;
 			SH1G A 1 A_OverlayOffset(Lay1, 0, 1, WOF_ADD);
 			SH1G A 1;//Shot
 			SH1G A 1 {//Recoil

@@ -80,15 +80,18 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Loop;
 		
 		Fire:
-			TNT1 A 4 A_Overlay(Lay1, "GunFire");
+			TNT1 A 4 {A_Overlay(Lay1, "GunFire");if(MRIntW_InstantFire)A_SetTics(0);}
 			TNT1 A 6 {A_FirePistol();A_Overlay(Lay2, "GunFlash");}
 			TNT1 A 4;
+			TNT1 A 4 A_JumpIf(!MRIntW_InstantFire, 1);
 			TNT1 A 5 A_ReFire();
 			Goto Ready;
 			
 		GunFire:
-			P1SG A 1{if(MRIntW_LHand)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);}
-			P1SG B 1 A_OverlayPivot(Lay1, .5, .5);
+			P1SG A 0{if(MRIntW_LHand)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);A_OverlayPivot(Lay1, .5, .5);}
+			#### # 0 A_JumpIf(MRIntW_InstantFire, 5);
+			P1SG A 1;
+			P1SG B 1;
 			P1SG BB 1 A_OverlayOffset(Lay1, 0, -1, WOF_ADD);
 			P1SG B 1;//Shot
 			P1SG BB 1 {

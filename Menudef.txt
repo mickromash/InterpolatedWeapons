@@ -10,6 +10,8 @@ OptionMenu "MRIntWeaps_Menu"
 	Title "$MRIntWeaps_Menu"
 	StaticText ""
 	Option "$MRIntW_LHand", "MRIntW_LHand", "YesNo"
+	Option "$MRIntW_Lighting", "MRIntW_Lighting", "YesNo"
+	Option "$MRIntW_InstantFire", "MRIntW_InstantFire", "YesNo"
 	StaticText ""
 	SafeCommand "$MRIntWeaps_Uninstall", "NetEvent MRIntWeaps_Uninstall", "$MRIntWeaps_UninstallPromt"
 }

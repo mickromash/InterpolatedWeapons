@@ -1,7 +1,11 @@
 [en eng enu default]
 
 MRIntWeaps_Menu = "Interpolated weapons";
+
 MRIntW_LHand = "Left-handed";
+MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
+MRIntW_InstantFire = "\cv⊛\c- Instant firing";
+
 MRIntWeaps_Uninstall = "Uninstall mod";
 MRIntWeaps_UninstallPromt = "Remove the mod so the saved game could be loaded without it?";
 MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled.";
@@ -9,7 +13,11 @@ MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled."
 [ru]
 
 MRIntWeaps_Menu = "Интерполированное оружие";
+
 MRIntW_LHand = "Держать пистолет в левой руке";
+MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
+MRIntW_InstantFire = "\cv⊛\c- Мгновенные выстрелы";
+
 MRIntWeaps_Uninstall = "Отключить мод";
 MRIntWeaps_UninstallPromt = "Удалить данные мода из игры?\nБлагодаря этому сохранённая игра сможет быть загружена без него";
 MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdМод успешно удалён.";
