@@ -4,3 +4,4 @@ nosave bool MRIntW_Smoke = true;
 nosave bool MRIntW_IdleAnims = true;
 server bool MRIntW_Lighting = true;
 server bool MRIntW_InstantFire = true;
+nosave bool MRIntW_BrownGloves = true;

@@ -3,6 +3,7 @@
 MRIntWeaps_Menu = "Interpolated weapons";
 
 MRIntW_LHand = "Left-handed";
+MRIntW_BrownGloves = "Brown gloves";
 MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
 MRIntW_InstantFire = "\cv⊛\c- Instant firing";
 
@@ -15,6 +16,7 @@ MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled."
 MRIntWeaps_Menu = "Интерполированное оружие";
 
 MRIntW_LHand = "Держать пистолет в левой руке";
+MRIntW_BrownGloves = "Коричневые перчатки";
 MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
 MRIntW_InstantFire = "\cv⊛\c- Мгновенные выстрелы";
 
