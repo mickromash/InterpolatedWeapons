@@ -13,6 +13,7 @@ OptionMenu "MRIntWeaps_Menu"
 	Option "$MRIntW_BrownGloves", "MRIntW_BrownGloves", "YesNo"
 	Option "$MRIntW_Lighting", "MRIntW_Lighting", "YesNo"
 	Option "$MRIntW_InstantFire", "MRIntW_InstantFire", "YesNo"
+	Option "$MRIntW_BetterAlert", "MRIntW_BetterAlert", "YesNo"
 	StaticText ""
 	SafeCommand "$MRIntWeaps_Uninstall", "NetEvent MRIntWeaps_Uninstall", "$MRIntWeaps_UninstallPromt"
 }
