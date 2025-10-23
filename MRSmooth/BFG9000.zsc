@@ -11,8 +11,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	
 	int BobState;
 	Double Muzzle,//Muzzle position
-			Power;
-	Bool InterpolateMuzzle;
+			Power;//Prefiring shaking
+	Bool InterpolateMuzzle, LightUpMuzzle;
 	States{
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
@@ -28,6 +28,24 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			TNT1 A 1 A_WeaponReady();
 			Loop;
 		GunMuzzle:
+			#### # 0 A_JumpIf(!invoker.LightUpMuzzle, 2);
+			BFGM # 1 BRIGHT{
+				if(invoker.InterpolateMuzzle){
+					Player.GetPSprite(Lay2).OldX = Player.GetPSprite(Lay1).OldX;
+					Player.GetPSprite(Lay2).OldY = Player.GetPSprite(Lay1).OldY + invoker.Muzzle*3;
+					Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
+					Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y + invoker.Muzzle*3;
+					Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;// + (.01,.01)*invoker.Muzzle;
+					Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
+					Player.GetPSprite(Lay2).Pivot = Player.GetPSprite(Lay1).Pivot;
+					A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
+				}
+				else {
+					Player.GetPSprite(OverlayId()).ResetInterpolation();
+				}
+				if(Player.GetPSprite(Lay1).Frame<2)Player.GetPSprite(Lay2).Frame = Player.GetPSprite(Lay1).Frame;
+			}
+			Loop;
 			BFGM # 1{
 				if(invoker.InterpolateMuzzle){
 					Player.GetPSprite(Lay2).OldX = Player.GetPSprite(Lay1).OldX;
@@ -127,7 +145,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			
 		Fire:
 			TNT1 A 20 {A_BFGsound();A_Overlay(Lay1, "GunFire");}
-			TNT1 B 10 A_GunFlash();
+			TNT1 B 10 {if(!MRIntW_Lighting)A_GunFlash();}
 			TNT1 B 10 A_FireBFG();
 			TNT1 B 20 A_ReFire();
 			Goto Ready;
@@ -136,6 +154,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			Loop;
 		GunFlash:
 			BF1F A 1 BRIGHT{
+				invoker.LightUpMuzzle = true;
 				A_OverlayOffset(Lay4, 0, 9);
 				A_OverlayFlags(Lay4, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
 				A_OverlayRenderStyle(Lay4, STYLE_ADD);
@@ -145,7 +164,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			BF1F AB 1 BRIGHT A_OverlayScale(Lay4, 1, 1, WOF_INTERPOLATE);
 			BF1F C 1 BRIGHT A_OverlayScale(Lay4, .9, .9);
 			BF1F CC 1 BRIGHT A_OverlayScale(Lay4, .1, .1, WOF_ADD);
-			BF1F CCCCCC 1 BRIGHT {A_OverlayScale(Lay4, -.05, -.2, WOF_ADD);Player.GetPSprite(Lay4).Alpha -= .15;}
+			BF1F CCCCC 1 BRIGHT {A_OverlayScale(Lay4, -.05, -.2, WOF_ADD);Player.GetPSprite(Lay4).Alpha -= .15;}
+			BF1F C 1 BRIGHT {invoker.LightUpMuzzle = false;A_OverlayScale(Lay4, -.05, -.2, WOF_ADD);Player.GetPSprite(Lay4).Alpha -= .15;}
 			Stop;
 			
 		GunFire:
@@ -215,8 +235,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			Goto GunWait;
 		
 		Flash:
-			TNT1 A 11;// A_Light1();
-			TNT1 A 6;// A_Light2();
+			TNT1 A 11 A_Light1();//Can't disable this because of desync
+			TNT1 A 6 A_Light2();
 			Goto LightDone;
 	}
 }
