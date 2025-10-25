@@ -4,6 +4,8 @@ MRIntWeaps_Menu = "Interpolated weapons";
 
 MRIntW_LHand = "Left-handed";
 MRIntW_BrownGloves = "Brown gloves";
+MRIntW_Smoke = "Firing smoke";
+MRIntW_Recoil = "\cv⊛\c- Fix Visual recoil";
 MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
 MRIntW_InstantFire = "\cv⊛\c- Instant firing";
 MRIntW_BetterAlert = "\cv⊛\c- Better monster alerting";
@@ -18,6 +20,8 @@ MRIntWeaps_Menu = "Интерполированное оружие";
 
 MRIntW_LHand = "Держать пистолет в левой руке";
 MRIntW_BrownGloves = "Коричневые перчатки";
+MRIntW_Smoke = "Дым";
+MRIntW_Recoil = "\cv⊛\c- Визуальная отдача";
 MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
 MRIntW_InstantFire = "\cv⊛\c- Мгновенные выстрелы";
 MRIntW_BetterAlert = "\cv⊛\c- Реалистичное привлечение внимания монстров";

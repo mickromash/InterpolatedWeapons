@@ -10,6 +10,13 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	
 	int BobState;
 	Bool LowerOpen;//For switching mid reload
+	
+	Float Recoil;
+	Override Void DoEffect()
+	{
+		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25, SPF_INTERPOLATE);}
+	}
+	
 	States{
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
@@ -96,7 +103,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			Loop;
 		Fire:
 			TNT1 A 3 {A_Overlay(Lay1, "GunFire");if(MRIntW_InstantFire)A_SetTics(0);}
-			TNT1 A 7 {A_FireShotgun2();A_Overlay(Lay2, "GunFlash");}
+			TNT1 A 7 {
+				A_FireShotgun2();
+				A_Overlay(Lay2, "GunFlash");
+				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3, SPF_INTERPOLATE);}//Recoil
+			}
 			TNT1 A 7;//B
 			TNT1 A 7 A_CheckReload();
 			TNT1 A 7 A_OpenShotgun2();

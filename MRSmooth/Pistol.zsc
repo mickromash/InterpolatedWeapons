@@ -8,7 +8,49 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Const Lay2 = PSP_FLASH+1;
 	
 	int BobState;
+	
+	MRIntWeaps_SmokeContainer Smokes[50];
+	
+	Float Recoil;
+	Override Void DoEffect()
+	{
+		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5, SPF_INTERPOLATE);}
+	}
+	
 	States{
+		SmokeLay:
+			NSHS A 0{
+				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
+				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
+			}
+			NSHS A 1{
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
+				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
+			}
+			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
+				int Index = abs(OverlayId())-10;
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+				
+				Player.GetPSprite(OverlayId()).Alpha-=.01;
+				
+				Float Scale = (CFRandom(.09, .13) + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.2);
+				Scale -= (invoker.Smokes[Index].Vel.Y);
+				Scale *= .1;
+				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
+				
+				if(Player.GetPSprite(OverlayId()).Scale.Length()>15)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02 + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle)*3));
+				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
+				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
+				Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90) + Vel.Y*Sin(Angle+90)*5);
+				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
+			}
+			TNT1 A 0 {invoker.Smokes[abs(OverlayId())-10].Destroy();invoker.Smokes[abs(OverlayId())-10]=Null;}
+			Stop;
+		
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
 		Raise:
@@ -83,7 +125,11 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		
 		Fire:
 			TNT1 A 4 {A_Overlay(Lay1, "GunFire");if(MRIntW_InstantFire)A_SetTics(0);}
-			TNT1 A 6 {A_FirePistol();A_Overlay(Lay2, "GunFlash");}
+			TNT1 A 6 {
+				A_FirePistol();
+				A_Overlay(Lay2, "GunFlash");
+				if(MRIntW_Recoil){invoker.Recoil+=2;A_SetPitch(Pitch-2, SPF_INTERPOLATE);}//Recoil
+			}
 			TNT1 A 4;
 			TNT1 A 4 A_JumpIf(!MRIntW_InstantFire, 1);
 			TNT1 A 5 A_ReFire();
@@ -112,6 +158,25 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				
+				if(MRIntW_Smoke){
+					int index;
+					For(index=0;index<invoker.Smokes.Size();index++){
+						if(!invoker.Smokes[index])Break;
+					}
+					if(index<invoker.Smokes.Size()){
+						MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
+						a.Vel = (CFRandom(-.05, .05), -CFRandom(.1, .2), CFRandom(.7, 1.2));
+						invoker.Smokes[index] = a;
+						
+						Vector2 Bob = PlayerPawn(Self).BobWeapon(35);
+						
+						A_Overlay(-10-index, "SmokeLay");
+						A_OverlayOffset(-10-index, 130+Bob.X, 100+Bob.Y);
+						Player.GetPSprite(-10-index).Scale = (1,1)*CFRandom(.1, .15);
+						A_OverlayAlpha(-10-index, CFRandom(.01, .08)*3);
+					}
+				}
 			}
 			#### CDEE 1{
 				Float Scal = CFRandom(.01, .03);

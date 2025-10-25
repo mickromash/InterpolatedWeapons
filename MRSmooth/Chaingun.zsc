@@ -8,6 +8,13 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Const Lay2 = PSP_FLASH+1;
 	
 	int BobState;
+	
+	Float Recoil;
+	Override Void DoEffect()
+	{
+		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5, SPF_INTERPOLATE);}
+	}
+	
 	States{
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
@@ -76,7 +83,11 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			
 		Fire:
 			#### # 0 A_Overlay(Lay1, "GunFire");
-			TNT1 AA 4 {A_FireCGun();A_Overlay(Lay2, "GunFlash");}
+			TNT1 AA 4 {
+				A_FireCGun();
+				A_Overlay(Lay2, "GunFlash");
+				if(MRIntW_Recoil){invoker.Recoil+=1;A_SetPitch(Pitch-1, SPF_INTERPOLATE);}//Recoil
+			}
 			TNT1 A 0 A_ReFire();
 			Goto Ready;
 		GunFire:

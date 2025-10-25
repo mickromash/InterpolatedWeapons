@@ -13,6 +13,13 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	Double Muzzle,//Muzzle position
 			Power;//Prefiring shaking
 	Bool InterpolateMuzzle, LightUpMuzzle;
+	
+	Float Recoil;
+	Override Void DoEffect()
+	{
+		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25, SPF_INTERPOLATE);}
+	}
+	
 	States{
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
@@ -146,7 +153,10 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 		Fire:
 			TNT1 A 20 {A_BFGsound();A_Overlay(Lay1, "GunFire");}
 			TNT1 B 10 {if(!MRIntW_Lighting)A_GunFlash();}
-			TNT1 B 10 A_FireBFG();
+			TNT1 B 10 {
+				A_FireBFG();
+				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3, SPF_INTERPOLATE);}//Recoil
+			}
 			TNT1 B 20 A_ReFire();
 			Goto Ready;
 		GunLEDs:

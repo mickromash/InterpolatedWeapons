@@ -12,6 +12,13 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			BodyScal;//Rifle body sqiush during firing
 	Bool MuzzleCycle,//Firing frame
 		InterpolateMuzzle;
+	
+	Float Recoil;
+	Override Void DoEffect()
+	{
+		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5, SPF_INTERPOLATE);}
+	}
+	
 	States{
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
@@ -111,7 +118,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			
 		Fire:
 			#### # 0 {Player.SetPsprite(Lay1, invoker.FindState("GunFire"));}
-			TNT1 A 3 A_FirePlasma();
+			TNT1 A 3 {
+				A_FirePlasma();
+				if(MRIntW_Recoil){invoker.Recoil+=1;A_SetPitch(Pitch-1, SPF_INTERPOLATE);}//Recoil
+			}
 			TNT1 B 20 A_ReFire();
 			Goto Ready;
 		GunFire:
