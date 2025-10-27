@@ -96,6 +96,11 @@ Class MRIntWeaps_Handler: EventHandler
 	}
 }
 
+Class MRIntWeaps_SmokeContainer: Object play
+{
+	Vector3 Vel;
+}
+
 #include "MRSmooth/Casings.zsc"
 
 #include "MRSmooth/Fist.zsc"
