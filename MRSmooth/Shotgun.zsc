@@ -14,14 +14,14 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25, SPF_INTERPOLATE);}
+		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount, SPF_INTERPOLATE);}
 	}
 	
 	States{
 		MuzzleSmokeLay:
 			NSHS A 0{
 				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
 				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
 				A_OverlayPivot(OverlayId(), .5, .5);
 				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
@@ -53,7 +53,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		SmokeLay://From chamber
 			NSHS A 0{
 				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
 				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
 				A_OverlayPivot(OverlayId(), .5, .5);
 				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
@@ -168,7 +168,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			TNT1 A 7 {
 				A_FireShotgun();
 				A_Overlay(Lay2, "GunFlash");
-				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3, SPF_INTERPOLATE);}//Recoil
+				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount, SPF_INTERPOLATE);}//Recoil
 			}
 			TNT1 BC 5;
 			TNT1 D 4;
