@@ -33,6 +33,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		Ready:
 			TNT1 A 1 A_WeaponReady();
 			Loop;
+			
 		GunMuzzle:
 			PLSO # 1{
 				if(invoker.InterpolateMuzzle){
@@ -55,19 +56,19 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Loop;
 		
 		GunRaise:
-			TNT1 AAAAAAA 1 {
+			TNT1 AAAA 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 				A_OverlayPivot(Lay1, .5, 0);
-				A_OverlayOffset(Lay1, -20, 130);
+				A_OverlayOffset(Lay1, -20, 145);
 				A_OverlayScale(Lay1, 1.1, 1.1);
 				A_OverlayRotate(Lay1, 4);
 			}
 			PLSR B 1{if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("PL2RA0");}
-			#### ####### 1 {
+			#### ########## 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, 10, -9, WOF_ADD);
-				A_OverlayScale(Lay1, -.04, -.04, WOF_ADD);
-				A_OverlayRotate(Lay1, -1, WOF_ADD);}
+				A_OverlayOffset(Lay1, 7, -7, WOF_ADD);
+				A_OverlayScale(Lay1, -.03, -.03, WOF_ADD);
+				A_OverlayRotate(Lay1, -.6, WOF_ADD);}
 			#### A 0 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				invoker.InterpolateMuzzle = false;
@@ -103,14 +104,25 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		GunLower:
 			#### # 0 A_ClearOverlays(Lay2, Lay2);
 			PLSR B 1 {
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("PL2RA0");
 				A_OverlayPivot(Lay1, .5, 0);
-				A_OverlayScale(Lay1, .9, .9);
-				A_OverlayOffset(Lay1, 30, 20+(Player.GetPSprite(PSP_FLASH).Y));
+				A_OverlayScale(Lay1, .8, .75);
+				A_OverlayOffset(Lay1, 60, 40+(Player.GetPSprite(PSP_WEAPON).Y));
 			}
-			#### ###### 1 {
+			#### ## 1{
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -25, 14, WOF_ADD);
+				A_OverlayOffset(Lay1, 3, -3, WOF_ADD);
+				A_OverlayRotate(Lay1, -2, WOF_ADD);
+			}
+			#### # 1{
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayOffset(Lay1, 1.5, -1.5, WOF_ADD);
+				A_OverlayRotate(Lay1, -1, WOF_ADD);
+			}
+			#### ############ 1 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayOffset(Lay1, -12, 11, WOF_ADD);
 				A_OverlayRotate(Lay1, 2, WOF_ADD);
 				A_OverlayScale(Lay1, .025, .025, WOF_ADD);
 			}
@@ -126,7 +138,11 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Goto Ready;
 		GunFire:
 			#### # 0 A_Overlay(Lay2, "GunMuzzle", true);
-			#### # 0 {invoker.Muzzle = -1.2;A_OverlayPivot(Lay1, .5, 1);A_OverlayPivot(Lay2, .5, 1);invoker.InterpolateMuzzle = false;}
+			#### # 0 {
+				invoker.Muzzle = -1.2;
+				A_OverlayPivot(Lay1, .5, 1);
+				A_OverlayPivot(Lay2, .5, 1);invoker.InterpolateMuzzle = false;
+			}
 			PL1G ### 1{
 				Vector2 Rand = (FRandom(-1, 1), FRandom(0, 1));
 				A_OverlayOffset(Lay1, Rand.X, Rand.Y, WOF_INTERPOLATE);

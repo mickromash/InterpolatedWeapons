@@ -29,11 +29,11 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	Deselect:
 		TNT1 A 0 A_Overlay(Lay1, "GunLower");
 	Lower:
-		TNT1 A 1 A_Lower();
+		#### A 1 A_Lower();
 		Loop;
 		
 	GunRaise:
-		TNT1 AAAAAAAA 1 {
+		TNT1 AAAA 1 {
 			A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 			A_OverlayPivot(Lay1, .5, .5);
 			A_OverlayOffset(Lay1, 61, 80);
@@ -41,18 +41,18 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			A_OverlayRotate(Lay1, -20);
 		}
 		MI1G C 1;
-		MI1G CCCC 1 {
+		MI1G CCCCCC 1 {
 			A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-			A_OverlayOffset(Lay1, -11, -14, WOF_ADD);
-			A_OverlayScale(Lay1, .1, .1, WOF_ADD);
-			A_OverlayRotate(Lay1, 3, WOF_ADD);
+			A_OverlayOffset(Lay1, -8, -10, WOF_ADD);
+			A_OverlayScale(Lay1, .08, .08, WOF_ADD);
+			A_OverlayRotate(Lay1, 2, WOF_ADD);
 		}
 		MI1G CC 1 {
 			A_OverlayOffset(Lay1, -8, 4, WOF_ADD);
 			A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 			A_OverlayRotate(Lay1, 4.2, WOF_ADD);
 		}
-		MI1G C 4 {
+		MI1G C 2{
 			A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
 			A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 			A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
@@ -88,14 +88,22 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		}
 		MI1G ## 1 {
 			A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-			A_OverlayOffset(Lay1, 5, -3, WOF_ADD);
-			A_OverlayRotate(Lay1, -4, WOF_ADD);
+			A_OverlayOffset(Lay1, 10, -8, WOF_ADD);
+			A_OverlayRotate(Lay1, -2, WOF_ADD);
 		}
-		MI1G #### 1 {
-			A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-			A_OverlayOffset(Lay1, 10, 14, WOF_ADD);
-			A_OverlayRotate(Lay1, 4, WOF_ADD);
-			A_OverlayScale(Lay1, -.1, -.1, WOF_ADD);
+		MI1G # 1 {
+			A_OverlayOffset(Lay1, -3, -3, WOF_ADD);
+			A_OverlayRotate(Lay1, 0, WOF_ADD);
+		}
+		MI1G ## 1 {
+			A_OverlayOffset(Lay1, -6, -1, WOF_ADD);
+			A_OverlayScale(Lay1, 0, -.05, WOF_ADD);
+			A_OverlayRotate(Lay1, 6, WOF_ADD);
+		}
+		MI1G ############# 1 {
+			A_OverlayOffset(Lay1, -7, 15, WOF_ADD);
+			A_OverlayRotate(Lay1, 1, WOF_ADD);
+			A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);
 		}
 		Stop;
 	
@@ -109,7 +117,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			A_FireMissile();
 			if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3, SPF_INTERPOLATE);}//Recoil
 		}
-		TNT1 A 6 A_JumpIf(!MRIntW_InstantFire, 1);
+		TNT1 A 6 {A_JumpIf(!MRIntW_InstantFire, 1);if(Player.GetPSprite(Lay1).Tics<4)A_WeaponReady(WRF_NOFIRE);}
 		TNT1 B 0 A_ReFire();
 		Goto Ready;
 		

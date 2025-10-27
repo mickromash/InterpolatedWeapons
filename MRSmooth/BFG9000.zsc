@@ -29,11 +29,12 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 		Deselect:
 			TNT1 A 0 A_Overlay(Lay1, "GunLower");
 		Lower:
-			TNT1 A 1 A_Lower();
+			#### A 1 A_Lower();
 			Loop;
 		Ready:
 			TNT1 A 1 A_WeaponReady();
 			Loop;
+			
 		GunMuzzle:
 			#### # 0 A_JumpIf(!invoker.LightUpMuzzle, 2);
 			BFGM # 1 BRIGHT{
@@ -72,17 +73,17 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			Loop;
 		
 		GunRaise:
-			TNT1 AAAAAA 1 {
+			TNT1 AAAA 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayPivot(Lay1, .5, 0);
-				A_OverlayOffset(Lay1, 0, 130);
+				A_OverlayOffset(Lay1, 0, 85);
 				A_OverlayScale(Lay1, .6, .6);
 				A_OverlayRotate(Lay1, 0);
 			}
 			BFG1 C 1;
 			BFG1 ####### 1{
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, 0, -15, WOF_ADD);
+				A_OverlayOffset(Lay1, 0, -8, WOF_ADD);
 				A_OverlayScale(Lay1, .04, .04, WOF_ADD);
 			}
 			BFG1 ## 1{
@@ -98,7 +99,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay1, CFRandom(-1, 1), CFRandom(30, 34), WOF_INTERPOLATE);
 			}
-			BFG1 # 1 {
+			BFG1 A 1 {
 				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
 				invoker.Muzzle = 1;
 				invoker.InterpolateMuzzle = false;
@@ -130,22 +131,25 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 		GunLower:
 			#### # 0 A_ClearOverlays(Lay2, Lay2);
 			BFG1 C 1 {
-				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayPivot(Lay1, .5, 0);
 				A_OverlayScale(Lay1, 1, 1);
-				A_OverlayOffset(Lay1, 0, 32);
+				A_OverlayOffset(Lay1, 0, 0);
 			}
 			BFG1 ## 1{
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayScale(Lay1, .07, .07, WOF_ADD);
-				A_OverlayOffset(Lay1, CFRandom(-1, 1), 5, WOF_ADD);
+				A_OverlayScale(Lay1, .04, .04, WOF_ADD);
+				A_OverlayOffset(Lay1, CFRandom(-1, 1), 0, WOF_ADD);
 			}
 			BFG1 ## 1{
-				A_OverlayOffset(Lay1, 0, -3, WOF_ADD);
+				A_OverlayOffset(Lay1, 0, -14, WOF_ADD);
 				A_OverlayScale(Lay1, -.1, -.1, WOF_ADD);
 			}
-			BFG1 #### 1 {
-				A_OverlayOffset(Lay1, -5, 20, WOF_ADD);
+			BFG1 ## 1 {
+				A_OverlayOffset(Lay1, -5, 5, WOF_ADD);
+				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
+			}
+			#### ###### 1 {
+				A_OverlayOffset(Lay1, -2, 0, WOF_ADD);
 				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
 			}
 			Stop;

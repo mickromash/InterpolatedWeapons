@@ -24,11 +24,11 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		Deselect:
 			TNT1 A 0 A_Overlay(Lay1, "GunLower");
 		Lower:
-			TNT1 A 1 A_Lower();
+			#### A 1 A_Lower();
 			Loop;
 			
 		GunRaise:
-			TNT1 AAAAAAAA 1 {
+			TNT1 AAAA 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 				A_OverlayPivot(Lay1, .5, 0);
 				A_OverlayOffset(Lay1, 51, 90);
@@ -36,17 +36,18 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayRotate(Lay1, -10.5);
 			}
 			CH1G A 1;
-			CH1G BBBCCDDA 1 {
+			CH1G DABCDABBCCD 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -7, -8, WOF_ADD);
+				A_OverlayOffset(Lay1, -4, -5, WOF_ADD);
 				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
-				A_OverlayRotate(Lay1, 1.5, WOF_ADD);
+				A_OverlayRotate(Lay1, 1, WOF_ADD);
 			}
-			CH1G A 1 {
+			CH1G D 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , true);
 				A_OverlayOffset(Lay1, 0, 0);
 				A_OverlayScale(Lay1, 1, 1);
 				A_OverlayRotate(Lay1, 0);}
+			#### # 0 A_JumpIf(CRandom(0, 255)<2, "GunRotate");
 		GunWait:
 			CH1G A 1 {
 				if(invoker.BobState>=0){
@@ -68,11 +69,11 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayRotate(Lay1, 0);
 				A_OverlayScale(Lay1, 1, 1);
 			}
-			CH1G ###### 1 {
+			CH1G ########## 1 {
 				A_OverlayPivot(Lay1, .5, 0);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, 25, 14, WOF_ADD);
-				A_OverlayRotate(Lay1, -4, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 0, WOF_ADD);
+				A_OverlayRotate(Lay1, -2, WOF_ADD);
 				A_OverlayScale(Lay1, .025, .025, WOF_ADD);
 			}
 			Stop;
