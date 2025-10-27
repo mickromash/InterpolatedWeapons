@@ -7,4 +7,5 @@ server bool MRIntW_InstantFire = true;
 nosave bool MRIntW_BrownGloves = true;
 server bool MRIntW_BetterAlert = false;
 server bool MRIntW_Recoil = false;
+server float MRIntW_RecoilAmount = 1;
 server bool MRIntW_FastPistol = false;

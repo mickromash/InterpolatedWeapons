@@ -12,7 +12,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5, SPF_INTERPOLATE);}
+		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*MRIntW_RecoilAmount, SPF_INTERPOLATE);}
 	}
 	
 	States{
@@ -47,7 +47,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayOffset(Lay1, 0, 0);
 				A_OverlayScale(Lay1, 1, 1);
 				A_OverlayRotate(Lay1, 0);}
-			#### # 0 A_JumpIf(CRandom(0, 255)<2, "GunRotate");
+			#### # 0 A_JumpIf(CRandom(0, 255)<3, "GunRotate");
 		GunWait:
 			CH1G A 1 {
 				if(invoker.BobState>=0){
@@ -87,7 +87,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			TNT1 AA 4 {
 				A_FireCGun();
 				A_Overlay(Lay2, "GunFlash");
-				if(MRIntW_Recoil){invoker.Recoil+=1;A_SetPitch(Pitch-1, SPF_INTERPOLATE);}//Recoil
+				if(MRIntW_Recoil){invoker.Recoil+=1;A_SetPitch(Pitch-1*MRIntW_RecoilAmount, SPF_INTERPOLATE);}//Recoil
 			}
 			TNT1 A 0 A_ReFire();
 			Goto Ready;

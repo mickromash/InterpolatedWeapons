@@ -16,7 +16,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5, SPF_INTERPOLATE);}
+		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount, SPF_INTERPOLATE);}
 	}
 	
 	States{
@@ -132,7 +132,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			#### # 0 {Player.SetPsprite(Lay1, invoker.FindState("GunFire"));}
 			TNT1 A 3 {
 				A_FirePlasma();
-				if(MRIntW_Recoil){invoker.Recoil+=1;A_SetPitch(Pitch-1, SPF_INTERPOLATE);}//Recoil
+				if(MRIntW_Recoil){invoker.Recoil+=1;A_SetPitch(Pitch-.5*MRIntW_RecoilAmount, SPF_INTERPOLATE);}//Recoil
 			}
 			TNT1 B 20 A_ReFire();
 			Goto Ready;
