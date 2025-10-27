@@ -8,6 +8,7 @@ MRIntW_Smoke = "Firing smoke";
 MRIntW_Recoil = "\cv⊛\c- Fix Visual recoil";
 MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
 MRIntW_InstantFire = "\cv⊛\c- Instant firing";
+MRIntW_FastPistol = "\cv⊛\c- Faster pistol";
 MRIntW_BetterAlert = "\cv⊛\c- Better monster alerting";
 
 MRIntWeaps_Uninstall = "Uninstall mod";
@@ -24,6 +25,7 @@ MRIntW_Smoke = "Дым";
 MRIntW_Recoil = "\cv⊛\c- Визуальная отдача";
 MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
 MRIntW_InstantFire = "\cv⊛\c- Мгновенные выстрелы";
+MRIntW_FastPistol = "\cv⊛\c- Скорострельный пистолет";
 MRIntW_BetterAlert = "\cv⊛\c- Реалистичное привлечение внимания монстров";
 
 MRIntWeaps_Uninstall = "Отключить мод";
