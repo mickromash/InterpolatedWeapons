@@ -117,7 +117,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			A_FireMissile();
 			if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3, SPF_INTERPOLATE);}//Recoil
 		}
-		TNT1 A 6 {A_JumpIf(!MRIntW_InstantFire, 1);if(Player.GetPSprite(Lay1).Tics<4)A_WeaponReady(WRF_NOFIRE);}
+		TNT1 A 6 {if(!MRIntW_InstantFire)A_SetTics(0);else if(Player.GetPSprite(Lay1).Tics<4)A_WeaponReady(WRF_NOFIRE);}
 		TNT1 B 0 A_ReFire();
 		Goto Ready;
 		

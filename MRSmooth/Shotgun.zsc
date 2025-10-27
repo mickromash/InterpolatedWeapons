@@ -174,7 +174,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			TNT1 D 4;
 			TNT1 CB 5;
 			TNT1 A 3;
-			TNT1 A 3 {A_JumpIf(!MRIntW_InstantFire, 1);if(Player.GetPSprite(Lay1).Tics<1)A_WeaponReady(WRF_NOFIRE);}
+			TNT1 A 3 {if(!MRIntW_InstantFire)A_SetTics(0);else if(Player.GetPSprite(Lay1).Tics<3)A_WeaponReady(WRF_NOFIRE);}
 			TNT1 A 7 A_ReFire();
 			Goto Ready;
 			

@@ -142,7 +142,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			TNT1 A 7 A_LoadShotgun2();
 			TNT1 A 6;
 			TNT1 A 6 A_CloseShotgun2();//H
-			TNT1 A 3 {A_JumpIf(!MRIntW_InstantFire, 1);if(Player.GetPSprite(Lay1).Tics<2)A_WeaponReady(WRF_NOFIRE);}
+			TNT1 A 3 {if(!MRIntW_InstantFire)A_SetTics(0);else if(Player.GetPSprite(Lay1).Tics<2)A_WeaponReady(WRF_NOFIRE);}
 			TNT1 A 5 A_ReFire();
 			Goto Ready;
 			
