@@ -282,7 +282,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 						}
 						if(index<invoker.Smokes.Size()){
 							MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
-							a.Vel = (CFRandom(-.05, .05), CFRandom(.1, .2), CFRandom(.4, .6));
+							a.Vel = (CFRandom(-.05, .05), CFRandom(.1, .2), CFRandom(.7, 1.2));
 							invoker.Smokes[index] = a;
 							
 							Vector2 Bob = PlayerPawn(Self).BobWeapon(35);
