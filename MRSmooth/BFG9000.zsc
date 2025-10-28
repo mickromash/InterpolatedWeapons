@@ -17,7 +17,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount, SPF_INTERPOLATE);}
+		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount);}
 	}
 	
 	States{
@@ -159,7 +159,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			TNT1 B 10 {if(!MRIntW_Lighting)A_GunFlash();}
 			TNT1 B 10 {
 				A_FireBFG();
-				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount, SPF_INTERPOLATE);}//Recoil
+				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount);}//Recoil
 			}
 			TNT1 B 20 A_ReFire();
 			Goto Ready;

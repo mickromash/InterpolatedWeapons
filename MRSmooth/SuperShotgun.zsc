@@ -14,7 +14,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount, SPF_INTERPOLATE);}
+		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount);}
 	}
 	
 	States{
@@ -133,7 +133,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			TNT1 A 7 {
 				A_FireShotgun2();
 				A_Overlay(Lay2, "GunFlash");
-				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount, SPF_INTERPOLATE);}//Recoil
+				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount);}//Recoil
 			}
 			TNT1 A 7;//B
 			TNT1 A 7 A_CheckReload();
