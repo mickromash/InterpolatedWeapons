@@ -7,7 +7,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Const Lay1 = 2;
 	Const Lay2 = PSP_FLASH+1;
 	
-	int BobState;
+	int BobState, LastFrame;
+	Float Rotation;
 	
 	Float Recoil;
 	Override Void DoEffect()
@@ -49,30 +50,27 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , true);
 				A_OverlayOffset(Lay1, 0, 0);
 				A_OverlayScale(Lay1, 1, 1);
-				A_OverlayRotate(Lay1, 0);}
+				A_OverlayRotate(Lay1, 0);
+				invoker.Rotation = 0;}
 			#### # 0 A_JumpIf(CRandom(0, 255)<3, "GunRotate");
 		GunWait:
-			CH1G A 1 {
-				if(invoker.BobState>=0){
-					A_OverlayOffset(Lay1, CFRandom(-.005, .015), CFRandom(.01, .02), WOF_ADD);
-					if(invoker.BobState>90){invoker.BobState = -invoker.BobState;}
-					else invoker.BobState++;
-				}
-				else {
-					A_OverlayOffset(Lay1, -CFRandom(-.005, .015), -CFRandom(.01, .02), WOF_ADD);
-					if(Player.GetPSprite(Lay1).Y<0){A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
-					else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay1).Y>0))invoker.BobState++;
-				}
-			}
+			CH1G A 1 A_IdleAnimation(Lay1);
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 			Loop;
 		GunLower:
-			CH1G A 1 {
+			CH1G # 1 {
+				Player.GetPSprite(lay1).Frame = invoker.LastFrame;
+				invoker.LastFrame = 0;
 				A_OverlayOffset(Lay1, 0, 0);
 				A_OverlayRotate(Lay1, 0);
 				A_OverlayScale(Lay1, 1, 1);
 			}
 			CH1G ########## 1 {
+				if(invoker.Rotation>0 && GetAge()%int(3/invoker.Rotation)==0){
+					Player.GetPSprite(lay1).Frame++;
+					if(Player.GetPSprite(lay1).Frame>3)Player.GetPSprite(lay1).Frame = 0;
+					invoker.Rotation -= .25;
+				}
 				A_OverlayPivot(Lay1, .5, 0);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(Lay1, 5, 0, WOF_ADD);
@@ -130,6 +128,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				invoker.Rotation = 2;
 			}
 			CH1G A 1;//Shot
 			CH1G B 1 {//Recoil
@@ -157,6 +156,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				invoker.Rotation = 2;
 			}
 			CH1G A 1 {
 				A_OverlayOffset(Lay1, CFRandom(-2, 2), CFRandom(-3, 3), WOF_INTERPOLATE);
@@ -171,24 +171,23 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Player.GetPSprite(Lay1).X *= .8;
 				Player.GetPSprite(Lay1).Y *= .8;
 				Player.GetPSprite(Lay1).Rotation *= .8;
+				invoker.LastFrame = 1;
 			}
 			CH1G C 2{
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
+				invoker.LastFrame = 2;
+				invoker.Rotation -= .1;
 			}
 			CH1G DDAAABBBBCCCCDDDDDD 1 {
-				
-				if(invoker.BobState>=0){
-					A_OverlayOffset(Lay1, CFRandom(-.005, .015), CFRandom(.01, .02), WOF_ADD);
-					if(invoker.BobState>90){invoker.BobState = -invoker.BobState;}
-					else invoker.BobState++;
-				}
-				else {
-					A_OverlayOffset(Lay1, -CFRandom(-.005, .015), -CFRandom(.01, .02), WOF_ADD);
-					if(Player.GetPSprite(Lay1).Y<0){A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
-					else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay1).Y>0))invoker.BobState++;
-				}
+				invoker.Rotation -= .1;
+				invoker.LastFrame = Player.GetPSprite(Lay1).Frame;
+				A_IdleAnimation(Lay1);
+			}
+			#### # 0{
+				invoker.Rotation = 0;
+				invoker.LastFrame = 0;
 			}
 			Goto GunWait;
 			
@@ -207,5 +206,27 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Goto LightDone;
 			TNT1 A 5 A_Light2();
 			Goto LightDone;
+	}
+	
+	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
+	{
+		Bool Bers = MRIntW_BersShake>1 && FindInventory("PowerStrength");
+		Float Mult = (Bers?2:1);
+		if(invoker.BobState>=0){
+			A_OverlayOffset(Lay, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
+			if(invoker.BobState>90||Player.GetPSprite(Lay).Y>1.35){invoker.BobState = -invoker.BobState;}
+			else invoker.BobState+=Mult;
+		}
+		else {
+			A_OverlayOffset(Lay, -CFRandom(-.005, .015)*Mult, -CFRandom(.01, .02)*Mult, WOF_ADD);
+			if(Player.GetPSprite(Lay).Y<0){A_OverlayOffset(Lay, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
+			else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay).Y>0))invoker.BobState+=Mult;
+		}
+		if(Bers && GetAge()%2==0){//Shaking hand if got berserk
+			A_OverlayOffset(Lay, CFRandom(-.25, .25), 0, WOF_INTERPOLATE|WOF_KEEPY);
+			Player.GetPSprite(Lay).Y += CFRandom(-.25, .25);
+			if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
+			if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
+		}
 	}
 }
