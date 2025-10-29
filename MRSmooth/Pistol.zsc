@@ -66,7 +66,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			TNT1 AAAA 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 				if(MRIntW_LHand)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);//Left handed
-				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayOffset(Lay1, -28, 90);
 				A_OverlayScale(Lay1, .8, .8);
 				A_OverlayRotate(Lay1, 10.5);
@@ -93,16 +93,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		GunWait:
 			P1SG A 1 {
 				if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("P2SGA0");
-				if(invoker.BobState>=0){
-					A_OverlayOffset(Lay1, CFRandom(-.005, .015), CFRandom(.01, .02), WOF_ADD);
-					if(invoker.BobState>90){invoker.BobState = -invoker.BobState;}
-					else invoker.BobState++;
-				}
-				else {
-					A_OverlayOffset(Lay1, -CFRandom(-.005, .015), -CFRandom(.01, .02), WOF_ADD);
-					if(Player.GetPSprite(Lay1).Y<0){A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
-					else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay1).Y>0))invoker.BobState++;
-				}
+				A_IdleAnimation(Lay1);
 				if(MRIntW_LHand)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
 				else A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, false);
 			}
@@ -112,26 +103,26 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			P1SG A 1 {
 				if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("P2SGA0");
 				if(MRIntW_LHand)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
-				A_OverlayOffset(Lay1, 0, 0);
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(Lay1, 0, Player.GetPSprite(PSP_WEAPON).Y);
 				A_OverlayRotate(Lay1, 0);
 				A_OverlayScale(Lay1, 1, 1);
-				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayPivot(Lay1, .5, 1);
 			}
 			#### ## 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -10, -10, WOF_ADD);
-				A_OverlayRotate(Lay1, 4, WOF_ADD);
-				A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);
+				A_OverlayOffset(Lay1, -5, -5, WOF_ADD);
+				A_OverlayRotate(Lay1, 2, WOF_ADD);
+				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
 			}
 			#### # 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -10, -10, WOF_ADD);
-				A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);
+				A_OverlayOffset(Lay1, -1, -1, WOF_ADD);
+				A_OverlayScale(Lay1, -.015, -.015, WOF_ADD);
 			}
 			#### ########## 1 {
-				A_OverlayOffset(Lay1, 5, 2, WOF_ADD);
-				A_OverlayRotate(Lay1, 2, WOF_ADD);
-				A_OverlayScale(Lay1, .05, .05, WOF_ADD);
+				A_OverlayOffset(Lay1, 10, 7, WOF_ADD);
+				A_OverlayRotate(Lay1, 3, WOF_ADD);
 			}
 			Stop;
 		
@@ -186,6 +177,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 						invoker.Smokes[index] = a;
 						
 						Vector2 Bob = PlayerPawn(Self).BobWeapon(35);
+						Bob.Y = Clamp(Bob.Y, 0, 50);
 						
 						A_Overlay(-10-index, "SmokeLay");
 						A_OverlayOffset(-10-index, 130+Bob.X, 100+Bob.Y);
@@ -254,5 +246,27 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		Sprites:
 			P2SG ABCDE 0;
 			Stop;
+	}
+	
+	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
+	{
+		Bool Bers = MRIntW_BersShake>1 && FindInventory("PowerStrength");
+		Float Mult = (Bers?2:1);
+		if(invoker.BobState>=0){
+			A_OverlayOffset(Lay, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
+			if(invoker.BobState>90||Player.GetPSprite(Lay).Y>1.35){invoker.BobState = -invoker.BobState;}
+			else invoker.BobState+=Mult;
+		}
+		else {
+			A_OverlayOffset(Lay, -CFRandom(-.005, .015)*Mult, -CFRandom(.01, .02)*Mult, WOF_ADD);
+			if(Player.GetPSprite(Lay).Y<0){A_OverlayOffset(Lay, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
+			else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay).Y>0))invoker.BobState+=Mult;
+		}
+		if(Bers && GetAge()%2==0){//Shaking hand if got berserk
+			A_OverlayOffset(Lay, CFRandom(-.25, .25), 0, WOF_INTERPOLATE|WOF_KEEPY);
+			Player.GetPSprite(Lay).Y += CFRandom(-.25, .25);
+			if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
+			if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
+		}
 	}
 }
