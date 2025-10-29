@@ -106,6 +106,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			#### C 1;
 			#### C 1 A_Overlayoffset(LeftLay, 0, 0, WOF_INTERPOLATE);
 		LeftHandWait://Only with berserk
+			#### # 0 {if(health<1)A_ClearOverlays(LeftLay, LeftLay);}
 			#### C 1 A_IdleAnimation(LeftLay);
 			Loop;
 		LeftHandLower://Only with berserk
