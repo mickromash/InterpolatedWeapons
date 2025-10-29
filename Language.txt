@@ -11,6 +11,8 @@ MRIntW_BersShake0 = "No";
 MRIntW_BersShake1 = "Only without weapon";
 MRIntW_BersShake2 = "Yes";
 
+MRIntW_IdleAnims = "Idle animations";
+
 MRIntW_Recoil = "\cv⊛\c- Visual recoil";
 MRIntW_RecoilAmount = "\cv⊛\c- Recoil amount";
 MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
@@ -34,6 +36,8 @@ MRIntW_BersShake = "Тряска рук при берсерке";
 MRIntW_BersShake0 = "Нет";
 MRIntW_BersShake1 = "Только без оружия";
 MRIntW_BersShake2 = "Да";
+
+MRIntW_IdleAnims = "Анимации безделья";
 
 MRIntW_Recoil = "\cv⊛\c- Визуальная отдача";
 MRIntW_RecoilAmount = "\cv⊛\c- Сила отдачи";

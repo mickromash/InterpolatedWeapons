@@ -14,6 +14,7 @@ OptionMenu "MRIntWeaps_Menu"
 	Option "$MRIntW_BrownGloves", "MRIntW_BrownGloves", "YesNo"
 	Option "$MRIntW_Smoke", "MRIntW_Smoke", "YesNo"
 	Option "$MRIntW_BersShake", "MRIntW_BersShake", "MRIntW_BersShakeValues"
+	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "YesNo"
 	//Server
 	Option "$MRIntW_Lighting", "MRIntW_Lighting", "YesNo"
 	Option "$MRIntW_Recoil", "MRIntW_Recoil", "YesNo"
