@@ -126,19 +126,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayRotate(Lay1, 0);
 			}
 		GunWait:
-			SH1G A 1 {
-				if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH2GA0");
-				if(invoker.BobState>=0){
-					A_OverlayOffset(Lay1, CFRandom(-.005, .015), CFRandom(.01, .02), WOF_ADD);//"Breathing"
-					if(invoker.BobState>90){invoker.BobState = -invoker.BobState;}
-					else invoker.BobState++;
-				}
-				else {
-					A_OverlayOffset(Lay1, -CFRandom(-.005, .015), -CFRandom(.01, .02), WOF_ADD);
-					if(Player.GetPSprite(Lay1).Y<0){A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
-					else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay1).Y>0))invoker.BobState++;
-				}
-			}
+			SH1G A 1 A_IdleAnimation(Lay1);
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 			Loop;
 		GunLower:
@@ -231,6 +219,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 						invoker.Smokes[index] = a;
 						
 						Vector2 Bob = PlayerPawn(Self).BobWeapon(35);
+						Bob.Y = Clamp(Bob.Y, 0, 50);
 						
 						A_Overlay(PSP_FLASH+10+index, "SmokeLay");
 						A_OverlayOffset(PSP_FLASH+10+index, 130+Player.GetPSprite(Lay1).X+Bob.X, 170+Bob.Y);
@@ -304,5 +293,27 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		Sprites:
 			SH2G ACDEFGH 0;
 			Stop;
+	}
+	
+	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
+	{
+		Bool Bers = MRIntW_BersShake>1 && FindInventory("PowerStrength");
+		Float Mult = (Bers?2:1);
+		if(invoker.BobState>=0){
+			A_OverlayOffset(Lay, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
+			if(invoker.BobState>90||Player.GetPSprite(Lay).Y>1.35){invoker.BobState = -invoker.BobState;}
+			else invoker.BobState+=Mult;
+		}
+		else {
+			A_OverlayOffset(Lay, -CFRandom(-.005, .015)*Mult, -CFRandom(.01, .02)*Mult, WOF_ADD);
+			if(Player.GetPSprite(Lay).Y<0){A_OverlayOffset(Lay, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
+			else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay).Y>0))invoker.BobState+=Mult;
+		}
+		if(Bers && GetAge()%2==0){//Shaking hand if got berserk
+			A_OverlayOffset(Lay, CFRandom(-.25, .25), 0, WOF_INTERPOLATE|WOF_KEEPY);
+			Player.GetPSprite(Lay).Y += CFRandom(-.25, .25);
+			if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
+			if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
+		}
 	}
 }

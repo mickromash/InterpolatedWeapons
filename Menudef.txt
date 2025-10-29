@@ -9,9 +9,12 @@ OptionMenu "MRIntWeaps_Menu"
 {
 	Title "$MRIntWeaps_Menu"
 	StaticText ""
+	//Client side
 	Option "$MRIntW_LHand", "MRIntW_LHand", "YesNo"
 	Option "$MRIntW_BrownGloves", "MRIntW_BrownGloves", "YesNo"
 	Option "$MRIntW_Smoke", "MRIntW_Smoke", "YesNo"
+	Option "$MRIntW_BersShake", "MRIntW_BersShake", "MRIntW_BersShakeValues"
+	//Server
 	Option "$MRIntW_Lighting", "MRIntW_Lighting", "YesNo"
 	Option "$MRIntW_Recoil", "MRIntW_Recoil", "YesNo"
 	Slider "$MRIntW_RecoilAmount", "MRIntW_RecoilAmount", .1, 3, .1, 2, "MRIntW_Recoil"
@@ -20,4 +23,11 @@ OptionMenu "MRIntWeaps_Menu"
 	Option "$MRIntW_BetterAlert", "MRIntW_BetterAlert", "YesNo"
 	StaticText ""
 	SafeCommand "$MRIntWeaps_Uninstall", "NetEvent MRIntWeaps_Uninstall", "$MRIntWeaps_UninstallPromt"
+}
+
+OptionValue "MRIntW_BersShakeValues"
+{
+	0, "$MRIntW_BersShake0"
+	1, "$MRIntW_BersShake1"
+	2, "$MRIntW_BersShake2"
 }

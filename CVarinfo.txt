@@ -5,6 +5,7 @@ nosave bool MRIntW_IdleAnims = true;
 server bool MRIntW_Lighting = true;
 server bool MRIntW_InstantFire = true;
 nosave bool MRIntW_BrownGloves = true;
+nosave int MRIntW_BersShake = 1;
 server bool MRIntW_BetterAlert = false;
 server bool MRIntW_Recoil = false;
 server float MRIntW_RecoilAmount = 1;
