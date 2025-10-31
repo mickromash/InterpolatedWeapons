@@ -15,6 +15,43 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Override Void DoEffect()
 	{
 		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*MRIntW_RecoilAmount);}
+		
+		For(int i=0;i<Casings.Size();i++){
+			if(Casings[i])DoCasing(i);
+		}
+	}
+	
+	Const CaseLife = 20;
+	Bool Casings[50];
+	Float CasingDir[50];
+	Void DoCasing(int index)
+	{
+		int Lay = index+PSP_FLASH+10;
+		Let PSP = Owner.Player.GetPSprite(Lay);
+		int Age = PSP.Tics;
+		if(Age<2)Return;
+		
+		if(PSP.Y>280+32){
+			Owner.Player.SetPsprite(Lay, Null);
+			Casings[index] = false;
+			Return;
+		}
+		
+		if(Age<CaseLife)PSP.bInterpolate = true;
+		Double VelZ = (Age-(CaseLife-4))/2;
+		VelZ /= CaseLife/2;
+		
+		Double VelMult = CFRandom(1, 2);
+		
+		if(Age<CaseLife-5)PSP.Y += Owner.Player.Cmd.Pitch*.005;
+		PSP.Y += Owner.Vel.Z;
+		PSP.Y -= VelZ*57*VelMult*Cos(Pitch);
+		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
+		PSP.X += 11*VelMult;
+		PSP.Scale *= 1+.05*CasingDir[index];
+		PSP.Rotation -= 15*VelMult;
+		
+		//Console.Printf("Casing "..CaseLife-Age..": "..PSP.Y);
 	}
 	
 	States{
@@ -42,13 +79,27 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
 				
 				if(Player.GetPSprite(OverlayId()).Scale.Length()>15)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
-				Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02 + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle)*3));
+				Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02 + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1) + Vel.Z;
 				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
 				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
 				Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90) + Vel.Y*Sin(Angle+90)*5);
 				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
 			}
 			TNT1 A 0 {invoker.Smokes[abs(OverlayId())-10].Destroy();invoker.Smokes[abs(OverlayId())-10]=Null;}
+			Stop;
+			
+		CasingLay:
+			PISC A 0 {
+				A_OverlayFlags(Overlayid(), PSPF_ADDWEAPON, false);
+				Player.GetPSprite(OverlayId()).bInterpolate=false;
+				A_OverlayPivot(OverlayId(), .5, .5);
+				
+				A_OverlayOffset(OverlayId(), 160, 130+32);
+				A_OverlayScale(OverlayId(), .8, .8);
+				A_OverlayRotate(OverlayId(), 140);
+			}
+			PISC A 20 A_SetTics(CaseLife);
+			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-10-PSP_FLASH]=false;}
 			Stop;
 		
 		Select:
@@ -225,7 +276,31 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 					}
 				}
 			}
-			#### CDEE 1{
+			#### C 1{
+				Float Scal = CFRandom(.01, .03);
+				Vector2 Ofst = (CFRandom(.1, 1), 0);
+				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
+				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
+				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
+				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
+				
+				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
+				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				
+				if(!MRIntW_Casings)Return;
+				int index;
+				For(index=0;index<invoker.Casings.Size();index++){
+					if(!invoker.Casings[index]){invoker.Casings[index] = true;Break;}
+				}
+				
+				if(index<invoker.Casings.Size()){
+					A_Overlay(PSP_FLASH+10+index, "CasingLay");
+					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
+				}
+			}
+			#### DEE 1{
 				Float Scal = CFRandom(.01, .03);
 				Vector2 Ofst = (CFRandom(.1, 1), 0);
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));

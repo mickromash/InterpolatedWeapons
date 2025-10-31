@@ -17,9 +17,58 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Recoil-=.5;
 			Owner.A_SetPitch(Owner.Pitch+.5*MRIntW_RecoilAmount);
 		}
+		For(int i=0;i<Casings.Size();i++){
+			if(Casings[i])DoCasing(i);
+		}
+	}
+	
+	Const CaseLife = 20;
+	Bool Casings[50];
+	Float CasingDir[50];
+	Void DoCasing(int index)
+	{
+		int Lay = index+PSP_FLASH+10;
+		Let PSP = Owner.Player.GetPSprite(Lay);
+		int Age = PSP.Tics;
+		if(Age<2)Return;
+		
+		if(PSP.Y>280+32){
+			Owner.Player.SetPsprite(Lay, Null);
+			Casings[index] = false;
+			Return;
+		}
+		
+		if(Age<CaseLife)PSP.bInterpolate = true;
+		Double VelZ = (Age-(CaseLife-4))/2;
+		VelZ /= CaseLife/2;
+		
+		Double VelMult = CFRandom(1, 2);
+		
+		if(Age<CaseLife-5)PSP.Y += Owner.Player.Cmd.Pitch*.005;
+		PSP.Y += Owner.Vel.Z;
+		PSP.Y -= VelZ*57*VelMult*Cos(Pitch);
+		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
+		PSP.X += 11*VelMult;
+		PSP.Scale *= 1+.05*CasingDir[index];
+		PSP.Rotation -= 15*VelMult;
 	}
 	
 	States{
+		
+		CasingLay:
+			PISC A 0 {
+				A_OverlayFlags(Overlayid(), PSPF_ADDWEAPON, false);
+				Player.GetPSprite(OverlayId()).bInterpolate=false;
+				A_OverlayPivot(OverlayId(), .5, .5);
+				
+				A_OverlayOffset(OverlayId(), 195, 190+32);
+				A_OverlayScale(OverlayId(), .8, .8);
+				A_OverlayRotate(OverlayId(), 140);
+			}
+			PISC A 20 A_SetTics(CaseLife);
+			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-10-PSP_FLASH]=false;}
+			Stop;
+		
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
 		Raise:
@@ -151,6 +200,17 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				
+				if(!MRIntW_Casings)Return;
+				int index;
+				For(index=0;index<invoker.Casings.Size();index++){
+					if(!invoker.Casings[index]){invoker.Casings[index] = true;Break;}
+				}
+				
+				if(index<invoker.Casings.Size()){
+					A_Overlay(PSP_FLASH+10+index, "CasingLay");
+					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
+				}
 			}
 			CH1G CD 1{//Recover
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
@@ -179,6 +239,17 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				
+				if(!MRIntW_Casings)Return;
+				int index;
+				For(index=0;index<invoker.Casings.Size();index++){
+					if(!invoker.Casings[index]){invoker.Casings[index] = true;Break;}
+				}
+				
+				if(index<invoker.Casings.Size()){
+					A_Overlay(PSP_FLASH+10+index, "CasingLay");
+					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
+				}
 			}
 			CH1G CD 1{//Recover
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);

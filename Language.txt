@@ -5,6 +5,7 @@ MRIntWeaps_Menu = "Interpolated weapons";
 MRIntW_LHand = "Left-handed";
 MRIntW_BrownGloves = "Brown gloves";
 MRIntW_Smoke = "Firing smoke";
+MRIntW_Casings = "Casings";
 
 MRIntW_BersShake = "Hands shaking on berserk";
 MRIntW_BersShake0 = "No";
@@ -31,6 +32,7 @@ MRIntWeaps_Menu = "Интерполированное оружие";
 MRIntW_LHand = "Держать пистолет в левой руке";
 MRIntW_BrownGloves = "Коричневые перчатки";
 MRIntW_Smoke = "Дым";
+MRIntW_Casings = "Гильзы";
 
 MRIntW_BersShake = "Тряска рук при берсерке";
 MRIntW_BersShake0 = "Нет";

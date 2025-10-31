@@ -6,18 +6,103 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	}
 	Const Lay1 = 2;//Main layer
 	Const Lay2 = PSP_FLASH+1;//Muzzle flash
-	Const LeftHand = 3;//Hand with shells
+	Const LeftHand = PSP_FLASH+40;//Hand with shells
 	
 	int BobState, IdleDelay;
 	Bool LowerOpen;//For switching mid reload
+	
+	MRIntWeaps_SmokeContainer Smokes[20];
 	
 	Float Recoil;
 	Override Void DoEffect()
 	{
 		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount);}
+		
+		For(int i=0;i<Casings.Size();i++){
+			if(Casings[i])DoCasing(i);
+		}
+	}
+	
+	Const CaseLife = 20;
+	Bool Casings[50];
+	Float CasingDir[50];
+	Void DoCasing(int index)
+	{
+		int Lay = index+PSP_FLASH+60;
+		Let PSP = Owner.Player.GetPSprite(Lay);
+		int Age = PSP.Tics;
+		if(Age<2)Return;
+		
+		if(PSP.Y>280+32){
+			Owner.Player.SetPsprite(Lay, Null);
+			Casings[index] = false;
+			Return;
+		}
+		
+		if(Age<CaseLife)PSP.bInterpolate = true;
+		Double VelZ = (Age-(CaseLife-5))/2;
+		VelZ /= CaseLife/2;
+		
+		Double VelMult = CFRandom(1, 2);
+		
+		if(Age<CaseLife-5)PSP.Y += Owner.Player.Cmd.Pitch*.005;
+		PSP.Y += Owner.Vel.Z;
+		PSP.Y -= VelZ*70*VelMult*Cos(Pitch);
+		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
+		PSP.X -= 17*VelMult;
+		PSP.Scale *= 1+.05*CasingDir[index];
+		PSP.Rotation += 15;//*VelMult;
+		
+		//Console.Printf("Casing "..CaseLife-Age..": "..PSP.Y);
 	}
 	
 	States{
+		
+		SmokeLay://From chamber
+			NSHS A 0{
+				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
+				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
+			}
+			NSHS A 1{
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
+				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
+			}
+			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
+				int Index = OverlayId()-PSP_FLASH-10;
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+				
+				Player.GetPSprite(OverlayId()).Alpha-=.01;
+				
+				Float Scale = (CFRandom(.09, .13) + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.2);
+				Scale -= (invoker.Smokes[Index].Vel.Y);
+				Scale *= .1;
+				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
+				
+				if(Player.GetPSprite(OverlayId()).Scale.Length()>15)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02 + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1) + Vel.Z;
+				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
+				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
+				Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90) + Vel.Y*Sin(Angle+90)*5);
+				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
+			}
+			TNT1 A 0 {invoker.Smokes[OverlayId()-PSP_FLASH-10].Destroy();invoker.Smokes[OverlayId()-PSP_FLASH-10]=Null;}
+			Stop;
+		
+		CasingLay:
+			SHTC A 0 {
+				A_OverlayFlags(Overlayid(), PSPF_ADDWEAPON, false);
+				Player.GetPSprite(OverlayId()).bInterpolate=false;
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayScale(OverlayId(), 1.1, 1.1);
+				A_OverlayRotate(OverlayId(), -45);
+			}
+			SHTC A 20 A_SetTics(CaseLife);
+			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-60-PSP_FLASH]=false;}
+			Stop;
+		
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
 		Raise:
@@ -211,8 +296,66 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### # 0 {invoker.LowerOpen = false;}
 			#### DDD 1 {A_OverlayRotate(Lay1, -7, WOF_ADD);A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);A_OverlayOffset(Lay1, 30, 10, WOF_ADD);}//Openin
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayPivot(Lay1, .5, 0);}
-			#### E 1 {A_OverlayRotate(Lay1, 50);A_OverlayScale(Lay1, 1, 1);A_OverlayOffset(Lay1, -10, 20);}
-			#### EE 1 {A_OverlayRotate(Lay1, -36, WOF_ADD);A_OverlayOffset(Lay1, 8, -8, WOF_ADD);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
+			#### P 0 A_JumpIf(MRIntW_Casings, 2);
+			#### E 0;
+			#### # 1 {A_OverlayRotate(Lay1, 50);A_OverlayScale(Lay1, 1, 1);A_OverlayOffset(Lay1, -10, 20);}
+			#### ## 1 {A_OverlayRotate(Lay1, -36, WOF_ADD);A_OverlayOffset(Lay1, 8, -8, WOF_ADD);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
+			#### # 0{
+				if(MRIntW_Smoke){
+					Double Alpha = CFRandom(.01, .08)*3;
+					int Amount = CRandom(0, 2);
+					For(int i=Amount;i<3;i++){
+						int index;
+						For(index=0;index<invoker.Smokes.Size();index++){
+							if(!invoker.Smokes[index])Break;
+						}
+						if(index<invoker.Smokes.Size()){
+							MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
+							a.Vel = (CFRandom(-1.4, .5), -CFRandom(.3, .5), CFRandom(-.5, .5));
+							invoker.Smokes[index] = a;
+														
+							A_Overlay(PSP_FLASH+10+index, "SmokeLay");
+							A_OverlayOffset(PSP_FLASH+10+index, 95, 137);
+							Player.GetPSprite(PSP_FLASH+10+index).Scale = (1,1)*CFRandom(.3, .4);
+							A_OverlayAlpha(PSP_FLASH+10+index, Alpha);
+						}
+					}
+					
+					For(int i=Amount;i<3;i++){
+						int index;
+						For(index=0;index<invoker.Smokes.Size();index++){
+							if(!invoker.Smokes[index])Break;
+						}
+						if(index<invoker.Smokes.Size()){
+							MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
+							a.Vel = (CFRandom(-1.4, .5), -CFRandom(.3, .5), CFRandom(-.5, .5));
+							invoker.Smokes[index] = a;
+														
+							A_Overlay(PSP_FLASH+10+index, "SmokeLay");
+							A_OverlayOffset(PSP_FLASH+10+index, 95+20, 137);
+							Player.GetPSprite(PSP_FLASH+10+index).Scale = (1,1)*CFRandom(.3, .4);
+							A_OverlayAlpha(PSP_FLASH+10+index, Alpha);
+						}
+					}
+				}
+				
+				
+				if(!MRIntW_Casings)Return;
+				Float Dir = CFRandom(-.9, 1.5);
+
+				For(int i=0;i<2;i++){
+					int index;
+					For(index=0;index<invoker.Casings.Size();index++){
+						if(!invoker.Casings[index]){invoker.Casings[index] = true;Break;}
+					}
+					
+					if(index<invoker.Casings.Size()){
+						A_Overlay(PSP_FLASH+60+index, "CasingLay");
+						A_OverlayOffset(PSP_FLASH+60+index, 145+i*10, 160+32);
+						invoker.CasingDir[index] = Dir;
+					}
+				}
+			}
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayRotate(Lay1, 4);}
 			#### FF 1 {A_OverlayRotate(Lay1, -2, WOF_ADD);A_OverlayOffset(Lay1, -2, 2);}
 			#### F 1  A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
@@ -242,7 +385,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			}
 			#### GG 1 {A_OverlayOffset(LeftHand, 10, -30, WOF_ADD);A_OverlayRotate(LeftHand, 7.5, WOF_ADD);A_OverlayScale(LeftHand, .03, .03, WOF_ADD);A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, true);}
 			#### G 1 {A_OverlayRotate(LeftHand, 4, WOF_ADD);A_OverlayOffset(LeftHand, -8, -3, WOF_ADD);}
-			#### GGG 1 {A_OverlayOffset(LeftHand, 20, 3, WOF_ADD);A_OverlayRotate(LeftHand, -2, WOF_ADD);A_OverlayScale(LeftHand, -.025, -.025, WOF_ADD);}//A_OverlayRotate(LeftHand, 5, WOF_ADD);}
+			#### GGG 1 {A_OverlayOffset(LeftHand, 19, 2.8, WOF_ADD);A_OverlayRotate(LeftHand, -2, WOF_ADD);A_OverlayScale(LeftHand, -.025, -.025, WOF_ADD);}//A_OverlayRotate(LeftHand, 5, WOF_ADD);}
 			Stop;
 			
 		GunFlash:
