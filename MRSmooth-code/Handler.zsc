@@ -1,0 +1,95 @@
+Class MRIntWeaps_Handler: EventHandler
+{
+	Bool Uninstalled;
+	Static Const String Weapons[] = {
+		"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun",
+		"Chaingun", "RocketLauncher", "PlasmaRifle", "BFG9000"
+	};
+	
+	Void GiveWeapons(Actor Plr)//Replace player's vanilla weapons with the mods'
+	{
+		if(!Plr)Return;
+		String Select;
+		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
+		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
+		For(int i=0;i<Weapons.Size();i++){
+			Let Weap = Plr.FindInventory(Weapons[i]);
+			if(Weap){Weap.Destroy();
+				if(!Plr.FindInventory("MRIntWeaps_"..Weapons[i]))Plr.A_GiveInventory("MRIntWeaps_"..Weapons[i]);}
+		}
+		
+		if(Select!="")Plr.A_SelectWeapon("MRIntWeaps_"..Select);
+	}
+	
+	Void TakeWeapons(Actor Plr)//Replace player's weapons from the mod with vanilla ones
+	{
+		if(!Plr)Return;
+		String Select;
+		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
+		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
+		For(int i=0;i<Weapons.Size();i++){
+			Let Weap = Plr.FindInventory("MRIntWeaps_"..Weapons[i]);
+			if(Weap){Weap.Destroy();
+				if(!Plr.FindInventory(Weapons[i]))Plr.A_GiveInventory(Weapons[i]);}
+		}
+		Select.Replace("MRIntWeaps_", "");
+		if(Select!="")Plr.A_SelectWeapon(Select);
+	}
+	
+	Void RemoveWeapons()//Replace mods weapons on the level with vanilla ones
+	{
+		Let iter = ThinkerIterator.Create("Weapon");
+		Actor Weap;
+		
+		int Akhtung;
+		While(Weap = Weapon(iter.Next())){
+			Akhtung++;
+			if(Akhtung>2000)Break;
+
+			String ClassName = Weap.GetClassName();
+			ClassName = ClassName.MakeLower();
+
+			if(ClassName.IndexOf("mrintweaps_")>-1){
+				ClassName.Replace("mrintweaps_", "");
+				Let a = Weap.Spawn(ClassName, Weap.Pos);
+				a.Vel = Weap.Vel;
+				Weap.Destroy();
+			}
+		}
+	}
+	
+	Override Void PlayerSpawned(PlayerEvent e)
+	{
+		GiveWeapons(Players[e.PlayerNumber].mo);
+	}
+	
+	Override Void NetworkProcess(ConsoleEvent e)
+	{
+		if(e.name ~== "MRIntWeaps_Uninstall"){
+			For(int i=0;i<MAXPLAYERS;i++){
+				if(Players[i].mo)TakeWeapons(Players[i].mo);
+			}
+			RemoveWeapons();
+			Uninstalled = true;
+			Destroy();
+			Return;
+		}
+		
+		Let Plr = Players[e.Player].mo;
+		if(!Plr)Return;
+		
+		if(e.name ~== "MRIntWeaps_Give"){
+			GiveWeapons(Plr);
+			Return;
+		}
+		if(e.name ~== "MRIntWeaps_Take"){
+			TakeWeapons(Plr);
+			Return;
+		}
+	}
+	
+	Override Void OnDestroy()
+	{
+		if(Uninstalled)Console.Printf(StringTable.Localize("$MRIntWeaps_Uninstalled"));
+	}
+}
