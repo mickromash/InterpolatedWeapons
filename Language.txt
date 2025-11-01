@@ -1,6 +1,6 @@
 [en eng enu default]
 
-MRIntWeaps_Menu = "Interpolated weapons";
+MRIntWeaps_Menu = "Configure Interpolated weapons";
 
 MRIntW_LHand = "Left-handed";
 MRIntW_BrownGloves = "Brown gloves";
@@ -27,7 +27,7 @@ MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled."
 
 [ru]
 
-MRIntWeaps_Menu = "Интерполированное оружие";
+MRIntWeaps_Menu = "Настроить интерполированное оружие";
 
 MRIntW_LHand = "Держать пистолет в левой руке";
 MRIntW_BrownGloves = "Коричневые перчатки";

@@ -1,6 +1,6 @@
 AddOptionMenu "OptionsMenu"
 {
-	StaticText ""
+	StaticText "Interpolated weapons"
 	SubMenu "$MRIntWeaps_Menu", "MRIntWeaps_Menu"
 	StaticText ""
 }
