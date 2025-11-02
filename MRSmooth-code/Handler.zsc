@@ -1,7 +1,6 @@
 Class MRIntWeaps_Handler: EventHandler
 {
-	Bool Uninstalled;
-	Static Const String Weapons[] = {
+	Static Const String Weapons[] = {//Weapons to replace
 		"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun",
 		"Chaingun", "RocketLauncher", "PlasmaRifle", "BFG9000"
 	};
@@ -88,15 +87,15 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 	}
 	
+	Bool Uninstalled;
 	Override Void OnDestroy()
 	{
 		if(Uninstalled)Console.Printf(StringTable.Localize("$MRIntWeaps_Uninstalled"));
 	}
 	
-	int LoadingDelay;//Disabling weapon interpolation while game is loading
-	
+	int LoadingDelay;//Disabling weapon interpolation while game is loading, otherwise weapon sprite will appear in the middle of the screen
 	Override Void OnRegister()
 	{
-		LoadingDelay = 4;
+		LoadingDelay = 2;
 	}
 }
