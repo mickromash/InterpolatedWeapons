@@ -1,6 +1,6 @@
 Version "4.0"
 
-#include "MRSmooth-code/Handler.zsc"//Weapon sapwning/replacing/removing functions
+#include "MRSmooth-code/Handler.zsc"//Weapon sapwning/replacing/removing functions and other global events
 
 #include "MRSmooth-code/Fist.zsc"
 #include "MRSmooth-code/Chainsaw.zsc"
