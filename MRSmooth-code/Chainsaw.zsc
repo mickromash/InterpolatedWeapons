@@ -13,6 +13,13 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	Override Void DoEffect()
 	{
 		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*MRIntW_RecoilAmount);}
+		
+		//Disabling weapon interpolation while game is loading
+		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+		if(Handler && Handler.LoadingDelay>0){
+			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
+			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
+		}
 	}
 	
 	States{
@@ -35,8 +42,8 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, .4, .4);
 				A_OverlayRotate(Lay1, 20);
 			}
-			SAW1 A 1{if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SAW2A0");}
-			#### AAAA 1 {
+			SAW1 G 1{if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SAW2A0");}
+			#### #### 1 {
 				A_OverlayOffset(Lay1, 1, -6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayScale(Lay1, .07, .07, WOF_ADD);
@@ -137,10 +144,16 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayPivot(Lay1, .5, 1);
 				if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SAW2A0");
 			}
-			#### # 1 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayScale(Lay1, 1, .8, WOF_INTERPOLATE);}
+			#### # 1 {A_OverlayScale(Lay1, 1, .8, WOF_INTERPOLATE);}
+			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			#### G 1 {
+				invoker.SawPos = 1;
+				A_OverlayScale(Lay1, 1, 1);
+				A_OverlayOffset(Lay1, -invoker.SawPos*2, 6-invoker.SawPos*2.5);
+			}
 		SawCutLoop:
 			#### # 0 {invoker.SawPos = 1;}
-			#### BABA 1{
+			#### #### 1{
 				A_OverlayPivot(Lay1, .7, .5);
 				A_OverlayOffset(Lay1, -invoker.SawPos*2, 6-invoker.SawPos*2.5, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-1, 1), WOF_INTERPOLATE);
@@ -169,10 +182,17 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 						A_OverlayAlpha(SmokeStart+index, CFRandom(.01, .08)*3);
 					}
 				}
+				int Frame = Player.GetPSprite(Lay1).Frame-6;
+				Frame += CRandom(1, 2);
+				if(Frame>3)Frame = Frame%3;
+				
+				Player.GetPSprite(Lay1).Frame = Frame+6;
+				
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 			}
 			Loop;
 		SawStopCut:
-			SAW1 A 1{if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SAW2A0");}
+			SAW1 G 1{if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SAW2A0");}
 			#### # 1{
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
 				A_OverlayPivot(Lay1, .5, 1);
