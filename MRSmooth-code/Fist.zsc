@@ -8,6 +8,19 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 	Const RightLay = 2;//Right hand
 	Const LeftLay = 3;//Left hand
 	
+	Override Void DoEffect()
+	{
+		//Disabling weapon interpolation while game is loading
+		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+		if(Handler && Handler.LoadingDelay>0){
+			Owner.Player.GetPSprite(LeftLay).bInterpolate = false;
+			Owner.Player.GetPSprite(LeftLay).Y = Max(Owner.Player.GetPSprite(LeftLay).Y, 0);
+			Owner.Player.GetPSprite(RightLay).bInterpolate = false;
+			Owner.Player.GetPSprite(RightLay).Y = Max(Owner.Player.GetPSprite(RightLay).Y, 0);
+			Handler.LoadingDelay--;
+		}
+	}
+	
 	int BobState, IdleDelay;
 	Vector2 RightHand, LeftHand;
 	States{
@@ -141,7 +154,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			Stop;
 		LeftHandPunchBerserk:
 			PUN1 C 1 {
-				A_StartSound("MRIntW/FistSwing", CHAN_AUTO, volume:.3, pitch:CFRandom(.9, 1.1));
+				A_StartSound("MRIntW/FistSwing", CHAN_AUTO, volume:.4, pitch:CFRandom(.9, 1.1));
 				A_OverlayOffset(LeftLay, invoker.LeftHand.X-3, invoker.LeftHand.Y+3);
 				A_OverlayRotate(LeftLay, 1, WOF_INTERPOLATE);
 				A_OverlayPivot(LeftLay, 1, 0);

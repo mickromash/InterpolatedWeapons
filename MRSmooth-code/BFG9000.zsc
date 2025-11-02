@@ -18,6 +18,15 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	Override Void DoEffect()
 	{
 		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount);}
+		
+		//Disabling weapon interpolation while game is loading
+		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+		if(Handler && Handler.LoadingDelay>0){
+			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
+			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
+			Owner.Player.GetPSprite(Lay2).bInterpolate = false;
+			Owner.Player.GetPSprite(Lay2).Y = Max(Owner.Player.GetPSprite(Lay2).Y, 0);
+		}
 	}
 	
 	States{

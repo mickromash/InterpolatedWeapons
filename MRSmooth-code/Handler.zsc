@@ -92,4 +92,11 @@ Class MRIntWeaps_Handler: EventHandler
 	{
 		if(Uninstalled)Console.Printf(StringTable.Localize("$MRIntWeaps_Uninstalled"));
 	}
+	
+	int LoadingDelay;//Disabling weapon interpolation while game is loading
+	
+	Override Void OnRegister()
+	{
+		LoadingDelay = 4;
+	}
 }

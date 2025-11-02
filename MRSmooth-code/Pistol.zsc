@@ -17,6 +17,13 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		For(int i=0;i<Casings.Size();i++){
 			if(Casings[i])DoCasing(i);
 		}
+		
+		//Disabling weapon interpolation while game is loading
+		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+		if(Handler && Handler.LoadingDelay>0){
+			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
+			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
+		}
 	}
 		
 	States{
