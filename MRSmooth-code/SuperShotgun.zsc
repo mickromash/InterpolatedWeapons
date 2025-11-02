@@ -73,7 +73,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayRotate(Lay1, 0);
 			}
 		GunWait:
-			SH12 A 1 A_IdleAnimation(Lay1);
+			SH12 A 1 {
+				invoker.LowerOpen = false;if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH22A0");
+				A_IdleAnimation(Lay1);
+			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
