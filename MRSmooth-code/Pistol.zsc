@@ -276,7 +276,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayRenderStyle(Lay2, STYLE_ColorAdd);
 				A_OverlayPivot(Lay2, .5, .5);
 			}
-			P1SF BA 1 BRIGHT;
+			P1SF BBC 1 BRIGHT;
 			Stop;
 		
 		Flash:
