@@ -7,6 +7,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	Const Lay1 = 2;//Main layer
 	Const Lay2 = PSP_FLASH+1;//Muzzle flash
 	Const LeftHand = PSP_FLASH+40;//Hand with shells
+	Const Lay3 = LeftHand+1;//Barrels layer over shell
 	
 	int BobState, IdleDelay;
 	Bool LowerOpen;//For switching mid reload
@@ -211,6 +212,12 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(Lay1).X *= .5;
 				Player.GetPSprite(Lay1).Y *= .5;
 				Player.GetPSprite(Lay1).Rotation *= .5;
+				
+				Player.GetPSprite(Lay2).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay2).Scale.X-1));
+				Player.GetPSprite(Lay2).Scale.Y = Player.GetPSprite(Lay2).Scale.X;
+				Player.GetPSprite(Lay2).X *= .5;
+				Player.GetPSprite(Lay2).Y *= .5;
+				Player.GetPSprite(Lay2).Rotation *= .5;
 			}
 			#### A 2 {
 				if(!MRIntW_InstantFire)A_SetTics(0);
@@ -303,8 +310,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### F 1  A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 			#### # 0 A_Overlay(LeftHand, "HandLoading");
 			#### FF 4 A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(0, 1), WOF_INTERPOLATE);//Wait for the shell
-			#### H 1;//Load
-			#### HI 1 A_OverlayOffset(Lay1, 8, 6, WOF_ADD);
+			#### # 0 A_Overlay(Lay3, "Barrels");
+			#### F 1;//Load
+			#### F 1 {A_OverlayOffset(LeftHand, 9, 6, WOF_ADD);A_OverlayOffset(Lay1, 8, 6, WOF_ADD);A_OverlayOffset(Lay3, 8, 6, WOF_ADD);}
+			#### F 1 {A_OverlayOffset(LeftHand, 11, 7, WOF_ADD);A_OverlayOffset(Lay1, 8, 6, WOF_ADD);A_OverlayOffset(Lay3, 8, 6, WOF_ADD);}
 			#### JJ 1 {A_OverlayOffset(Lay1, 8, 12, WOF_ADD);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 			#### Z 1;
 			#### K 1 {A_OverlayRotate(Lay1, -50);A_OverlayOffset(Lay1, 55, 45);}
@@ -317,6 +326,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### A 1 {A_OverlayOffset(Lay1, -CFRandom(4, 8), CFRandom(3, 6));A_OverlayRotate(Lay1, CFRandom(1, 2));}
 			#### A 2 {A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);}
 			Goto GunWait;
+		Barrels:
+			SH12 I 1 A_OverlayOffset(Lay3, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+			SH12 I 2;
+			Stop;
 			
 		HandLoading:
 			SH12 GG 1 {
@@ -325,9 +338,34 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayRotate(LeftHand, -15);
 				if(MRIntW_BrownGloves)Player.GetPSprite(LeftHand).Sprite = GetSpriteIndex("SH22A0");
 			}
-			#### GG 1 {A_OverlayOffset(LeftHand, 10, -30, WOF_ADD);A_OverlayRotate(LeftHand, 7.5, WOF_ADD);A_OverlayScale(LeftHand, .03, .03, WOF_ADD);A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, true);}
-			#### G 1 {A_OverlayRotate(LeftHand, 4, WOF_ADD);A_OverlayOffset(LeftHand, -8, -3, WOF_ADD);}
-			#### GGG 1 {A_OverlayOffset(LeftHand, 19, 2.8, WOF_ADD);A_OverlayRotate(LeftHand, -2, WOF_ADD);A_OverlayScale(LeftHand, -.025, -.025, WOF_ADD);}//A_OverlayRotate(LeftHand, 5, WOF_ADD);}
+			#### GG 1 {
+				A_OverlayOffset(LeftHand, 10, -30, WOF_ADD);
+				A_OverlayRotate(LeftHand, 7.5, WOF_ADD);
+				A_OverlayScale(LeftHand, .03, .03, WOF_ADD);
+				A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, true);
+			}
+			#### G 1 {
+				A_OverlayRotate(LeftHand, 4, WOF_ADD);
+				A_OverlayOffset(LeftHand, -8, -3, WOF_ADD);
+			}
+			#### GGG 1 {
+				A_OverlayOffset(LeftHand, 19, 2.8, WOF_ADD);
+				A_OverlayRotate(LeftHand, -2, WOF_ADD);
+				A_OverlayScale(LeftHand, -.025, -.025, WOF_ADD);
+			}
+			#### G 1 {
+				A_OverlayOffset(LeftHand, 5, 0, WOF_ADD);
+				A_OverlayRotate(LeftHand, -6, WOF_ADD);
+				A_OverlayScale(LeftHand, -.025, -.025, WOF_ADD);
+			}
+			#### G 2;
+			#### # 0 A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, false);
+			#### H 1 A_OverlayOffset(LeftHand, 45, 28);
+			#### HHHHHH 1 {
+				A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, true);
+				A_OverlayOffset(LeftHand, 9, 18, WOF_ADD);
+				A_OverlayRotate(LeftHand, -3, WOF_ADD);
+			}
 			Stop;
 			
 		GunFlash:
@@ -338,7 +376,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayRenderStyle(Lay2, STYLE_ColorAdd);
 				A_OverlayPivot(Lay2, .5, .5);
 			}
-			#### ON 1 BRIGHT;
+			#### OON 1 BRIGHT;
 			Stop;
 			
 			
