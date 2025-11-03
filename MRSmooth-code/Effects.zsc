@@ -141,7 +141,7 @@ Extend Class MRIntWeaps_Pistol
 				Player.GetPSprite(OverlayId()).bInterpolate=false;
 				A_OverlayPivot(OverlayId(), .5, .5);
 				
-				A_OverlayOffset(OverlayId(), 150, 135+32);
+				A_OverlayOffset(OverlayId(), 145, 125+32);
 				A_OverlayScale(OverlayId(), .8, .8);
 				A_OverlayRotate(OverlayId(), 140);
 			}
@@ -166,7 +166,7 @@ Extend Class MRIntWeaps_Shotgun
 		int Lay = index+CaseStart;
 		Let PSP = Owner.Player.GetPSprite(Lay);
 		int Age = PSP.Tics;
-		if(Age<2)Return;
+		if(Age<2||Age>=CaseLife)Return;
 		
 		if(PSP.Y>280+32){
 			Owner.Player.SetPsprite(Lay, Null);
@@ -277,7 +277,7 @@ Extend Class MRIntWeaps_Shotgun
 				Player.GetPSprite(OverlayId()).bInterpolate=false;
 				A_OverlayPivot(OverlayId(), .5, .5);
 				
-				A_OverlayOffset(OverlayId(), 100, 205+32);
+				A_OverlayOffset(OverlayId(), 105, 200+32);
 				A_OverlayRotate(OverlayId(), 160);
 			}
 			SHTC A 15 A_SetTics(CaseLife);
@@ -300,7 +300,7 @@ Extend Class MRIntWeaps_SuperShotgun
 		int Lay = index+CaseStart;
 		Let PSP = Owner.Player.GetPSprite(Lay);
 		int Age = PSP.Tics;
-		if(Age<2)Return;
+		if(Age<2||Age>=CaseLife)Return;
 		
 		if(PSP.Y>280+32){
 			Owner.Player.SetPsprite(Lay, Null);
@@ -372,8 +372,7 @@ Extend Class MRIntWeaps_SuperShotgun
 				A_OverlayRenderStyle(OverlayID(), STYLE_NORMAL);
 				Player.GetPSprite(OverlayId()).bInterpolate=false;
 				A_OverlayPivot(OverlayId(), .5, .5);
-				A_OverlayScale(OverlayId(), 1.1, 1.1);
-				A_OverlayRotate(OverlayId(), -45);
+				A_OverlayScale(OverlayId(), 1.14, 1.14);
 			}
 			SHTC A 20 A_SetTics(CaseLife);
 			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;}
