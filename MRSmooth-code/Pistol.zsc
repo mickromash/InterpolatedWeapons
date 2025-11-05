@@ -20,7 +20,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
-		if(Handler && Handler.LoadingDelay>0){
+		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
@@ -54,9 +54,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayScale(Lay1, .02, .02, WOF_ADD);
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
 			}
-			#### AAA 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -2, 2, WOF_ADD);
+			#### AAAA 1 {
+				A_OverlayOffset(Lay1, -4, 3, WOF_ADD);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, .5, WOF_ADD);
 			}
