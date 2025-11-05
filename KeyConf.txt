@@ -1,0 +1,3 @@
+alias MRIntW_Take "NetEvent MRIntWeaps_Take"
+alias MRIntW_Give "NetEvent MRIntWeaps_Give"
+alias MRIntW_Uninstall "NetEvent MRIntWeaps_Uninstall"
