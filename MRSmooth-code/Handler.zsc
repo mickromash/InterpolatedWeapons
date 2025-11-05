@@ -62,6 +62,11 @@ Class MRIntWeaps_Handler: EventHandler
 		GiveWeapons(Players[e.PlayerNumber].mo);
 	}
 	
+	Override Void PlayerRespawned(PlayerEvent e)
+	{
+		GiveWeapons(Players[e.PlayerNumber].mo);
+	}
+	
 	Override Void NetworkProcess(ConsoleEvent e)
 	{
 		if(e.name ~== "MRIntWeaps_Uninstall"){
