@@ -69,6 +69,7 @@ Extend Class MRIntWeaps_Pistol
 	{
 		int Lay = index+PSP_FLASH+10;
 		Let PSP = Owner.Player.GetPSprite(Lay);
+		if(!PSP)Return;
 		int Age = PSP.Tics;
 		if(Age<2)Return;
 		
@@ -165,6 +166,7 @@ Extend Class MRIntWeaps_Shotgun
 	{
 		int Lay = index+CaseStart;
 		Let PSP = Owner.Player.GetPSprite(Lay);
+		if(!PSP)Return;
 		int Age = PSP.Tics;
 		if(Age<2||Age>=CaseLife)Return;
 		
@@ -299,6 +301,7 @@ Extend Class MRIntWeaps_SuperShotgun
 	{
 		int Lay = index+CaseStart;
 		Let PSP = Owner.Player.GetPSprite(Lay);
+		if(!PSP)Return;
 		int Age = PSP.Tics;
 		if(Age<2||Age>=CaseLife)Return;
 		
@@ -390,6 +393,7 @@ Extend Class MRIntWeaps_Chaingun
 	{
 		int Lay = index+PSP_FLASH+10;
 		Let PSP = Owner.Player.GetPSprite(Lay);
+		if(!PSP)Return;
 		int Age = PSP.Tics;
 		if(Age<2)Return;
 		
