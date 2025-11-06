@@ -58,7 +58,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 				A_OverlayRotate(Lay1, 1.4, WOF_ADD);
 			}
-			#### A 1 {
+			#### A 2 {
 				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);

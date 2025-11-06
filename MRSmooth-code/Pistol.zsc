@@ -57,7 +57,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### AAAA 1 {
 				A_OverlayOffset(Lay1, -4, 3, WOF_ADD);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, .5, WOF_ADD);
+				A_OverlayRotate(Lay1, .8, WOF_ADD);
 			}
 			#### A 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , true);
