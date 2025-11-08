@@ -1,4 +1,5 @@
 nosave int MRIntW_Casings = 1;//0 - none, 1 - only visual, 2 - visual + in-game object
+nosave float MRIntW_CasingsRandom = 1;
 nosave bool MRIntW_LHand = true;//Left handed doomguy
 nosave bool MRIntW_Smoke = true;//Smoke overlays and in-game particles
 nosave bool MRIntW_IdleAnims = true;//Idle animations
@@ -10,3 +11,8 @@ server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw wil
 server bool MRIntW_Recoil = false;//Visual recoil and screen shaking
 server float MRIntW_RecoilAmount = 1;
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
+nosave bool MRIntW_ChainsawCutting = true;
+nosave bool MRIntW_ChainsawCuttingWall = true;
+nosave bool MRIntW_RightPunch = false;
+nosave bool MRIntW_SecondFist = false;
+nosave int MRIntW_FinishPunch = 1;
