@@ -2,21 +2,13 @@
 
 MRIntWeaps_Menu = "Configure Interpolated weapons";
 
-MRIntW_LHand = "Left-handed";
-MRIntW_BrownGloves = "Brown gloves";
 MRIntW_Smoke = "Firing smoke";
 MRIntW_Casings = "Casings";
+MRIntW_CasingsRandom = "Max. casings speed";
 
-MRIntW_BersShake = "Hands shaking on berserk";
-MRIntW_BersShake0 = "No";
-MRIntW_BersShake1 = "Only without weapon";
-MRIntW_BersShake2 = "Yes";
-
-MRIntW_IdleAnims = "Idle animations";
-
+MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
 MRIntW_Recoil = "\cv⊛\c- Visual recoil";
 MRIntW_RecoilAmount = "\cv⊛\c- Recoil amount";
-MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
 MRIntW_InstantFire = "\cv⊛\c- Instant firing";
 MRIntW_FastPistol = "\cv⊛\c- Faster pistol";
 MRIntW_BetterAlert = "\cv⊛\c- Better monster alerting";
@@ -25,28 +17,69 @@ MRIntWeaps_Uninstall = "Uninstall mod";
 MRIntWeaps_UninstallPromt = "Remove the mod so the saved game could be loaded without it?";
 MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled.";
 
+
+MRIntWeaps_AnimMenu = "Animations settings";
+
+MRIntW_BrownGloves = "Brown gloves";
+MRIntW_IdleAnims = "Idle animations";
+
+MRIntW_RightPunch = "Punch with right hand";
+MRIntW_SecondFist = "Left fist always on screen";
+
+MRIntW_BersShake = "Hands shaking on berserk";
+MRIntW_BersShake0 = "No";
+MRIntW_BersShake1 = "Only without weapon";
+MRIntW_BersShake2 = "Yes";
+
+MRIntW_FinishPunch = "Finish punch";
+MRIntW_FinishPunch0 = "No";
+MRIntW_FinishPunch1 = "Only berserk";
+MRIntW_FinishPunch2 = "Yes";
+
+MRIntW_ChainsawCutting = "Improved chainsaw cutting animation";
+MRIntW_ChainsawCuttingWall = "Chainsaw surface cutting shaking";
+
+MRIntW_LHand = "Hold the pistol in the left hand";
+
 [ru]
 
 MRIntWeaps_Menu = "Настроить интерполированное оружие";
 
-MRIntW_LHand = "Держать пистолет в левой руке";
-MRIntW_BrownGloves = "Коричневые перчатки";
+
 MRIntW_Smoke = "Дым";
 MRIntW_Casings = "Гильзы";
+MRIntW_CasingsRandom = "Макс. скорость гильз";
+
+MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
+MRIntW_Recoil = "\cv⊛\c- Визуальная отдача";
+MRIntW_RecoilAmount = "\cv⊛\c- Сила отдачи";
+MRIntW_InstantFire = "\cv⊛\c- Мгновенные выстрелы";
+MRIntW_FastPistol = "\cv⊛\c- Скорострельный пистолет";
+MRIntW_BetterAlert = "\cv⊛\c- Реалистичное привлечение внимания монстров";
+
+
+MRIntWeaps_AnimMenu = "Настройки анимаций";
+
+MRIntW_IdleAnims = "Анимации безделья";
+MRIntW_BrownGloves = "Коричневые перчатки";
 
 MRIntW_BersShake = "Тряска рук при берсерке";
 MRIntW_BersShake0 = "Нет";
 MRIntW_BersShake1 = "Только без оружия";
 MRIntW_BersShake2 = "Да";
 
-MRIntW_IdleAnims = "Анимации безделья";
+MRIntW_RightPunch = "Бить правой рукой";
+MRIntW_SecondFist = "Всегда показывать левый кулак";
 
-MRIntW_Recoil = "\cv⊛\c- Визуальная отдача";
-MRIntW_RecoilAmount = "\cv⊛\c- Сила отдачи";
-MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
-MRIntW_InstantFire = "\cv⊛\c- Мгновенные выстрелы";
-MRIntW_FastPistol = "\cv⊛\c- Скорострельный пистолет";
-MRIntW_BetterAlert = "\cv⊛\c- Реалистичное привлечение внимания монстров";
+MRIntW_FinishPunch = "Добивающий удар";
+MRIntW_FinishPunch0 = "Нет";
+MRIntW_FinishPunch1 = "Только с берсерком";
+MRIntW_FinishPunch2 = "Да";
+
+MRIntW_ChainsawCutting = "Улучшенная анимация распиливания";
+MRIntW_ChainsawCuttingWall = "Тряска бензопилы при распиливании поверхностей";
+
+MRIntW_LHand = "Держать пистолет в левой руке";
 
 MRIntWeaps_Uninstall = "Отключить мод";
 MRIntWeaps_UninstallPromt = "Удалить данные мода из игры?\nБлагодаря этому сохранённая игра сможет быть загружена без него";
