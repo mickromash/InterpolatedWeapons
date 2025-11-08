@@ -7,7 +7,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	Const Lay1 = 2;
 	
 	int SawFrame;
-	Float SawPos;
+	Vector2 CuttingDir;
+	Double SawPos, CutDown, CuttingWay;
+	Bool CutDir, NoCutting;
+	Actor Cutting;
 		
 	Float Recoil;
 	Override Void DoEffect()
@@ -35,14 +38,14 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			Loop;
 		
 		SawRaise:
-			TNT1 AAAAA 1 {
+			TNT1 AAAA 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayOffset(Lay1, -12, 65);
 				A_OverlayScale(Lay1, .4, .4);
 				A_OverlayRotate(Lay1, 20);
 			}
-			SAW1 G 1{if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SAW2A0");}
+			SAW1 F 1{if(MRIntW_BrownGloves)Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SAW2A0");}
 			#### #### 1 {
 				A_OverlayOffset(Lay1, 1, -6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
@@ -52,17 +55,20 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			#### # 0 A_OverlayScale(Lay1, Player.GetPSprite(Lay1).Scale.X, Player.GetPSprite(Lay1).Scale.X-.2);
 			#### CC 1 {
 				A_OverlayOffset(Lay1, 1, -2, WOF_ADD);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayScale(Lay1, .07, .16, WOF_ADD);
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
 			}
 			#### CC 1 {
 				A_OverlayOffset(Lay1, 1, -2, WOF_ADD);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayScale(Lay1, .05, .05, WOF_ADD);
 				A_OverlayRotate(Lay1, -1, WOF_ADD);
 			}
-			#### D 1 {
+			#### DE 1 {
+				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+			}
+			#### F 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , true);
 				A_OverlayOffset(Lay1, 0, 0);
 				A_OverlayScale(Lay1, 1, .9);
@@ -147,19 +153,83 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			#### # 1 {A_OverlayScale(Lay1, 1, .8, WOF_INTERPOLATE);}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### G 1 {
+				invoker.Cutting = Null;
+				invoker.CutDown = 0;
+				invoker.CuttingDir.X = 0;
 				invoker.SawPos = 1;
+				invoker.CuttingWay = 0;
+				invoker.NoCutting = false;
 				A_OverlayScale(Lay1, 1, 1);
 				A_OverlayOffset(Lay1, -invoker.SawPos*2, 6-invoker.SawPos*2.5);
 			}
 		SawCutLoop:
-			#### # 0 {invoker.SawPos = 1;}
+			#### # 0 {
+				FLineTraceData Blade;
+				
+				double PZ = height * 0.5 - floorclip + player.mo.AttackZOffset*player.crouchFactor;
+				LineTrace(Angle, 65, Pitch, OffsetZ:PZ, data:Blade);
+				if(!Blade.HitActor||!MRIntW_ChainsawCutting){invoker.SawPos = 1;invoker.CutDir = false;}
+				else invoker.CutDir = !invoker.CutDir;
+			}
 			#### #### 1{
-				A_OverlayPivot(Lay1, .7, .5);
-				A_OverlayOffset(Lay1, -invoker.SawPos*2, 6-invoker.SawPos*2.5, WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, CFRandom(-1, 1), WOF_INTERPOLATE);
-				Float Scal = 1-.1*invoker.SawPos;
+				Double RandOfst, Distance;
+				if(MRIntW_ChainsawCutting||MRIntW_ChainsawCuttingWall){
+					FLineTraceData Blade;
+					
+					double PZ = height * 0.5 - floorclip + player.mo.AttackZOffset*player.crouchFactor;
+					LineTrace(Angle, 65, Pitch, OffsetZ:PZ, data:Blade);
+					
+					if(Blade.HitType!=TRACE_HitNone){
+						if(!Blade.HitActor && MRIntW_ChainsawCuttingWall){//Cutting a surface
+							RandOfst = .3+1-Blade.Distance/65;
+							invoker.CutDown *= .5;
+						}
+						else if(MRIntW_ChainsawCutting && Blade.HitActor){//Cutting someone
+							Double Health = Blade.HitActor.Health;
+							Double MaxHealth = Max(1, GetDefaultByType(Blade.HitActor.GetClass()).Health);
+							invoker.CutDown = Min(invoker.CutDown +.2, (1-Health/MaxHealth)*1.2);//Cutting state
+							if(!invoker.Cutting||invoker.Cutting!=Blade.HitActor){
+								//if just started cutting, select direction
+								invoker.CuttingDir.X = CFRandom(-.7, 1.5);//Cutting left or right
+								//Cutting up or down
+								if(invoker.CuttingDir.Y<0)invoker.CuttingDir.Y = 1;
+								else invoker.CuttingDir.Y = invoker.CuttingDir.Y = -1;
+							}
+							invoker.NoCutting = false;
+							invoker.Cutting = Blade.HitActor;
+						}
+						Distance = (1-Blade.Distance/65) * 2;//Distance to object being cutted
+					}
+					else if(MRIntW_ChainsawCutting){
+						if(invoker.Cutting){//Cutted someone in half
+							if(invoker.NoCutting){invoker.Cutting = Null;invoker.NoCutting = false;}
+							else {
+								invoker.CutDown += CFRandom(.4, .6);
+								invoker.CuttingDir *= CFRandom(1.5, 1.8);
+								invoker.CuttingDir.X = Clamp(-.7, 1.5, invoker.CuttingDir.X);
+								invoker.CuttingWay = invoker.CuttingDir.X;
+								invoker.NoCutting = true;
+							}
+						}
+						else {//Back to normal position after cutting someone
+							invoker.CutDown *= .7;
+							invoker.CuttingDir.X *= .7;
+							invoker.CuttingWay *= .7;
+						}
+					}
+					
+					//Interpolate cutting state
+					if(invoker.CuttingDir.X<0)invoker.CuttingWay = Max(invoker.CuttingDir.X, invoker.CuttingWay -.2);
+					else if(invoker.CuttingDir.X>0)invoker.CuttingWay = Min(invoker.CuttingDir.X, invoker.CuttingWay +.2);
+				}
+				
+				A_OverlayPivot(Lay1, .8, .2);
+				A_OverlayOffset(Lay1, -invoker.SawPos*2 + CRandom(-6, 6)*RandOfst + invoker.CuttingWay*3*invoker.CutDown, 6-invoker.SawPos*2.5 + CRandom(-3, 3)*RandOfst + Distance*2 - Min(10, invoker.CutDown*10*invoker.CuttingDir.Y) + CFRandom(-1, 1), WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, CFRandom(-1, 1) + CRandom(-3, 3)*RandOfst + invoker.CuttingWay*10*invoker.CutDown, WOF_INTERPOLATE);
+				Float Scal = 1-.1*invoker.SawPos+ CFRandom(-.1, .1)*RandOfst + Distance*.1 +CFRandom(0, .01) - (invoker.CutDown*.2);
 				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
-				if(invoker.SawPos>0)invoker.SawPos -= .25;
+				if(invoker.SawPos>0 && !invoker.CutDir)invoker.SawPos -= .25;
+				else if(invoker.SawPos<1 && invoker.CutDir)invoker.SawPos += .25;
 				
 				if(MRIntW_Smoke){
 					int index;
