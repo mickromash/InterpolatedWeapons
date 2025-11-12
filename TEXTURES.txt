@@ -58,14 +58,14 @@ Sprite "CH1FC0", 114, 103
 Sprite "PLSRB0", 104, 107
 {
 	Offset -56, -61
-	Patch "PLSOF0", 0, 0
+	Patch "PLSOG0", 0, 0
 	Patch "PLSRA0", 0, 0
 }
 
 Sprite "PL2RB0", 104, 107
 {
 	Offset -56, -61
-	Patch "PLSOF0", 0, 0
+	Patch "PLSOG0", 0, 0
 	Patch "PL2RA0", 0, 0
 }
 
