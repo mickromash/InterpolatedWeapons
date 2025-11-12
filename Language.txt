@@ -22,6 +22,7 @@ MRIntWeaps_AnimMenu = "Animations settings";
 
 MRIntW_BrownGloves = "Brown gloves";
 MRIntW_IdleAnims = "Idle animations";
+MRIntW_LowHealthShake = "Low health hands shaking";
 
 MRIntW_RightPunch = "Punch with right hand";
 MRIntW_SecondFist = "Left fist always on screen";
@@ -62,6 +63,7 @@ MRIntWeaps_AnimMenu = "Настройки анимаций";
 
 MRIntW_IdleAnims = "Анимации безделья";
 MRIntW_BrownGloves = "Коричневые перчатки";
+MRIntW_LowHealthShake = "Тряка рук при низком здоровье";
 
 MRIntW_BersShake = "Тряска рук при берсерке";
 MRIntW_BersShake0 = "Нет";
