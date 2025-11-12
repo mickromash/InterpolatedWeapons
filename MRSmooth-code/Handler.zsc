@@ -13,8 +13,21 @@ Class MRIntWeaps_Handler: EventHandler
 		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
 		For(int i=0;i<Weapons.Size();i++){
 			Let Weap = Plr.FindInventory(Weapons[i]);
-			if(Weap){Weap.Destroy();
-				if(!Plr.FindInventory("MRIntWeaps_"..Weapons[i]))Plr.A_GiveInventory("MRIntWeaps_"..Weapons[i]);}
+			if(Weap){
+				Weap.Destroy();
+				if(!Plr.FindInventory("MRIntWeaps_"..Weapons[i])){
+					int CurAmmo;
+					Class<Ammo> Amo;
+					if(GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1!=""){
+						Amo = GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1;
+						CurAmmo = Plr.CountInv(Amo);
+					}
+					Plr.GiveInventory("MRIntWeaps_"..Weapons[i], 1);
+					if(Amo){
+						Plr.SetInventory(Amo, CurAmmo, true);
+					}
+				}
+			}
 		}
 		
 		if(Select!="")Plr.A_SelectWeapon("MRIntWeaps_"..Select);
@@ -28,8 +41,22 @@ Class MRIntWeaps_Handler: EventHandler
 		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
 		For(int i=0;i<Weapons.Size();i++){
 			Let Weap = Plr.FindInventory("MRIntWeaps_"..Weapons[i]);
-			if(Weap){Weap.Destroy();
-				if(!Plr.FindInventory(Weapons[i]))Plr.A_GiveInventory(Weapons[i]);}
+			if(Weap){
+				Weap.Destroy();
+				
+				if(!Plr.FindInventory(Weapons[i])){
+					int CurAmmo;
+					Class<Ammo> Amo;
+					if(GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1!=""){
+						Amo = GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1;
+						CurAmmo = Plr.CountInv(Amo);
+					}
+					Plr.GiveInventory(Weapons[i], 1);
+					if(Amo){
+						Plr.SetInventory(Amo, CurAmmo, true);
+					}
+				}
+			}
 		}
 		Select.Replace("MRIntWeaps_", "");
 		if(Select!="")Plr.A_SelectWeapon(Select);
@@ -102,10 +129,12 @@ Class MRIntWeaps_Handler: EventHandler
 	Override Void OnRegister()
 	{
 		LoadingDelay = 3;
+		Console.Printf("Register");
 	}
 	
 	Override Void WorldLoaded(WorldEvent e)
 	{
 		LoadingDelay = 3;
+		Console.Printf("World Loaded");
 	}
 }
