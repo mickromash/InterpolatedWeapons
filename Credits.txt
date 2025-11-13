@@ -1,0 +1,27 @@
+==== SPRITES ====
+
+Fist - id Software, Perkristian, some frames were taken from Charlie reskin pack for Hideous Destructor
+
+Chainsaw - id Software, JoeyTD, Agent_Ash (chain animation, which was taken from Beautiful Doom)
+
+Pistol - id Software, Perkristian (some frames were taken from ZScript version of Smooth Doom)
+
+Shotgun - id Software, Perkristian
+
+Super Shotgun - id Software, Perkristian
+
+Chaingun - id Software, Perkristian
+
+Rocket Launcher - id Software, Perkristian
+
+PlasmaGun (Plasma Rifle) - id Software, Perkristian
+
+BFG 9000 - id Software
+
+Casings - id Software
+
+Smoke graphic was made by me, as well as guns sprites editing
+
+==== SOUNDS ====
+
+Fist whoosh sound - id Software
