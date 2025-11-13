@@ -285,7 +285,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				invoker.LeftHand = (Player.GetPSprite(LeftLay).X, Player.GetPSprite(LeftLay).Y);
 			}
 			#### D 1 {
-				A_OverlayOffset(LeftLay, -65, 40, WOF_INTERPOLATE);
+				A_OverlayOffset(LeftLay, -80, 40, WOF_INTERPOLATE);
 				A_OverlayRotate(LeftLay, 4, WOF_ADD);
 				invoker.LeftHand = (Player.GetPSprite(LeftLay).X, Player.GetPSprite(LeftLay).Y);
 			}
