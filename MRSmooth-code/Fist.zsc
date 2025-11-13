@@ -239,11 +239,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			#### D 1 {
 				A_OverlayOffset(LeftLay, 40, -30, WOF_ADD);
 				A_OverlayRotate(LeftLay, 0, WOF_INTERPOLATE);
-				A_OverlayScale(LeftLay, 1.1, 1.1, WOF_INTERPOLATE);
+				A_OverlayScale(LeftLay, 1, 1.1, WOF_INTERPOLATE);
 			}
 			#### D 1 {//Punch
 				A_OverlayOffset(LeftLay, CFRandom(77, 82), -CFRandom(73, 76), WOF_ADD);
-				A_OverlayScale(LeftLay, -.025, -.025, WOF_ADD);
+				A_OverlayScale(LeftLay, 0, -.025, WOF_ADD);
 				if(invoker.HitWall){
 					A_OverlayOffset(LeftLay, CFRandom(-8, 3), CFRandom(-8, 8), WOF_ADD);
 					Float Scal = CFRandom(0, .025);
@@ -253,7 +253,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			}
 			#### DD 1 {
 				A_OverlayOffset(LeftLay, CFRandom(-1, 1), CFRandom(-1, 1), WOF_ADD);
-				A_OverlayScale(LeftLay, -.025, -.025, WOF_ADD);
+				A_OverlayScale(LeftLay, 0, -.025, WOF_ADD);
 				
 				if(invoker.HitWall){
 					A_OverlayOffset(LeftLay, CFRandom(-8, 0), CFRandom(-8, 8), WOF_ADD);
@@ -274,7 +274,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			}
 			#### DDDD 1 {
 				A_OverlayOffset(LeftLay, -26, 16, WOF_ADD);
-				A_OverlayRotate(LeftLay, 3, WOF_ADD);
+				A_OverlayRotate(LeftLay, 4, WOF_ADD);
 				A_OverlayScale(LeftLay, .02, .02, WOF_ADD);
 				if(invoker.HitWall){
 					A_OverlayOffset(LeftLay, CFRandom(-6, -1), CFRandom(-3, 1), WOF_ADD);
@@ -285,7 +285,8 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				invoker.LeftHand = (Player.GetPSprite(LeftLay).X, Player.GetPSprite(LeftLay).Y);
 			}
 			#### D 1 {
-				A_OverlayOffset(LeftLay, -30, 40, WOF_INTERPOLATE);
+				A_OverlayOffset(LeftLay, -65, 40, WOF_INTERPOLATE);
+				A_OverlayRotate(LeftLay, 4, WOF_ADD);
 				invoker.LeftHand = (Player.GetPSprite(LeftLay).X, Player.GetPSprite(LeftLay).Y);
 			}
 			#### D 2 A_OverlayFlags(LeftLay, PSPF_INTERPOLATE, false);
