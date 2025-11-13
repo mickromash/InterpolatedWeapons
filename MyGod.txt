@@ -1,6 +1,7 @@
 //Copy these into TEXTURES.txt after editing it!
 NoTrim "P1SFA0"
 NoTrim "P1SFB0"
+NoTrim "PL1GF0"
 NoTrim "SH1FA0"
 NoTrim "SH1FB0"
 NoTrim "SH12N0"
