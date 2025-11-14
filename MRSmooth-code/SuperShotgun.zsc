@@ -249,7 +249,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### # 0{
 				if(MRIntW_Smoke){//Smoke
 					Double Alpha = CFRandom(.01, .08)*3;
-					int Amount = CRandom(0, 2);
+					int Amount = CRandom(0, 1);
 					For(int i=Amount;i<3;i++){
 						int index;
 						For(index=0;index<invoker.Smokes.Size()+1;index++){
