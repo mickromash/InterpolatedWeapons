@@ -22,15 +22,24 @@ MRIntWeaps_AnimMenu = "Animations settings";
 
 MRIntW_BrownGloves = "Brown gloves";
 MRIntW_IdleAnims = "Idle animations";
-MRIntW_LowHealthShake = "Low health hands shaking";
-
-MRIntW_RightPunch = "Punch with right hand";
-MRIntW_SecondFist = "Left fist always on screen";
 
 MRIntW_BersShake = "Hands shaking on berserk";
 MRIntW_BersShake0 = "No";
 MRIntW_BersShake1 = "Only without weapon";
 MRIntW_BersShake2 = "Yes";
+
+MRIntW_LowHealthShake = "Low health hands shaking";
+
+
+MRIntW_RightPunch = "Switch main fist";
+MRIntW_SecondFist = "Second fist always on screen";
+
+MRIntW_PunchingFist = "Punching fist";
+
+MRIntW_PunchingFist0 = "Main";
+MRIntW_PunchingFist1 = "Random";
+MRIntW_PunchingFist2 = "Rotation";
+MRIntW_PunchingFist3 = "Based on player and camera movement";
 
 MRIntW_FinishPunch = "Finish punch";
 MRIntW_FinishPunch0 = "No";
@@ -73,8 +82,15 @@ MRIntW_BersShake0 = "Нет";
 MRIntW_BersShake1 = "Только без оружия";
 MRIntW_BersShake2 = "Да";
 
-MRIntW_RightPunch = "Бить правой рукой";
-MRIntW_SecondFist = "Всегда показывать левый кулак";
+MRIntW_RightPunch = "Сменить основную руку";
+MRIntW_SecondFist = "Всегда показывать второй кулак";
+
+MRIntW_PunchingFist = "Бьющая рука";
+
+MRIntW_PunchingFist0 = "Основная";
+MRIntW_PunchingFist1 = "Случайно";
+MRIntW_PunchingFist2 = "Чередовать";
+MRIntW_PunchingFist3 = "В зависимости от движения";
 
 MRIntW_FinishPunch = "Добивающий удар";
 MRIntW_FinishPunch0 = "Нет";

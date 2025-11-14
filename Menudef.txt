@@ -37,6 +37,7 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Option "$MRIntW_RightPunch", "MRIntW_RightPunch", "YesNo"
 	Option "$MRIntW_BersShake", "MRIntW_BersShake", "MRIntW_BersShakeValues"
 	Option "$MRIntW_SecondFist", "MRIntW_SecondFist", "YesNo"
+	Option "$MRIntW_PunchingFist", "MRIntW_PunchingFist", "MRIntW_PunchingFistValues"
 	Option "$MRIntW_FinishPunch", "MRIntW_FinishPunch", "MRIntW_FinishPunchValues"
 	Slider "$MRIntW_FinishPunchChance", "MRIntW_FinishPunchChance", .1, 1, .1, 2, "MRIntW_FinishPunch"
 	Option "$MRIntW_SurfacePunchRecoil", "MRIntW_SurfacePunchRecoil", "YesNo"
@@ -52,6 +53,14 @@ OptionValue "MRIntW_BersShakeValues"
 	0, "$MRIntW_BersShake0"
 	1, "$MRIntW_BersShake1"
 	2, "$MRIntW_BersShake2"
+}
+
+OptionValue "MRIntW_PunchingFistValues"
+{
+	0, "$MRIntW_PunchingFist0"
+	1, "$MRIntW_PunchingFist1"
+	2, "$MRIntW_PunchingFist2"
+	3, "$MRIntW_PunchingFist3"
 }
 
 OptionValue "MRIntW_FinishPunchValues"
