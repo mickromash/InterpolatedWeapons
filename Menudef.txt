@@ -23,6 +23,7 @@ OptionMenu "MRIntWeaps_Menu"
 	StaticText ""
 	SubMenu "$MRIntWeaps_AnimMenu", "MRIntWeaps_AnimMenu"
 	StaticText ""
+	Command "$MRIntWeaps_Give", "MRIntW_Give"
 	SafeCommand "$MRIntWeaps_Uninstall", MRIntW_Uninstall, "$MRIntWeaps_UninstallPromt"
 }
 

@@ -13,6 +13,9 @@ MRIntW_InstantFire = "\cv⊛\c- Instant firing";
 MRIntW_FastPistol = "\cv⊛\c- Faster pistol";
 MRIntW_BetterAlert = "\cv⊛\c- Better monster alerting";
 
+
+MRIntWeaps_Give = "Make animations smooth";
+
 MRIntWeaps_Uninstall = "Uninstall mod";
 MRIntWeaps_UninstallPromt = "Remove the mod so the saved game could be loaded without it?";
 MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled.";
@@ -104,6 +107,8 @@ MRIntW_ChainsawCutting = "Улучшенная анимация распилив
 MRIntW_ChainsawCuttingWall = "Тряска бензопилы при распиливании поверхностей";
 
 MRIntW_LHand = "Держать пистолет в левой руке";
+
+MRIntWeaps_Give = "Сделать анимации плавными";
 
 MRIntWeaps_Uninstall = "Отключить мод";
 MRIntWeaps_UninstallPromt = "Удалить данные мода из игры?\nБлагодаря этому сохранённая игра сможет быть загружена без него";
