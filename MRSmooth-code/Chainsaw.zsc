@@ -226,12 +226,12 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 							}
 						}
 						else {//Back to normal position after cutting someone
-							invoker.CuttingWay *= .7;
-							if(invoker.SawAngle<90)invoker.SawAngle *= .5;
-							else invoker.SawAngle = (invoker.SawAngle-180)*.5+180;
-							if(invoker.SawAngle<90)invoker.SawCurAngle = Clamp(invoker.SawAngle, invoker.SawCurAngle-20, invoker.SawCurAngle+20);
-							else invoker.SawCurAngle = Clamp(invoker.SawAngle-180, invoker.SawCurAngle-20, invoker.SawCurAngle+20);
-							invoker.SawCurOffset = Clamp(invoker.SawAngle, invoker.SawCurOffset-20, invoker.SawCurOffset+20);
+							invoker.CuttingWay *= .9;
+							if(invoker.SawAngle<90)invoker.SawAngle *= .7;
+							else invoker.SawAngle = (invoker.SawAngle-180)*.7+180;
+							if(invoker.SawAngle<90)invoker.SawCurAngle = Clamp(invoker.SawAngle, invoker.SawCurAngle-10, invoker.SawCurAngle+10);
+							else invoker.SawCurAngle = Clamp(invoker.SawAngle-180, invoker.SawCurAngle-10, invoker.SawCurAngle+10);
+							invoker.SawCurOffset = Clamp(invoker.SawAngle, invoker.SawCurOffset-10, invoker.SawCurOffset+10);
 						}
 					}
 					
