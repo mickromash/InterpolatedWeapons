@@ -250,13 +250,15 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### FEEDD 1 A_OverlayOffset(Lay1, 11, 6, WOF_ADD);//Lower
 			#### CCC 1 A_OverlayOffset(Lay1, 3, 6, WOF_ADD);
 			#### A 1{
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				A_OverlayPivot(Lay1, .5, 0);
 				Float Scal = CFRandom(.95, 1.1);
-				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, Scal, Scal);
 				A_OverlayOffset(Lay1, CFRandom(-4, 4), CFRandom(1, 6));
 				A_OverlayRotate(Lay1, CFRandom(-.5, .5));
 			}
 			#### AA 1{
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.4;
 				Player.GetPSprite(Lay1).X *= .4;
 				Player.GetPSprite(Lay1).Y *= .4;
