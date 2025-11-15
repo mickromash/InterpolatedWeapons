@@ -21,3 +21,4 @@ nosave float MRIntW_FinishPunchChance = .7;
 nosave bool MRIntW_SurfacePunchRecoil = false;//Kick player back if he punches a wall with berserk
 nosave int MRIntW_PunchingFist = 0;//0 - punch with only main fist,
 //1 - randomly punch with main or second fist, 2 - alternate punching fist, 3 - punching fist based on camera movement
+nosave bool MRIntW_BareHands = true;

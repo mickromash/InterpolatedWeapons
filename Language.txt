@@ -33,6 +33,7 @@ MRIntW_BersShake2 = "Yes";
 
 MRIntW_LowHealthShake = "Low health hands shaking";
 
+MRIntW_BareHands = "Bare hands";
 
 MRIntW_RightPunch = "Switch main fist";
 MRIntW_SecondFist = "Second fist always on screen";
@@ -84,6 +85,8 @@ MRIntW_BersShake = "Тряска рук при берсерке";
 MRIntW_BersShake0 = "Нет";
 MRIntW_BersShake1 = "Только без оружия";
 MRIntW_BersShake2 = "Да";
+
+MRIntW_BareHands = "Снимать перчатки";
 
 MRIntW_RightPunch = "Сменить основную руку";
 MRIntW_SecondFist = "Всегда показывать второй кулак";
