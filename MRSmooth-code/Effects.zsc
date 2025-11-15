@@ -10,7 +10,7 @@ Class MRIntWeaps_SmokeContainer: Object play
 
 Extend Class MRIntWeaps_Chainsaw
 {
-	MRIntWeaps_SmokeContainer Smokes[30];
+	MRIntWeaps_SmokeContainer Smokes[40];
 	Const SmokeStart = PSP_FLASH+10;
 	
 	States{
@@ -27,12 +27,12 @@ Extend Class MRIntWeaps_Chainsaw
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
 				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
 			}
-			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
+			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
 				int Index = OverlayId()-SmokeStart;
 				invoker.Smokes[OverlayId()-SmokeStart].Age++;
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
 				
-				Player.GetPSprite(OverlayId()).Alpha-=.01;
+				Player.GetPSprite(OverlayId()).Alpha-=.015;
 				
 				Float Scale = (CFRandom(.09, .13));// + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.2);
 				Scale -= (invoker.Smokes[Index].Vel.Y);
