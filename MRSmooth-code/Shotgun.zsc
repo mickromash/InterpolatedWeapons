@@ -26,6 +26,32 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		}
 	}
 	
+	action void A_FireShotgun()
+	{
+		if(!player)
+		{
+			return;
+		}
+
+		A_StartSound ("MRIntW/ShotgunFire", CHAN_WEAPON, pitch:i_timescale);
+		Weapon weap = player.ReadyWeapon;
+		if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
+		{
+			if (!weap.DepleteAmmo (weap.bAltFire, true))
+				return;
+			
+			player.SetPsprite(PSP_FLASH, weap.FindState('Flash'), true);
+		}
+		player.mo.PlayAttacking2 ();
+
+		double pitch = BulletSlope ();
+
+		for (int i = 0; i < 7; i++)
+		{
+			GunShot (false, "BulletPuff", pitch);
+		}
+	}
+	
 	States{
 		Select:
 			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
@@ -199,11 +225,14 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 			}
-			#### C 1;//Raise
+			#### C 1 A_StartSound("MRIntW/ShotgunRaise", CHAN_AUTO, pitch:CFRandom(.95, 1.05)*i_timescale);//Raise
 			#### CC 1 A_OverlayOffset(Lay1, -4, -6, WOF_ADD);
 			#### DEFF 1 A_OverlayOffset(Lay1, -15, -7, WOF_ADD);
 			#### F 1 A_OverlayOffset(Lay1, -3, -2, WOF_ADD);
-			#### F 1 A_OverlayOffset(Lay1, 3, 8, WOF_ADD);
+			#### F 1 {
+				A_OverlayOffset(Lay1, 3, 8, WOF_ADD);
+				A_StartSound("MRIntW/ShotgunPumpDown", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale);
+			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### # 0 {
 				if(!MRIntW_Casings)Return;
@@ -244,7 +273,11 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				}
 			}
 			#### H 1 A_OverlayOffset(Lay1, 2, 4, WOF_ADD);
-			#### GF 1 A_OverlayOffset(Lay1, -5, -20, WOF_ADD);
+			#### G 1 A_OverlayOffset(Lay1, -5, -20, WOF_ADD);
+			#### F 1 {
+				A_OverlayOffset(Lay1, -5, -20, WOF_ADD);
+				A_StartSound("MRIntW/ShotgunPumpUp", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale);
+			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 			#### FF 1 A_OverlayOffset(Lay1, 1, -5, WOF_ADD);
 			#### FEEDD 1 A_OverlayOffset(Lay1, 11, 6, WOF_ADD);//Lower

@@ -156,7 +156,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			Stop;
 			
 		Fire:
-			TNT1 A 20 {A_BFGsound();A_Overlay(Lay1, "GunFire");}
+			TNT1 A 20 {A_StartSound("MRIntW/BFGFireStart", CHAN_WEAPON, pitch:i_timescale);A_Overlay(Lay1, "GunFire");}
 			TNT1 B 10 {if(!MRIntW_Lighting)A_GunFlash();}
 			TNT1 B 10 {
 				A_FireBFG();
@@ -164,6 +164,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			}
 			TNT1 B 20 A_ReFire();
 			Goto Ready;
+			
 		GunLEDs:
 			BFGO A 1 BRIGHT A_OverlayAlpha(Lay3, Min(.8, invoker.Power*.5));
 			Loop;

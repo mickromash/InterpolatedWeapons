@@ -1,1 +1,44 @@
 MRIntW/FistSwing "Sounds/FistSwing.wav"
+MRIntW/FistSelect ""
+MRIntW/FistDeselect ""
+MRIntW/FistPunchFleshKnuckles ""
+MRIntW/FistPunchFlesh ""
+MRIntW/FistPunchWallKnuckles ""
+MRIntW/FistPunchWall ""
+
+MRIntW/PistolSelect ""
+MRIntW/PistolDeselect ""
+
+MRIntW/ShotgunSelect ""
+MRIntW/ShotgunDeselect ""
+MRIntW/ShotgunFire dsshotgn
+MRIntW/ShotgunPumpDown ""
+MRIntW/ShotgunPumpUp ""
+
+MRIntW/SSGSelect ""
+MRIntW/SSGDeselect ""
+MRIntW/SSGFire dsdshtgn
+MRIntW/SSGOpen dsdbopn
+MRIntW/SSGLoad dsdbload
+MRIntW/SSGClose dsdbcls
+
+MRIntW/ChaingunRotateStart ""
+MRIntW/ChaingunRotateLoop ""
+MRIntW/ChaingunRotateStop ""
+MRIntW/ChaingunDeselect ""
+MRIntW/ChaingunSelect ""
+MRIntW/ChaingunFire dspistol
+
+MRIntW/RLLoad ""
+MRIntW/RLFire dsrlaunc
+
+MRIntW/PlasmaSelect ""
+MRIntW/PlasmaDeselect ""
+MRIntW/PlasmaReload ""
+MRIntW/PlasmaFire dsplasma
+
+MRIntW/BFGFireStart dsbfg
+MRIntW/BFGFireLoop ""
+MRIntW/BFGFire ""
+MRIntW/BFGSelect ""
+MRIntW/BFGDeselect ""

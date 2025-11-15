@@ -25,6 +25,33 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
 	}
+	
+	action void A_FirePistol()
+	{
+		bool accurate;
+
+		if (player != null)
+		{
+			Weapon weap = player.ReadyWeapon;
+			if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
+			{
+				if (!weap.DepleteAmmo (weap.bAltFire, true))
+					return;
+
+				player.SetPsprite(PSP_FLASH, weap.FindState('Flash'), true);
+			}
+			player.mo.PlayAttacking2 ();
+
+			accurate = !player.refire;
+		}
+		else
+		{
+			accurate = true;
+		}
+
+		A_StartSound ("weapons/pistol", CHAN_WEAPON, pitch:i_timescale);
+		GunShot (accurate, "BulletPuff", BulletSlope ());
+	}
 		
 	States{
 		Select:
