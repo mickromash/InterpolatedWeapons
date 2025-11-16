@@ -373,8 +373,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### KKK 1 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayRotate(Lay1, 16, WOF_ADD);A_OverlayOffset(Lay1, -12, -20, WOF_ADD);}
 			#### KKK 1 {A_OverlayOffset(Lay1, -25, 11, WOF_ADD);A_OverlayRotate(Lay1, 13, WOF_ADD);}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
-			#### L 1 {A_OverlayRotate(Lay1, 0);A_OverlayOffset(Lay1, -5, -5);}
-			#### L 1 {A_OverlayOffset(Lay1, -10, 10, WOF_INTERPOLATE);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
+			#### B 1 {A_OverlayRotate(Lay1, 0);A_OverlayOffset(Lay1, -5, -5);}
+			#### B 1 {A_OverlayOffset(Lay1, -10, 10, WOF_INTERPOLATE);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
 			#### A 1 {A_OverlayOffset(Lay1, -CFRandom(4, 8), CFRandom(3, 6));A_OverlayRotate(Lay1, CFRandom(1, 2));}
 			#### A 2 {A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);}
 			Goto GunWait;
