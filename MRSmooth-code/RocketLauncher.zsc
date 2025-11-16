@@ -223,7 +223,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		}
 		Stop;
 	GunFlash2:
-		MI1F CCC 1 BRIGHT {
+		MI1F C 1 BRIGHT {
 			A_OverlayPivot(OverlayId(), .5, .5);
 			A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
 			Player.GetPSprite(OverlayId()).Alpha = .7;
