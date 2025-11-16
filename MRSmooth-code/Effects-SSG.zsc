@@ -38,8 +38,11 @@ Extend Class MRIntWeaps_SuperShotgun
 		PSP.Y += Owner.Vel.Z;
 		PSP.Y -= VelZ*80*VelMult;
 		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
-		PSP.X -= 21*VelMult;
+		PSP.X -= 21*VelMult*PSP.Scale.X;
 		PSP.Scale *= 1+.05*CasingDir[index]*CasingSpeed;
+		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005;
+		PSP.Scale.X = Max(0, PSP.Scale.X);
+		PSP.Scale.Y = PSP.Scale.X;
 		PSP.Rotation += 40;
 		
 		//Console.Printf("Casing "..CaseLife-Age..": "..PSP.Y);

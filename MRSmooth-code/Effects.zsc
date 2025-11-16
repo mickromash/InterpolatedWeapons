@@ -89,9 +89,13 @@ Extend Class MRIntWeaps_Pistol
 		if(Age<CaseLife-5)PSP.Y += Owner.Player.Cmd.Pitch*.005;
 		PSP.Y += Owner.Vel.Z;
 		PSP.Y -= VelZ*100*VelMult;
-		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
-		PSP.X += 16*VelMult;
+		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.0025;
+		PSP.X += 16*VelMult*PSP.Scale.X;
 		PSP.Scale *= 1+.05*CasingDir[index]*CasingSpeed;
+		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005;
+		PSP.Scale.X = Max(0, PSP.Scale.X);
+		PSP.Scale.Y = PSP.Scale.X;
+		
 		PSP.Rotation -= 30*VelMult;
 	}
 	
@@ -189,8 +193,11 @@ Extend Class MRIntWeaps_Shotgun
 		PSP.Y += Owner.Vel.Z;
 		PSP.Y -= VelZ*100*VelMult;
 		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
-		PSP.X += 20*VelMult;
+		PSP.X += 20*VelMult*PSP.Scale.X;
 		PSP.Scale *= 1+.05*CasingDir[index]*CasingSpeed;
+		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005;
+		PSP.Scale.X = Max(0, PSP.Scale.X);
+		PSP.Scale.Y = PSP.Scale.X;
 		PSP.Rotation -= 30*VelMult;
 		
 		//Console.Printf("Casing "..CaseLife-Age..": "..PSP.Y);
@@ -326,8 +333,11 @@ Extend Class MRIntWeaps_Chaingun
 		PSP.Y += Owner.Vel.Z;
 		PSP.Y -= VelZ*100*VelMult*Cos(Pitch);
 		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
-		PSP.X += 16*VelMult;
+		PSP.X += 16*VelMult*PSP.Scale.X;
 		PSP.Scale *= 1+.05*CasingDir[index]*CasingSpeed;
+		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005;
+		PSP.Scale.X = Max(0, PSP.Scale.X);
+		PSP.Scale.Y = PSP.Scale.X;
 		PSP.Rotation -= 30*VelMult;
 	}
 	
