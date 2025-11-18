@@ -185,7 +185,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			CH1G B 1 {//Recoil
 				Float Scal = CFRandom(.01, .05);
-				Vector2 Ofst = (CFRandom(-2, 2), CFRandom(3, 5));
+				Vector2 Ofst = (CFRandom(-2, 2), CFRandom(4, 8));
 				Float Rotate = CRandomPick(0, CFRandom(-.6, .6));
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);

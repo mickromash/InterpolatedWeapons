@@ -216,13 +216,13 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				invoker.InterpolateMuzzle = false;
 			}
 			PL1G ### 1{
-				Vector2 Rand = (FRandom(-1, 1), FRandom(0, 1));
+				Vector2 Rand = (CFRandom(-1, 1), CFRandom(3, 4));
 				A_OverlayOffset(Lay1, Rand.X, Rand.Y, WOF_INTERPOLATE);
 				if(!invoker.Selecting)A_OverlayOffset(Lay2, Rand.X, Rand.Y + invoker.Muzzle*3, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay3, Rand.X+CFRandom(-.5, .5), Rand.Y + invoker.Muzzle*3+CFRandom(-.5, .5), WOF_INTERPOLATE);
 				
-				Float Scal = FRandom(1, 1.1);
-				invoker.BodyScal = -FRandom(-.05, .05);
+				Float Scal = CFRandom(1, 1.1);
+				invoker.BodyScal = -CFRandom(-.05, .05);
 				A_OverlayScale(Lay1, Scal+invoker.BodyScal, Scal, WOF_INTERPOLATE);
 				
 
