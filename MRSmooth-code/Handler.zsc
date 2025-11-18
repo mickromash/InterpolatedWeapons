@@ -129,12 +129,12 @@ Class MRIntWeaps_Handler: EventHandler
 	Override Void OnRegister()
 	{
 		LoadingDelay = 3;
-		Console.Printf("Register");
+		//Console.Printf("Register");
 	}
 	
 	Override Void WorldLoaded(WorldEvent e)
 	{
 		LoadingDelay = 3;
-		Console.Printf("World Loaded");
+		//Console.Printf("World Loaded");
 	}
 }
