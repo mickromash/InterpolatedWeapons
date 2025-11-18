@@ -393,7 +393,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				
 				if(invoker.Muzzle>=1.7 && CRandom(0, 100)==1){
 					StopIdleAnimation();
-					invoker.Muzzle -= .8;
+					invoker.Muzzle = -.2;
 				}
 				Break;
 			Case 2://Pull-push-pull-push
