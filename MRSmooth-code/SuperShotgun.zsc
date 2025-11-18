@@ -207,7 +207,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			TNT1 A 7 A_StartSound ("MRIntW/SSGLoad", CHAN_AUTO, pitch:i_timescale);
 			TNT1 A 6;
 			TNT1 A 6 {//H
-				A_StartSound ("MRIntW/SSGClose", CHAN_AUTO, pitch:i_timescale);
+				A_StartSound ("MRIntW/SSGClose", CHAN_WEAPON, pitch:i_timescale);
 				A_Refire();
 			}
 			TNT1 A 5 A_ReFire();
