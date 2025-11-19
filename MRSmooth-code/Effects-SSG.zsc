@@ -96,7 +96,7 @@ Extend Class MRIntWeaps_SuperShotgun
 				Player.GetPSprite(OverlayId()).bInterpolate=false;
 				A_OverlayPivot(OverlayId(), .5, .5);
 				A_OverlayScale(OverlayId(), 1.14, 1.14);
-				invoker.CasingSpeed = MRIntW_CasingsRandom;
+				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}
 			SHTC A 20 A_SetTics(CaseLife);
 			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;}

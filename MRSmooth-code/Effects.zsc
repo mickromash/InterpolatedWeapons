@@ -150,7 +150,7 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayOffset(OverlayId(), 170, 115+32);
 				A_OverlayScale(OverlayId(), .8, .8);
 				A_OverlayRotate(OverlayId(), 140);
-				invoker.CasingSpeed = MRIntW_CasingsRandom;
+				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}
 			PISC A 20 A_SetTics(CaseLife);
 			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-10-PSP_FLASH]=false;}
@@ -291,7 +291,7 @@ Extend Class MRIntWeaps_Shotgun
 				
 				A_OverlayOffset(OverlayId(), 105, 200+32);
 				A_OverlayRotate(OverlayId(), 160);
-				invoker.CasingSpeed = MRIntW_CasingsRandom;
+				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}
 			SHTC A 15 A_SetTics(CaseLife);
 			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;}
@@ -353,7 +353,7 @@ Extend Class MRIntWeaps_Chaingun
 				A_OverlayOffset(OverlayId(), 195, 190+32);
 				A_OverlayScale(OverlayId(), .8, .8);
 				A_OverlayRotate(OverlayId(), 140);
-				invoker.CasingSpeed = MRIntW_CasingsRandom;
+				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}
 			PISC A 20 A_SetTics(CaseLife);
 			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;}

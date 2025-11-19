@@ -58,6 +58,12 @@ MRIntW_ChainsawCuttingWall = "Chainsaw surface cutting shaking";
 
 MRIntW_LHand = "Hold the pistol in the left hand";
 
+
+MRIntWeaps_SoundMenu = "Sounds settings (add-on required)";
+
+MRIntW_ShotgunSound = "Shotgun custom firing sound";
+MRIntW_ChaingunSound = "Chaingun custom firing sound";
+
 [ru]
 
 MRIntWeaps_Menu = "Настроить интерполированное оружие";
@@ -116,3 +122,9 @@ MRIntWeaps_Give = "Сделать анимации плавными";
 MRIntWeaps_Uninstall = "Отключить мод";
 MRIntWeaps_UninstallPromt = "Удалить данные мода из игры?\nБлагодаря этому сохранённая игра сможет быть загружена без него";
 MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdМод успешно удалён.";
+
+
+MRIntWeaps_SoundMenu = "Настройки звуков (требуется аддон)";
+
+MRIntW_ShotgunSound = "Звуки дробовика из аддона";
+MRIntW_ChaingunSound = "Звуки пулемёта из аддона";

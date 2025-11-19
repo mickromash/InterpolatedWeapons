@@ -258,7 +258,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	
 	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
 	{
-		Bool Bers = MRIntW_BersShake>1 && FindInventory("PowerStrength");
+		Bool Bers = GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength");
 		Float Mult = (Bers?2:1);
 		if(invoker.BobState>=0){
 			A_OverlayOffset(Lay, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
