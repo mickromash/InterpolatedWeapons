@@ -197,6 +197,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### BB 1 A_OverlayOffset(Lay1, 0, -1, WOF_ADD);
 			#### B 1;//Shot
 			#### BB 1 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				Float Scal = CFRandom(.05, .06);
 				Vector2 Ofst = (CFRandom(.1, 1), CFRandom(5, 10));
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
@@ -220,12 +221,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 						MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
 						a.Vel = (CFRandom(-.05, .05), -CFRandom(.1, .2), CFRandom(.7, 1.2));
 						invoker.Smokes[index] = a;
-						
-						Vector2 Bob = PlayerPawn(Self).BobWeapon(35);
-						Bob.Y = Clamp(Bob.Y, 0, 50);
-						
+												
 						A_Overlay(SmokeStart-index, "SmokeLay");
-						A_OverlayOffset(SmokeStart-index, 130+Bob.X, 100+Bob.Y);
+						A_OverlayOffset(SmokeStart-index, 130, 100);
 						Player.GetPSprite(SmokeStart-index).Scale = (1,1)*CFRandom(.1, .15);
 						A_OverlayAlpha(SmokeStart-index, CFRandom(.01, .08)*3);
 					}
@@ -256,7 +254,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
 				}
 			}
-			#### DEE 1{
+			#### FEE 1{
 				Float Scal = CFRandom(.01, .03);
 				Vector2 Ofst = (CFRandom(.1, 1), 0);
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
@@ -269,8 +267,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
 			}
-			#### EDB 1{
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			#### DDB 1{
+				//A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1));
 				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
 				Player.GetPSprite(Lay1).X *= .4;
@@ -303,6 +301,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				if(GetCVar("MRIntW_LHand"))A_OverlayFlags(Lay2, PSPF_MIRROR|PSPF_FLIP, true);
 				A_OverlayRenderStyle(Lay2, STYLE_ColorAdd);
 				A_OverlayPivot(Lay2, .5, .5);
+				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
 			P1SF BBC 1 BRIGHT;
 			Stop;

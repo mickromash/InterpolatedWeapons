@@ -22,3 +22,4 @@ user bool MRIntW_SurfacePunchRecoil = false;//Kick player back if he punches a w
 user int MRIntW_PunchingFist = 0;//0 - punch with only main fist,
 //1 - randomly punch with main or second fist, 2 - alternate punching fist, 3 - punching fist based on camera movement
 user bool MRIntW_BareHands = true;
+user bool MRIntW_NoMuzzleFlash = false;

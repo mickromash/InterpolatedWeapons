@@ -32,6 +32,7 @@ MRIntW_BersShake1 = "Only without weapon";
 MRIntW_BersShake2 = "Yes";
 
 MRIntW_LowHealthShake = "Low health hands shaking";
+MRIntW_NoMuzzleFlash = "Disable muzzle flashes";
 
 MRIntW_BareHands = "Bare hands";
 
@@ -86,6 +87,7 @@ MRIntWeaps_AnimMenu = "Настройки анимаций";
 MRIntW_IdleAnims = "Анимации безделья";
 MRIntW_BrownGloves = "Коричневые перчатки";
 MRIntW_LowHealthShake = "Тряка рук при низком здоровье";
+MRIntW_NoMuzzleFlash = "Отключить дульные вспышки";
 
 MRIntW_BersShake = "Тряска рук при берсерке";
 MRIntW_BersShake0 = "Нет";

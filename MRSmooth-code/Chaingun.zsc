@@ -305,6 +305,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayFlags(Lay2, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
 				A_OverlayRenderStyle(Lay2, STYLE_ColorAdd);
 				A_OverlayPivot(Lay2, .5, 0);
+				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
 			CH1F BCD 1 BRIGHT;
 			Stop;

@@ -176,6 +176,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				A_OverlayRenderStyle(Lay4, STYLE_ADD);
 				A_OverlayPivot(Lay4, .5, .5);
 				A_OverlayScale(Lay4, .1, .1);
+				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
 			BF1F AB 1 BRIGHT A_OverlayScale(Lay4, 1, 1, WOF_INTERPOLATE);
 			BF1F C 1 BRIGHT A_OverlayScale(Lay4, .9, .9);
