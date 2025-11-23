@@ -3,8 +3,15 @@
 MRIntWeaps_Menu = "Configure Interpolated weapons";
 
 MRIntW_Smoke = "Firing smoke";
+
 MRIntW_Casings = "Casings";
+MRIntW_Casings0 = "No";
+MRIntW_Casings1 = "Only visual";
+MRIntW_Casings2 = "Visual + object";
+
 MRIntW_CasingsRandom = "Max. casings speed";
+MRIntW_CasingsAmount = "Max. casings amount";
+MRIntW_CasingsVolume = "Casings bounce sound volume";
 
 MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
 MRIntW_Recoil = "\cv⊛\c- Visual recoil";
@@ -71,8 +78,15 @@ MRIntWeaps_Menu = "Настроить интерполированное ору�
 
 
 MRIntW_Smoke = "Дым";
+
 MRIntW_Casings = "Гильзы";
+MRIntW_Casings0 = "Нет";
+MRIntW_Casings1 = "Только визуальные";
+MRIntW_Casings2 = "Визуальные + физические";
+
 MRIntW_CasingsRandom = "Макс. скорость гильз";
+MRIntW_CasingsAmount = "Макс. количество гильз";
+MRIntW_CasingsVolume = "Громкость отскока гильз";
 
 MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
 MRIntW_Recoil = "\cv⊛\c- Визуальная отдача";

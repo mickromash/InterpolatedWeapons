@@ -42,3 +42,11 @@ MRIntW/BFGFireLoop ""
 MRIntW/BFGFire ""
 MRIntW/BFGSelect ""
 MRIntW/BFGDeselect ""
+
+MRIntW/PistolCasing "Sounds/dsding.ogg"
+MRIntW/ShotgunCasingLand "Sounds/SDIE1.ogg"
+
+MRIntW/ShotgunCasingBounce1 "Sounds/SBNCE1.ogg"
+MRIntW/ShotgunCasingBounce2 "Sounds/SBNCE2.ogg"
+MRIntW/ShotgunCasingBounce3 "Sounds/SBNCE3.ogg"
+$Random MRIntW/ShotgunCasingBounce { MRIntW/ShotgunCasingBounce1 MRIntW/ShotgunCasingBounce2 MRIntW/ShotgunCasingBounce3 }

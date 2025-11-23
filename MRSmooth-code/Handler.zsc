@@ -121,6 +121,10 @@ Class MRIntWeaps_Handler: EventHandler
 			TakeWeapons(Plr);
 			Return;
 		}
+		if(e.Name ~== "MRIntW_Casings")
+		{
+			Console.Printf("Casings: "..Casings.Size());
+		}
 	}
 	
 	Bool Uninstalled;

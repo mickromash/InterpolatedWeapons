@@ -2,8 +2,109 @@
 	Weapon casings and smoke layers
 */
 
+Extend Class MRIntWeaps_Handler
+{
+	Array<MRIntWeaps_Casing> Casings;
+	
+	Void UpdateCasings(MRIntWeaps_Casing a)
+	{
+		For(int i=0;i<Max(0, Casings.Size()-MRIntW_CasingsAmount+1);i++)
+		{
+			if(Casings[i]){Casings[i].Destroy();Casings.Delete(i);i--;}
+		}
+		if(!a)Return;
+		Casings.Push(a);
+	}
+}
+
 Class MRIntWeaps_Casing: VisualThinker
 {
+	/*
+		Spent casings
+		
+		It's only a visual effect
+	*/
+	
+	Double Gravity;
+	int Bounce;
+	Bool Landed, ShotgunShell;
+	
+	Override Void Tick()
+	{
+		if(Landed){
+			if(CurSector)Pos.Z = CurSector.CenterFloor();
+			if(Vel.XY.Length()>0){
+				Vel.XY *= .6;
+				if(int(Roll%45)>0)Roll = Roll%45*(Vel.XY.Length()/10)+int(Roll/45)*45;
+			}
+			
+			Super.Tick();
+			Return;
+		}
+		
+		if(Level.IsFrozen())Return;
+		
+		Super.Tick();
+		
+		if(!CurSector)Return;
+		
+		Vel.XY *= .96;
+		
+		
+		if(CurSector.CenterFloor()>=Pos.Z){//if landed
+			Pos.Z = CurSector.CenterFloor();
+			Vel.Z = abs(-Vel.Z*CFRandom(.4, .6));
+			Bounce--;
+			if(Bounce<1){
+				Landed = true;
+				Vel.Z = 0;
+				
+				S_StartSoundAt(Pos, ShotgunShell?"MRIntW/ShotgunCasingLand":"MRIntW/PistolCasing", CHAN_AUTO, volume:.5*MRIntW_CasingsVolume, pitch:CFRandom(.9, 1.05));
+				Return;
+			}
+			S_StartSoundAt(Pos, ShotgunShell?"MRIntW/ShotgunCasingBounce":"MRIntW/PistolCasing", CHAN_AUTO, volume:.5*MRIntW_CasingsVolume, pitch:CFRandom(.9, 1.05));
+		}
+
+		Roll += Vel.Length()*CFRandom(4, 6);
+		if(Roll>=360)Roll = Roll%360;
+		Vel.Z -= Gravity;
+		
+		let tracer = new('MRIntWeaps_CollisionTracer');//Check collisions
+
+		tracer.Pos = Pos;
+		tracer.Sec = CurSector;
+		tracer.Trace(Pos, CurSector, Vel, 2, 0, Line.ML_BLOCKEVERYTHING, true);
+		
+		if(Tracer.HitLine){//Bounce off walls
+			Vel.XY = -Vel.XY*.8;
+		}
+	}
+	
+	Static MRIntWeaps_Casing SpawnCasing(Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Bool ShotgunShell=false, Double Gravity=1, int Bounce=-1, Vector2 Scale=(.15,.15), int Translation=0)
+	{
+		if(MRIntW_Casings<2)Return Null;
+		
+		Let Casing = MRIntWeaps_Casing(level.SpawnVisualThinker('MRIntWeaps_Casing'));
+		if(!Casing)Return Null;
+		
+		Casing.Pos = Pos;
+		Casing.Vel = Vel;
+		Casing.Gravity = Gravity;
+		if(Bounce<0)Casing.Bounce = CRandom(4, 9);
+		else Casing.Bounce = Bounce;
+		if(ShotgunShell)Casing.Texture = Texman.CheckForTexture("SHTCB0");
+		else Casing.Texture = Texman.CheckForTexture("PISCB0");
+		Casing.Scale = Scale;
+		Casing.Flags = SPF_ROLL|SPF_ROLLCENTER;
+		Casing.CurSector = LevelLocals.PointInSector(Pos.XY);
+		Casing.Translation = Translation;
+		Casing.ShotgunShell = ShotgunShell;
+		
+		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+		if(!Handler)Return Null;
+						
+		Return Casing;
+	}
 }
 
 Class MRIntWeaps_SmokeContainer: Object play
@@ -80,6 +181,8 @@ Extend Class MRIntWeaps_Pistol
 		if(PSP.Y>280+32){
 			Owner.Player.SetPsprite(Lay, Null);
 			Casings[index] = false;
+			
+			SpawnRealCasing();
 			Return;
 		}
 		
@@ -101,6 +204,24 @@ Extend Class MRIntWeaps_Pistol
 		PSP.Scale.Y = PSP.Scale.X;
 		
 		PSP.Rotation -= 30*VelMult;
+	}
+	
+	Void SpawnRealCasing()
+	{
+		if(MRIntW_Casings<2)Return;
+		
+		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ);
+		Pos.XY += AngleToVector(Owner.Angle-90, 5);
+		Vector3 Vel = Owner.Vel;
+		Vel += AngleToVector(Owner.Angle-90 + CFRandom(-10, 10), CFRandom(3, 5));
+		Vel.Z += -CFRandom(1.8, 2.3);
+		
+		Let a = MRIntWeaps_Casing.SpawnCasing(Pos, Vel);
+		
+		if(a){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.UpdateCasings(a);
+		}
 	}
 	
 	States{
@@ -157,7 +278,10 @@ Extend Class MRIntWeaps_Pistol
 				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}
 			PISC A 20 A_SetTics(CaseLife);
-			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-10-PSP_FLASH]=false;}
+			TNT1 A 0 {
+				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-10-PSP_FLASH]=false;
+				invoker.SpawnRealCasing();
+			}
 			Stop;
 	}
 }
@@ -183,8 +307,10 @@ Extend Class MRIntWeaps_Shotgun
 		if(PSP.Y>280+32){
 			Owner.Player.SetPsprite(Lay, Null);
 			Casings[index] = false;
+			if(Age>=CaseLife-10)SpawnRealCasing();
 			Return;
 		}
+		if(Age==CaseLife-10)SpawnRealCasing();
 		
 		//if(Age<CaseLife)PSP.bInterpolate = true;
 		Double VelZ = (Age-(CaseLife-5-Min(2, 1-CasingSpeed)))/2;
@@ -205,6 +331,24 @@ Extend Class MRIntWeaps_Shotgun
 		PSP.Rotation -= 30*VelMult;
 		
 		//Console.Printf("Casing "..CaseLife-Age..": "..PSP.Y);
+	}
+	
+	Void SpawnRealCasing()
+	{
+		if(MRIntW_Casings<2)Return;
+		
+		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ);
+		Pos.XY += AngleToVector(Owner.Angle-90, 5);
+		Vector3 Vel = Owner.Vel;
+		Vel += AngleToVector(Owner.Angle-90 + CFRandom(-10, 10), CFRandom(3, 5));
+		Vel.Z += CFRandom(-1.5, 0);
+		
+		Let a = MRIntWeaps_Casing.SpawnCasing(Pos, Vel, true, Scale:(.1, .1));
+		
+		if(a){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.UpdateCasings(a);
+		}
 	}
 	
 	States{
@@ -298,7 +442,9 @@ Extend Class MRIntWeaps_Shotgun
 				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}
 			SHTC A 15 A_SetTics(CaseLife);
-			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;}
+			TNT1 A 0 {
+				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;
+			}
 			Stop;
 	}
 }
@@ -323,6 +469,8 @@ Extend Class MRIntWeaps_Chaingun
 		if(PSP.Y>280+32){
 			Owner.Player.SetPsprite(Lay, Null);
 			Casings[index] = false;
+			
+			SpawnRealCasing();
 			Return;
 		}
 		
@@ -345,6 +493,24 @@ Extend Class MRIntWeaps_Chaingun
 		PSP.Rotation -= 30*VelMult;
 	}
 	
+	Void SpawnRealCasing()
+	{
+		if(MRIntW_Casings<2)Return;
+		
+		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ);
+		Pos.XY += AngleToVector(Owner.Angle-90, 5);
+		Vector3 Vel = Owner.Vel;
+		Vel += AngleToVector(Owner.Angle-90 + CFRandom(-10, 10), CFRandom(3, 5));
+		Vel.Z += -CFRandom(1.8, 2.3);
+		
+		Let a = MRIntWeaps_Casing.SpawnCasing(Pos, Vel);
+		
+		if(a){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.UpdateCasings(a);
+		}
+	}
+	
 	States{
 		CasingLay:
 			PISC A 0 {
@@ -360,7 +526,10 @@ Extend Class MRIntWeaps_Chaingun
 				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}
 			PISC A 20 A_SetTics(CaseLife);
-			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;}
+			TNT1 A 0 {
+				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;
+				invoker.SpawnRealCasing();
+			}
 			Stop;
 	}
 }

@@ -11,8 +11,11 @@ OptionMenu "MRIntWeaps_Menu"
 	StaticText ""
 	//Client side
 	Option "$MRIntW_Smoke", "MRIntW_Smoke", "YesNo"
-	Option "$MRIntW_Casings", "MRIntW_Casings", "YesNo"
-	Slider "$MRIntW_CasingsRandom", "MRIntW_CasingsRandom", .5, 3, .1, 2
+	Option "$MRIntW_Casings", "MRIntW_Casings", "MRIntW_CasingsValues"
+	Slider "$MRIntW_CasingsRandom", "MRIntW_CasingsRandom", .5, 3, .1, 2, "MRIntW_Casings"
+	Slider "$MRIntW_CasingsAmount", "MRIntW_CasingsAmount", 1, 3000, 50, 0, "MRIntW_Casings"
+	Slider "$MRIntW_CasingsVolume", "MRIntW_CasingsVolume", 0, 2, .1, 2, "MRIntW_Casings"
+	StaticText ""
 	//Server
 	Option "$MRIntW_Lighting", "MRIntW_Lighting", "YesNo"
 	Option "$MRIntW_Recoil", "MRIntW_Recoil", "YesNo"
@@ -61,6 +64,14 @@ OptionMenu "MRIntWeaps_SoundMenu"
 	StaticText ""
 	Option "$MRIntW_ShotgunSound", "MRIntW_ShotgunSound", "YesNo"
 	Option "$MRIntW_ChaingunSound", "MRIntW_ChaingunSound", "YesNo"
+}
+
+
+OptionValue "MRIntW_CasingsValues"
+{
+	0, "$MRIntW_Casings0"
+	1, "$MRIntW_Casings1"
+	2, "$MRIntW_Casings2"
 }
 
 OptionValue "MRIntW_BersShakeValues"

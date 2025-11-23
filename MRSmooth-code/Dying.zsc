@@ -1,15 +1,33 @@
 /*
-	Weapon droppped by dying player.
-	
-	It's only a visual effect and cannot be picked up or even seen by other players.
+	First person dying animations
 */
 
 Class MRIntWeaps_FlyingWeapon: VisualThinker
 {
+	/*
+		Weapon droppped by dying player.
+	
+		It's only a visual effect and cannot be picked up or even seen by other players.
+	*/
+	
 	Double Gravity;
+	Bool Landed;
 	
 	Override Void Tick()
 	{
+		if(Landed){
+			Vel.XY *= .9;
+			if(CurSector)Pos.Z = CurSector.CenterFloor();
+			
+			if(int(Roll%180)>20){
+				Roll = abs(Roll);
+				Roll = -(Roll%180*.7+int(Roll/180)*180);
+				
+			}
+			Super.Tick();
+			Return;
+		}
+		
 		if(Level.IsFrozen())Return;
 		
 		Super.Tick();
@@ -19,7 +37,8 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 		Vel.XY *= .9;
 		
 		
-		if(CurSector.CenterFloor()>=Pos.Z){//if landed
+		if(CurSector.CenterFloor()>=Pos.Z){//Hit the floor
+			Landed = true;
 			Pos.Z = CurSector.CenterFloor();
 			Vel.Z = 0;
 			
@@ -34,7 +53,9 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 		Vel.Z -= Gravity;
 		
 		let tracer = new('MRIntWeaps_CollisionTracer');//Check collisions
-
+		
+		tracer.Pos = Pos;
+		tracer.Sec = CurSector;
 		tracer.Trace(Pos, CurSector, Vel, 15, 0, Line.ML_BLOCKEVERYTHING, true);
 		
 		if(Tracer.HitLine){//Bounce off walls
@@ -56,6 +77,7 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 		Weap.Scale = Scale;
 		Weap.Flags = SPF_ROLL|SPF_ROLLCENTER;
 		Weap.CurSector = LevelLocals.PointInSector(Pos.XY);
+		Weap.Translation = Translation;
 				
 		Return Weap;
 	}
@@ -64,6 +86,8 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 class MRIntWeaps_CollisionTracer : LineTracer
 {
 	Line HitLine;
+	Vector3 Pos;
+	Sector Sec;
 	
 	override ETraceStatus TraceCallback()
 	{
@@ -71,6 +95,23 @@ class MRIntWeaps_CollisionTracer : LineTracer
 		{
 			case TRACE_HitWall:
 				HitLine = Results.HitLine;
+				if(!(HitLine.Flags&Line.ML_BLOCKEVERYTHING)){
+					if(Sec){
+						if(!HitLine.BackSector||!HitLine.FrontSector)Return TRACE_Stop;
+						if(Sec == HitLine.FrontSector){
+							if(HitLine.BackSector.CenterCeiling()-HitLine.BackSector.CenterFloor()<2)Return TRACE_Stop;
+							if(HitLine.BackSector.CenterFloor()>Pos.Z||
+								HitLine.BackSector.CenterCeiling()<Pos.Z)Return TRACE_Stop;
+						}
+						else if(Sec == HitLine.BackSector){
+							if(HitLine.FrontSector.CenterCeiling()-HitLine.FrontSector.CenterFloor()<2)Return TRACE_Stop;
+							if(HitLine.FrontSector.CenterFloor()>Pos.Z||
+								HitLine.FrontSector.CenterCeiling()<Pos.Z)Return TRACE_Stop;
+						}
+					}
+					HitLine = Null;
+					Return TRACE_Skip;
+				}
 			case TRACE_HitFloor:
 			case TRACE_HitCeiling:
 			case TRACE_HasHitSky:

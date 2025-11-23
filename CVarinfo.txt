@@ -1,5 +1,8 @@
-user int MRIntW_Casings = 1;//0 - none, 1 - only visual, 2 - visual + in-game object
+nosave int MRIntW_Casings = 1;//0 - none, 1 - only visual, 2 - visual + in-game object
 user float MRIntW_CasingsRandom = 1;//Maximum casings speed
+nosave int MRIntW_CasingsAmount = 300;
+nosave float MRIntW_CasingsVolume = 1;
+nosave bool MRIntW_CasingsLowRes = false;
 user bool MRIntW_LHand = true;//Left handed doomguy
 nosave bool MRIntW_Smoke = true;//Smoke overlays and in-game particles
 user bool MRIntW_IdleAnims = true;//Idle animations
