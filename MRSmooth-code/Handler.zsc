@@ -1,3 +1,7 @@
+/*
+	Handling animations activation, mod disabling or any other global actions/events
+*/
+
 Class MRIntWeaps_Handler: EventHandler
 {
 	Static Const String Weapons[] = {//Weapons to replace

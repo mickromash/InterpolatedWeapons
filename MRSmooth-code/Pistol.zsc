@@ -6,6 +6,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	}
 	Const Lay1 = 2;
 	Const Lay2 = PSP_FLASH+1;
+	Const DieLay = 3;
 	
 	int BobState, IdleDelay;
 		
@@ -55,18 +56,22 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		
 	States{
 		Select:
-			TNT1 A 0 A_Overlay(Lay1, "GunRaise");
+			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "GunRaise");}
 		Raise:
 			#### A 1 A_Raise();
 			Loop;
 		Deselect:
-			TNT1 A 0 A_Overlay(Lay1, "GunLower");
+			TNT1 A 0 {
+				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
+				A_Overlay(Lay1, "GunLower");
+			}
 		Lower:
 			#### A 1 A_Lower();
 			Loop;
 		
 		GunRaise:
 			TNT1 AAAA 1 {
+				if(invoker.Dropped)invoker.Dropped.Destroy();
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 				if(GetCVar("MRIntW_LHand"))A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);//Left handed
 				A_OverlayPivot(Lay1, .5, 1);
@@ -268,7 +273,6 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
 			}
 			#### DDB 1{
-				//A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1));
 				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
 				Player.GetPSprite(Lay1).X *= .4;
@@ -313,7 +317,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Goto LightDone;
 		
 		Sprites:
-			P2SG ABCDE 0;
+			P2SG A 0;
+			PUN2 A 0;
+			MRD2 A 0;
 			Stop;
 	}
 	

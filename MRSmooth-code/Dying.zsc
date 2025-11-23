@@ -1,0 +1,1352 @@
+/*
+	Weapon droppped by dying player.
+	
+	It's only a visual effect and cannot be picked up or even seen by other players.
+*/
+
+Class MRIntWeaps_FlyingWeapon: VisualThinker
+{
+	Double Gravity;
+	
+	Override Void Tick()
+	{
+		if(Level.IsFrozen())Return;
+		
+		Super.Tick();
+		
+		if(!CurSector)Return;
+		
+		Vel.XY *= .9;
+		
+		
+		if(CurSector.CenterFloor()>=Pos.Z){//if landed
+			Pos.Z = CurSector.CenterFloor();
+			Vel.Z = 0;
+			
+			if(Roll<=-270)Roll = Max(-360, Roll-10);
+			else if(Roll<=-180)Roll = (Roll+180)*.7-180;
+			else Roll *= .7;
+			Return;
+		}
+
+		Roll -= Vel.Length()*4;
+		if(Roll<=-360)Roll = abs(Roll)%360*-1;
+		Vel.Z -= Gravity;
+		
+		let tracer = new('MRIntWeaps_CollisionTracer');//Check collisions
+
+		tracer.Trace(Pos, CurSector, Vel, 15, 0, Line.ML_BLOCKEVERYTHING, true);
+		
+		if(Tracer.HitLine){//Bounce off walls
+			Vel.XY = -Vel.XY*.8;
+		}
+	}
+	
+	Static MRIntWeaps_FlyingWeapon Throw(String Sprite, Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Double Gravity=1, Vector2 Scale=(1,1), int Translation=0, Actor Caller=Null)
+	{
+		if(Players[ConsolePlayer].Camera != Caller)Return Null;
+		
+		Let Weap = MRIntWeaps_FlyingWeapon(level.SpawnVisualThinker('MRIntWeaps_FlyingWeapon'));
+		if(!Weap)Return Null;
+		
+		Weap.Pos = Pos;
+		Weap.Vel = Vel;
+		Weap.Gravity = Gravity;
+		Weap.Texture = Texman.CheckForTexture(Sprite);
+		Weap.Scale = Scale;
+		Weap.Flags = SPF_ROLL|SPF_ROLLCENTER;
+		Weap.CurSector = LevelLocals.PointInSector(Pos.XY);
+				
+		Return Weap;
+	}
+}
+
+class MRIntWeaps_CollisionTracer : LineTracer
+{
+	Line HitLine;
+	
+	override ETraceStatus TraceCallback()
+	{
+		switch(results.HitType)
+		{
+			case TRACE_HitWall:
+				HitLine = Results.HitLine;
+			case TRACE_HitFloor:
+			case TRACE_HitCeiling:
+			case TRACE_HasHitSky:
+				Return TRACE_Stop;
+		}
+
+		return TRACE_Skip;
+	}
+}
+
+Extend Class MRIntWeaps_Fist
+{
+	Double DeadAngle;
+	
+	States
+	{
+		RightHandDie:
+			PUN1 A 0 A_SetHandsSprite();
+			#### ### 1 {A_OverlayOffset(RightLay, 8, 4, WOF_ADD);A_OverlayScale(RightLay, .2, .2, WOF_ADD);}
+			#### # 0 A_Overlay(LeftLay, "LeftHandDead");
+		RightHandDead:
+			#### # 0 {
+				invoker.DeadAngle = Angle;
+			}
+			#### # 0 A_JumpIf(CRandom(0, 10)>4, "RightHandDead1");
+			#### A 1 {
+				A_OverlayOffset(RightLay, 30-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(RightLay, 8);
+				A_OverlayScale(RightLay, 1.1, 1.05);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(RightLay, PSPF_FLIP, true);
+				A_OverlayOffset(RightLay, 240-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(RightLay, 10);
+				A_OverlayScale(RightLay, 1.3, 1);
+			}
+			Wait;
+			
+		LeftHandDie:
+			PUN1 D 0 A_SetHandsSprite();
+			#### ### 1 A_OverlayOffset(LeftLay, CFRandom(-1, 1), 15, WOF_ADD);
+			#### D 1 A_OverlayOffset(LeftLay, -3, Player.ViewZ-FloorZ, WOF_INTERPOLATE);
+		LeftHandDead:
+			PUN1 D 1 {
+				A_SetHandsSprite();
+				A_OverlayOffset(LeftLay, 110-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6-100, WOF_INTERPOLATE);
+				A_OverlayRotate(LeftLay, -25);
+				A_OverlayScale(LeftLay, 1.2, 1.2);
+			}
+			Wait;
+	}
+}
+
+Extend Class MRIntWeaps_Chainsaw
+{
+	Const DieLay = -2;
+	
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("CSAWA0", Pos, Vel, Caller:Self);
+	}
+	Double DeadAngle;
+	int DeadHandL, DeadHandR;
+	Array<int> DeadVariants;
+	Void ResetDead()
+	{
+		DeadVariants.Clear();
+		For(int i=0;i<4;i++)DeadVariants.Push(i);
+		
+		if(Dropped)Dropped.Destroy();
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_Overlay(DieLay, "DyingLeftHand");
+			}
+			PUN1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("PUN2A0");}
+		DyingRightHand:
+			#### # 1 {
+				int L, R;
+				L = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(L);
+				R = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(R);
+				
+				invoker.DeadHandL = L;
+				invoker.DeadHandR = R;
+				
+				A_OverlayPivot(Lay1, 0, .5);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 5, -10, WOF_ADD);
+			}
+			#### ### 1{
+				A_OverlayScale(Lay1, .2, .2, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 10, WOF_ADD);
+			}
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("MRD2A0");}
+			#### # 0 {
+				invoker.DeadAngle = Angle;
+				Switch(invoker.DeadHandR)
+				{
+					Case 1:
+						A_Overlay(OverlayId(), "RightHandDead1");
+						Break;
+					Case 2:
+						A_Overlay(OverlayId(), "RightHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "RightHandDead3");
+				}
+			}
+			#### C 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			#### D 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### D 1 {
+				A_OverlayOffset(Lay1, 70-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6-20, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 8);
+				A_OverlayScale(Lay1, 1.4, 1.3);
+			}
+			Wait;
+		RightHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayOffset(Lay1, 150-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 80);
+				A_OverlayScale(Lay1, 1, .9);
+			}
+			Wait;
+		RightHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(Lay1, PSPF_FLIP, true);
+				A_OverlayOffset(Lay1, 240-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 10);
+				A_OverlayScale(Lay1, 1.3, 1);
+			}
+			Wait;
+			
+		DyingLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### E 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -140, 25);
+				A_OverlayRotate(DieLay, -20);
+			}
+			#### # 1 {
+				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(DieLay, -15, 15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			#### # 0 {
+				Switch(invoker.DeadHandL)
+				{
+					Case 2:
+						A_Overlay(OverlayId(), "LeftHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "LeftHandDead3");
+				}
+			}
+			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+				A_SetTics(CRandom(0, 1));
+			}
+			#### D 1 {
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+			}
+			Wait;
+		LeftHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 80);
+				A_OverlayScale(DieLay, 1, .9);
+			}
+			Wait;
+		LeftHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, false);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 10);
+				A_OverlayScale(DieLay, 1.3, 1);
+			}
+			Wait;
+	}
+}
+
+Extend Class MRIntWeaps_Pistol
+{
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("PISTA0", Pos, Vel, Scale:(.8, .8), Caller:Self);
+	}
+	
+	Double DeadAngle;
+	int DeadHandL, DeadHandR;
+	Array<int> DeadVariants;
+	Void ResetDead()
+	{
+		DeadVariants.Clear();
+		For(int i=0;i<4;i++)DeadVariants.Push(i);
+		
+		if(Dropped)Dropped.Destroy();
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+			}
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("MRD2A0");}
+		DyingRightHand:
+			#### # 1 {
+				int L, R;
+				L = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(L);
+				R = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(R);
+				
+				invoker.DeadHandL = L;
+				invoker.DeadHandR = R;
+				
+				A_OverlayPivot(Lay1, 0, .5);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 5, -10, WOF_ADD);
+			}
+			#### BBB 1{
+				A_OverlayScale(Lay1, .2, .2, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 20, WOF_ADD);
+			}
+			#### # 0{
+				A_Overlay(DieLay, "DeadLeftHand");
+				invoker.DeadAngle = Angle;
+				Switch(invoker.DeadHandR)
+				{
+					Case 1:
+						A_Overlay(OverlayId(), "RightHandDead1");
+						Break;
+					Case 2:
+						A_Overlay(OverlayId(), "RightHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "RightHandDead3");
+				}
+			}
+			#### C 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			#### D 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### D 1 {
+				A_OverlayOffset(Lay1, 70-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6-20, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 8);
+				A_OverlayScale(Lay1, 1.4, 1.3);
+			}
+			Wait;
+		RightHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayOffset(Lay1, 150-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 80);
+				A_OverlayScale(Lay1, 1, .9);
+			}
+			Wait;
+		RightHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(Lay1, PSPF_FLIP, true);
+				A_OverlayOffset(Lay1, 240-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 10);
+				A_OverlayScale(Lay1, 1.3, 1);
+			}
+			Wait;
+			
+		DyingLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### E 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -140, 25);
+				A_OverlayRotate(DieLay, -20);
+			}
+			#### # 1 {
+				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(DieLay, -15, 15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+		DeadLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### # 0 {
+				Switch(invoker.DeadHandL)
+				{
+					Case 2:
+						A_Overlay(OverlayId(), "LeftHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "LeftHandDead3");
+				}
+			}
+			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+				A_SetTics(CRandom(0, 1));
+			}
+			#### D 1 {
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+			}
+			Wait;
+		LeftHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 80);
+				A_OverlayScale(DieLay, 1, .9);
+			}
+			Wait;
+		LeftHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, false);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 10);
+				A_OverlayScale(DieLay, 1.3, 1);
+			}
+			Wait;
+	}
+}
+
+Extend Class MRIntWeaps_Shotgun
+{
+	Const DieLay = -2;
+	
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("SHOTA0", Pos, Vel, Caller:Self);
+	}
+	
+	Double DeadAngle;
+	int DeadHandL, DeadHandR;
+	Array<int> DeadVariants;
+	Void ResetDead()
+	{
+		DeadVariants.Clear();
+		For(int i=0;i<4;i++)DeadVariants.Push(i);
+		
+		if(Dropped)Dropped.Destroy();
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+			}
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("MRD2A0");}
+		DyingRightHand:
+			#### # 1 {
+				int L, R;
+				L = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(L);
+				R = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(R);
+				
+				invoker.DeadHandL = L;
+				invoker.DeadHandR = R;
+				
+				A_OverlayPivot(Lay1, 0, .5);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 5, -10, WOF_ADD);
+			}
+			#### BBB 1{
+				A_OverlayScale(Lay1, .2, .2, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 20, WOF_ADD);
+			}
+			#### # 0{
+				A_Overlay(DieLay, "DeadLeftHand");
+				invoker.DeadAngle = Angle;
+				Switch(invoker.DeadHandR)
+				{
+					Case 1:
+						A_Overlay(OverlayId(), "RightHandDead1");
+						Break;
+					Case 2:
+						A_Overlay(OverlayId(), "RightHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "RightHandDead3");
+				}
+			}
+			#### C 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			#### D 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### D 1 {
+				A_OverlayOffset(Lay1, 70-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6-20, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 8);
+				A_OverlayScale(Lay1, 1.4, 1.3);
+			}
+			Wait;
+		RightHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayOffset(Lay1, 150-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 80);
+				A_OverlayScale(Lay1, 1, .9);
+			}
+			Wait;
+		RightHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(Lay1, PSPF_FLIP, true);
+				A_OverlayOffset(Lay1, 240-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 10);
+				A_OverlayScale(Lay1, 1.3, 1);
+			}
+			Wait;
+			
+		DyingLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### E 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -140, 25);
+				A_OverlayRotate(DieLay, -20);
+			}
+			#### # 1 {
+				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(DieLay, -15, 15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+		DeadLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### # 0 {
+				Switch(invoker.DeadHandL)
+				{
+					Case 2:
+						A_Overlay(OverlayId(), "LeftHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "LeftHandDead3");
+				}
+			}
+			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+				A_SetTics(CRandom(0, 1));
+			}
+			#### D 1 {
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+			}
+			Wait;
+		LeftHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 80);
+				A_OverlayScale(DieLay, 1, .9);
+			}
+			Wait;
+		LeftHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, false);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 10);
+				A_OverlayScale(DieLay, 1.3, 1);
+			}
+			Wait;
+	}
+}
+
+Extend Class MRIntWeaps_Chaingun
+{
+	Const DieLay = -2;
+	
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("MGUNA0", Pos, Vel, Caller:Self);
+	}
+	
+	Double DeadAngle;
+	int DeadHandL, DeadHandR;
+	Array<int> DeadVariants;
+	Void ResetDead()
+	{
+		DeadVariants.Clear();
+		For(int i=0;i<4;i++)DeadVariants.Push(i);
+		
+		if(Dropped)Dropped.Destroy();
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+			}
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("MRD2A0");}
+		DyingRightHand:
+			#### # 1 {
+				int L, R;
+				L = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(L);
+				R = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(R);
+				
+				invoker.DeadHandL = L;
+				invoker.DeadHandR = R;
+				
+				A_OverlayPivot(Lay1, 0, .5);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 5, -10, WOF_ADD);
+			}
+			#### BBB 1{
+				A_OverlayScale(Lay1, .2, .2, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 20, WOF_ADD);
+			}
+			#### # 0{
+				A_Overlay(DieLay, "DeadLeftHand");
+				invoker.DeadAngle = Angle;
+				Switch(invoker.DeadHandR)
+				{
+					Case 1:
+						A_Overlay(OverlayId(), "RightHandDead1");
+						Break;
+					Case 2:
+						A_Overlay(OverlayId(), "RightHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "RightHandDead3");
+				}
+			}
+			#### C 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			#### D 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### D 1 {
+				A_OverlayOffset(Lay1, 70-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6-20, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 8);
+				A_OverlayScale(Lay1, 1.4, 1.3);
+			}
+			Wait;
+		RightHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayOffset(Lay1, 150-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 80);
+				A_OverlayScale(Lay1, 1, .9);
+			}
+			Wait;
+		RightHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(Lay1, PSPF_FLIP, true);
+				A_OverlayOffset(Lay1, 240-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 10);
+				A_OverlayScale(Lay1, 1.3, 1);
+			}
+			Wait;
+			
+		DyingLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### E 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -140, 25);
+				A_OverlayRotate(DieLay, -20);
+			}
+			#### # 1 {
+				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(DieLay, -15, 15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+		DeadLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### # 0 {
+				Switch(invoker.DeadHandL)
+				{
+					Case 2:
+						A_Overlay(OverlayId(), "LeftHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "LeftHandDead3");
+				}
+			}
+			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+				A_SetTics(CRandom(0, 1));
+			}
+			#### D 1 {
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+			}
+			Wait;
+		LeftHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 80);
+				A_OverlayScale(DieLay, 1, .9);
+			}
+			Wait;
+		LeftHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, false);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 10);
+				A_OverlayScale(DieLay, 1.3, 1);
+			}
+			Wait;
+	}
+}
+
+Extend Class MRIntWeaps_RocketLauncher
+{
+	Const DieLay = -3;
+	
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("LAUNA0", Pos, Vel, Caller:Self);
+	}
+	
+	Double DeadAngle;
+	int DeadHandL, DeadHandR;
+	Array<int> DeadVariants;
+	Void ResetDead()
+	{
+		DeadVariants.Clear();
+		For(int i=0;i<4;i++)DeadVariants.Push(i);
+		
+		if(Dropped)Dropped.Destroy();
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+			}
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("MRD2A0");}
+		DyingRightHand:
+			#### # 1 {
+				int L, R;
+				L = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(L);
+				R = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(R);
+				
+				invoker.DeadHandL = L;
+				invoker.DeadHandR = R;
+				
+				A_OverlayPivot(Lay1, 0, .5);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 5, -10, WOF_ADD);
+			}
+			#### BBB 1{
+				A_OverlayScale(Lay1, .2, .2, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 20, WOF_ADD);
+			}
+			#### # 0{
+				A_Overlay(DieLay, "DeadLeftHand");
+				invoker.DeadAngle = Angle;
+				Switch(invoker.DeadHandR)
+				{
+					Case 1:
+						A_Overlay(OverlayId(), "RightHandDead1");
+						Break;
+					Case 2:
+						A_Overlay(OverlayId(), "RightHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "RightHandDead3");
+				}
+			}
+			#### C 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			#### D 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### D 1 {
+				A_OverlayOffset(Lay1, 70-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6-20, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 8);
+				A_OverlayScale(Lay1, 1.4, 1.3);
+			}
+			Wait;
+		RightHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayOffset(Lay1, 150-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 80);
+				A_OverlayScale(Lay1, 1, .9);
+			}
+			Wait;
+		RightHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(Lay1, PSPF_FLIP, true);
+				A_OverlayOffset(Lay1, 240-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 10);
+				A_OverlayScale(Lay1, 1.3, 1);
+			}
+			Wait;
+			
+		DyingLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### E 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -140, 25);
+				A_OverlayRotate(DieLay, -20);
+			}
+			#### # 1 {
+				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(DieLay, -15, 15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+		DeadLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### # 0 {
+				Switch(invoker.DeadHandL)
+				{
+					Case 2:
+						A_Overlay(OverlayId(), "LeftHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "LeftHandDead3");
+				}
+			}
+			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+				A_SetTics(CRandom(0, 1));
+			}
+			#### D 1 {
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+			}
+			Wait;
+		LeftHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 80);
+				A_OverlayScale(DieLay, 1, .9);
+			}
+			Wait;
+		LeftHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, false);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 10);
+				A_OverlayScale(DieLay, 1.3, 1);
+			}
+			Wait;
+	}
+}
+
+Extend Class MRIntWeaps_PlasmaRifle
+{
+	Const DieLay = -4;
+	
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("PLASA0", Pos, Vel, Caller:Self);
+	}
+	
+	Double DeadAngle;
+	int DeadHandL, DeadHandR;
+	Array<int> DeadVariants;
+	Void ResetDead()
+	{
+		DeadVariants.Clear();
+		For(int i=0;i<4;i++)DeadVariants.Push(i);
+		
+		if(Dropped)Dropped.Destroy();
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_ClearOverlays(Lay3, Lay2);
+			}
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("MRD2A0");}
+		DyingRightHand:
+			#### # 1 {
+				int L, R;
+				L = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(L);
+				R = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(R);
+				
+				invoker.DeadHandL = L;
+				invoker.DeadHandR = R;
+				
+				A_OverlayPivot(Lay1, 0, .5);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 5, -10, WOF_ADD);
+				A_ClearOverlays(Lay3, Lay2);
+			}
+			#### BBB 1{
+				A_OverlayScale(Lay1, .2, .2, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 20, WOF_ADD);
+			}
+			#### # 0{
+				A_Overlay(DieLay, "DeadLeftHand");
+				invoker.DeadAngle = Angle;
+				Switch(invoker.DeadHandR)
+				{
+					Case 1:
+						A_Overlay(OverlayId(), "RightHandDead1");
+						Break;
+					Case 2:
+						A_Overlay(OverlayId(), "RightHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "RightHandDead3");
+				}
+			}
+			#### C 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			#### D 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### D 1 {
+				A_OverlayOffset(Lay1, 70-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6-20, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 8);
+				A_OverlayScale(Lay1, 1.4, 1.3);
+			}
+			Wait;
+		RightHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayOffset(Lay1, 150-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 80);
+				A_OverlayScale(Lay1, 1, .9);
+			}
+			Wait;
+		RightHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(Lay1, PSPF_FLIP, true);
+				A_OverlayOffset(Lay1, 240-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 10);
+				A_OverlayScale(Lay1, 1.3, 1);
+			}
+			Wait;
+			
+		DyingLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### E 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -140, 25);
+				A_OverlayRotate(DieLay, -20);
+			}
+			#### # 1 {
+				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(DieLay, -15, 15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+		DeadLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### # 0 {
+				Switch(invoker.DeadHandL)
+				{
+					Case 2:
+						A_Overlay(OverlayId(), "LeftHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "LeftHandDead3");
+				}
+			}
+			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+				A_SetTics(CRandom(0, 1));
+			}
+			#### D 1 {
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+			}
+			Wait;
+		LeftHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 80);
+				A_OverlayScale(DieLay, 1, .9);
+			}
+			Wait;
+		LeftHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, false);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 10);
+				A_OverlayScale(DieLay, 1.3, 1);
+			}
+			Wait;
+	}
+}
+
+Extend Class MRIntWeaps_BFG9000
+{
+	Const DieLay = -4;
+	
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("BFUGA0", Pos, Vel, Caller:Self);
+	}
+	
+	Double DeadAngle;
+	int DeadHandL, DeadHandR;
+	Array<int> DeadVariants;
+	Void ResetDead()
+	{
+		DeadVariants.Clear();
+		For(int i=0;i<4;i++)DeadVariants.Push(i);
+		
+		if(Dropped)Dropped.Destroy();
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_ClearOverlays(Lay4, Lay2);
+				A_ClearOverlays(Lay3, Lay3);
+			}
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("MRD2A0");}
+		DyingRightHand:
+			#### # 1 {
+				int L, R;
+				L = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(L);
+				R = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(R);
+				
+				invoker.DeadHandL = L;
+				invoker.DeadHandR = R;
+				
+				A_OverlayPivot(Lay1, 0, .5);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 5, -10, WOF_ADD);
+				A_ClearOverlays(Lay4, Lay2);
+			}
+			#### BBB 1{
+				A_OverlayScale(Lay1, .2, .2, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 20, WOF_ADD);
+			}
+			#### # 0{
+				A_Overlay(DieLay, "DeadLeftHand");
+				invoker.DeadAngle = Angle;
+				Switch(invoker.DeadHandR)
+				{
+					Case 1:
+						A_Overlay(OverlayId(), "RightHandDead1");
+						Break;
+					Case 2:
+						A_Overlay(OverlayId(), "RightHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "RightHandDead3");
+				}
+			}
+			#### C 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			#### D 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### D 1 {
+				A_OverlayOffset(Lay1, 70-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6-20, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 8);
+				A_OverlayScale(Lay1, 1.4, 1.3);
+			}
+			Wait;
+		RightHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayOffset(Lay1, 150-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 80);
+				A_OverlayScale(Lay1, 1, .9);
+			}
+			Wait;
+		RightHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(Lay1, PSPF_FLIP, true);
+				A_OverlayOffset(Lay1, 240-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 10);
+				A_OverlayScale(Lay1, 1.3, 1);
+			}
+			Wait;
+			
+		DyingLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### E 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -140, 25);
+				A_OverlayRotate(DieLay, -20);
+			}
+			#### # 1 {
+				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(DieLay, -15, 15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+		DeadLeftHand:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
+			#### # 0 {
+				Switch(invoker.DeadHandL)
+				{
+					Case 2:
+						A_Overlay(OverlayId(), "LeftHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "LeftHandDead3");
+				}
+			}
+			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+				A_SetTics(CRandom(0, 1));
+			}
+			#### D 1 {
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 30);
+				A_OverlayScale(DieLay, 1, 1);
+			}
+			Wait;
+		LeftHandDead2:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### F 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 80);
+				A_OverlayScale(DieLay, 1, .9);
+			}
+			Wait;
+		LeftHandDead3:
+			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
+			#### G 1 {
+				A_OverlayFlags(DieLay, PSPF_FLIP, false);
+				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(DieLay, 10);
+				A_OverlayScale(DieLay, 1.3, 1);
+			}
+			Wait;
+	}
+}

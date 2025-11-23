@@ -18,6 +18,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	Actor Cutting; //Actor being cutted
 		
 	Float Recoil;
+		
 	Override Void DoEffect()
 	{
 		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*MRIntW_RecoilAmount);}
@@ -32,12 +33,15 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	
 	States{
 		Select:
-			TNT1 A 0 A_Overlay(Lay1, "SawRaise");
+			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "SawRaise");}
 		Raise:
 			#### A 1 A_Raise();
 			Loop;
 		Deselect:
-			TNT1 A 0 A_Overlay(Lay1, "SawLower");
+			TNT1 A 0 {
+				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
+				A_Overlay(Lay1, "SawLower");
+			}
 		Lower:
 			#### A 1 A_Lower();
 			Loop;
@@ -320,7 +324,9 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			Goto Ready;
 			
 		Sprites:
-			SAW2 ABCDEF 0;
+			SAW2 A 0;
+			PUN2 A 0;
+			MRD2 A 0;
 			Stop;
 	}
 }

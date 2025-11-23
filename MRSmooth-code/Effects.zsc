@@ -1,3 +1,7 @@
+/*
+	Weapon casings and smoke layers
+*/
+
 Class MRIntWeaps_Casing: VisualThinker
 {
 }
@@ -299,7 +303,7 @@ Extend Class MRIntWeaps_Shotgun
 	}
 }
 
-#include "MRSmooth-code/Effects-SSG.zsc"
+//Check "SSG-Stuff.zsc" for Super Shotgun effects
 
 Extend Class MRIntWeaps_Chaingun
 {

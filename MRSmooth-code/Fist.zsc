@@ -422,6 +422,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			#### AA 1 {A_Overlayoffset(RightLay, .1, .05, WOF_ADD);A_OverlayRotate(RightLay, .1, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			#### AAAA 1 {A_Overlayoffset(RightLay, .15, .05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			Goto RightHandWait;
+		
 		//Default gun states
 		Select:
 			TNT1 A 0 {
@@ -433,6 +434,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			Loop;
 		Deselect:
 			TNT1 A 0 {
+				if(Health<1){
+					A_Overlay(RightLay, "RightHandDie");
+					if(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake")))A_Overlay(LeftLay, "LeftHandDie");
+					Return;
+				}
 				A_Overlay(RightLay, "RightHandLower");
 				if(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake")))A_Overlay(LeftLay, "LeftHandLower");
 			}
@@ -484,6 +490,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		Sprites:
 			PUN2 A 0;
 			PUN3 A 0;
+			MRD2 A 0;
 			Stop;
 	}
 	
