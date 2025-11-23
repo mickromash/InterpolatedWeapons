@@ -24,8 +24,10 @@ Extend Class MRIntWeaps_SuperShotgun
 		if(PSP.Y>280+32){
 			Owner.Player.SetPsprite(Lay, Null);
 			Casings[index] = false;
+			if(Age>=CaseLife-10)SpawnRealCasing();
 			Return;
 		}
+		if(Age==CaseLife-10)SpawnRealCasing();
 		
 		//if(Age<CaseLife)PSP.bInterpolate = true;
 		Double VelZ = (Age-(CaseLife-4-Min(2, 1-CasingSpeed)))/2;
@@ -46,6 +48,24 @@ Extend Class MRIntWeaps_SuperShotgun
 		PSP.Rotation += 40;
 		
 		//Console.Printf("Casing "..CaseLife-Age..": "..PSP.Y);
+	}
+	
+	Void SpawnRealCasing()
+	{
+		if(MRIntW_Casings<2)Return;
+		
+		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ);
+		Pos.XY += AngleToVector(Owner.Angle+100, 5);
+		Vector3 Vel = Owner.Vel;
+		Vel += AngleToVector(Owner.Angle+100 + CFRandom(0, 20), CFRandom(3, 5));
+		Vel.Z += CFRandom(-1, 1);
+		
+		Let a = MRIntWeaps_Casing.SpawnCasing(Pos, Vel, true, Scale:(.1, .1));
+		
+		if(a){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.UpdateCasings(a);
+		}
 	}
 	
 	States{
@@ -99,7 +119,9 @@ Extend Class MRIntWeaps_SuperShotgun
 				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}
 			SHTC A 20 A_SetTics(CaseLife);
-			TNT1 A 0 {Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;}
+			TNT1 A 0 {
+				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;
+			}
 			Stop;
 	}
 }
@@ -122,7 +144,7 @@ Extend Class MRIntWeaps_SuperShotgun
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("SH2TA0", Pos, Vel, Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("SGN2A0", Pos, Vel, Caller:Self);
 	}
 	
 	Double DeadAngle;
