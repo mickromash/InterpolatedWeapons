@@ -76,6 +76,7 @@ Class MRIntWeaps_Casing: VisualThinker
 		tracer.Trace(Pos, CurSector, Vel, 2, 0, Line.ML_BLOCKEVERYTHING, true);
 		
 		if(Tracer.HitLine){//Bounce off walls
+			S_StartSoundAt(Pos, ShotgunShell?"MRIntW/ShotgunCasingBounce":"MRIntW/PistolCasing", CHAN_AUTO, volume:.5*MRIntW_CasingsVolume, pitch:CFRandom(.9, 1.05));
 			Vel.XY = -Vel.XY*.8;
 		}
 	}
