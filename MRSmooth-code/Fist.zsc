@@ -485,6 +485,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			}
 			TNT1 A 5;
 			TNT1 A 5 {A_Refire();if(!(Player.OldButtons&BT_ATTACK||Player.Cmd.Buttons&BT_ATTACK))A_Overlay(RightLay, "RightHandUp");}
+			TNT1 A 0 {if(!(Player.OldButtons&BT_ATTACK||Player.Cmd.Buttons&BT_ATTACK))A_Overlay(RightLay, "RightHandUp", true);}
 			Goto Ready;
 		//Caching sprites
 		Sprites:
