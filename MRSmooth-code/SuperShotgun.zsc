@@ -387,16 +387,16 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			Stop;
 			
 		HandLoading:
-			SH12 GG 1 {
+			SH12 G 1 {
 				A_OverlayPivot(LeftHand, .5, .5);
-				A_OverlayOffset(LeftHand, -60, 60);
+				A_OverlayOffset(LeftHand, -70, 80);
 				A_OverlayRotate(LeftHand, -15);
 				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(LeftHand).Sprite = GetSpriteIndex("SH22A0");
 			}
-			#### GG 1 {
-				A_OverlayOffset(LeftHand, 10, -30, WOF_ADD);
-				A_OverlayRotate(LeftHand, 7.5, WOF_ADD);
-				A_OverlayScale(LeftHand, .03, .03, WOF_ADD);
+			#### GGG 1 {
+				A_OverlayOffset(LeftHand, 10, -26.65, WOF_ADD);
+				A_OverlayRotate(LeftHand, 5, WOF_ADD);
+				A_OverlayScale(LeftHand, .02, .02, WOF_ADD);
 				A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, true);
 			}
 			#### G 1 {
