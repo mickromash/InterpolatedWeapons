@@ -234,7 +234,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+invoker.Muzzle*3;
 			}
 			BFG1 AAAAA 1{
-				invoker.Muzzle-=.5;
+				invoker.Muzzle-=.8;
 				Player.GetPSprite(Lay1).X *= .7;
 				Player.GetPSprite(Lay1).Y *= .7;
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.7;
@@ -246,8 +246,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			BFG1 A 1{
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
-				if(invoker.Muzzle>.1)invoker.Muzzle *= .5;
-				else invoker.Muzzle = 0;
+				invoker.Muzzle-=1;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+invoker.Muzzle*3;
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
