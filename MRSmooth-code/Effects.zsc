@@ -32,13 +32,13 @@ Class MRIntWeaps_Casing: VisualThinker
 	Override Void Tick()
 	{
 		if(Landed){
+			Super.Tick();
+			
 			if(CurSector)Pos.Z = CurSector.CenterFloor();
 			if(Vel.XY.Length()>0){
 				Vel.XY *= .6;
 				if(int(Roll%45)>0)Roll = Roll%45*(Vel.XY.Length()/10)+int(Roll/45)*45;
 			}
-			
-			Super.Tick();
 			Return;
 		}
 		
@@ -81,7 +81,7 @@ Class MRIntWeaps_Casing: VisualThinker
 		}
 	}
 	
-	Static MRIntWeaps_Casing SpawnCasing(Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Bool ShotgunShell=false, Double Gravity=1, int Bounce=-1, Vector2 Scale=(.15,.15), int Translation=0)
+	Static MRIntWeaps_Casing SpawnCasing(Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Bool ShotgunShell=false, Double Gravity=1, int Bounce=-1, Vector2 Scale=(.11,.11), int Translation=0)
 	{
 		if(MRIntW_Casings<2)Return Null;
 		
@@ -145,7 +145,7 @@ Extend Class MRIntWeaps_Chainsaw
 				Scale *= .1;
 				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
 				
-				if(Player.GetPSprite(OverlayId()).Scale.Length()>15)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				if(Player.GetPSprite(OverlayId()).Scale.Length()>10)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
 				if(invoker.Smokes[OverlayId()-SmokeStart].Age>6)Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02/* + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1)*/ + Vel.Z;
 				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
 				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
@@ -235,6 +235,7 @@ Extend Class MRIntWeaps_Pistol
 				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
 			}
 			NSHS A 1{
+				A_OverlayPivot(OverlayId(), .5, .5);
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
 				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
 			}
@@ -244,16 +245,16 @@ Extend Class MRIntWeaps_Pistol
 				
 				Player.GetPSprite(OverlayId()).Alpha-=.01;
 				
-				Float Scale = (CFRandom(.09, .13) + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.2);
+				Float Scale = (CFRandom(.09, .13) + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.5);
 				Scale -= (invoker.Smokes[Index].Vel.Y);
 				Scale *= .1;
 				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
 				
-				if(Player.GetPSprite(OverlayId()).Scale.Length()>15)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				if(Player.GetPSprite(OverlayId()).Scale.Length()>7)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
 				Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02 + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1) + Vel.Z;
 				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
 				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
-				Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90) + Vel.Y*Sin(Angle+90)*5);
+				Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90)*5 + Vel.Y*Sin(Angle+90)*5);
 				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
 				
 				if(Player.GetPSprite(OverlayId()).Alpha<=0){
@@ -362,6 +363,7 @@ Extend Class MRIntWeaps_Shotgun
 				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
 			}
 			NSHS A 1{
+				A_OverlayPivot(OverlayId(), .5, .5);
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
 				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
 			}
@@ -371,16 +373,16 @@ Extend Class MRIntWeaps_Shotgun
 				
 				Player.GetPSprite(OverlayId()).Alpha-=.01;
 				
-				Float Scale = (CFRandom(.09, .13) + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.2);
+				Float Scale = (CFRandom(.09, .13) + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.5);
 				Scale -= (invoker.Smokes[Index].Vel.Y);
 				Scale *= .1;
 				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
 				
-				if(Player.GetPSprite(OverlayId()).Scale.Length()>15)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				if(Player.GetPSprite(OverlayId()).Scale.Length()>8)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
 				Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02 + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1) - Vel.Z;
 				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
 				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
-				Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90) + Vel.Y*Sin(Angle+90)*5);
+				Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90)*5 + Vel.Y*Sin(Angle+90)*5);
 				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
 				
 				if(Player.GetPSprite(OverlayId()).Alpha<=0){
