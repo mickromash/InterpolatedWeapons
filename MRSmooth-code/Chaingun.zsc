@@ -292,7 +292,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		GunLower:
 			CH1G # 1 {
 				A_ClearOverlays(AnimLay, AnimLay);
-				Double Ofst = 32-Player.GetPSprite(Lay1).Y;
+				Double Ofst = Player.GetPSprite(PSP_WEAPON).Y-Player.GetPSprite(Lay1).Y;
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayPivot(i, .5, 0);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_ADDWEAPON|PSPF_INTERPOLATE, false);
 				For(int i=Muzzle0;i<=Ring;i++){Player.GetPSprite(i).Y += Ofst;Player.GetPSprite(i).OldY = Player.GetPSprite(i).Y;}//A_OverlayOffset(i, 0, 32, WOF_ADD|WOF_INTERPOLATE);}
