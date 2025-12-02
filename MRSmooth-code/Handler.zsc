@@ -9,6 +9,8 @@ Class MRIntWeaps_Handler: EventHandler
 		"Chaingun", "RocketLauncher", "PlasmaRifle", "BFG9000"
 	};
 	
+	Array<Actor> Berserks;
+	
 	Void GiveWeapons(Actor Plr)//Replace player's vanilla weapons with the mods'
 	{
 		if(!Plr)Return;
@@ -86,6 +88,9 @@ Class MRIntWeaps_Handler: EventHandler
 				Weap.Destroy();
 			}
 		}
+		
+		For(int i=0;i<Berserks.Size();i++){if(Berserks[i])Berserks[i].Destroy();}
+		Berserks.Clear();
 	}
 	
 	Override Void PlayerSpawned(PlayerEvent e)
@@ -96,6 +101,16 @@ Class MRIntWeaps_Handler: EventHandler
 	Override Void PlayerRespawned(PlayerEvent e)
 	{
 		GiveWeapons(Players[e.PlayerNumber].mo);
+	}
+	
+	Override Void WorldThingSpawned(WorldEvent e)
+	{
+		if(!e.Thing)Return;
+		if(e.Thing is 'Berserk' || Actor.GetReplacee('Berserk') == e.Thing.GetClass()){
+			Let a = e.Thing.Spawn("MRIntWeaps_FistSelector", e.Thing.Pos);
+			a.Master = e.Thing;
+			Berserks.Push(a);
+		}
 	}
 	
 	Override Void NetworkProcess(ConsoleEvent e)
