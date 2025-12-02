@@ -459,8 +459,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				
 				invoker.IdleDelay = -35*CRandom(20, 40);
 			}
-			#### ##### 1{
-				invoker.HandPos -= .2;
+			#### ######## 1{
+				invoker.HandPos -= .125;
 			
 				Vector2 BarOfst;
 				BarOfst.X += Cos(invoker.Rotation%60)*16;
@@ -471,12 +471,28 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayRotate(Hand, -6+6*invoker.HandPos, WOF_INTERPOLATE);
 			}
 			#### # 0 A_Overlay(Hand+1, "IdleRotate");
-			#### # 2{
+			#### # 1{
 				Vector2 BarOfst;
 				BarOfst.X += Cos(invoker.Rotation%60)*16;
 				BarOfst.Y += Sin(invoker.Rotation%60)*15;
 				
 				A_OverlayOffset(Hand, -5*invoker.HandPos-BarOfst.X, 20*invoker.HandPos-BarOfst.Y, WOF_INTERPOLATE);
+				A_OverlayScale(Hand, .8+invoker.HandPos*.5, .8+invoker.HandPos*.5, WOF_INTERPOLATE);
+				A_OverlayRotate(Hand, -6+6*invoker.HandPos, WOF_INTERPOLATE);
+				
+				invoker.HandVector = (Player.GetPSprite(Hand).X, Player.GetPSprite(Hand).Y);
+			}
+			#### # 1{
+				invoker.HandVector = (Player.GetPSprite(Hand).X, Player.GetPSprite(Hand).Y);
+				Vector2 BarOfst;
+				BarOfst.X += Cos(invoker.Rotation%60)*16;
+				BarOfst.Y += Sin(invoker.Rotation%60)*15;
+				
+				Vector2 Dir = (-5*invoker.HandPos-BarOfst.X, 20*invoker.HandPos-BarOfst.Y);
+				
+				Dir = ((Dir.X-invoker.HandVector.X)*.5, (Dir.Y-invoker.HandVector.Y)*.5);
+				
+				A_OverlayOffset(Hand, Dir.X, Dir.Y, WOF_ADD);
 				A_OverlayScale(Hand, .8+invoker.HandPos*.5, .8+invoker.HandPos*.5, WOF_INTERPOLATE);
 				A_OverlayRotate(Hand, -6+6*invoker.HandPos, WOF_INTERPOLATE);
 				
@@ -535,9 +551,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					Return;
 				}
 				invoker.HandPos += .4;
-				A_OverlayOffset(Hand, -5, 7, WOF_ADD);
+				A_OverlayOffset(Hand, -4, 7, WOF_ADD);
 				A_OverlayScale(Hand, .01, .01, WOF_ADD);
-				invoker.Speed -= CRandom(40, 50);
+				invoker.Speed -= CRandom(40, 60);
 			}
 			Wait;
 		IdleRotate:
