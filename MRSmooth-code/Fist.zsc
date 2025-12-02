@@ -495,13 +495,13 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			Stop;
 	}
 	
-	//Select fists on berserk pickup
+	/*//Select fists on berserk pickup
 	Override Bool HandlePickup(Inventory item)
 	{
 		if(item is 'PowerStrength')Owner.A_SelectWeapon("MRIntWeaps_Fist");
 		
 		Return Super.HandlePickup(item);
-	}
+	}*/
 	
 	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
 	{
@@ -550,10 +550,10 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		}
 	}
 	
-	/*Action Void A_BersShake()
+	Action Void A_BersShake()
 	{
 		if((CountInv("PowerStrength") && GetCVar("MRIntW_BersShake"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(RightLay, CFRandom(-.5, .5), CFRandom(-.5, .5), WOF_ADD);
-	}*/
+	}
 }
 
 Class MRIntWeaps_FistSelector: CustomInventory
