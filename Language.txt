@@ -66,6 +66,8 @@ MRIntW_ChainsawCuttingWall = "Chainsaw surface cutting shaking";
 
 MRIntW_LHand = "Hold the pistol in the left hand";
 
+MRIntW_ChaingunCounterClock = "CounterClockwise rotation";
+
 
 MRIntWeaps_SoundMenu = "Sounds settings (add-on required)";
 
@@ -132,6 +134,8 @@ MRIntW_ChainsawCutting = "Улучшенная анимация распилив
 MRIntW_ChainsawCuttingWall = "Тряска бензопилы при распиливании поверхностей";
 
 MRIntW_LHand = "Держать пистолет в левой руке";
+
+MRIntW_ChaingunCounterClock = "Вращать стволы против часовой";
 
 MRIntWeaps_Give = "Сделать анимации плавными";
 

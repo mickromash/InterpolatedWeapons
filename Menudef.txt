@@ -56,6 +56,9 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	StaticText ""
 	StaticText "$TAG_PISTOL", "Fire"
 	Option "$MRIntW_LHand", "MRIntW_LHand", "YesNo"
+	StaticText ""
+	StaticText "$TAG_CHAINGUN", "Fire"
+	Option "$MRIntW_ChaingunCounterClock", "MRIntW_ChaingunCounterClock", "YesNo"
 }
 
 OptionMenu "MRIntWeaps_SoundMenu"
