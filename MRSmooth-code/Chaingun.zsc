@@ -64,7 +64,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			
 			GunFrame += Speed*.03;
 			if(GunFrame>=4)GunFrame -= 4;
-			else if(GunFrame<0)GunFrame = 3;
+			else if(GunFrame<0)GunFrame += 4;
 			
 			if(Owner.Player.FindPSprite(Lay1))Owner.Player.GetPSprite(Lay1).Frame = GunFrame;
 		}
@@ -412,7 +412,11 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Stop;
 		AltFire:
 			TNT1 A 1 {
-				if(invoker.Speed>-20)invoker.Speed--;
+				if(abs(invoker.Speed)<20)invoker.Speed--;
+				
+				For(int i=Muzzle0;i<=Muzzle5;i++){
+					A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+				}
 			}
 			Goto Ready;
 		GunFlash://Muzzle flash
