@@ -16,6 +16,7 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 	Override Void Tick()
 	{
 		if(Landed){
+			Super.Tick();
 			Vel.XY *= .9;
 			if(CurSector)Pos.Z = CurSector.CenterFloor();
 			
@@ -24,7 +25,7 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 				Roll = -(Roll%180*.7+int(Roll/180)*180);
 				
 			}
-			Super.Tick();
+			
 			Return;
 		}
 		
@@ -689,7 +690,7 @@ Extend Class MRIntWeaps_Shotgun
 
 Extend Class MRIntWeaps_Chaingun
 {
-	Const DieLay = -2;
+	Const DieLay = -3;
 	
 	MRIntWeaps_FlyingWeapon Dropped;
 	Action Void A_DropWeapon()
@@ -724,6 +725,9 @@ Extend Class MRIntWeaps_Chaingun
 		GunDie:
 			TNT1 A 0 {
 				A_DropWeapon();
+				A_ClearOverlays(Muzzle0, Lay1-1);
+				A_ClearOverlays(Lay1+1, AnimLay);
+				A_ClearOverlays(Lay2, Lay2);
 			}
 			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("MRD2A0");}
 		DyingRightHand:

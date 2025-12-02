@@ -78,6 +78,7 @@ Extend Class MRIntWeaps_SuperShotgun
 				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
 			}
 			NSHS A 1{
+				A_OverlayPivot(OverlayId(), .5, .5);
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, True);
 				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
 			}
@@ -96,7 +97,7 @@ Extend Class MRIntWeaps_SuperShotgun
 				//Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02 + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1) + Vel.Z;
 				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
 				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
-				//Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90) + Vel.Y*Sin(Angle+90)*5);
+				//Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90)*5 + Vel.Y*Sin(Angle+90)*5);
 				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
 				
 				if(Player.GetPSprite(OverlayId()).Alpha<=0){
