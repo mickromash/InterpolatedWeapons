@@ -561,9 +561,13 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				invoker.Speed -= CFRandom(.1, .5);
 				A_SetTics(CRandom(1, 2));
 			}
-			#### # 0 A_JumpIf(CRandom(0, 10)>3, 2);
+			#### # 2 A_SetTics(CRandom(1, 2));
+			#### # 0 A_JumpIf(CRandom(0, 10)>3, "IdleRotateEnd");
+			#### ### 1 {invoker.Speed += CFRandom(.2, .4);}
 			#### A 0 A_Overlay(Hand, "HandIdleEndSpeen");
 			Stop;
+		IdleRotateEnd:
+			#### # 1 A_SetTics(CRandom(1, 4)*3);
 			TNT1 A 0 A_Overlay(Hand, "HandIdleEnd");
 			Stop;
 			
