@@ -4,6 +4,7 @@
 	{
 		Translation "1:1=1:1"
 	}
+	With that, game palette will be applied to graphics
 	
 	Also copy these into TEXTURES.txt after editing it!
 */
@@ -34,6 +35,29 @@ NoTrim "P2SGF0"
 NoTrim "P1SFA0"
 NoTrim "P1SFB0"
 NoTrim "P1SFC0"
+NoTrim "CH1MA0"
+NoTrim "CH1MB0"
+NoTrim "CH1MC0"
+NoTrim "CH1MD0"
+NoTrim "CH1ME0"
+NoTrim "CH1GA0"
+NoTrim "CH1GB0"
+NoTrim "CH1GC0"
+NoTrim "CH1GD0"
+NoTrim "CH1BA0"
+NoTrim "CH1BB0"
+NoTrim "CH1BC0"
+NoTrim "CH1BD0"
+NoTrim "CH1BE0"
+NoTrim "CH1BF0"
+NoTrim "CH1BG0"
+NoTrim "CH1RA0"
+NoTrim "CH1RB0"
+NoTrim "CH1RC0"
+NoTrim "CH1RD0"
+NoTrim "CH1FA0"
+NoTrim "CH1FB0"
+NoTrim "CH1FC0"
 NoTrim "MRD1A0"
 NoTrim "MRD1B0"
 NoTrim "MRD1C0"
