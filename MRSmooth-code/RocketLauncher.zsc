@@ -229,7 +229,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		GunFlash2:
 			MI1F C 1 BRIGHT {
 				A_OverlayPivot(OverlayId(), .5, .5);
-				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
 				Player.GetPSprite(OverlayId()).Alpha = .7;
 				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
 				A_OverlayScale(Overlayid(), 1, 1);
@@ -238,10 +238,12 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			MI1F DD 1 BRIGHT A_OverlayScale(OverlayId(), .1, .1, WOF_ADD);
 			#### # 0 A_OverlayScale(OverlayId(), 1, 1);
 			MI1F E 1 BRIGHT;
-			MI1F E 1 BRIGHT {A_OverlayScale(OverlayId(), .015, .015, WOF_ADD);A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);}
+			MI1F E 1 BRIGHT {A_OverlayScale(OverlayId(), .015, .015, WOF_ADD);A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);}
 			MI1F EEEE 1 BRIGHT {
 				A_OverlayScale(OverlayId(), .025, .025, WOF_ADD);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
 				Player.GetPSprite(OverlayId()).Alpha -= .2;
+				if(GetCVar("MRIntW_NoMuzzleFlash")||Player.GetPSprite(OverlayId()).Alpha<=0)A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
 			#### # 0 {invoker.Explosions--;}
 			Stop;

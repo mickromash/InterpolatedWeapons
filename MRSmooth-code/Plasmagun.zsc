@@ -99,7 +99,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Loop;
 		GunMuzzleFlash:
 			PLSF # 1 BRIGHT{
-				A_OverlayFlags(Lay3, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_OverlayFlags(Lay3, PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
 				A_OverlayRenderStyle(Lay3, STYLE_ColorAdd);
 				A_OverlayAlpha(Lay3, 1);
 				if(Player.FindPSprite(PSP_WEAPON).Y>40)A_ClearOverlays(Lay3, Lay3);
