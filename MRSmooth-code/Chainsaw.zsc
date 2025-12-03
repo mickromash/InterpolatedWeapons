@@ -93,7 +93,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, CFRandom(1, 1.025), CFRandom(1, 1.025), WOF_INTERPOLATE);
 				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SAW2A0");
 				
-				if(MRIntW_Smoke){
+				if(MRIntW_ChainsawSmoke){
 					int index;
 					For(index=0;index<invoker.Smokes.Size()+1;index++){
 						if(index>=invoker.Smokes.Size()){index=-1;Break;}
@@ -263,7 +263,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				if(invoker.SawPos>0 && !invoker.CutDir)invoker.SawPos -= .25;
 				else if(invoker.SawPos<1 && invoker.CutDir)invoker.SawPos += .25;
 				
-				if(MRIntW_Smoke){
+				if(MRIntW_ChainsawSmoke){
 					int index;
 					For(index=0;index<invoker.Smokes.Size()+1;index++){
 						if(index>=invoker.Smokes.Size()){index=-1;Break;}

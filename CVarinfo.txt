@@ -27,3 +27,4 @@ user int MRIntW_PunchingFist = 0;//0 - punch with only main fist,
 user bool MRIntW_BareHands = true;
 user bool MRIntW_ChaingunCounterClock = false;//Inver chaingub spin direction
 user bool MRIntW_NoMuzzleFlash = false;
+nosave bool MRIntW_ChainsawSmoke = false;
