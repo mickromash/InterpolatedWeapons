@@ -269,7 +269,10 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				}
 				A_OverlayOffset(Lay1, 51, 0);
 			}
-			CH1G # 0 {invoker.Speed=-205.6;}
+			CH1G # 0 {
+				invoker.ConterClock = GetCVar("MRIntW_ChaingunCounterClock");
+				invoker.Speed = 205.6;
+			}
 			CH1G ########### 1 {
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, -4, -.5, WOF_ADD);
 				For(int i=Muzzle0;i<=Muzzle5;i++){
@@ -281,7 +284,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Vector2 Ofst = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, -Ofst.X, -Ofst.Y, WOF_ADD);
 			}
-			#### # 0 {if(CRandom(0, 100)==1)invoker.Speed += CRandom(1, 7)*5;}
+			#### # 0 {if(CRandom(0, 100)<2)invoker.Speed += CRandom(1, 7)*5;}
 		GunWait:
 			CH1G # 1 A_IdleAnimation(Lay1);
 			#### # 0 {
@@ -551,19 +554,19 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					Return;
 				}
 				invoker.HandPos += .4;
-				A_OverlayOffset(Hand, -4, 7, WOF_ADD);
-				A_OverlayScale(Hand, .01, .01, WOF_ADD);
-				invoker.Speed -= CRandom(40, 60);
+				A_OverlayOffset(Hand, -3, 8, WOF_ADD);
+				A_OverlayScale(Hand, .005, .005, WOF_ADD);
+				invoker.Speed -= invoker.ConterClock?-CRandom(40, 60):CRandom(40, 60);
 			}
 			Wait;
 		IdleRotate:
 			TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
-				invoker.Speed -= CFRandom(.1, .5);
+				invoker.Speed -= invoker.ConterClock?-CFRandom(.1, .5):CFRandom(.1, .5);
 				A_SetTics(CRandom(1, 2));
 			}
 			#### # 2 A_SetTics(CRandom(1, 2));
 			#### # 0 A_JumpIf(CRandom(0, 10)>3, "IdleRotateEnd");
-			#### ### 1 {invoker.Speed += CFRandom(.2, .4);}
+			#### ### 1 {invoker.Speed += invoker.ConterClock?-CFRandom(.2, .4):CFRandom(.2, .4);}
 			#### A 0 A_Overlay(Hand, "HandIdleEndSpeen");
 			Stop;
 		IdleRotateEnd:
