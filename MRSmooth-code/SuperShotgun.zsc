@@ -10,7 +10,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	Const Lay3 = 1500;//Barrels layer over shell
 	
 	int BobState, IdleDelay;
-	Bool LowerOpen;//For switching mid reload
+	Bool LowerOpen, //For switching mid reload
+		Reloading;//Disable smoke calls from doeffect during reloading
 		
 	Float Recoil;
 	Override Void DoEffect()
@@ -20,6 +21,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		For(int i=0;i<Casings.Size();i++){
 			if(Casings[i])DoCasing(i);
 		}
+		
+		MuzzleSmoke();
 		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
@@ -64,7 +67,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		Deselect:
 			TNT1 A 0 {
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				A_Overlay(Lay1, "GunLower");
+				if(!invoker.LowerOpen)A_Overlay(Lay1, "GunLower");
 			}
 		Lower:
 			#### A 1 A_Lower();
@@ -72,6 +75,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		
 		GunRaise:
 			TNT1 AAAA 1 {
+				invoker.Reloading = false;
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 				A_OverlayPivot(Lay1, .5, 0);
 				A_OverlayOffset(Lay1, 51, 89);
@@ -106,13 +110,15 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			SH12 A 1 {
 				invoker.LowerOpen = false;if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH22A0");
 				A_IdleAnimation(Lay1);
+				//A_OverlayRotate(Lay1, -.2, WOF_ADD);
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
+			//#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		GunLower:
 			#### # 0 A_JumpIf(invoker.LowerOpen, "GunLowerOpen");
 			SH12 A 1 {
+				invoker.Reloading = false;
 				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH22A0");
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayOffset(Lay1, 0, Player.GetPSprite(PSP_WEAPON).Y);
@@ -142,16 +148,28 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		GunLowerOpen:
 			SH12 D 1 {
 				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH22A0");
-				A_OverlayPivot(Lay1, .5, 0);
-				A_OverlayOffset(Lay1, -80, -25);
-				A_OverlayRotate(Lay1, 4);
-				A_OverlayScale(Lay1, 1, 1);
+				/*A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayOffset(Lay1, -105, -25);
+				A_OverlayRotate(Lay1, 10);
+				A_OverlayScale(Lay1, 1, 1);*/
+				
+				A_OverlayOffset(Lay1, -15, 2, WOF_ADD);
+				A_OverlayRotate(Lay1, 2, WOF_ADD);
+				A_OverlayScale(Lay1, .01, .01, WOF_ADD);
+				
+				Double Rot = Player.GetPSprite(Lay1).Rotation;
+				
+				invoker.MuzzleSmoke((-30+Rot, 0-Rot), (-15+Rot, -5-Rot));
 			}
 			#### ################ 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -12, 2, WOF_ADD);
-				A_OverlayRotate(Lay1, 2, WOF_ADD);
+				A_OverlayOffset(Lay1, -15, 3, WOF_ADD);
+				A_OverlayRotate(Lay1, 3, WOF_ADD);
 				A_OverlayScale(Lay1, .01, .01, WOF_ADD);
+				
+				Double Rot = Player.GetPSprite(Lay1).Rotation;
+				
+				invoker.MuzzleSmoke((-30+Rot, 0-Rot), (-15+Rot, -5-Rot));
 			}
 			Stop;
 		GunIdle1:
@@ -217,7 +235,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			Goto Ready;
 			
 		GunFire:
-			SH12 # 0 {A_OverlayPivot(Lay1, .5, .5);if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH22A0");}
+			SH12 # 0 {
+				A_OverlayPivot(Lay1, .5, .5);
+				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH22A0");
+				invoker.Reloading = false;
+			}
 			#### # 0 A_JumpIf(MRIntW_InstantFire, 3);
 			#### A 2;
 			#### A 1 A_OverlayOffset(Lay1, 0, 1, WOF_ADD);
@@ -263,20 +285,73 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayOffset(Lay1, CFRandom(-2, 2), CFRandom(0, 2), WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-.5, .5), WOF_INTERPOLATE);
 			}
-			#### B 1 {invoker.LowerOpen = true;A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayPivot(Lay1, .5, 1);}//Start Reload
-			#### BCC 1 A_OverlayOffset(Lay1, -10, -5, WOF_ADD);
-			#### CD 1 A_OverlayOffset(Lay1, -20, -5, WOF_ADD);
-			#### DD 1 {A_OverlayOffset(Lay1, -10, -2, WOF_ADD);A_OverlayRotate(Lay1, 2, WOF_ADD);}//ReloadCheck
-			#### DD 1 {A_OverlayRotate(Lay1, 1.5, WOF_ADD);A_OverlayOffset(Lay1, -3, -1, WOF_ADD);}
+			#### B 1 {//Start Reload
+				invoker.Reloading = true;
+				invoker.LowerOpen = true;A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayPivot(Lay1, .5, 1);
+				
+				invoker.MuzzleSmoke((-17, 8), (-3, 3));
+			}
+			#### BCC 1 {
+				A_OverlayOffset(Lay1, -10, -5, WOF_ADD);
+				
+				if(Player.GetPSprite(Lay1).Frame<2)invoker.MuzzleSmoke((-17, 8), (-3, 3));
+				else invoker.MuzzleSmoke((-20, 0), (-12, -5));
+			}
+			#### CD 1 {
+				A_OverlayOffset(Lay1, -20, -5, WOF_ADD);
+				
+				if(Player.GetPSprite(Lay1).Frame<3)invoker.MuzzleSmoke((-20, 0), (-12, -5));
+				else invoker.MuzzleSmoke((-30, 0), (-15, -5));
+			}
+			#### DD 1 {//ReloadCheck
+				A_OverlayOffset(Lay1, -10, -2, WOF_ADD);
+				A_OverlayRotate(Lay1, 2, WOF_ADD);
+				
+				Double Rot = Player.GetPSprite(Lay1).Rotation;
+				
+				invoker.MuzzleSmoke((-30+Rot, 0-Rot), (-15+Rot, -5-Rot));
+			}
+			#### DD 1 {
+				A_OverlayRotate(Lay1, 1.5, WOF_ADD);
+				A_OverlayOffset(Lay1, -3, -1, WOF_ADD);
+				
+				Double Rot = Player.GetPSprite(Lay1).Rotation;
+				
+				invoker.MuzzleSmoke((-30+Rot, 0-Rot), (-20+Rot, -5-Rot));
+			}
+			#### # 0 A_JumpIf(InStateSequence(Player.GetPSprite(PSP_WEAPON).CurState, invoker.FindState("Deselect")), "GunLowerOpen");
 			#### # 0 {invoker.LowerOpen = false;}
-			#### DDD 1 {A_OverlayRotate(Lay1, -7, WOF_ADD);A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);A_OverlayOffset(Lay1, 25, 8, WOF_ADD);}//Openin
+			#### DDD 1 {//Openin
+				A_OverlayRotate(Lay1, -7, WOF_ADD);
+				A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);
+				A_OverlayOffset(Lay1, 25, 8, WOF_ADD);
+				
+				Double Rot = Player.GetPSprite(Lay1).Rotation*2;
+				Double Scal = Player.GetPSprite(lay1).Scale.X;
+				
+				invoker.MuzzleSmoke((-25*Scal-Rot*2, 5/Scal-Rot), (-15*Scal-Rot*2, 1/Scal-Rot));
+			}
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayPivot(Lay1, .5, 0);}
 			#### P 0 A_JumpIf(GetCVar("MRIntW_Casings"), 2);
 			#### E 0;
-			#### # 1 {A_OverlayRotate(Lay1, 50);A_OverlayScale(Lay1, 1, 1);A_OverlayOffset(Lay1, -30, 10);}
-			#### ## 1 {A_OverlayRotate(Lay1, -43, WOF_ADD);A_OverlayOffset(Lay1, 30, 6, WOF_ADD);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
+			#### # 1 {
+				A_OverlayRotate(Lay1, 50);
+				A_OverlayScale(Lay1, 1, 1);
+				A_OverlayOffset(Lay1, -30, 10);
+				
+				invoker.MuzzleSmoke((40, 0), (50, -2));
+			}
+			#### ## 1 {
+				A_OverlayRotate(Lay1, -43, WOF_ADD);
+				A_OverlayOffset(Lay1, 30, 6, WOF_ADD);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				
+				int Frame = (Player.GetPSprite(Lay1).Rotation-7.)/-43;
+				
+				invoker.MuzzleSmoke((45, 10+Frame*10), (55, 8+Frame*10));
+			}
 			#### # 0{
-				if(MRIntW_Smoke){//Smoke
+				if(MRIntW_ShotgunSmoke){//Smoke
 					Double Alpha = CFRandom(.01, .08)*3;
 					int Amount = CRandom(0, 1);
 					For(int i=Amount;i<3;i++){
@@ -350,6 +425,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				
 				A_OverlayRotate(Lay3, -2, WOF_ADD);
 				A_OverlayOffset(Lay3, 10, 5);
+				
+				invoker.MuzzleSmoke((60, 75), (62, 75));
 			}
 			#### F 1 {
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
@@ -357,28 +434,68 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				
 				A_OverlayRotate(Lay3, -2, WOF_ADD);
 				A_OverlayOffset(Lay3, -6, -3, WOF_ADD);
-			}
-			#### F 1  {A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayOffset(Lay3, 0, 0, WOF_INTERPOLATE);}
-			#### # 0 A_Overlay(LeftHand, "HandLoading");
-			#### FF 4 {//Waiting for the shell
-				Vector2 Rand = (CFRandom(-.5, .5), CFRandom(0, 1));
-				A_OverlayOffset(Lay1, Rand.X, Rand.Y, WOF_INTERPOLATE);
 				
-				A_OverlayOffset(Lay3, Rand.X, Rand.Y, WOF_INTERPOLATE);
+				invoker.MuzzleSmoke((60, 75), (62, 75));
 			}
-			#### F 1;//Load
-			#### F 1 {A_OverlayOffset(LeftHand, 10, 7, WOF_ADD);A_OverlayOffset(Lay1, 8, 6, WOF_ADD);A_OverlayOffset(Lay3, 8, 6, WOF_ADD);}
-			#### F 1 {A_OverlayOffset(LeftHand, 14, 8, WOF_ADD);A_OverlayOffset(Lay1, 8, 6, WOF_ADD);A_OverlayOffset(Lay3, 8, 6, WOF_ADD);}
-			#### JJ 1 {A_OverlayOffset(Lay1, 8, 12, WOF_ADD);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
-			#### Z 1;
-			#### K 1 {A_OverlayRotate(Lay1, -50);A_OverlayOffset(Lay1, 55, 45);}
-			#### KK 1 {A_OverlayRotate(Lay1, 1, WOF_ADD);A_OverlayOffset(Lay1, 3, -4, WOF_ADD);}
-			#### KKK 1 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayRotate(Lay1, 16, WOF_ADD);A_OverlayOffset(Lay1, -12, -20, WOF_ADD);}
-			#### KKK 1 {A_OverlayOffset(Lay1, -25, 11, WOF_ADD);A_OverlayRotate(Lay1, 13, WOF_ADD);}
+			#### F 1  {A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayOffset(Lay3, 0, 0, WOF_INTERPOLATE);invoker.MuzzleSmoke((60, 75), (62, 75));}
+			#### # 0 A_Overlay(LeftHand, "HandLoading");
+			#### FFFFFFFF 1 {//Waiting for the shell
+				if(GetAge()%4==0){
+					Vector2 Rand = (CFRandom(-.5, .5), CFRandom(0, 1));
+					
+					A_OverlayOffset(Lay1, Rand.X, Rand.Y, WOF_INTERPOLATE);
+					
+					A_OverlayOffset(Lay3, Rand.X, Rand.Y, WOF_INTERPOLATE);
+				}
+				
+				invoker.MuzzleSmoke((60, 75), (62, 75));
+			}
+			#### F 1{invoker.MuzzleSmoke((60, 75), (62, 75));}//Load
+			#### F 1 {
+				A_OverlayOffset(LeftHand, 10, 7, WOF_ADD);
+				A_OverlayOffset(Lay1, 8, 6, WOF_ADD);
+				A_OverlayOffset(Lay3, 8, 6, WOF_ADD);
+				
+				invoker.MuzzleSmoke((60, 75), (62, 75));
+			}
+			#### F 1 {
+				A_OverlayOffset(LeftHand, 14, 8, WOF_ADD);
+				A_OverlayOffset(Lay1, 8, 6, WOF_ADD);
+				A_OverlayOffset(Lay3, 8, 6, WOF_ADD);
+				
+				invoker.MuzzleSmoke((60, 75), (62, 75));
+			}
+			#### JJ 1 {A_OverlayOffset(Lay1, 8, 12, WOF_ADD);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);invoker.MuzzleSmoke((60, 75), (62, 75));}
+			#### Z 1 {invoker.MuzzleSmoke((60, 75), (62, 75));}
+			#### K 1 {
+				A_OverlayRotate(Lay1, -50);
+				A_OverlayOffset(Lay1, 55, 45);
+				
+				invoker.MuzzleSmoke((45, 40), (55, 40));
+			}
+			#### KK 1 {
+				A_OverlayRotate(Lay1, 1, WOF_ADD);
+				A_OverlayOffset(Lay1, 3, -4, WOF_ADD);
+				
+				invoker.MuzzleSmoke((45, 40), (55, 40));
+			}
+			#### KKK 1 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayRotate(Lay1, 16, WOF_ADD);
+				A_OverlayOffset(Lay1, -12, -20, WOF_ADD);
+				
+				invoker.MuzzleSmoke((45, 40), (55, 40));
+			}
+			#### KKK 1 {
+				A_OverlayOffset(Lay1, -25, 11, WOF_ADD);
+				A_OverlayRotate(Lay1, 13, WOF_ADD);
+				
+				invoker.MuzzleSmoke((45, 40), (55, 40));
+			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
-			#### B 1 {A_OverlayRotate(Lay1, 0);A_OverlayOffset(Lay1, -5, -5);}
-			#### B 1 {A_OverlayOffset(Lay1, -10, 10, WOF_INTERPOLATE);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
-			#### A 1 {A_OverlayOffset(Lay1, -CFRandom(4, 8), CFRandom(3, 6));A_OverlayRotate(Lay1, CFRandom(1, 2));}
+			#### B 1 {A_OverlayRotate(Lay1, 0);A_OverlayOffset(Lay1, -5, -5);invoker.MuzzleSmoke((-17, 8), (-3, 3));}
+			#### B 1 {A_OverlayOffset(Lay1, -10, 10, WOF_INTERPOLATE);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);invoker.MuzzleSmoke((-17, 8), (-3, 3));}
+			#### A 1 {A_OverlayOffset(Lay1, -CFRandom(4, 8), CFRandom(3, 6));A_OverlayRotate(Lay1, CFRandom(1, 2));invoker.Reloading = false;}
 			#### A 2 {A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);}
 			Goto GunWait;
 		Barrels:
@@ -394,7 +511,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(LeftHand).Sprite = GetSpriteIndex("SH22A0");
 			}
 			#### GGG 1 {
-				A_OverlayOffset(LeftHand, 10, -26.65, WOF_ADD);
+				A_OverlayOffset(LeftHand, 10, -26.67, WOF_ADD);
 				A_OverlayRotate(LeftHand, 5, WOF_ADD);
 				A_OverlayScale(LeftHand, .02, .02, WOF_ADD);
 				A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, true);

@@ -10,6 +10,7 @@ Class MRIntWeaps_Handler: EventHandler
 	};
 	
 	Array<Actor> Berserks;
+	MRIntWeaps_Smoker Smokers[MAXPLAYERS];
 	
 	Void GiveWeapons(Actor Plr)//Replace player's vanilla weapons with the mods'
 	{
@@ -37,6 +38,12 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 		
 		if(Select!="")Plr.A_SelectWeapon("MRIntWeaps_"..Select);
+		
+		if(!Smokers[Plr.PlayerNumber()])
+		{
+			Smokers[Plr.PlayerNumber()] = New('MRIntWeaps_Smoker');
+			Smokers[Plr.PlayerNumber()].Owner = Plr;
+		}
 	}
 	
 	Void TakeWeapons(Actor Plr)//Replace player's weapons from the mod with vanilla ones

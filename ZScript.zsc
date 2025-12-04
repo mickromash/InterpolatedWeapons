@@ -13,5 +13,6 @@ Version "4.0"
 #include "MRSmooth-code/BFG9000.zsc"
 
 #include "MRSmooth-code/Effects.zsc"//Casings/smoke
-#include "MRSmooth-code/SSG-Stuff.zsc"
+#include "MRSmooth-code/MuzzleSmoke.zsc"
+#include "MRSmooth-code/SSGStuff.zsc"
 #include "MRSmooth-code/Dying.zsc"
