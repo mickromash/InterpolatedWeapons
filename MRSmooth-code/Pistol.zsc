@@ -19,6 +19,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			if(Casings[i])DoCasing(i);
 		}
 		
+		MuzzleSmoke();
+		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
@@ -53,7 +55,19 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		A_StartSound ("weapons/pistol", CHAN_WEAPON, pitch:i_timescale);
 		GunShot (accurate, "BulletPuff", BulletSlope ());
 	}
+	
+	Override Void PostBeginPlay()
+	{
+		if(!Owner){Destroy();Return;}
 		
+		Super.PostBeginPlay();
+		
+		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+		if(!Handler)Return;
+		
+		Smoker = Handler.Smokers[Owner.PlayerNumber()];
+	}
+	
 	States{
 		Select:
 			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "GunRaise");}

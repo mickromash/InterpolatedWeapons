@@ -18,6 +18,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			if(Casings[i])DoCasing(i);
 		}
 		
+		MuzzleSmoke();
+		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
@@ -257,7 +259,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### HH 1 {
 				A_OverlayOffset(Lay1, 5, 17, WOF_ADD);//Pump
 				
-				if(MRIntW_Smoke){
+				if(MRIntW_ShotgunSmoke){
 					int index;
 					For(index=0;index<invoker.Smokes.Size()+1;index++){
 						if(index>=invoker.Smokes.Size()){index=-1;Break;}

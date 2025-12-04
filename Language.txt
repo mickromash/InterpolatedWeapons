@@ -3,6 +3,7 @@
 MRIntWeaps_Menu = "Configure Interpolated weapons";
 
 MRIntW_Smoke = "Firing smoke";
+MRIntW_FlowingSmoke = "Flowing smoke";
 
 MRIntW_Casings = "Casings";
 MRIntW_Casings0 = "No";
@@ -63,8 +64,13 @@ MRIntW_SurfacePunchRecoil = "\cv⊛\c- Kick back from punching surface with bers
 
 MRIntW_ChainsawCutting = "Improved chainsaw cutting animation";
 MRIntW_ChainsawCuttingWall = "Chainsaw surface cutting shaking";
+MRIntW_ChainsawSmoke = "Chainsaw smoke";
 
 MRIntW_LHand = "Hold the pistol in the left hand";
+
+MRIntW_ShotgunSmoke = "Smoke from chamber";
+
+MRIntW_SSGSmoke = "Smoke from barrels when reloading";
 
 MRIntW_ChaingunCounterClock = "CounterClockwise rotation";
 
@@ -79,7 +85,8 @@ MRIntW_ChaingunSound = "Chaingun custom firing sound";
 MRIntWeaps_Menu = "Настроить интерполированное оружие";
 
 
-MRIntW_Smoke = "Дым";
+MRIntW_Smoke = "Клубы дыма от выстрелов";
+MRIntW_FlowingSmoke = "Струящийся дым";
 
 MRIntW_Casings = "Гильзы";
 MRIntW_Casings0 = "Нет";
@@ -132,8 +139,13 @@ MRIntW_SurfacePunchRecoil = "\cv⊛\c- Отдача при ударе стены
 
 MRIntW_ChainsawCutting = "Улучшенная анимация распиливания";
 MRIntW_ChainsawCuttingWall = "Тряска бензопилы при распиливании поверхностей";
+MRIntW_ChainsawSmoke = "Дым от пилы";
 
 MRIntW_LHand = "Держать пистолет в левой руке";
+
+MRIntW_ShotgunSmoke = "Дым из патронника";
+
+MRIntW_SSGSmoke = "Дым из казённика";
 
 MRIntW_ChaingunCounterClock = "Вращать стволы против часовой";
 
