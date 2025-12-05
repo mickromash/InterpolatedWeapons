@@ -194,11 +194,12 @@ Extend Class MRIntWeaps_SuperShotgun
 		Smoker.WeapOfst[1] = Ofst[1];
 		Smoker.Scale[0] = Scale1;
 		Smoker.Scale[1] = Scale2;
-		Smoker.Tick();
 		if(Smoke<MRintW_FadeStart*.5){
 			Double Alpha = Smoke;
 			Smoker.Alpha *= Alpha/MRintW_FadeStart;
 		}
+		
+		Smoker.Tick();
 	}
 	
 	Void IncreaseSmoke()

@@ -294,6 +294,17 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					if(i<=Muzzle5 && abs(invoker.Speed)>.1)Continue;
 					A_OverlayFlags(i, PSPF_INTERPOLATE, false);
 				}
+				
+				/*if(!GetCVar("MRIntW_ChaingunFixed"))Return;
+				if(abs(invoker.Speed)<1 && int(invoker.Rotation%30)!=0){
+					Console.Printf("Rot: "..invoker.Rotation%30);
+					if(invoker.Rotation<0){
+						invoker.Rotation -= Min(invoker.Rotation%30, -2)*(invoker.ConterClock?-1:1);
+					}
+					else invoker.Rotation -= Max(invoker.Rotation%30, 2)*(invoker.ConterClock?-1:1);
+					
+					if(abs(invoker.Rotation)>=360)invoker.Rotation %= 360;
+				}*/
 			}
 			#### # 0 {if(invoker.IdleDelay>35 && abs(invoker.BobState)<2)A_Overlay(Hand, "HandIdle1");}
 			Loop;
@@ -372,7 +383,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				
 				A_OverlayOffset(Lay2, Ofst.X, Ofst.Y, WOF_ADD);
 				
-				invoker.LastShoted = Floor(invoker.Rotation/60);
 				invoker.IncreaseSmoke();
 			}
 			TNT1 A 1 {//Recoil
