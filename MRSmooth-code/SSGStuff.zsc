@@ -4,7 +4,7 @@
 	Moved from Effects.zsc and Dying.zsc for doom 1 compatibility
 */
 
-Extend Class MRIntWeaps_SuperShotgun
+Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 {
 	MRIntWeaps_SmokeContainer Smokes[20];
 	Const SmokeStart = PSP_FLASH+10;
@@ -127,7 +127,7 @@ Extend Class MRIntWeaps_SuperShotgun
 	}
 }
 
-Extend Class MRIntWeaps_SuperShotgun
+Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 {
 	MRIntWeaps_Smoker Smoker;
 	Double Smoke;
@@ -208,7 +208,7 @@ Extend Class MRIntWeaps_SuperShotgun
 	}
 }
 
-Extend Class MRIntWeaps_SuperShotgun
+Extend Class MRIntWeaps_SuperShotgun//Dying
 {
 	Const DieLay = -2;
 	

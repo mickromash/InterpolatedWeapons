@@ -235,22 +235,29 @@ Extend Class MRIntWeaps_Shotgun
 		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
 		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
 		
+		Double Scale = 1;
+		
 		Switch(Owner.Player.FindPSprite(Lay1).Frame){
 			Case 2:
 				Ofst += (-8, -7);
+				Scale += .5;
 				Break;
 			Case 3:
 				Ofst += (-14, -10);
+				Scale += .75;
 				Break;
 			Case 4:
 			Case 5:
 				Ofst += (-16, -15);
+				Scale += 1;
 				Break;
 			Case 6:
 				Ofst += (-17, -17);
+				Scale += 1;
 				Break;
 			Case 7:
 				Ofst += (-40, -20);
+				Scale += 1.25;
 				Break;
 			
 			Default:
@@ -267,7 +274,7 @@ Extend Class MRIntWeaps_Shotgun
 		
 		Smoker.Smokes = 1;
 		Smoker.WeapOfst[0] = Ofst;
-		Smoker.Scale[0] = 1;
+		Smoker.Scale[0] = Scale;
 		if(Smoke<MRintW_FadeStart){
 			Double Alpha = Smoke;
 			Smoker.Alpha *= Alpha/MRintW_FadeStart;
