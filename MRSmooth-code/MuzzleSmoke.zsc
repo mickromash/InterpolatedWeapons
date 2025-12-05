@@ -305,7 +305,7 @@ Extend Class MRIntWeaps_Chaingun
 			Smoker.ResetInterpolation = true;
 			Return;
 		}
-		Smoke-=.5;
+		Smoke-=.2;
 		
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 		
@@ -338,7 +338,7 @@ Extend Class MRIntWeaps_Chaingun
 			Smoker.Scale[i] = 1;
 		}
 		
-		if(Smoke<MRintW_FadeStart){
+		if(Smoke<MRintW_FadeStart*.3){
 			Double Alpha = Smoke;
 			Smoker.Alpha *= Alpha/MRintW_FadeStart;
 		}
@@ -359,6 +359,6 @@ Extend Class MRIntWeaps_Chaingun
 			}
 		}
 		
-		if(Smoke<MRIntW_MaxSmoke)Smoke += CRandom(3, 4);
+		if(Smoke<MRIntW_MaxSmoke)Smoke += CFRandom(1, 1.1);
 	}
 }
