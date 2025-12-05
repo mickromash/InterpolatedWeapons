@@ -17,7 +17,7 @@ server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw wil
 user bool MRIntW_BrownGloves = true;//Sprites with original gloves
 nosave bool MRIntW_NoMuzzleFlash = false;
 //Fist
-user bool MRIntW_BareHands = true;
+user bool MRIntW_BareHands = true;//Fists use sprites without gloves
 user int MRIntW_BersShake = 1;//0 - none, 1 - only shake fist + left hand idle animation, 2 - shake all weapons + left hand idle animation
 user bool MRIntW_LowHealthShake = false;
 user bool MRIntW_RightPunch = false;//Mirror fist sprites
@@ -38,4 +38,6 @@ nosave bool MRIntW_ShotgunSmoke = true;//Smoke from chamber
 //Super Shotgun
 nosave bool MRIntW_SSGSmoke = true;//Smoke from barrels when reloading
 //Chaingun
+user bool MRIntW_ChaingunFixed = false;//Fixed chaingun rotation
 user bool MRIntW_ChaingunCounterClock = false;//Inver chaingub spin direction
+nosave int MRIntW_ChaingunMaxSmokes = 3;//Maximum smoking barrels
