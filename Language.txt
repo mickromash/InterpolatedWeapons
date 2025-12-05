@@ -4,6 +4,8 @@ MRIntWeaps_Menu = "Configure Interpolated weapons";
 
 MRIntW_Smoke = "Firing smoke";
 MRIntW_FlowingSmoke = "Flowing smoke";
+MRIntW_FlowingSmokeLength = "Flowing smoke length";
+MRIntW_FlowingSmokeAlpha = "Flowing smoke opacity";
 
 MRIntW_Casings = "Casings";
 MRIntW_Casings0 = "No";
@@ -87,6 +89,8 @@ MRIntWeaps_Menu = "Настроить интерполированное ору�
 
 MRIntW_Smoke = "Клубы дыма от выстрелов";
 MRIntW_FlowingSmoke = "Струящийся дым";
+MRIntW_FlowingSmokeLength = "Длина струящегося дыма";
+MRIntW_FlowingSmokeAlpha = "Непрозрачность струящегося дыма";
 
 MRIntW_Casings = "Гильзы";
 MRIntW_Casings0 = "Нет";
