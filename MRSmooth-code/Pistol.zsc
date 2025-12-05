@@ -196,7 +196,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_Overlay(Lay2, "GunFlash");
 				if(MRIntW_Recoil){invoker.Recoil+=2;A_SetPitch(Pitch-2*MRIntW_RecoilAmount);}//Recoil
 			}
-			TNT1 A 4;
+			TNT1 A 4 {invoker.IncreaseSmoke();}
 			TNT1 A 4 {if(!MRIntW_InstantFire||MRIntW_FastPistol)A_SetTics(0);else if(Player.GetPSprite(Lay1).Tics<4)A_WeaponReady(WRF_NOFIRE);}
 			TNT1 A 5 A_ReFire();
 			Goto Ready;

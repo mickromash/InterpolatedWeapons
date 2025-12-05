@@ -181,7 +181,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			}
 			TNT1 A 3 {if(!MRIntW_InstantFire)A_SetTics(0);}
 			TNT1 BC 5;
-			TNT1 D 4;
+			TNT1 D 4{invoker.IncreaseSmoke();}
 			TNT1 CB 5;
 			TNT1 A 3;
 			TNT1 A 7 A_ReFire();

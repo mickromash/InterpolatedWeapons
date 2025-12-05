@@ -60,6 +60,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			if(Casings[i])DoCasing(i);
 		}
 		
+		MuzzleSmoke();
+		
 		if(abs(Speed)>0){
 			if(!(Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Fire"))))Speed *= .7;
 			Rotation += ConterClock?-Speed:Speed;
@@ -370,6 +372,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				
 				A_OverlayOffset(Lay2, Ofst.X, Ofst.Y, WOF_ADD);
 				
+				invoker.LastShoted = Floor(invoker.Rotation/60);
+				invoker.IncreaseSmoke();
 			}
 			TNT1 A 1 {//Recoil
 				if(invoker.Speed<MaxSpeed)invoker.Speed+=8;

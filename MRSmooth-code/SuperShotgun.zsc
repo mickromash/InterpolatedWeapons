@@ -311,6 +311,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				
 				invoker.MuzzleSmoke((-30+Rot, 0-Rot), (-15+Rot, -5-Rot));
 			}
+			#### # 0 {invoker.IncreaseSmoke();}
 			#### DD 1 {
 				A_OverlayRotate(Lay1, 1.5, WOF_ADD);
 				A_OverlayOffset(Lay1, -3, -1, WOF_ADD);

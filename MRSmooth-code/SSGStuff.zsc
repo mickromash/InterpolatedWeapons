@@ -130,10 +130,12 @@ Extend Class MRIntWeaps_SuperShotgun
 Extend Class MRIntWeaps_SuperShotgun
 {
 	MRIntWeaps_Smoker Smoker;
-	int Smoke;
+	Double Smoke;
 	
 	Void MuzzleSmoke(Vector2 Ofst1=(0,0), Vector2 Ofst2=(0,0), Double Scale1=1, Double Scale2=1)
 	{
+		if(Reloading && Ofst1==(0,0))Return;
+		
 		if(!Smoker){
 			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 			if(!Handler)Return;
@@ -142,9 +144,16 @@ Extend Class MRIntWeaps_SuperShotgun
 		
 			if(!Smoker)Return;
 		}
+				
+		if(Smoke<1){
+			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+			Smoker.Smokes = 0;
+			Return;
+		}
+		Smoke-=.028;
+		
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
-		if(Reloading && Ofst1==(0,0))Return;
-		//if(Smoke<1)Return;
+		
 			
 		Vector2 Ofst[2];
 		For(int i=0;i<2;i++){
@@ -186,6 +195,15 @@ Extend Class MRIntWeaps_SuperShotgun
 		Smoker.Scale[0] = Scale1;
 		Smoker.Scale[1] = Scale2;
 		Smoker.Tick();
+		if(Smoke<MRintW_FadeStart*.5){
+			Double Alpha = Smoke;
+			Smoker.Alpha *= Alpha/MRintW_FadeStart;
+		}
+	}
+	
+	Void IncreaseSmoke()
+	{
+		if(Smoke<MRIntW_MaxSmoke*.3)Smoke += CRandom(2, 3);
 	}
 }
 
