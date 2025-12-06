@@ -35,7 +35,7 @@ Class MRIntWeaps_Smoker: Object play
 	Weapon LastWeapon;
 	Const Dist = 5.;
 	Const ZSpeed = .15;
-	Const Step = .15;
+	Const Step = .19;
 	Const Brightness = 130;
 	
 	Virtual Void Tick()
@@ -63,7 +63,7 @@ Class MRIntWeaps_Smoker: Object play
 		if(Scale[Num]==0)Return;
 		
 		Double Alpha = Alpha;
-		Double Step = Step*Scale[Num];
+		Double Step = Step/MRIntW_FlowingSmokePrecision*Scale[Num];
 		Double ZSpeed = ZSpeed*4;
 		
 		Vector3 Pos = (Owner.Pos.XY, Owner.Pos.Z + ViewHeight + OldBob);

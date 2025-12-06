@@ -6,6 +6,7 @@ MRIntW_Smoke = "Firing smoke";
 MRIntW_FlowingSmoke = "Flowing smoke";
 MRIntW_FlowingSmokeLength = "Flowing smoke length";
 MRIntW_FlowingSmokeAlpha = "Flowing smoke opacity";
+MRIntW_FlowingSmokePrecision = "Flowing smoke particles amount";
 
 MRIntW_Casings = "Casings";
 MRIntW_Casings0 = "No";
@@ -92,6 +93,7 @@ MRIntW_Smoke = "Клубы дыма от выстрелов";
 MRIntW_FlowingSmoke = "Струящийся дым";
 MRIntW_FlowingSmokeLength = "Длина струящегося дыма";
 MRIntW_FlowingSmokeAlpha = "Непрозрачность струящегося дыма";
+MRIntW_FlowingSmokePrecision = "Количество частиц в дыме";
 
 MRIntW_Casings = "Гильзы";
 MRIntW_Casings0 = "Нет";
