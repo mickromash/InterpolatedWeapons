@@ -91,7 +91,7 @@ Class MRIntWeaps_Smoker: Object play
 		Double Connect = Diff.Length();
 		
 		if(Diff.Length()<=Step*1.5 && abs(Diff.Z)<1)Connect = Step;
-		int Life = 25;
+		Float Life = 25;
 		if(Owner.Pos == Owner.Prev)ZSpeed*=.25;
 		
 		//if(Owner.Vel.Length()<=.5){Alpha *= 2;}
@@ -103,7 +103,7 @@ Class MRIntWeaps_Smoker: Object play
 			if(Owner.Pos == Owner.Prev)Curve = 1;
 			PPos.Z *= Curve;
 			if(PPos != PPos)PPos = (0,0,0);
-			MRSpawnParticle(Color(Brightness,Brightness,Brightness), 0, STYLE_None, Life, .6*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
+			MRSpawnParticle(Color(Brightness,Brightness,Brightness), 0, STYLE_None, Life/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength), .6*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
 		}
 		if(Owner.Vel.XY.Length()>0){
 			Double Bobb = Bob-OldBob;
@@ -113,13 +113,13 @@ Class MRIntWeaps_Smoker: Object play
 				Bobb = Owner.Vel.Z*1.5;
 			}
 			
-			For(Double i=0;i<Connect*.5;i+=Step*.5){
+			For(Double i=0;i<Connect*.5;i+=Step){
 				Vector3 PPos = Diff.Unit()*i;
-				Double Curve = i/(Connect*.5+Step*.5);
+				Double Curve = i/(Connect*.5+Step);
 				PPos.Z *= Curve;
 				PPos.XY *= Curve;
 				if(PPos!=PPos)PPos = (0,0,0);
-				MRSpawnParticle(Color(Brightness,Brightness,Brightness), 0, STYLE_None, 1, .6*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (0,0,ZSpeed), Alpha:(Alpha*.5)/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
+				MRSpawnParticle(Color(Brightness,Brightness,Brightness), 0, STYLE_None, 1, .6*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
 			}
 		}
 		
