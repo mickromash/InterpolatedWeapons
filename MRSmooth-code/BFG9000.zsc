@@ -149,12 +149,13 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				A_OverlayScale(Lay1, -.1, -.1, WOF_ADD);
 			}
 			BFG1 ## 1 {
-				A_OverlayOffset(Lay1, -5, 5, WOF_ADD);
+				A_OverlayPivot(Lay1, .5, 1);
+				A_OverlayOffset(Lay1, -2, 2, WOF_ADD);
 				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
 			}
 			#### ###### 1 {
-				A_OverlayOffset(Lay1, -2, 0, WOF_ADD);
-				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
+				A_OverlayOffset(Lay1, -1, 0, WOF_ADD);
+				A_OverlayScale(Lay1, -.015, -.015, WOF_ADD);
 			}
 			Stop;
 			
