@@ -295,16 +295,21 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					A_OverlayFlags(i, PSPF_INTERPOLATE, false);
 				}
 				
-				/*if(!GetCVar("MRIntW_ChaingunFixed"))Return;
-				if(abs(invoker.Speed)<1 && int(invoker.Rotation%30)!=0){
-					Console.Printf("Rot: "..invoker.Rotation%30);
-					if(invoker.Rotation<0){
-						invoker.Rotation -= Min(invoker.Rotation%30, -2)*(invoker.ConterClock?-1:1);
-					}
-					else invoker.Rotation -= Max(invoker.Rotation%30, 2)*(invoker.ConterClock?-1:1);
-					
-					if(abs(invoker.Rotation)>=360)invoker.Rotation %= 360;
-				}*/
+				if(!InStateSequence(Player.GetPSprite(PSP_WEAPON).CurState, invoker.FindState("Ready")))Return;
+				if(Player.FindPSprite(Hand))Return;
+				
+				if(!GetCVar("MRIntW_ChaingunFixed"))Return;
+				
+				if(abs(invoker.Speed)<=0||abs(invoker.Speed)>6)Return;
+				
+				Double CurRot = invoker.Rotation+30;
+				if(abs(CurRot)>=360)CurRot %= 360;
+				
+				int Diff = CurRot%60;
+				if(Diff>30)Diff = 60-Diff;
+
+				if(abs(Diff)<3){invoker.Speed *= 0;Return;}
+				else invoker.Speed = Clamp(12, invoker.Speed, Diff);
 			}
 			#### # 0 {if(invoker.IdleDelay>35 && abs(invoker.BobState)<2)A_Overlay(Hand, "HandIdle1");}
 			Loop;
@@ -440,6 +445,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					A_OverlayFlags(i, PSPF_INTERPOLATE, true);
 				}
 			}
+			#### # 0 A_Refire();
 			Goto Ready;
 		GunFlash://Muzzle flash
 			CH1F A 1 BRIGHT {

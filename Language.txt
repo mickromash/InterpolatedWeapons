@@ -76,6 +76,7 @@ MRIntW_ShotgunSmoke = "Smoke from chamber";
 MRIntW_SSGSmoke = "Smoke from barrels when reloading";
 
 MRIntW_ChaingunMaxSmokes = "Max smoking barrels";
+MRIntW_ChaingunFixed = "Fixed barrels position";
 MRIntW_ChaingunCounterClock = "CounterClockwise rotation";
 
 
@@ -155,6 +156,7 @@ MRIntW_ShotgunSmoke = "Дым из патронника";
 MRIntW_SSGSmoke = "Дым из казённика";
 
 MRIntW_ChaingunMaxSmokes = "Макс. дымящихся стволов";
+MRIntW_ChaingunFixed = "Фиксированное положение стволов";
 MRIntW_ChaingunCounterClock = "Вращать стволы против часовой";
 
 MRIntWeaps_Give = "Сделать анимации плавными";
