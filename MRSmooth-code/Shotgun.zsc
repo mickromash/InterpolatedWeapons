@@ -3,6 +3,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 	Default{
 		Weapon.SlotNumber 3;
 		Weapon.BobStyle "Smooth";
+		Decal "BulletChip";
 	}
 	Const Lay1 = 2;
 	Const Lay2 = PSP_FLASH+1;

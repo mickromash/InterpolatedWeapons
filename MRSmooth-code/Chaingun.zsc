@@ -3,6 +3,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Default{
 		Weapon.SlotNumber 4;
 		Weapon.BobStyle "Smooth";
+		Decal "BulletChip";
 	}
 	Const Muzzle0 = 2;//Muzzle corner behind further disk
 	Const Muzzle1 = Muzzle0+1;

@@ -3,6 +3,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Default{
 		Weapon.SlotNumber 2;
 		Weapon.BobStyle "Smooth";
+		Decal "BulletChip";
 	}
 	Const Lay1 = 2;
 	Const Lay2 = PSP_FLASH+1;

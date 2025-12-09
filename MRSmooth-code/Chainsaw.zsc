@@ -3,6 +3,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	Default{
 		Weapon.SlotNumber 1;
 		Weapon.BobStyle "Smooth";
+		Decal "BulletChip";
 	}
 	Const Lay1 = 2;
 	
