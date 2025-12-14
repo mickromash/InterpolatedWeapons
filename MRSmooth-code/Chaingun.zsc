@@ -86,6 +86,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+		IdleDelay = -35*4;
 		Rotation = 30;
 	}
 	
