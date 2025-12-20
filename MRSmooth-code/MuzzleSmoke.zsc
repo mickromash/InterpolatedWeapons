@@ -369,3 +369,62 @@ Extend Class MRIntWeaps_Chaingun
 		if(Smoke<MRIntW_MaxSmoke)Smoke += CFRandom(1, 1.1);
 	}
 }
+
+Extend Class MRIntWeaps_RocketLauncher
+{
+	MRIntWeaps_Smoker Smoker;
+	Double Smoke;
+	
+	Void MuzzleSmoke()
+	{
+		if(!Smoker){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(!Handler)Return;
+			
+			Smoker = Handler.Smokers[Owner.PlayerNumber()];
+		
+			if(!Smoker)Return;
+		}
+		
+		if(Smoke<1){
+			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+			Smoker.Smokes = 0;
+			Smoker.ResetInterpolation = true;
+			Return;
+		}
+		Smoke-=.2;
+		
+		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+			
+		Vector2 Ofst;
+		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
+		
+		Double Scale = 5;
+		Scale += Owner.Player.FindPSprite(Lay1).Scale.Length()-1;
+		
+		Ofst.Y += 40;
+		
+		
+		if(Owner.Player.WeaponState&WF_WEAPONBOBBING){
+			Vector2 Bob = PlayerPawn(Owner).BobWeapon(2);
+			Ofst += Bob;
+		}
+		
+		Ofst *= .032;
+		
+		Smoker.Smokes = 1;
+		Smoker.WeapOfst[0] = Ofst;
+		Smoker.Scale[0] = Scale;
+		if(Smoke<MRintW_FadeStart*.75){
+			Double Alpha = Smoke;
+			Smoker.Alpha *= Alpha/(MRintW_FadeStart*.75);
+		}
+		Smoker.Tick();
+	}
+	
+	Void IncreaseSmoke()
+	{
+		if(Smoke<35)Smoke += CRandom(7, 9);
+	}
+}

@@ -85,6 +85,8 @@ MRIntWeaps_SoundMenu = "Sounds settings (add-on required)";
 MRIntW_ShotgunSound = "Shotgun custom firing sound";
 MRIntW_ChaingunSound = "Chaingun custom firing sound";
 
+MRIntW_RocketSmoke = "Muzzle smoke";
+
 [ru]
 
 MRIntWeaps_Menu = "Настроить интерполированное оружие";
@@ -158,6 +160,8 @@ MRIntW_SSGSmoke = "Дым из казённика";
 MRIntW_ChaingunMaxSmokes = "Макс. дымящихся стволов";
 MRIntW_ChaingunFixed = "Фиксированное положение стволов";
 MRIntW_ChaingunCounterClock = "Вращать стволы против часовой";
+
+MRIntW_RocketSmoke = "Дым из дула";
 
 MRIntWeaps_Give = "Сделать анимации плавными";
 

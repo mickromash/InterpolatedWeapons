@@ -18,6 +18,8 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	{
 		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount);}
 		
+		MuzzleSmoke();
+		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
@@ -155,6 +157,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		Fire:
 			TNT1 B 8 {if(!MRIntW_Lighting)A_GunFlash("Flash");A_Overlay(Lay1, "GunFire");if(MRIntW_InstantFire)A_SetTics(2);}
 			TNT1 B 12 {
+				if(MRIntW_RocketSmoke)invoker.IncreaseSmoke();
 				Actor a = A_FireProjectile("Rocket");
 				if(a)a.A_StopSound();
 				A_StartSound("MRIntW/RLFire", CHAN_AUTO, pitch:i_timescale);
