@@ -29,6 +29,7 @@ user bool MRIntW_SurfacePunchRecoil = false;//Kick player back if he punches a w
 user int MRIntW_PunchingFist = 0;//0 - punch with only main fist,
 //1 - randomly punch with main or second fist, 2 - alternate punching fist, 3 - punching fist based on camera movement
 //Chainsaw
+user bool MRIntW_ChainsawStart = false;//Chainsaw starting animation
 user bool MRIntW_ChainsawCutting = true;//Improved cutting animations
 user bool MRIntW_ChainsawCuttingWall = true;//Chainsaw shaking when cutting map geometry
 nosave bool MRIntW_ChainsawSmoke = true;

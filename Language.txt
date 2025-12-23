@@ -65,6 +65,7 @@ MRIntW_FinishPunch2 = "Yes";
 MRIntW_FinishPunchChance = "Finish punch chance";
 MRIntW_SurfacePunchRecoil = "\cv⊛\c- Kick back from punching surface with berserk";
 
+MRIntW_ChainsawStart = "Starting animation";
 MRIntW_ChainsawCutting = "Improved chainsaw cutting animation";
 MRIntW_ChainsawCuttingWall = "Chainsaw surface cutting shaking";
 MRIntW_ChainsawSmoke = "Chainsaw smoke";
@@ -147,6 +148,7 @@ MRIntW_FinishPunch2 = "Да";
 MRIntW_FinishPunchChance = "Шанс добивающего удара";
 MRIntW_SurfacePunchRecoil = "\cv⊛\c- Отдача при ударе стены с берсерком";
 
+MRIntW_ChainsawStart = "Анимация включения";
 MRIntW_ChainsawCutting = "Улучшенная анимация распиливания";
 MRIntW_ChainsawCuttingWall = "Тряска бензопилы при распиливании поверхностей";
 MRIntW_ChainsawSmoke = "Дым от пилы";

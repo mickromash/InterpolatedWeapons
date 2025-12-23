@@ -6,6 +6,8 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		Decal "BulletChip";
 	}
 	Const Lay1 = 2;
+	Const Lay2 = 3;//Starting rope
+	Const Lay3 = 4;//Starting hand
 	
 	int SawFrame; //Idle frame
 	Double SawPos, //Saw towards/backwards distance
@@ -47,9 +49,88 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			#### A 1 A_Lower();
 			Loop;
 		
+		SawStartHand:
+			SAW1 Y 1 {
+				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay3).Sprite = GetSpriteIndex("SAW2A0");
+				A_OverlayFlags(Lay3, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(Lay3, -30, 32+33);
+				A_OverlayScale(Lay3, .8, .8);
+				A_OverlayPivot(Lay3, 0, 1);
+			}
+			#### # 0 {
+				A_OverlayFlags(Lay3, PSPF_INTERPOLATE, true);
+				
+				A_OverlayRotate(Lay2, -42, WOF_ADD);
+				A_OverlayScale(Lay2, 1, 1);
+			}
+			#### ### 1{
+				A_OverlayOffset(Lay3, CFRandom(17, 18), -17+CFRandom(-1, 1), WOF_ADD);
+				A_OverlayRotate(Lay3, -1, WOF_ADD);
+				Double Scal = -Player.GetPSprite(Lay3).Y;
+				Player.GetPSprite(Lay3).Scale = (1,1) + (1,1)*Scal*.01;
+				
+				A_OverlayRotate(Lay2, -5, WOF_ADD);
+				A_OverlayScale(Lay2, 0, 1, WOF_ADD);
+			}
+			#### # 1{
+				A_OverlayOffset(Lay3, CFRandom(2, 3), -CFRandom(2, 3), WOF_ADD);
+				A_OverlayRotate(Lay3, -1, WOF_ADD);
+				Double Scal = -Player.GetPSprite(Lay3).Y;
+				Player.GetPSprite(Lay3).Scale = (1,1) + (1,1)*Scal*.01;
+				
+				A_OverlayRotate(Lay2, -1, WOF_ADD);
+				//A_OverlayScale(Lay2, 3, 3);
+			}
+			#### ## 1{//Hold
+				A_OverlayOffset(Lay3, CFRandom(-1, 1), CFRandom(-1, 0), WOF_ADD);
+				A_OverlayRotate(Lay3, CFRandom(-1, 1), WOF_ADD);
+				Double Scal = -Player.GetPSprite(Lay3).Y;
+				Player.GetPSprite(Lay3).Scale = (1,1) + (1,1)*Scal*.01;
+				
+				A_OverlayRotate(Lay2, -2, WOF_ADD);
+				//A_OverlayScale(Lay2, 1, 2);
+			}
+			#### #### 1{//Back
+				A_OverlayOffset(Lay3, -7, 8, WOF_ADD);
+				A_OverlayScale(Lay3, -.04, -.04, WOF_ADD);
+				A_OverlayRotate(Lay3, -2, WOF_ADD);
+				
+				//A_OverlayRotate(Lay2, 2, WOF_ADD);
+				A_OverlayScale(Lay2, 0, -.5, WOF_ADD);
+			}
+			#### # 1{
+				A_OverlayOffset(Lay3, -5, 17, WOF_ADD);
+				A_OverlayRotate(Lay3, -2, WOF_ADD);
+				
+				A_OverlayScale(Lay2, 0, 0);
+			}
+			#### # 0 A_ClearOverlays(Lay2, Lay2);
+			#### # 1{
+				A_OverlayOffset(Lay3, 0, 17, WOF_ADD);
+				A_OverlayScale(Lay3, -.1, -.1, WOF_ADD);
+				A_OverlayRotate(Lay3, -2, WOF_ADD);
+			}
+			Stop;
+		SawStartRope:
+			SAW1 Z 1{
+				A_OverlayOffset(Lay2, -30, 0);
+				A_OverlayPivot(Lay2, .5, 1);
+			}
+			#### # 1 A_OverlayFlags(Lay2, PSPF_INTERPOLATE, 1);
+			Wait;
+		
 		SawRaise:
+			#### # 0 A_JumpIf(!GetCVar("MRIntW_ChainsawStart"), 5);
+			#### # 0 {A_Overlay(Lay3, "SawStartHand");A_Overlay(Lay2, "SawStartRope");}
+			TNT1 AAA 1 {
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
+				A_OverlayPivot(Lay1, .5, 1);
+				A_OverlayOffset(Lay1, -12, 65);
+				A_OverlayScale(Lay1, .4, .4);
+				A_OverlayRotate(Lay1, 20);
+			}
 			TNT1 AAAA 1 {
-				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayOffset(Lay1, -12, 65);
 				A_OverlayScale(Lay1, .4, .4);
@@ -67,13 +148,30 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay1, 1, -2, WOF_ADD);
 				A_OverlayScale(Lay1, .07, .16, WOF_ADD);
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
+				if(GetCVar("MRIntW_ChainsawStart")){
+					A_OverlayOffset(Lay1, 1, -2, WOF_ADD);
+					A_OverlayScale(Lay1, .05, .05, WOF_ADD);
+					A_OverlayRotate(Lay1, -1, WOF_ADD);
+				}
 			}
+			#### # 0 A_JumpIf(GetCVar("MRIntW_ChainsawStart"), 2);
 			#### CC 1 {
 				A_OverlayOffset(Lay1, 1, -2, WOF_ADD);
 				A_OverlayScale(Lay1, .05, .05, WOF_ADD);
 				A_OverlayRotate(Lay1, -1, WOF_ADD);
 			}
-			#### DE 1 {
+			#### D 1 {
+				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+				if(GetCVar("MRIntW_ChainsawStart")){
+					A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
+					A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+					A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+				}
+			}
+			#### # 0 A_JumpIf(GetCVar("MRIntW_ChainsawStart"), 2);
+			#### E 1 {
 				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
