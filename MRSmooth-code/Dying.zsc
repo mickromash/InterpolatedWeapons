@@ -841,7 +841,7 @@ Extend Class MRIntWeaps_Chaingun
 			}
 			#### D 1 {
 				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
-				A_OverlayRotate(DieLay, 30);
+				A_OverlayRotate(DieLay, 30-DeltaAngle(Angle, invoker.DeadAngle)*.2);
 				A_OverlayScale(DieLay, 1, 1);
 			}
 			Wait;

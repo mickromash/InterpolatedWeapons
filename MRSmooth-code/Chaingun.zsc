@@ -63,7 +63,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		
 		MuzzleSmoke();
 		
-		if(abs(Speed)>0){
+		if(Owner.Health>0 && abs(Speed)>0){
 			if(!(Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Fire"))))Speed *= .7;
 			Rotation += ConterClock?-Speed:Speed;
 			if(Rotation!=0 && (Rotation>360||Rotation<-360))Rotation %= 360;
@@ -234,7 +234,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			
 		GunRaise:
 			TNT1 A 4 {
-				//A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 				A_Overlay(Muzzle0, "Muzzle");
 				A_Overlay(Muzzle1, "Muzzle");
 				A_Overlay(Muzzle2, "Muzzle");
