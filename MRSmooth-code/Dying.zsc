@@ -13,6 +13,15 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 	Double Gravity;
 	Bool Landed;
 	
+	Virtual Void AlignAngle()
+	{
+		if(int(Roll%180)>20){
+			Roll = abs(Roll);
+			Roll = -(Roll%180*.7+int(Roll/180)*180);
+			
+		}
+	}
+	
 	Override Void Tick()
 	{
 		if(Landed){
@@ -20,12 +29,7 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 			Vel.XY *= .9;
 			if(CurSector)Pos.Z = CurSector.CenterFloor();
 			
-			if(int(Roll%180)>20){
-				Roll = abs(Roll);
-				Roll = -(Roll%180*.7+int(Roll/180)*180);
-				
-			}
-			
+			AlignAngle();
 			Return;
 		}
 		
@@ -64,11 +68,11 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 		}
 	}
 	
-	Static MRIntWeaps_FlyingWeapon Throw(String Sprite, Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Double Gravity=1, Vector2 Scale=(1,1), int Translation=0, Actor Caller=Null)
+	Static MRIntWeaps_FlyingWeapon Throw(String Sprite, Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Double Gravity=1, Vector2 Scale=(1,1), int Translation=0, Actor Caller=Null, Name Clas='MRIntWeaps_FlyingWeapon')
 	{
 		if(Players[ConsolePlayer].Camera != Caller)Return Null;
 		
-		Let Weap = MRIntWeaps_FlyingWeapon(level.SpawnVisualThinker('MRIntWeaps_FlyingWeapon'));
+		Let Weap = MRIntWeaps_FlyingWeapon(level.SpawnVisualThinker(Clas));
 		if(!Weap)Return Null;
 		
 		Weap.Pos = Pos;
@@ -83,6 +87,27 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 		Return Weap;
 	}
 }
+
+Class MRIntWeaps_FlyingBFG: MRIntWeaps_FlyingWeapon
+{
+	Override Void AlignAngle()
+	{
+		if(abs(Roll)>90 && abs(Roll)<270){
+			Double Align = 150;
+			if(int(Roll%Align)>20){
+				Roll = abs(Roll);
+				Roll = -(Roll%Align*.7+int(Roll/Align)*Align);
+				
+			}
+		}
+		else if(int(Roll%180)>20){
+			Roll = abs(Roll);
+			Roll = -(Roll%180*.7+int(Roll/180)*180);
+			
+		}
+	}
+}
+
 class MRIntWeaps_CollisionTracer : LineTracer
 {
 	Line HitLine;
@@ -1236,7 +1261,7 @@ Extend Class MRIntWeaps_BFG9000
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("BFUGA0", Pos, Vel, Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("BFUGA0", Pos, Vel, Caller:Self, Clas: 'MRIntWeaps_FlyingBFG');
 	}
 	
 	Double DeadAngle;
