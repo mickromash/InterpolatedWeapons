@@ -3,6 +3,7 @@ user float MRIntW_CasingsRandom = 1;//Maximum casings speed
 nosave int MRIntW_CasingsAmount = 300;
 nosave float MRIntW_CasingsVolume = 1;
 nosave bool MRIntW_CasingsLowRes = false;
+nosave bool MRIntW_CasingsClusteringReduce = true;
 nosave bool MRIntW_Smoke = false;//Firing smoke
 nosave bool MRIntW_FlowingSmoke = false;//Smoke from barrels after firing
 nosave float MRIntW_FlowingSmokeLength = 1;

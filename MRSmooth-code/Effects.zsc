@@ -1,12 +1,13 @@
 /*
 	Weapon casings and smoke layers
 */
+Const MRIntW_CasingDist = 15.;
 
 Extend Class MRIntWeaps_Handler
 {
 	Array<MRIntWeaps_Casing> Casings;
 	
-	Void UpdateCasings(MRIntWeaps_Casing a)
+	Void UpdateCasings(MRIntWeaps_Casing a)//Pushes spawned casing into a list
 	{
 		For(int i=0;i<Max(0, Casings.Size()-MRIntW_CasingsAmount+1);i++)
 		{
@@ -14,6 +15,46 @@ Extend Class MRIntWeaps_Handler
 		}
 		if(!a)Return;
 		Casings.Push(a);
+	}
+	
+	Override Void WorldTick()
+	{
+		if(int(GameTic%20)!=0)Return;
+		
+		if(!MRIntW_CasingsClusteringReduce)Return;
+		
+		Array<MRIntWeaps_Casing> Checking;
+		Checking.Copy(Casings);
+		
+		For(int i=0;i<Checking.Size();i++){
+			Let Casing = Checking[i];
+			
+			if(!Casing || Casing.bDestroyed || Casing.NearCasings.Size()<30)Continue;
+			
+			For(int i1=0;i1<Casing.NearCasings.Size();i1++){
+				if(!Casing.NearCasings[i1]||Casing.NearCasings[i1].bDestroyed){
+					Casing.NearCasings.Delete(i1);
+					i1--;
+					Break;
+				}
+			}
+			
+			if(Casing.NearCasings.Size()<30)Continue;
+						
+			For(int i1=0;i1<Casing.NearCasings.Size();i1++){
+				if(!Casing.NearCasings[i1])Continue;
+				
+				//MRIntWeaps_Smoker.MRSpawnParticle(Color(255,255,255), SPF_FULLBRIGHT, STYLE_None, 35, 4, 0, Casing.NearCasings[i1].Pos, (0,0,3));
+				Casing.NearCasings[i1].Fade();
+				Casing.NearCasings.Delete(i1);
+				For(int i2=0;i2<Casing.NearCasings.Size();i2++){
+					Checking.Delete(Checking.Find(Casing.NearCasings[i2]));
+				}
+				Checking.Delete(i);
+				i--;
+				Break;
+			}
+		}
 	}
 }
 
@@ -25,19 +66,49 @@ Class MRIntWeaps_Casing: VisualThinker
 		It's only a visual effect
 	*/
 	
-	Double Gravity;
+	Double Gravity, Fading;
 	int Bounce;
-	Bool Landed, ShotgunShell;
+	Bool Landed, Stoped, ShotgunShell;
+	Array<MRIntWeaps_Casing> NearCasings;
 	
 	Override Void Tick()
 	{
 		if(Landed){
 			Super.Tick();
 			
+			if(Fading!=0){
+				Fading-=.2356;
+				Alpha = Fading;
+				if(Fading<0)Destroy();
+				Return;
+			}
+			
 			if(CurSector)Pos.Z = CurSector.CenterFloor();
 			if(Vel.XY.Length()>0){
 				Vel.XY *= .6;
 				if(int(Roll%45)>0)Roll = Roll%45*(Vel.XY.Length()/10)+int(Roll/45)*45;
+				
+				if(Vel.XY.Length()<.01)Vel.XY *= 0;
+			}
+			else if(!Stoped){
+				Stoped = true;
+				if(!MRIntW_CasingsClusteringReduce)Return;
+				
+				Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+				if(!Handler)Return;
+				
+				For(int i=0;i<Handler.Casings.Size();i++){
+					Let Casing = Handler.Casings[i];
+					if(!Casing || Casing == Self || Casing.bDestroyed || Casing.ShotgunShell != ShotgunShell || NearCasings.Find(Casing)!=NearCasings.Size())Continue;
+					
+					Vector3 Dist = Level.Vec3Diff(Pos, Casing.Pos);
+
+					if(Dist.Length()>MRIntW_CasingDist)Continue;
+					else {
+						if(Dist.Length()<1)Casing.Fade();
+						else NearCasings.Push(Casing);
+					}
+				}
 			}
 			Return;
 		}
@@ -105,6 +176,11 @@ Class MRIntWeaps_Casing: VisualThinker
 		if(!Handler)Return Null;
 						
 		Return Casing;
+	}
+	
+	Void Fade()
+	{
+		Fading = 1;
 	}
 }
 
