@@ -323,16 +323,16 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 			#### E 1 {
 				A_OverlayFlags(DieLay, PSPF_FLIP, true);
 				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
-				A_OverlayOffset(DieLay, -140, 25);
+				A_OverlayOffset(DieLay, -140-DeltaAngle(Angle, invoker.DeadAngle)*4, 25);
 				A_OverlayRotate(DieLay, -20);
 			}
 			#### # 1 {
-				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
+				A_OverlayOffset(DieLay, -20-DeltaAngle(Angle, invoker.DeadAngle)*4, -15, WOF_ADD);
 				A_OverlayRotate(DieLay, -5, WOF_ADD);
 				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
 			}
 			#### ### 1 {
-				A_OverlayOffset(DieLay, -15, 15, WOF_ADD);
+				A_OverlayOffset(DieLay, -15-DeltaAngle(Angle, invoker.DeadAngle)*4, 15, WOF_ADD);
 				A_OverlayRotate(DieLay, -5, WOF_ADD);
 				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
 			}
@@ -351,13 +351,13 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
 				A_OverlayFlags(DieLay, PSPF_FLIP, true);
 				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
-				A_OverlayOffset(DieLay, -130, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
 				A_OverlayRotate(DieLay, 30);
 				A_OverlayScale(DieLay, 1, 1);
 				A_SetTics(CRandom(0, 1));
 			}
 			#### D 1 {
-				A_OverlayOffset(DieLay, -130, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
 				A_OverlayRotate(DieLay, 30);
 				A_OverlayScale(DieLay, 1, 1);
 			}
