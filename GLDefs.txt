@@ -1,0 +1,65 @@
+//Chaingun
+Brightmap Sprite CH2MA0
+{
+	map "Brightmaps/Chaingun/CH1MA0.png"
+}
+Brightmap Sprite CH2MB0
+{
+	map "Brightmaps/Chaingun/CH1MB0.png"
+}
+Brightmap Sprite CH2MC0
+{
+	map "Brightmaps/Chaingun/CH1MC0.png"
+}
+Brightmap Sprite CH2MD0
+{
+	map "Brightmaps/Chaingun/CH1MB0.png"
+}
+Brightmap Sprite CH2ME0
+{
+	map "Brightmaps/Chaingun/CH1MA0.png"
+}
+
+Brightmap Sprite CH2GA0
+{
+	map "Brightmaps/Chaingun/CH1GA0.png"
+}
+Brightmap Sprite CH2GB0
+{
+	map "Brightmaps/Chaingun/CH1GA0.png"
+}
+Brightmap Sprite CH2GC0
+{
+	map "Brightmaps/Chaingun/CH1GA0.png"
+}
+Brightmap Sprite CH2GD0
+{
+	map "Brightmaps/Chaingun/CH1GA0.png"
+}
+
+//Plasma
+brightmap Sprite PL1GF0
+{
+	map "Brightmaps/Auto/PL1GE0.png"
+}
+brightmap Sprite PL1GG0
+{
+	map "Brightmaps/Auto/PL1GD0.png"
+}
+brightmap Sprite PL1GH0
+{
+	map "Brightmaps/Auto/PL1GC0.png"
+}
+
+brightmap Sprite PLSOD0
+{
+	map "Brightmaps/Auto/PLSOC0.png"
+}
+brightmap Sprite PLSOG0
+{
+	map "Brightmaps/Auto/PLSOF0.png"
+}
+brightmap Sprite PLSOH0
+{
+	map "Brightmaps/Auto/PLSOC0.png"
+}
