@@ -1,0 +1,150 @@
+Fist
+{
+	//Black gloves
+	PUN1 A - Right hand ready
+	PUN1 E - Left hand punch
+	PUN1 D (textures) - Left hand punch brass knuckles
+	PUN1 B - Left hand raise animation brass knuckles
+	PUN1 C - Left hand ready brass knuckles
+	
+	//Brown gloves
+	PUN1 A - Right hand ready
+	PUN1 E - Left hand punch
+	PUN1 D (textures) - Left hand punch brass knuckles
+	PUN1 B - Left hand raise animation brass knuckles
+	PUN1 C - Left hand ready brass knuckles
+	
+	//No gloves
+	PUN1 A - Right hand ready
+	PUN1 E - Left hand punch
+	PUN1 D (textures) - Left hand punch brass knuckles
+	PUN1 B - Left hand raise animation brass knuckles
+	PUN1 C - Left hand ready brass knuckles
+}
+
+Chainsaw
+{
+	//Black gloves
+	SAW1 CDEF - Ready animation
+	SAW1 G (textures) - Cutting animation
+	SAW1 HIJ - Cutting animation
+	SAW1 Y (textures) - Starting hand
+	
+	//Brown gloves
+	SAW2 CDEF - Ready animation
+	SAW2 GHIJ (textures) - Cutting animation
+	SAW2 Y - Starting hand
+	
+	//Both
+	SAW1 Z - Starting rope
+}
+
+Pistol
+{
+	//Black gloves
+	P1SG A (textures) - Ready
+	P1SG BCFED (textures) - Firing animation
+	
+	//Brown gloves
+	P2SG A (textures) - Ready
+	P2SG BCFED (textures) - Firing animation
+	
+	//Both
+	P1SF ABC (texture) - Flash animation
+}
+
+Shotgun
+{
+	//Black gloves
+	SH1G A - Ready
+	SH1G B - Pump animation
+	SH1G C (textures) - Pump animation
+	SH1G DEFGH - Pump animation
+	
+	
+	//Brown gloves
+	SH2G A (textures) - Ready
+	SH2G B (textures) - Pump animation
+	SH2G C (textures) - Pump animation
+	SH2G DEFGH - Pump animation
+	
+	//Both
+	SH1F AB - Flash animation
+}
+
+Super Shotgun
+{
+	//Black gloves
+	SH12 A - Ready
+	SH12 BCD - Opening animation
+	SH12 P (textures) - Opening animation (SH12 E with casings inside)
+	SH12 E - Opening animation
+	//Both
+	SH12 F - Opened
+	SH12 I - Opened, barrel part covering casings and loading shell
+	//Black gloves
+	SH12 JK - Closing animation
+	
+	SH12 GH - Loading hand
+	
+	//Brown gloves
+	SH22 A - Ready
+	SH22 BC - Opening animation
+	SH22 D (textures) - Opening animation
+	SH22 P (textures) - Opening animation (SH12 E with casings inside)
+	SH22 E (textures) - Opening animation
+	SH22 JK (textures) - Closing animation
+	
+	SH22 GH - Loading hand
+	
+	//Both
+	SH12 NO - Flash animation
+}
+
+Chaingun
+{
+	CH1M ABCDE (textures) - Muzzle end rotation
+	CH2M ABCDE (textures) - Muzzle end rotation firing
+	CH1G ABCD (textures) - Body rotation
+	CH2G ABCD (textures) - BOdy rotation firing
+	CH1S A - Barrel shadow
+	CH1B ABCDEFG (textures) - Barrel rotation
+	CH1R ABCD (textures) - Closest disk rotation
+	CH1F ABC (textures) - Flash animation
+	
+	//Black gloves
+	CH1H A (textures) - Idle animation hand
+	
+	//Brown gloves
+	CH2H A (textures) - Idle animation hand
+}
+
+Rocket Launcher
+{
+	MI1G A (textures) - Ready
+	MI1G B (textures) - Ready opening
+	MI1G C - Ready opened
+	
+	MI1F ABC - Firing animation
+	MI1F DE (textures) - Firing animation
+}
+
+Plasma Rifle
+{
+	PL1G A - Body ready
+	PLSO A - Muzzle ready
+	PL1G BCDEFGH - Body firing
+	PLSO BCDEFGH - Muzzle firing
+	PLSF BCDEFGH - Flash animation
+	
+	//Black gloves
+	PLSR ABC (textures) - "Recoil" animation
+	PLSR D (textures) - Body recoil
+	
+	//Brown gloves
+	PL2R ABC (textures) - "Recoil" animation
+	PL2R D (textures) - Body recoil
+	
+	//Both
+	PLSO I (textures) - Muzzle recoil
+}
