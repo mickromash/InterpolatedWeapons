@@ -194,13 +194,19 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Loop;
 			
 		Muzzle://End of the barrel behind the furthest disk
-			#### # 0 {
+			CH1M # 0 {
 				A_OverlayPivot(OverlayId(), .5, 1);
 			}
-			CH1M # 1 {
+			#### # 1 {
 				A_BarrelPos(OverlayId()-Muzzle0, Muzzle0, false, DrawFuzz:true);
 				Double Scale = (1.-(abs(Player.GetPSprite(OverlayId()).X-Player.GetPSprite(Lay1).X)/120.));
-				A_OverlayScale(OverlayId(), Scale, Scale, WOF_INTERPOLATE);
+				int Flag = WOF_INTERPOLATE;
+				if(Player.FindPSprite(PSP_FLASH))Console.printf("Fram: "..Player.FindPSprite(PSP_FLASH).Frame);
+				if(Player.FindPSprite(Lay2) && Player.FindPSprite(Lay2).Frame > 6)Flag = 0;
+				
+				//Console.Printf("Sprt: "..Player.GetPSprite(OverlayId()).Sprite.." Flag: "..Flag);
+				
+				A_OverlayScale(OverlayId(), Scale, Scale, Flag);
 				
 				Double CurRotation = invoker.Rotation-(OverlayId()-Muzzle0)*60;
 				Double Frame = (Cos(CurRotation)*30+2+30);
@@ -218,11 +224,12 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			CH1S A 1 A_BarrelOverPos(OverlayId()-BarrShadowOver0, BarrShadowOver0, false);
 			Wait;
 		Barrel://One of the barrels
-			CH1B # 1 A_BarrelPos(OverlayId()-Barrel0);
+			CH1B # 1;
+			#### # 1 A_BarrelPos(OverlayId()-Barrel0);
 			Wait;
 		BarrelOver://In case the barrel must be drawn on top of the other barrel
-			#### # 0 A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
-			CH1B # 1 A_BarrelOverPos(OverlayId()-BarrelOver0);
+			CH1B # 0 A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+			#### # 1 A_BarrelOverPos(OverlayId()-BarrelOver0);
 			Wait;
 		Ring://Front disk
 			CH1R # 1 {
@@ -289,10 +296,10 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			#### # 0 {if(CRandom(0, 100)<2)invoker.Speed += CRandom(1, 7)*5;}
 		GunWait:
-			CH1G # 1 A_IdleAnimation(Lay1);
+			#### # 1 {if(!(Player.Cmd.Buttons&BT_ATTACK))A_IdleAnimation(Lay1);}
 			#### # 0 {
 				For(int i=Muzzle0;i<=Ring;i++){
-					if(i<=Muzzle5 && abs(invoker.Speed)>.1)Continue;
+					if(i<=Muzzle5 && (abs(invoker.Speed)>.1||Player.FindPSprite(PSP_FLASH)))Continue;
 					A_OverlayFlags(i, PSPF_INTERPOLATE, false);
 				}
 				
@@ -379,9 +386,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			TNT1 A 1 {//Recoil
 				if(invoker.Speed<MaxSpeed)invoker.Speed+=8;
 				
-				For(int i=Muzzle0;i<=Muzzle5;i++){
-					A_OverlayFlags(i, PSPF_INTERPOLATE, true);
-				}
+				//For(int i=Muzzle0;i<=Muzzle5;i++){
+				//	A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+				//}
 				
 				Player.GetPSprite(Lay1).OldY = 0;
 				
@@ -451,6 +458,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Goto Ready;
 		GunFlash://Muzzle flash
 			CH1F A 1 BRIGHT {
+				Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("CH2GA0");
+				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, false);
+				For(int i=Muzzle0;i<=Muzzle5;i++)Player.GetPSprite(i).Sprite = GetSpriteIndex("CH2MA0");
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				Float Scale;
 				if(invoker.Speed<10)Scale = .7;
@@ -462,10 +472,24 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayPivot(Lay2, .5, 1);
 				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
-			CH1F ABBBB 1 BRIGHT {
+			CH1F ABB 1 BRIGHT {
+				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y, wof_interpolate);
 				Float Scale = Min(1, invoker.Speed/MaxSpeed);
 				A_OverlayScale(Lay2, Scale*CFRandom(.93, 1), Scale*CFRandom(.93, 1), WOF_INTERPOLATE);
+			}
+			CH1F BB 1 BRIGHT {
+				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y, wof_interpolate);
+				A_OverlayScale(Lay2, -.25, -.25, WOF_ADD);
+			}
+			CH1F Z 1 {
+				Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("CH1GA0");
+				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, false);
+				For(int i=Muzzle0;i<=Muzzle5;i++)Player.GetPSprite(i).Sprite = GetSpriteIndex("CH1MA0");
+			}
+			#### # 1{
+				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, false);
 			}
 			Stop;
 		Flash:
@@ -599,6 +623,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		Sprites:
 			MRD2 A 0;
 			CH2H A 0;
+			CH2G A 0;
+			CH2M A 0;
+			CH2B A 0;
 			Stop;
 	}
 	
