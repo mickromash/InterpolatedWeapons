@@ -201,10 +201,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_BarrelPos(OverlayId()-Muzzle0, Muzzle0, false, DrawFuzz:true);
 				Double Scale = (1.-(abs(Player.GetPSprite(OverlayId()).X-Player.GetPSprite(Lay1).X)/120.));
 				int Flag = WOF_INTERPOLATE;
-				if(Player.FindPSprite(PSP_FLASH))Console.printf("Fram: "..Player.FindPSprite(PSP_FLASH).Frame);
 				if(Player.FindPSprite(Lay2) && Player.FindPSprite(Lay2).Frame > 6)Flag = 0;
-				
-				//Console.Printf("Sprt: "..Player.GetPSprite(OverlayId()).Sprite.." Flag: "..Flag);
 				
 				A_OverlayScale(OverlayId(), Scale, Scale, Flag);
 				
@@ -299,7 +296,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			#### # 1 {if(!(Player.Cmd.Buttons&BT_ATTACK))A_IdleAnimation(Lay1);}
 			#### # 0 {
 				For(int i=Muzzle0;i<=Ring;i++){
-					if(i<=Muzzle5 && (abs(invoker.Speed)>.1||Player.FindPSprite(PSP_FLASH)))Continue;
+					if(i<=Muzzle5 && (abs(invoker.Speed)>.1||Player.FindPSprite(Lay2)))Continue;
 					A_OverlayFlags(i, PSPF_INTERPOLATE, false);
 				}
 				
@@ -385,10 +382,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		GunFire://Animator layer
 			TNT1 A 1 {//Recoil
 				if(invoker.Speed<MaxSpeed)invoker.Speed+=8;
-				
-				//For(int i=Muzzle0;i<=Muzzle5;i++){
-				//	A_OverlayFlags(i, PSPF_INTERPOLATE, true);
-				//}
 				
 				Player.GetPSprite(Lay1).OldY = 0;
 				
