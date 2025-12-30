@@ -28,6 +28,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			Owner.Player.GetPSprite(Lay2).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay2).Y = Max(Owner.Player.GetPSprite(Lay2).Y, 0);
 		}
+		
+		BobStyle = MRIntW_BobStyle;
 	}
 	
 	States{
@@ -126,7 +128,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				if(invoker.Muzzle>.1)invoker.Muzzle *= .5;
 				else invoker.Muzzle = 0;
 			}
-			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);invoker.InterpolateMuzzle = true;}
+			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);invoker.InterpolateMuzzle = true;}
 			Loop;
 		GunLower:
 			#### # 0 A_ClearOverlays(Lay2, Lay2);

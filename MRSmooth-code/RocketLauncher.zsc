@@ -26,6 +26,8 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
+		
+		BobStyle = MRIntW_BobStyle;
 	}
 	
 	States
@@ -80,7 +82,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				
 				if(invoker.Muzzle>0)invoker.Muzzle--;
 			}
-			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		GunLower:

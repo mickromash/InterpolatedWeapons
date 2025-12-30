@@ -32,6 +32,8 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
+		
+		BobStyle = MRIntW_BobStyle;
 	}
 	
 	States{

@@ -2,7 +2,6 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 {
 	Default{
 		Weapon.SlotNumber 2;
-		Weapon.BobStyle "Smooth";
 		Decal "BulletChip";
 	}
 	Const Lay1 = 2;
@@ -28,6 +27,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
+		
+		BobStyle = MRIntW_BobStyle;
 	}
 	
 	action void A_FirePistol()
@@ -119,7 +120,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				if(GetCVar("MRIntW_LHand"))A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
 				else A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, false);
 			}
-			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		GunLower:

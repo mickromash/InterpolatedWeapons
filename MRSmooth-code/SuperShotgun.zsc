@@ -2,7 +2,6 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 {
 	Default{
 		Weapon.SlotNumber 3;
-		Weapon.BobStyle "Smooth";
 		Decal "BulletChip";
 	}
 	Const Lay1 = 2;//Main layer
@@ -31,6 +30,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
+		
+		BobStyle = MRIntW_BobStyle;
 	}
 
 	action void A_FireShotgun2()
@@ -114,7 +115,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				invoker.LowerOpen = false;if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH22A0");
 				A_IdleAnimation(Lay1);
 			}
-			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		GunLower:
