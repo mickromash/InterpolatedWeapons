@@ -274,7 +274,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
 				}
 			}
-			#### FEE 1{
+			#### FGE 1{
 				Float Scal = CFRandom(.01, .03);
 				Vector2 Ofst = (CFRandom(.1, 1), 0);
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));

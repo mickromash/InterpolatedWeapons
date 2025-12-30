@@ -43,7 +43,7 @@ Pistol
 {
 	//Black gloves
 	P1SG A (textures) - Ready
-	P1SG BCFED (textures) - Firing animation
+	P1SG BCFGED (textures) - Firing animation
 	
 	//Brown gloves
 	P2SG A (textures) - Ready
