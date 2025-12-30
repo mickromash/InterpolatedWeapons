@@ -56,7 +56,7 @@ Pistol
 Shotgun
 {
 	//Black gloves
-	SH1G A - Ready
+	SH1G A (textures) - Ready
 	SH1G B - Pump animation
 	SH1G C (textures) - Pump animation
 	SH1G DEFGH - Pump animation
@@ -70,6 +70,7 @@ Shotgun
 	
 	//Both
 	SH1F AB - Flash animation
+	SH1G Z - Deselect handless sprite
 }
 
 Super Shotgun
@@ -154,6 +155,7 @@ BFG 9000
 	BFG1 C (textures) - Ready sprite
 	BFG1 A (textures) - Body ready
 	BFGM A (textures) - Muzzle ready
+	BFGO A - Firing LED overlay
 	
 	BF1F ABC (textures) - Flash animation
 }

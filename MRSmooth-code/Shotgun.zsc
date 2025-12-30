@@ -7,6 +7,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 	}
 	Const Lay1 = 2;
 	Const Lay2 = PSP_FLASH+1;
+	Const LHand = -PSP_FLASH;
 	
 	int BobState, IdleDelay;
 		
@@ -114,27 +115,39 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		GunLower:
-			SH1G A 1 {
-				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH2GA0");
+			SH1G Z 1 {
+				A_Overlay(LHand, "LeftHandLower");
+				
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
-				Player.GetPSprite(Lay1).OldX = 10;
+				Player.GetPSprite(Lay1).OldX = 0;
 				Player.GetPSprite(Lay1).OldY = Player.GetPSprite(PSP_WEAPON).Y;
-				Player.GetPSprite(Lay1).X = 10-2;
-				Player.GetPSprite(Lay1).Y = Player.GetPSprite(PSP_WEAPON).Y-3;
-				//A_OverlayOffset(Lay1, 10, Player.GetPSprite(PSP_WEAPON).Y);
-				//A_OverlayScale(lay1, .8, .8);
-				A_OverlayPivot(Lay1, .5, .5);
+				Player.GetPSprite(Lay1).Y = Player.GetPSprite(PSP_WEAPON).Y-5;
+				Player.GetPSprite(Lay1).X = 0 + 3;
+				A_OverlayPivot(Lay1, .5, 1);
 			}
-			#### BB 1 {
+			#### ZZ 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -5, -6, WOF_ADD);
-				A_OverlayRotate(Lay1, .2, WOF_ADD);
-				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 5, -2, WOF_ADD);
+				A_OverlayRotate(Lay1, -.2, WOF_ADD);
 			}
 			#### ############ 1 {
-				A_OverlayOffset(Lay1, -6, 16, WOF_ADD);
-				A_OverlayRotate(Lay1, 3, WOF_ADD);
-				A_OverlayScale(Lay1, .05, .05, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 11, WOF_ADD);
+				A_OverlayRotate(Lay1, -4, WOF_ADD);
+			}
+			Stop;
+		LeftHandLower:
+			MRD1 G 1 {
+				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(LHand).Sprite = GetSpriteIndex("MRD2A0");
+				A_OverlayFlags(LHand, PSPF_MIRROR, true);
+				A_OverlayPivot(LHand, 1, 1);
+				A_OverlayOffset(LHand, 210, 10);
+				A_OverlayRotate(LHand, -30);
+				A_OverlayOffset(LHand, 5, -4, WOF_ADD);
+			}
+			#### GGGGGGGG 1{
+				A_OverlayOffset(LHand, 5, 0, WOF_ADD);
+				A_OverlayRotate(LHand, 4, WOF_ADD);
+				A_OverlayScale(LHand, -.025, -.025, WOF_ADD);
 			}
 			Stop;
 		GunIdle1:
