@@ -64,28 +64,10 @@ Sprite "BFG1C0", 170, 84
 	}
 }
 
-Sprite "BFG1D0", 156, 83
-{
-	Offset -82, -117
-	Patch "BFGGC0", 0, 0
-	{
-		Translation "1:1=1:1"
-	}
-}
-
 Sprite "BFBODYA", 170, 72
 {
 	Offset -75, -128
 	Patch "BFGGA0", 0, -12
-	{
-		Translation "1:1=1:1"
-	}
-}
-
-Sprite "BFBODYB", 156, 65
-{
-	Offset -82, -127
-	Patch "BFGGC0", 0, -18
 	{
 		Translation "1:1=1:1"
 	}
@@ -100,15 +82,6 @@ Sprite "BFMUZA", 170, 12
 	}
 }
 
-Sprite "BFMUZB", 156, 18
-{
-	Offset -82, -109
-	Patch "BFGGC0", 0, 0
-	{
-		Translation "1:1=1:1"
-	}
-}
-
 Sprite "BFG1A0", 170, 84
 {
 	Offset -75, -116
@@ -118,28 +91,10 @@ Sprite "BFG1A0", 170, 84
 	}
 }
 
-Sprite "BFG1B0", 156, 83
-{
-	Offset -82, -109
-	Patch "BFBODYB", 0, 18
-	{
-		Translation "1:1=1:1"
-	}
-}
-
 Sprite "BFGMA0", 170, 84
 {
 	Offset -75, -116
 	Patch "BFMUZA", 0, 0
-	{
-		Translation "1:1=1:1"
-	}
-}
-
-Sprite "BFGMB0", 156, 83
-{
-	Offset -82, -109
-	Patch "BFMUZB", 0, 0
 	{
 		Translation "1:1=1:1"
 	}
@@ -1301,9 +1256,7 @@ NoTrim "CH1FA0"
 NoTrim "CH1FB0"
 NoTrim "CH1FC0"
 NoTrim "BFG1A0"
-NoTrim "BFG1B0"
 NoTrim "BFGMA0"
-NoTrim "BFGMB0"
 NoTrim "P1SGA0"
 NoTrim "P1SGB0"
 NoTrim "P1SGC0"
