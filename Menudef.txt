@@ -43,6 +43,7 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Title "$MRIntWeaps_AnimMenu"
 	StaticText ""
 	Option "$MRIntW_BrownGloves", "MRIntW_BrownGloves", "YesNo"
+	Option "$MRIntW_BobStyle", "MRIntW_BobStyle", "MRIntW_BobStyleValues"
 	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "YesNo"
 	Option "$MRIntW_LowHealthShake", "MRIntW_LowHealthShake", "YesNo"
 	Option "$MRIntW_NoMuzzleFlash", "MRIntW_NoMuzzleFlash", "YesNo"
@@ -96,6 +97,17 @@ OptionValue "MRIntW_CasingsValues"
 	0, "$MRIntW_Casings0"
 	1, "$MRIntW_Casings1"
 	2, "$MRIntW_Casings2"
+}
+
+OptionValue "MRIntW_BobStyleValues"
+{
+	0, "$MRIntW_BobStyle0"//Normal
+	4, "$MRIntW_BobStyle4"//Smooth
+	3, "$MRIntW_BobStyle3"//Jumpy
+	2, "$MRIntW_BobStyle2"//Alpha
+	5, "$MRIntW_BobStyle5"//Alpha smooth
+	1, "$MRIntW_BobStyle1"//Alpha jumpy
+	6, "$MRIntW_BobStyle6"//None
 }
 
 OptionValue "MRIntW_BersShakeValues"

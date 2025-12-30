@@ -9,6 +9,7 @@ nosave bool MRIntW_FlowingSmoke = false;//Smoke from barrels after firing
 nosave float MRIntW_FlowingSmokeLength = 1;
 nosave float MRIntW_FlowingSmokeAlpha = .1;
 nosave float MRIntW_FlowingSmokePrecision = 1;
+nosave int MRIntW_BobStyle = 4;
 user bool MRIntW_IdleAnims = true;//Idle animations
 server bool MRIntW_Recoil = false;//Visual recoil and screen shaking
 server float MRIntW_RecoilAmount = 1;
