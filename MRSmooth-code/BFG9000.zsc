@@ -9,7 +9,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	Const Lay3 = 3;//LEDs
 	Const Lay4 = -3;//Flash (explosion)
 	
-	int BobState;
+	int BobState, Idle;
 	Double Muzzle,//Muzzle position
 			Power;//Prefiring shaking
 	Bool InterpolateMuzzle, LightUpMuzzle;
@@ -282,7 +282,18 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
 			if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
 		}
+		
+		if(!GetCVar("MRIntW_IdleAnims"))Return;
+		
+		invoker.Idle++;
+		if(invoker.Idle<35)Return;
+		
+		if(invoker.Idle>35 && invoker.Idle<39)invoker.Muzzle+=CFRandom(.3, .6);
+		if(invoker.Idle>45 && invoker.Idle<48)invoker.Muzzle+=CFRandom(.4, .7);
+		if(invoker.Idle>48)invoker.Idle = 0-CRandom(1, 3)*35*5;
 	}
+		
+	
 	
 	Action Void A_BersShake()
 	{
