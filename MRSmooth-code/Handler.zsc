@@ -113,6 +113,12 @@ Class MRIntWeaps_Handler: EventHandler
 	Override Void WorldThingSpawned(WorldEvent e)
 	{
 		if(!e.Thing)Return;
+		
+		if(BulletPuff(e.Thing)||e.Thing.bMissile){
+			CheckPlaneDecalSpawn(e.Thing);
+			Return;
+		}
+		
 		if(e.Thing is 'Berserk' || Actor.GetReplacee('Berserk') == e.Thing.GetClass()){
 			Let a = e.Thing.Spawn("MRIntWeaps_FistSelector", e.Thing.Pos);
 			a.Master = e.Thing;

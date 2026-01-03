@@ -2,9 +2,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 {
 	Default{
 		Weapon.SlotNumber 1;
-		Weapon.BobStyle "Smooth";
 		Decal "BulletChip";
+		MissileHeight 10;
 	}
+	
 	Const Lay1 = 2;
 	Const Lay2 = 3;//Starting rope
 	Const Lay3 = 4;//Starting hand
@@ -32,8 +33,6 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
-		
-		BobStyle = MRIntW_BobStyle;
 	}
 	
 	States{
@@ -204,7 +203,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 						a.Vel = (CFRandom(2.5, 3), -CFRandom(1, 1.2), CFRandom(.2, .6));
 						invoker.Smokes[index] = a;
 						
-						Vector2 Bob = PlayerPawn(Self).BobWeapon(35);
+						Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
 						Bob.Y = 0;//Clamp(Bob.Y, 0, 50);
 						
 						A_Overlay(SmokeStart+index, "SmokeLay");

@@ -4,6 +4,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		Weapon.SlotNumber 3;
 		Decal "BulletChip";
 	}
+	
 	Const Lay1 = 2;//Main layer
 	Const Lay2 = PSP_FLASH+1;//Muzzle flash
 	Const LeftHand = PSP_FLASH+40;//Hand with shells
@@ -30,8 +31,6 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
-		
-		BobStyle = MRIntW_BobStyle;
 	}
 
 	action void A_FireShotgun2()

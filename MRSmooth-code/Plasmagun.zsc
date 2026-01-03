@@ -2,8 +2,9 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 {
 	Default{
 		Weapon.SlotNumber 6;
-		Weapon.BobStyle "Smooth";
+		MissileHeight 0;
 	}
+	
 	Const Lay1 = 2;//Main frame (body)
 	Const Lay2 = -2;//Muzzle
 	Const Lay3 = -3;//Muzzle flash
@@ -30,8 +31,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Owner.Player.GetPSprite(Lay2).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay2).Y = Max(Owner.Player.GetPSprite(Lay2).Y, 0);
 		}
-		
-		BobStyle = MRIntW_BobStyle;
 	}
 	
 	action void A_FirePlasma()

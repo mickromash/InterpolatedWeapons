@@ -3,8 +3,8 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	Default
 	{
 		Weapon.SlotNumber 5;
-		Weapon.BobStyle "Smooth";
 	}
+	
 	Const Lay1 = 2;//Main layer
 	Const Lay2 = PSP_FLASH+1;//Gun flash
 	Const Lay3 = -2;//Gun flash (explosion, behind the barrel)
@@ -26,8 +26,6 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
-		
-		BobStyle = MRIntW_BobStyle;
 	}
 	
 	States

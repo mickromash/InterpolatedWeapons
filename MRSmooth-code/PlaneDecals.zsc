@@ -1,0 +1,11 @@
+Extend Class MRIntWeaps_Handler
+{
+	Void CheckPlaneDecalSpawn(Actor mo)
+	{
+		/*if(!mo)Return;
+		
+		if(mo.Pos.Z<mo.CeilingZ-1 && mo.Pos.Z>mo.FloorZ+1)Return;
+		
+		Actor a = mo.Spawn()*/
+	}
+}

@@ -4,6 +4,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		Weapon.SlotNumber 2;
 		Decal "BulletChip";
 	}
+	
 	Const Lay1 = 2;
 	Const Lay2 = PSP_FLASH+1;
 	Const DieLay = 3;
@@ -28,7 +29,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
 		
-		BobStyle = MRIntW_BobStyle;
+		//BobStyle = MRIntW_BobStyle;
 	}
 	
 	action void A_FirePistol()

@@ -2,9 +2,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 {
 	Default{
 		Weapon.SlotNumber 4;
-		Weapon.BobStyle "Smooth";
 		Decal "BulletChip";
 	}
+	
 	Const Muzzle0 = 2;//Muzzle corner behind further disk
 	Const Muzzle1 = Muzzle0+1;
 	Const Muzzle2 = Muzzle0+2;
@@ -81,8 +81,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
-		
-		BobStyle = MRIntW_BobStyle;
 	}
 	
 	Override Void PostBeginPlay()

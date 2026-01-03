@@ -36,6 +36,7 @@ MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled."
 MRIntWeaps_AnimMenu = "Animations settings";
 
 MRIntW_BrownGloves = "Brown gloves";
+MRIntW_Bounce = "Bounce on land";
 
 MRIntW_BobStyle = "Weapon bob style";
 MRIntW_BobStyle0 = "Normal";
@@ -130,6 +131,8 @@ MRIntW_BetterAlert = "\cv⊛\c- Реалистичное привлечение 
 
 
 MRIntWeaps_AnimMenu = "Настройки анимаций";
+
+MRIntW_Bounce = "Подпрыгивание оружия при приземлении";
 
 MRIntW_BobStyle = "Покачивание оружия";
 MRIntW_BobStyle0 = "Обычное";

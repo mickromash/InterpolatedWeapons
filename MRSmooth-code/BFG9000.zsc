@@ -2,8 +2,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 {
 	Default{
 		Weapon.SlotNumber 7;
-		Weapon.BobStyle "Smooth";
 	}
+	
 	Const Lay1 = 2;//Main frame (body)
 	Const Lay2 = -2;//Muzzle
 	Const Lay3 = 3;//LEDs
@@ -28,8 +28,6 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			Owner.Player.GetPSprite(Lay2).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay2).Y = Max(Owner.Player.GetPSprite(Lay2).Y, 0);
 		}
-		
-		BobStyle = MRIntW_BobStyle;
 	}
 	
 	States{
