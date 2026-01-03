@@ -4,11 +4,12 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		Weapon.SlotNumber 3;
 		Decal "BulletChip";
 	}
+	
 	Const Lay1 = 2;
 	Const Lay2 = PSP_FLASH+1;
 	Const LHand = -PSP_FLASH;
 	
-	int BobState, IdleDelay;
+	int BobState, IdleDelay, ShotPower;
 		
 	Float Recoil;
 	Override Void DoEffect()
@@ -28,7 +29,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
 		
-		BobStyle = MRIntW_BobStyle;
+		//BobStyle = MRIntW_BobStyle;
 	}
 	
 	Bool CustomSound;
@@ -54,11 +55,34 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		player.mo.PlayAttacking2 ();
 
 		double pitch = BulletSlope ();
-
+		
+		invoker.ShotPower = 0;
+		
 		for (int i = 0; i < 7; i++)
 		{
-			GunShot (false, "BulletPuff", pitch);
+			invoker.ShotPower += GunShot(false, "BulletPuff", pitch);
 		}
+	}
+	
+	
+	action int GunShot(bool accurate, Class<Actor> pufftype, double pitch)
+	{
+		int damage = 5 * random[GunShot](1, 3);
+		double ang = angle;
+
+		if (!accurate)
+		{
+			ang += Random2[GunShot]() * (5.625 / 256);
+
+			if (GetCVar ("vertspread") && !sv_novertspread)
+			{
+				pitch += Random2[GunShot]() * (3.549 / 256);
+			}
+		}
+
+		LineAttack(ang, PLAYERMISSILERANGE, pitch, damage, 'Hitscan', pufftype);
+		
+		Return Damage;
 	}
 	
 	States{
@@ -291,16 +315,20 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					
 					if(index<invoker.Smokes.Size() && index>-1){
 						MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
-						a.Vel = (CFRandom(0, 2), -CFRandom(1, 1.2), CFRandom(.5, 1));
+						a.Vel = (CFRandom(0, 2), -CFRandom(.9, 1), CFRandom(.5, 1));
 						invoker.Smokes[index] = a;
 						
-						Vector2 Bob = PlayerPawn(Self).BobWeapon(35);
-						Bob.Y = Clamp(Bob.Y, 0, 50);
+						Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
 						
 						A_Overlay(SmokeStart+index, "SmokeLay");
-						A_OverlayOffset(SmokeStart+index, 130+Player.GetPSprite(Lay1).X+Bob.X, 170+Bob.Y);
+						A_OverlayOffset(SmokeStart+index, 130+Player.GetPSprite(Lay1).X+Bob.X, 170);
 						Player.GetPSprite(SmokeStart+index).Scale = (1,1)*CFRandom(.3, .4);
-						A_OverlayAlpha(SmokeStart+index, CFRandom(.01, .08)*3);
+						//Smoke amount from last shot damage (min dmg 40, max dmg 95)
+						Double Alpha = invoker.ShotPower-40.;
+						Alpha /= 95;
+						Alpha *= .6;
+						
+						A_OverlayAlpha(SmokeStart+index, Alpha);
 					}
 				}
 			}
