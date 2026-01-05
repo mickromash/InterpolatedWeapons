@@ -77,7 +77,7 @@ Super Shotgun
 {
 	//Black gloves
 	SH12 A - Ready
-	SH12 BCD - Opening animation
+	SH12 BCD (textures) - Opening animation
 	SH12 P (textures) - Opening animation (SH12 E with casings inside)
 	SH12 E - Opening animation
 	//Both
@@ -85,16 +85,17 @@ Super Shotgun
 	SH12 I - Opened, barrel part covering casings and loading shell
 	//Black gloves
 	SH12 JK - Closing animation
+	SH12 Q (textures) - Same as B, but with better transition into A
 	
 	SH12 GH - Loading hand
 	
 	//Brown gloves
 	SH22 A - Ready
-	SH22 BC - Opening animation
-	SH22 D (textures) - Opening animation
+	SH22 BCD (textures) - Opening animation
 	SH22 P (textures) - Opening animation (SH12 E with casings inside)
 	SH22 E (textures) - Opening animation
 	SH22 JK (textures) - Closing animation
+	SH22 Q (textures) - Same as B, but with better transition into A
 	
 	SH22 GH - Loading hand
 	
