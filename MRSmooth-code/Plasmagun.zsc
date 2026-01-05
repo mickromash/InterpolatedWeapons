@@ -2,7 +2,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 {
 	Default{
 		Weapon.SlotNumber 6;
-		MissileHeight 0;
 	}
 	
 	Const Lay1 = 2;//Main frame (body)
@@ -100,10 +99,9 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Loop;
 		GunMuzzleFlash:
 			PLSF # 1 BRIGHT{
-				A_OverlayFlags(Lay3, PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayFlags(Lay3, PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
 				A_OverlayRenderStyle(Lay3, STYLE_ColorAdd);
-				A_OverlayAlpha(Lay3, 1);
-				if(Player.FindPSprite(PSP_WEAPON).Y>40)A_ClearOverlays(Lay3, Lay3);
+				if(!Player.FindPSprite(Lay1) || Player.GetPSprite(Lay1).Sprite != GetSpriteIndex("PL1GA0"))A_ClearOverlays(Lay3, Lay3);
 				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
 			Loop;
@@ -252,8 +250,12 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				if(!invoker.Selecting)A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
 				invoker.Selecting = false;
 			}
-			#### # 0 A_ClearOverlays(Lay2, Lay2);
-			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			#### # 0 {
+				A_ClearOverlays(Lay2, Lay2);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+				A_OverlayPivot(Lay3, .5, 1);
+				A_OverlayScale(Lay3, .3, .3, WOF_INTERPOLATE);
+			}
 			PLSR A 1 {
 				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("PL2RA0");
 				A_OverlayPivot(Lay1, .5, 0);

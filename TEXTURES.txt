@@ -1353,7 +1353,6 @@ Sprite "MRD1G0", 82, 158
 	}
 }
 
-NoTrim "PL1GF0"
 NoTrim "SH1FA0"
 NoTrim "SH1FB0"
 NoTrim "SH12N0"
