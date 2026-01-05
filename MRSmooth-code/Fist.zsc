@@ -10,6 +10,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 	Const LeftLay = 3;//Left hand
 	
 	Double CurBounce, BounceStrength;
+	Bool Bouncing;
 	
 	Override Void DoEffect()
 	{
@@ -32,14 +33,17 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		
 		Weap.BobStyle = MRIntW_BobStyle;
 		
+		
 		if(!MRIntW_Bounce)Return;
 		
 		Let PSP = Owner.Player.GetPSprite(PSP_WEAPON);
+		Bouncing = false;
 		
 		if(Owner.Pos.Z > Owner.FloorZ){
 			BounceStrength = Owner.Vel.Z;
 			CurBounce += (BounceStrength - CurBounce)*.5;
 			CurBounce = Clamp(CurBounce, -abs(Weap.MissileHeight), 20);
+			Bouncing = true;
 		}
 		else if(abs(BounceStrength)>0){
 			if(CurBounce<-BounceStrength)CurBounce -= BounceStrength*.5;
@@ -49,9 +53,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				if(abs(BounceStrength)<.05)BounceStrength = 0;
 				CurBounce = -BounceStrength;
 			}
+			
+			Bouncing = true;
 		}
 		
-		if(!InStateSequence(PSP.curState, Weap.GetDownState()) && !InStateSequence(PSP.CurState, Weap.FindState("Select"))){
+		if(Bouncing && !InStateSequence(PSP.curState, Weap.GetDownState()) && !InStateSequence(PSP.CurState, Weap.FindState("Select"))){
 			Double Bounce = CurBounce*.5;
 			if(Bounce<0)Bounce /= Max(1, Weap.MissileHeight/32);
 			PSP.Y = 32 + CurBounce*.5;
