@@ -15,24 +15,28 @@ Class MRIntWeaps_Handler: EventHandler
 	Void GiveWeapons(Actor Plr)//Replace player's vanilla weapons with the mods'
 	{
 		if(!Plr)Return;
+		
 		String Select;
 		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
 		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
+		
+		Inventory Item = Plr.Inv;
+		while(Item != Null){
+			if(Weapon(Item))Plr.RemoveInventory(Item);
+			Item = Plr.Inv;
+		}
+		
 		For(int i=0;i<Weapons.Size();i++){
-			Let Weap = Plr.FindInventory(Weapons[i]);
-			if(Weap){
-				Weap.Destroy();
-				if(!Plr.FindInventory("MRIntWeaps_"..Weapons[i])){
-					int CurAmmo;
-					Class<Ammo> Amo;
-					if(GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1!=""){
-						Amo = GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1;
-						CurAmmo = Plr.CountInv(Amo);
-					}
-					Plr.GiveInventory("MRIntWeaps_"..Weapons[i], 1);
-					if(Amo){
-						Plr.SetInventory(Amo, CurAmmo, true);
-					}
+			if(!Plr.FindInventory("MRIntWeaps_"..Weapons[i])){
+				int CurAmmo;
+				Class<Ammo> Amo;
+				if(GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1!=""){
+					Amo = GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1;
+					CurAmmo = Plr.CountInv(Amo);
+				}
+				Plr.GiveInventory("MRIntWeaps_"..Weapons[i], 1);
+				if(Amo){
+					Plr.SetInventory(Amo, CurAmmo, true);
 				}
 			}
 		}
@@ -49,9 +53,11 @@ Class MRIntWeaps_Handler: EventHandler
 	Void TakeWeapons(Actor Plr)//Replace player's weapons from the mod with vanilla ones
 	{
 		if(!Plr)Return;
+		
 		String Select;
 		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
 		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
+		
 		For(int i=0;i<Weapons.Size();i++){
 			Let Weap = Plr.FindInventory("MRIntWeaps_"..Weapons[i]);
 			if(Weap){
