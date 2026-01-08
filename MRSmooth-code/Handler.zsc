@@ -20,13 +20,23 @@ Class MRIntWeaps_Handler: EventHandler
 		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
 		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
 		
+		Bool GotWeapon[9];
+		
 		Inventory Item = Plr.Inv;
 		while(Item != Null){
-			if(Weapon(Item))Plr.RemoveInventory(Item);
-			Item = Plr.Inv;
+			Let CurItem = Item;
+			Item = Item.Inv;
+			if(Weapon(CurItem)){
+				For(int i=0;i<Weapons.Size();i++){
+					if(CurItem is Weapons[i])GotWeapon[i] = true;
+				}
+				Plr.RemoveInventory(CurItem);
+			}
 		}
 		
 		For(int i=0;i<Weapons.Size();i++){
+			if(!GotWeapon[i])Continue;
+			
 			if(!Plr.FindInventory("MRIntWeaps_"..Weapons[i])){
 				int CurAmmo;
 				Class<Ammo> Amo;
