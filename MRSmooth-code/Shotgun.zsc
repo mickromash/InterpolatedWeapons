@@ -303,7 +303,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					invoker.CasingDir[index] = CFRandom(-.5, 1);
 				}
 			}
-			#### HH 1 {
+			#### H 1 {
 				A_OverlayOffset(Lay1, 5, 17, WOF_ADD);//Pump
 				
 				if(MRIntW_ShotgunSmoke){
@@ -332,6 +332,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					}
 				}
 			}
+			#### H 1 A_OverlayOffset(Lay1, 5, 17, WOF_ADD);
 			#### H 1 A_OverlayOffset(Lay1, 2, 4, WOF_ADD);
 			#### G 1 A_OverlayOffset(Lay1, -5, -20, WOF_ADD);
 			#### F 1 {
