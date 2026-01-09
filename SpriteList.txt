@@ -53,6 +53,19 @@ Pistol
 	P1SF ABC (texture) - Flash animation
 }
 
+Rifle
+{
+	//Black gloves
+	R1FG A (textures) - Ready
+	
+	//Brown gloves
+	R2FG A (textures) - Ready
+	
+	//Both
+	RIFF ABCD (textires) - Flash animation
+	RIFA A - World sprite
+}
+
 Shotgun
 {
 	//Black gloves

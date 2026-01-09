@@ -18,6 +18,8 @@ PlasmaGun (Plasma Rifle) - id Software, Perkristian
 
 BFG 9000 - id Software
 
+Rifle - id Software, DrPyspy
+
 Casings - id Software
 
 Smoke graphic was made by me, as well as guns sprites editing

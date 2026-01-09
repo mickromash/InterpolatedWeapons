@@ -9,6 +9,10 @@ MRIntW/FistPunchWall ""
 MRIntW/PistolSelect ""
 MRIntW/PistolDeselect ""
 
+MRIntW/RifleSelect ""
+MRIntW/RifleDeselect ""
+MRIntW/RifleFire dspistol
+
 MRIntW/ShotgunSelect ""
 MRIntW/ShotgunDeselect ""
 MRIntW/ShotgunFire dsshotgn

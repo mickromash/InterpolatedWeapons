@@ -1,3 +1,9 @@
+//Rifle
+Brightmap Sprite R1FGA0
+{
+	map "Brightmaps/Auto/R2FGA0.png"
+}
+
 //Chaingun
 Brightmap Sprite CH2MA0
 {

@@ -350,8 +350,6 @@ Extend Class MRIntWeaps_Pistol
 				Player.GetPSprite(OverlayId()).bInterpolate=false;
 				A_OverlayPivot(OverlayId(), .5, .5);
 				
-				A_OverlayOffset(OverlayId(), 170, 115+32);
-				A_OverlayScale(OverlayId(), .8, .8);
 				A_OverlayRotate(OverlayId(), 140);
 				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}

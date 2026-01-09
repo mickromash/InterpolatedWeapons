@@ -38,6 +38,7 @@ user bool MRIntW_ChainsawCuttingWall = true;//Chainsaw shaking when cutting map 
 nosave bool MRIntW_ChainsawSmoke = true;
 //Pistol
 user bool MRIntW_LHand = true;//Hold pistol in left hand
+user bool MRIntW_Rifle = false;//Replace pistol with the rifle
 //Shotgun
 nosave bool MRIntW_ShotgunSmoke = true;//Smoke from chamber
 //Super Shotgun

@@ -381,7 +381,7 @@ Extend Class MRIntWeaps_Pistol
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("PISTA0", Pos, Vel, Scale:(.8, .8), Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw(CVar.FindCVar("MRIntW_Rifle").GetBool()?"RIFAA0":"PISTA0", Pos, Vel, Scale:(.8, .8), Caller:Self);
 	}
 	
 	Double DeadAngle;
