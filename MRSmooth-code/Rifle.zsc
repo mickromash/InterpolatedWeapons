@@ -70,7 +70,7 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayScale(Lay1, -.015, -.015, WOF_ADD);
 			}
 			#### ########## 1 {
-				A_OverlayOffset(Lay1, 7, 9, WOF_ADD);
+				A_OverlayOffset(Lay1, 7, 7, WOF_ADD);
 				A_OverlayRotate(Lay1, 2, WOF_ADD);
 			}
 			Stop;
@@ -144,7 +144,7 @@ Extend Class MRIntWeaps_Pistol
 				if(index<invoker.Casings.Size() && index>-1){
 					A_Overlay(PSP_FLASH+10+index, "CasingLay");
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
-					A_OverlayOffset(PSP_FLASH+10+index, 187, 137+32);
+					A_OverlayOffset(PSP_FLASH+10+index, 187, 157+32);
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
 				}
 			}

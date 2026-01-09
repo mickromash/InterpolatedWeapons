@@ -160,7 +160,7 @@ Extend Class MRIntWeaps_Pistol
 		
 		if(Owner.GetCVar("MRIntW_Rifle"))
 		{
-			Ofst.Y -= 5;
+			Ofst.Y += 6;
 		}
 		else
 		{
