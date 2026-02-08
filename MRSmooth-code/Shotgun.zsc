@@ -28,8 +28,6 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
-		
-		//BobStyle = MRIntW_BobStyle;
 	}
 	
 	Bool CustomSound;
@@ -414,7 +412,6 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 	
 	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
 	{
-		Return;
 		Bool Bers = (GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake"));
 		Float Mult = (Bers?2:1);
 		if(invoker.BobState>=0){
