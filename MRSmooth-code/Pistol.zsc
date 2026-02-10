@@ -56,19 +56,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		A_StartSound(GetCVar("MRIntW_Rifle")?"MRIntW/RifleFire":"weapons/pistol", CHAN_WEAPON, pitch:i_timescale);
 		GunShot (accurate, "BulletPuff", BulletSlope ());
 	}
-	
-	Override Void PostBeginPlay()
-	{
-		if(!Owner){Destroy();Return;}
 		
-		Super.PostBeginPlay();
-		
-		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
-		if(!Handler)Return;
-		
-		Smoker = Handler.Smokers[Owner.PlayerNumber()];
-	}
-	
 	States{
 		Select:
 			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "GunRaise");}
@@ -339,7 +327,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Goto LightDone;
 		
 		Spawn:
-			PIST A -1 {if(CVar.FindCVar("MRIntW_Rifle").GetBool())Sprite = GetSpriteIndex("RIFAA0");}
+			PIST A 0;
+			#### # -1 {if(CVar.FindCVar("MRIntW_Rifle").GetBool())Sprite = GetSpriteIndex("RIFAA0");}
 			Stop;
 		
 		Sprites:
@@ -347,6 +336,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			R2FG A 0;
 			PUN2 A 0;
 			MRD2 A 0;
+			RIFA A 0;
 			Stop;
 	}
 	
