@@ -234,7 +234,7 @@ Extend Class MRIntWeaps_Shotgun
 			Smoker.ResetInterpolation = true;
 			Return;
 		}
-		Smoke-=.035;
+		Smoke-=.05;
 		
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 			
@@ -291,7 +291,7 @@ Extend Class MRIntWeaps_Shotgun
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<MRIntW_MaxSmoke*.6)Smoke += CRandom(2, 3);
+		if(Smoke<MRIntW_MaxSmoke*.4)Smoke += CRandom(2, 3);
 	}
 }
 
