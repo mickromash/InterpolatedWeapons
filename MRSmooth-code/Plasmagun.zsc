@@ -148,13 +148,15 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayRotate(Lay2, 0);
 				A_OverlayOffset(Lay2, 0, 7);
 				A_OverlayOffset(Lay1, 0, 32);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			}
 			PL1G A 1 {
+				invoker.InterpolateMuzzle = true;
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , true);
 				A_OverlayOffset(Lay1, 0, 0);
 				A_OverlayScale(Lay1, 1, 1);
 				A_OverlayRotate(Lay1, 0);
-				invoker.InterpolateMuzzle = true;
+				
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayPivot(Lay2, .5, 1);
 				invoker.Selecting = false;
