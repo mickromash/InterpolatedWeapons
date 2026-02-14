@@ -32,7 +32,8 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		if(!Weap||!Owner.Player.FindPSprite(PSP_WEAPON))Return;
 		
 		Weap.BobStyle = MRIntW_BobStyle;
-		
+		Weap.BobRangeX = MRIntW_BobRangeX;
+		Weap.BobRangeY = MRIntW_BobRangeY;
 		
 		if(!MRIntW_Bounce)Return;
 		

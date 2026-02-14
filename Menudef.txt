@@ -43,7 +43,12 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Title "$MRIntWeaps_AnimMenu"
 	StaticText ""
 	Option "$MRIntW_BrownGloves", "MRIntW_BrownGloves", "YesNo"
+	StaticText ""
 	Option "$MRIntW_BobStyle", "MRIntW_BobStyle", "MRIntW_BobStyleValues"
+	Slider "$MRIntW_BobRangeX", "MRIntW_BobRangeX", 0, 3, .1
+	Slider "$MRIntW_BobRangeY", "MRIntW_BobRangeY", 0, 3, .1
+	Slider "$DSPLYMNU_BOBSPEED", "wbobspeed", 0, 3, .1
+	StaticText ""
 	Option "$MRIntW_Bounce", "MRIntW_Bounce", "YesNo"
 	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "YesNo"
 	Option "$MRIntW_LowHealthShake", "MRIntW_LowHealthShake", "YesNo"
