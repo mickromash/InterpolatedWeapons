@@ -540,9 +540,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				
 				Dir = ((Dir.X-invoker.HandVector.X)*.5, (Dir.Y-invoker.HandVector.Y)*.5);
 				
-				A_OverlayOffset(Hand, Dir.X, Dir.Y, WOF_ADD);
-				A_OverlayScale(Hand, .8+invoker.HandPos*.5, .8+invoker.HandPos*.5, WOF_INTERPOLATE);
-				A_OverlayRotate(Hand, -6+6*invoker.HandPos, WOF_INTERPOLATE);
+				A_OverlayOffset(Hand, Dir.X, Dir.Y, WOF_ADD|WOF_INTERPOLATE);
+				A_OverlayScale(Hand, .8+invoker.HandPos*.5, .8+invoker.HandPos*.5);
+				A_OverlayRotate(Hand, -6+6*invoker.HandPos);
 				
 				invoker.HandVector = (Player.GetPSprite(Hand).X, Player.GetPSprite(Hand).Y);
 			}
