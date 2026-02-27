@@ -45,7 +45,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	
 	int BobState, IdleDelay;
 	Float Rotation, Speed, MaxSpeedM, GunFrame, HandPos;
-	Bool CustomSound, ConterClock;
+	Bool CustomSound, ConterClock, DontStop;
 	
 	Vector2 HandVector;
 	
@@ -64,7 +64,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		MuzzleSmoke();
 		
 		if(Owner.Health>0 && abs(Speed)>0){
-			if(!(Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Fire"))))Speed *= .7;
+			if(!(Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Fire"))) && !DontStop)Speed *= 1-Owner.GetCVar("MRIntW_ChaingunStopTime");
 			Rotation += ConterClock?-Speed:Speed;
 			if(Rotation!=0 && (Rotation>360||Rotation<-360))Rotation %= 360;
 			
@@ -74,6 +74,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			
 			if(Owner.Player.FindPSprite(Lay1))Owner.Player.GetPSprite(Lay1).Frame = GunFrame;
 		}
+		
+		DontStop = false;
 		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
@@ -303,18 +305,22 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				if(!InStateSequence(Player.GetPSprite(PSP_WEAPON).CurState, invoker.FindState("Ready")))Return;
 				if(Player.FindPSprite(Hand))Return;
 				
-				if(!GetCVar("MRIntW_ChaingunFixed"))Return;
+				if(Player.cmd.Buttons&BT_ALTATTACK)Return;
 				
-				if(abs(invoker.Speed)<=0||abs(invoker.Speed)>6)Return;
+				if(!GetCVar("MRIntW_ChaingunFixed"))Return;
 				
 				Double CurRot = invoker.Rotation+30;
 				if(abs(CurRot)>=360)CurRot %= 360;
 				
 				int Diff = CurRot%60;
 				if(Diff>30)Diff = 60-Diff;
+				
+				if(abs(invoker.Speed)*(1-GetCVar("MRIntW_ChaingunStopTime"))>Diff)Return;
 
 				if(abs(Diff)<3){invoker.Speed *= 0;Return;}
-				else invoker.Speed = Clamp(12, invoker.Speed, Diff);
+				
+				else invoker.Speed = Diff*(GetCVar("MRIntW_ChaingunStopTime"));//Clamp(12, Diff*(GetCVar("MRIntW_ChaingunStopTime"))/*invoker.Speed*/, Diff);
+				invoker.DontStop = true;
 			}
 			#### # 0 {if(invoker.IdleDelay>35 && abs(invoker.BobState)<2)A_Overlay(Hand, "HandIdle1");}
 			Loop;

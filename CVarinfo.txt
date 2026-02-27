@@ -49,6 +49,7 @@ nosave bool MRIntW_SSGSmoke = true;//Smoke from barrels when reloading
 user bool MRIntW_ChaingunFixed = false;//Fixed chaingun rotation
 user bool MRIntW_ChaingunCounterClock = false;//Inver chaingub spin direction
 user int MRIntW_ChaingunSpeed = 1;
+user float MRIntW_ChaingunStopTime = .3;
 nosave int MRIntW_ChaingunMaxSmokes = 3;//Maximum smoking barrels
 //Rocket Launcher
 nosave bool MRIntW_RocketSmoke = true;//Smoke from muzzle

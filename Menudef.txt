@@ -83,6 +83,7 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	StaticText "$TAG_CHAINGUN", "Fire"
 	Option "$MRIntW_ChaingunFixed", "MRIntW_ChaingunFixed", "YesNo"
 	Slider "$MRIntW_ChaingunSpeed", "MRIntW_ChaingunSpeed", 1, 5, 1, 2
+	Slider "$MRIntW_ChaingunStopTime", "MRIntW_ChaingunStopTime", 0, 1, .05, 2
 	Option "$MRIntW_ChaingunCounterClock", "MRIntW_ChaingunCounterClock", "YesNo"
 	Slider "$MRIntW_ChaingunMaxSmokes", "MRIntW_ChaingunMaxSmokes", 1, 6, 1, 0, "MRIntW_FlowingSmoke"
 	StaticText ""
