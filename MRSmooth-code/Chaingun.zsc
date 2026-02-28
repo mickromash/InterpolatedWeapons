@@ -64,7 +64,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		MuzzleSmoke();
 		
 		if(Owner.Health>0 && abs(Speed)>0){
-			if(!(Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Fire"))) && !DontStop)Speed *= 1-Owner.GetCVar("MRIntW_ChaingunStopTime");
+			if(!(Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Fire"))) && !DontStop && HandPos>.3)Speed *= 1-Owner.GetCVar("MRIntW_ChaingunStopTime");
 			Rotation += ConterClock?-Speed:Speed;
 			if(Rotation!=0 && (Rotation>360||Rotation<-360))Rotation %= 360;
 			
@@ -90,6 +90,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		Super.PostBeginPlay();
 		IdleDelay = -35*4;
 		Rotation = 30;
+		HandPos = 1;
 	}
 	
 	action void A_FireCGun()
@@ -134,16 +135,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Player.GetPSprite(Lay1).X+Cos(CurRotation)*30-2, 
 			Player.GetPSprite(Lay1).Y+Sin(CurRotation)*20+20, 
 			WOF_INTERPOLATE);
-			
-		if(Shadow){
-			if(abs(CurRotation)>360)CurRotation %= 360;
-
-			int Offset = CurRotation;
-			if(Offset<0)Offset += 360;
-			
-			A_OverlayRenderStyle(Lay, STYLE_Normal);
-			if(Offset>200 && Offset<340)A_OverlayRenderStyle(Lay, STYLE_None);
-		}
 		
 		if(!DrawFuzz){
 			A_OverlayFlags(Lay, PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
@@ -154,15 +145,25 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			else {A_OverlayRenderStyle(Lay, GetRenderStyle());A_OverlayAlpha(Lay, Alpha);}
 		}
 		
+		if(Shadow){
+			if(abs(CurRotation)>360)CurRotation %= 360;
+
+			int Offset = CurRotation;
+			if(Offset<0)Offset += 360;
+			
+			if(Offset>200 && Offset<340)A_OverlayRenderStyle(Lay, STYLE_None);
+		}
+		
 		if(!Anim)Return;
 		Double Frame = (Cos(CurRotation)*30+2+30);
 		Frame /= 10;
 		Player.GetPSprite(Lay).Frame = Frame;
 		
 		if(Player.GetPSprite(Lay).Frame<1||Player.GetPSprite(Lay).Frame>5){
-			A_OverlayTranslation(Lay, "MrChGnBarShad"..int(Min(8, Sin(CurRotation)*10+3)));
+			int Trans = Clamp(0, 6, int(Min(8, Sin(CurRotation)*10+3)));
+			A_OverlayTranslation(Lay, "MrChGnBarShad"..Trans);
 		}
-		else A_OverlayTranslation(Lay, "None");
+		else A_OverlayTranslation(Lay, "");
 	}
 	
 	Action Void A_BarrelOverPos(int Num=0, int Lay=BarrelOver0, bool Anim=true)
@@ -178,6 +179,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		
 		A_OverlayRenderStyle(Lay, STYLE_None);
 		if(Offset>200 && Offset<340)A_OverlayRenderStyle(Lay, STYLE_Normal);
+		A_OverlayTranslation(Lay, "");
 	}
 	
 	States{
@@ -448,11 +450,13 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Stop;
 		AltFire:
 			TNT1 A 1 {
-				if(abs(invoker.Speed)<20)invoker.Speed--;
+				if(abs(invoker.Speed)<10)invoker.Speed--;
 				
 				For(int i=Muzzle0;i<=Muzzle5;i++){
 					A_OverlayFlags(i, PSPF_INTERPOLATE, true);
 				}
+				
+				invoker.DontStop = true;
 			}
 			#### # 0 A_Refire();
 			Goto Ready;
@@ -608,11 +612,13 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayOffset(Hand, -3, 8, WOF_ADD);
 				A_OverlayScale(Hand, .005, .005, WOF_ADD);
 				invoker.Speed -= invoker.ConterClock?-CRandom(40, 60):CRandom(40, 60);
+				invoker.DontStop = true;
 			}
 			Wait;
 		IdleRotate:
 			TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
-				invoker.Speed -= invoker.ConterClock?-CFRandom(.1, .5):CFRandom(.1, .5);
+				invoker.Speed = -(invoker.ConterClock?-CFRandom(.2, 1):CFRandom(.2, 1));
+				invoker.DontStop = true;
 				A_SetTics(CRandom(1, 2));
 			}
 			#### # 2 A_SetTics(CRandom(1, 2));
