@@ -427,4 +427,131 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			MRD2 A 0;
 			Stop;
 	}
+	
+	//Making sound pitch affected by i_timescale
+	
+	action void A_WeaponReady(int flags = 0)
+	{
+		if(!player) return;
+		
+		DoReadyWeaponToSwitch(player, !(flags & WRF_NoSwitch));
+		if((flags & WRF_NoFire) != WRF_NoFire)invoker.DoReadyWeaponToFire(player.mo, !(flags & WRF_NoPrimary), !(flags & WRF_NoSecondary));
+		if(!(flags & WRF_NoBob))DoReadyWeaponToBob(player);
+
+		player.WeaponState |= GetButtonStateFlags(flags);
+		DoReadyWeaponDisableSwitch(player, flags & WRF_DisableSwitch);
+	}
+	
+	static void DoReadyWeaponToFire (PlayerPawn pawn, bool prim, bool alt)
+	{
+		let player = pawn.player;
+		let weapon = player.ReadyWeapon;
+		
+		if(!weapon)return;
+
+		if(pawn.InStateSequence(pawn.curstate, pawn.MissileState) ||
+			pawn.InStateSequence(pawn.curstate, pawn.MeleeState))
+		{
+			pawn.PlayIdle ();
+		}
+
+		let psp = player.GetPSprite(PSP_WEAPON);
+		if(weapon.ReadySound && psp && psp.curState == weapon.FindState('Ready'))
+		{
+			if(!weapon.bReadySndHalf || random[WpnReadySnd]() < 128)pawn.A_StartSound(weapon.ReadySound, CHAN_WEAPON, pitch:i_timescale);
+		}
+
+		player.WeaponState |= ((prim ? WF_WEAPONREADY : 0) | (alt ? WF_WEAPONREADYALT : 0));
+		return;
+	}
+	
+	Override void PlayUpSound(Actor origin)
+	{
+		if(UpSound)origin.A_StartSound(UpSound, CHAN_WEAPON, pitch:i_timescale);
+	}
+	
+	action void A_Saw(sound fullsound = "weapons/sawfull", sound hitsound = "weapons/sawhit", int damage = 2, class<Actor> pufftype = "BulletPuff", int flags = 0, double range = 0, double spread_xy = 2.8125, double spread_z = 0, double lifesteal = 0, int lifestealmax = 0, class<BasicArmorBonus> armorbonustype = "ArmorBonus")
+	{
+		FTranslatedLineTarget t;
+
+		if(!player)return;
+
+		if(!(flags & SF_NORANDOM))damage *=  random[Saw](1, 10);
+		if(range == 0)range = MeleeRange + MELEEDELTA + (1. / 65536.); // MBF21 SAWRANGE;
+
+		double ang = angle + spread_xy * (Random2[Saw]() / 255.);
+		double slope = AimLineAttack (ang, range, t) + spread_z * (Random2[Saw]() / 255.);
+
+		Weapon weap = player.ReadyWeapon;
+
+		int puffFlags = (flags & SF_NORANDOMPUFFZ) ? LAF_NORANDOMPUFFZ : 0;
+
+		Actor puff;
+		int actualdamage;
+		[puff, actualdamage] = LineAttack (ang, range, slope, damage, 'Melee', pufftype, puffFlags, t);
+
+		if(!t.linetarget)
+		{
+			if((flags & SF_RANDOMLIGHTMISS) && (Random[Saw]() > 64))player.extralight = !player.extralight;
+			A_StartSound (fullsound, CHAN_WEAPON, pitch:i_timescale);
+			return;
+		}
+
+		if(flags & SF_RANDOMLIGHTHIT)
+		{
+			int randVal = Random[Saw]();
+			
+			if(randVal < 64)player.extralight = 0;
+			else if(randVal < 160)player.extralight = 1;
+			else player.extralight = 2;
+		}
+
+		if(lifesteal && !t.linetarget.bDontDrain)
+		{
+			if(flags & SF_STEALARMOR)
+			{
+				if(!armorbonustype)armorbonustype = "ArmorBonus";
+				else
+				{
+					BasicArmorBonus armorbonus = BasicArmorBonus(Spawn(armorbonustype));
+					armorbonus.SaveAmount = int(armorbonus.SaveAmount * actualdamage * lifesteal);
+					armorbonus.MaxSaveAmount = lifestealmax <= 0 ? armorbonus.MaxSaveAmount : lifestealmax;
+					armorbonus.bDropped = true;
+					armorbonus.ClearCounters();
+
+					if(!armorbonus.CallTryPickup (self))armorbonus.Destroy ();
+				}
+			}
+
+			else
+			{
+				GiveBody(int(actualdamage * lifesteal), lifestealmax);
+			}
+		}
+
+		A_StartSound(hitsound, CHAN_WEAPON, pitch:i_timescale);
+			
+		// turn to face target
+		if(!(flags & SF_NOTURN))
+		{
+			double anglediff = deltaangle(angle, t.angleFromSource);
+
+			if(anglediff < 0.0)
+			{
+				if (anglediff < -4.5)
+					angle = t.angleFromSource + 90.0 / 21;
+				else
+					angle -= 4.5;
+			}
+			else
+			{
+				if(anglediff > 4.5)
+					angle = t.angleFromSource - 90.0 / 21;
+				else
+					angle += 4.5;
+			}
+		}
+		if(!(flags & SF_NOPULLIN))
+			bJustAttacked = true;
+	}
 }
