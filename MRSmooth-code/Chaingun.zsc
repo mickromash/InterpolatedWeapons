@@ -2,6 +2,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 {
 	Default{
 		Weapon.SlotNumber 4;
+		+Weapon.NOALERT
 		Decal "BulletChip";
 	}
 	
@@ -362,6 +363,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		Fire:
 			#### # 0 {if(Player.FindPSprite(Hand))A_Overlay(Hand, "HandIdleBreak");}
 			TNT1 AA 4 {
+				A_AlertMonsters();
 				invoker.ConterClock = GetCVar("MRIntW_ChaingunCounterClock");
 				A_FireCGun();
 				A_Overlay(Lay2, "GunFlash");
