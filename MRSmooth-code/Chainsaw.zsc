@@ -163,11 +163,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
-				if(GetCVar("MRIntW_ChainsawStart")){
-					A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
-					A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
-					A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
-				}
+				invoker.SawFrame = 2;
 			}
 			#### # 0 A_JumpIf(GetCVar("MRIntW_ChainsawStart"), 2);
 			#### E 1 {
@@ -181,7 +177,6 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, 1, .9);
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayRotate(Lay1, 0);
-				invoker.SawFrame = 2;
 			}
 		SawReady:
 			SAW1 # 1 {
