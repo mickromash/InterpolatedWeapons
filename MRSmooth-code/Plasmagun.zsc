@@ -60,7 +60,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "GunRaise");}
 		Raise:
 			#### A 1 A_Raise();
-			Loop;
+			Wait;
 		Deselect:
 			TNT1 A 0 {
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
@@ -68,10 +68,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			}
 		Lower:
 			#### A 1 A_Lower();
-			Loop;
+			Wait;
 		Ready:
 			TNT1 A 1 A_WeaponReady();
-			Loop;
+			Wait;
 			
 		GunMuzzle:
 			PLSO # 1{
@@ -96,15 +96,20 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Loop;
 		GunMuzzleReload:
 			PLSO I 1;
-			Loop;
+			Wait;
 		GunMuzzleFlash:
 			PLSF # 1 BRIGHT{
 				A_OverlayFlags(Lay3, PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
 				A_OverlayRenderStyle(Lay3, STYLE_ColorAdd);
-				if(!Player.FindPSprite(Lay1) || Player.GetPSprite(Lay1).Sprite != GetSpriteIndex("PL1GA0"))A_ClearOverlays(Lay3, Lay3);
+				
+				if(!invoker.Selecting &&
+					(!Player.FindPSprite(Lay1) || Player.GetPSprite(Lay1).Sprite != GetSpriteIndex("PL1GA0"))
+				)
+					A_ClearOverlays(Lay3, Lay3);
+					
 				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
-			Loop;
+			Wait;
 		
 		GunRaise:
 			TNT1 AAAA 1 {
