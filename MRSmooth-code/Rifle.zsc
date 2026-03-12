@@ -85,8 +85,8 @@ Extend Class MRIntWeaps_Pistol
 			}
 			#### # 0 A_JumpIf(MRIntW_InstantFire||MRIntW_FastPistol, 5);
 			#### A 1;
-			#### A 1;
-			#### AA 1 A_OverlayOffset(Lay1, 0, -1, WOF_ADD);
+			#### A 1 A_OverlayOffset(Lay1, 0, -1, WOF_ADD);
+			#### AA 1 A_OverlayOffset(Lay1, 0, 1, WOF_ADD);
 			#### A 1;//Shot
 			#### AA 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);

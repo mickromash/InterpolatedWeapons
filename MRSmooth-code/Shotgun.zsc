@@ -60,6 +60,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		{
 			invoker.ShotPower += GunShot(false, "BulletPuff", pitch);
 		}
+		
+		A_FiringParticles();
 	}
 	
 	
@@ -231,9 +233,10 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			
 		GunFire:
 			SH1G # 0 {A_OverlayPivot(Lay1, .5, .5);if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("SH2GA0");}
-			#### # 0 A_JumpIf(MRIntW_InstantFire, 3);
-			#### A 2;
-			#### A 1 A_OverlayOffset(Lay1, 0, 1, WOF_ADD);
+			#### # 0 A_JumpIf(MRIntW_InstantFire, 4);
+			#### A 1;
+			#### A 1 A_OverlayOffset(Lay1, 0, -1, WOF_ADD);
+			#### A 1 A_OverlayOffset(Lay1, 0, 3, WOF_ADD);
 			#### A 1;//Shot
 			#### A 1 {//Recoil
 				Float Scal = CFRandom(.2, .3);
