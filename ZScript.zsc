@@ -15,6 +15,6 @@ Version "4.0"
 
 #include "MRSmooth-code/Effects.zsc"//Casings/smoke
 #include "MRSmooth-code/MuzzleSmoke.zsc"
+#include "MRSmooth-code/Particles.zsc"
 #include "MRSmooth-code/SSGStuff.zsc"
 #include "MRSmooth-code/Dying.zsc"
-#include "MRSmooth-code/PlaneDecals.zsc"
