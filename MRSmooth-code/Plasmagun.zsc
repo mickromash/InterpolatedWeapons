@@ -31,7 +31,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Owner.Player.GetPSprite(Lay2).Y = Max(Owner.Player.GetPSprite(Lay2).Y, 0);
 		}
 	}
-	
+
 	action void A_FirePlasma()
 	{
 		if (!player)Return;
@@ -55,6 +55,8 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		A_StartSound("MRIntW/PlasmaFire", CHAN_AUTO, pitch:i_timescale);
 	}
 	
+	MRIntWeaps_Smoker Smoker;
+	Double Blya;
 	States{
 		Select:
 			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "GunRaise");}
@@ -103,11 +105,15 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayRenderStyle(Lay3, STYLE_ColorAdd);
 				
 				if(!invoker.Selecting &&
-					(!Player.FindPSprite(Lay1) || Player.GetPSprite(Lay1).Sprite != GetSpriteIndex("PL1GA0"))
-				)
+					(!Player.FindPSprite(Lay1) || Player.GetPSprite(Lay1).Sprite != GetSpriteIndex("PL1GA0")))
+				{
 					A_ClearOverlays(Lay3, Lay3);
-					
+					Return;
+				}
+				
 				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
+				
+				A_FiringParticles();
 			}
 			Wait;
 		

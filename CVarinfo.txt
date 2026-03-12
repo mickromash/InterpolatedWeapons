@@ -43,8 +43,10 @@ user bool MRIntW_LHand = true;//Hold pistol in left hand
 user bool MRIntW_Rifle = false;//Replace pistol with the rifle
 //Shotgun
 nosave bool MRIntW_ShotgunSmoke = true;//Smoke from chamber
+nosave bool MRIntW_ShotgunSparks = false;
 //Super Shotgun
 nosave bool MRIntW_SSGSmoke = true;//Smoke from barrels when reloading
+nosave bool MRIntW_SSGSparks = false;
 //Chaingun
 user bool MRIntW_ChaingunFixed = false;//Fixed chaingun rotation
 user bool MRIntW_ChaingunCounterClock = false;//Inver chaingub spin direction
@@ -53,3 +55,5 @@ user float MRIntW_ChaingunStopTime = .3;
 nosave int MRIntW_ChaingunMaxSmokes = 3;//Maximum smoking barrels
 //Rocket Launcher
 nosave bool MRIntW_RocketSmoke = true;//Smoke from muzzle
+//Plasmagun
+nosave int MRIntW_PlasmaParticles = 1;

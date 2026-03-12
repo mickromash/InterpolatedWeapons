@@ -31,8 +31,9 @@ Class MRIntWeaps_Smoker: Object play
 	Vector2 WeapOfst[6];
 	Vector3 Prev[6];
 	Double OldBob, ViewHeight, Bob, Scale[6], Alpha, Speed[6];
-	Bool PassSpawn, ResetInterpolation;
+	Bool PassSpawn, ResetInterpolation, ForceConnect, Bright, Bright1;
 	Weapon LastWeapon;
+	Color Col, Col1;
 	Const Dist = 5.;
 	Const ZSpeed = .15;
 	Const Step = .19;
@@ -54,7 +55,8 @@ Class MRIntWeaps_Smoker: Object play
 		LastAge = Owner.GetAge();
 		LastWeapon = Owner.Player.ReadyWeapon;
 		Alpha = MRIntW_FlowingSmokeAlpha;
-		ResetInterpolation = false;
+		Bright = Bright1 = ForceConnect = ResetInterpolation = false;
+		Col1 = Col = Color(Brightness,Brightness,Brightness);
 	}
 	
 	Void SpawnSmoke(int Num=0)
@@ -94,7 +96,8 @@ Class MRIntWeaps_Smoker: Object play
 		if(Owner.Pos == Owner.Prev)ZSpeed*=.25;
 		
 		//if(Owner.Vel.Length()<=.5){Alpha *= 2;}
-		
+		int Flags = 0;
+		if(Bright)Flags = SPF_FULLBRIGHT;
 		For(Double i=0;i<Connect;i+=Step){
 			Vector3 PPos = Diff.Unit()*i;
 			Double Curve = i/(Connect+Step);
@@ -102,23 +105,26 @@ Class MRIntWeaps_Smoker: Object play
 			if(Owner.Pos == Owner.Prev)Curve = 1;
 			PPos.Z *= Curve;
 			if(PPos != PPos)PPos = (0,0,0);
-			MRSpawnParticle(Color(Brightness,Brightness,Brightness), 0, STYLE_None, Life/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength), .6*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
+			MRSpawnParticle(Col, Flags, STYLE_None, Life/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength), .6*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
 		}
-		if(Owner.Vel.XY.Length()>0){
+		
+		if(Owner.Vel.XY.Length()>0 || ForceConnect){
+			Flags = SPF_NOTIMEFREEZE;
+			if(Bright1)Flags |= SPF_FULLBRIGHT;
 			Double Bobb = Bob-OldBob;
 			Double ZOfst = 0;
 			if(Owner.Vel.Z != 0){
 				ZOfst = -Owner.Vel.Z*1.5;
 				Bobb = Owner.Vel.Z*1.5;
 			}
-			
+
 			For(Double i=0;i<Connect*.5;i+=Step){
 				Vector3 PPos = Diff.Unit()*i;
 				Double Curve = i/(Connect*.5+Step);
 				PPos.Z *= Curve;
 				PPos.XY *= Curve;
 				if(PPos!=PPos)PPos = (0,0,0);
-				MRSpawnParticle(Color(Brightness,Brightness,Brightness), 0, STYLE_None, 1, .6*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
+				MRSpawnParticle(Col1, Flags, STYLE_None, 1, .6*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
 			}
 		}
 		
@@ -383,7 +389,7 @@ Extend Class MRIntWeaps_Chaingun
 Extend Class MRIntWeaps_RocketLauncher
 {
 	MRIntWeaps_Smoker Smoker;
-	Double Smoke;
+	Double Smoke, Fire;
 	
 	Void MuzzleSmoke()
 	{
@@ -395,6 +401,10 @@ Extend Class MRIntWeaps_RocketLauncher
 		
 			if(!Smoker)Return;
 		}
+		
+		if(Fire>120)Fire = 120;
+		if(Fire>0)Fire--;
+		else Fire = 0;
 		
 		if(Smoke<1){
 			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
@@ -423,6 +433,30 @@ Extend Class MRIntWeaps_RocketLauncher
 		
 		Ofst *= .032;
 		
+		if(Fire>0){
+			int Col = Smoker.Brightness-Fire;
+			Smoker.Col = Color(Col,Col,Col);
+			
+			if(Fire>100){
+				Smoker.ForceConnect = true;
+				int Cols[3];
+				Cols[0] = 255;
+				Cols[1] = (Fire-100)*2;
+				Cols[2] = 0;
+				Smoker.Col1 = Color(Cols[0],Cols[1],Cols[2]);
+				Smoker.Bright1 = True;
+			}
+			else {
+				int Cols[3];
+				Cols[0] = Smoker.Brightness+Fire;
+				Cols[2] = Cols[1] = Smoker.Brightness-Fire;
+				Smoker.Col1 = Color(Cols[0],Cols[1],Cols[2]);
+				if(Fire>60){
+					Smoker.Bright1 = True;
+					Smoker.ForceConnect = true;
+				}
+			}
+		}
 		Smoker.Smokes = 1;
 		Smoker.WeapOfst[0] = Ofst;
 		Smoker.Scale[0] = Scale;

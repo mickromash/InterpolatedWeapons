@@ -99,12 +99,21 @@ MRIntW_ChaingunStopTime = "Stop time";
 MRIntW_ChaingunCounterClock = "CounterClockwise rotation";
 
 
+MRIntWeaps_ParticlesMenu = "Particles settings";
+
+MRIntW_RocketSmoke = "Muzzle smoke";
+MRIntW_ShotgunSparks = "Buckshot sparks";
+MRIntW_SSGSparks = "Buckshot sparks";
+MRIntW_PlasmaParticles = "Firing particles";
+MRIntW_PlasmaParticles0 = "None";
+MRIntW_PlasmaParticles1 = "Only muzzle flare";
+MRIntW_PlasmaParticles2 = "Flare + particles";
+
+
 MRIntWeaps_SoundMenu = "Sounds settings (add-on required)";
 
 MRIntW_ShotgunSound = "Shotgun custom firing sound";
 MRIntW_ChaingunSound = "Chaingun custom firing sound";
-
-MRIntW_RocketSmoke = "Muzzle smoke";
 
 [ru]
 
@@ -199,7 +208,16 @@ MRIntW_ChaingunFixed = "Фиксированное положение ствол
 MRIntW_ChaingunStopTime = "Время торможения";
 MRIntW_ChaingunCounterClock = "Вращать стволы против часовой";
 
+
+MRIntWeaps_ParticlesMenu = "Настройки частиц";
+
 MRIntW_RocketSmoke = "Дым из дула";
+MRIntW_ShotgunSparks = "Искры при выстреле";
+MRIntW_SSGSparks = "Искры при выстреле";
+MRIntW_PlasmaParticles = "Частицы при стрельбе";
+MRIntW_PlasmaParticles0 = "Нет";
+MRIntW_PlasmaParticles1 = "Только свечение";
+MRIntW_PlasmaParticles2 = "Свечение + частицы";
 
 MRIntWeaps_Give = "Сделать анимации плавными";
 
