@@ -28,6 +28,9 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		}
 	}
 	
+	Vector2 RecOfst;
+	Double RecScal;
+	
 	States
 	{
 		Select:
@@ -183,12 +186,12 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			}
 			MI1G CC 1 {//Shot
 				invoker.Fire += 20;
-				A_OverlayScale(Lay1, .3, .3, WOF_ADD);
+				A_OverlayScale(Lay1, .4, .4, WOF_ADD);
 				A_OverlayOffset(Lay1, invoker.RecoilDir, 2, WOF_ADD);
 				A_OverlayRotate(Lay1, -invoker.RecoilDir, WOF_ADD);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+				//A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				
-				A_OverlayScale(Lay2, .3, .3, WOF_ADD);
+				A_OverlayScale(Lay2, .4, .4, WOF_ADD);
 				A_OverlayOffset(Lay2, invoker.RecoilDir, 2, WOF_ADD);
 				A_OverlayRotate(Lay2, -invoker.RecoilDir, WOF_ADD);
 				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);
@@ -199,21 +202,27 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				A_OverlayScale(Lay1, .15, .15, WOF_ADD);
 				A_OverlayOffset(Lay1, invoker.RecoilDir*.5, 7, WOF_ADD);
 			}
-			MI1G C 1{invoker.Fire += 20;}
+			MI1G C 1{
+				invoker.Fire += 20;
+				invoker.RecOfst = (CFRandom(-4, 4), CFRandom(-2, 4));
+				invoker.RecScal = CFRandom(.95, .98);
+			}
 			MI1G CCCCB 1{
 				invoker.Fire++;
+				Float Recover = CFRandom(.6, .7);
+				Player.GetPSprite(Lay1).X = invoker.RecOfst.X+(Player.GetPSprite(Lay1).X-invoker.RecOfst.X)*Recover;
+				Player.GetPSprite(Lay1).Y = invoker.RecOfst.Y+(Player.GetPSprite(Lay1).Y-invoker.RecOfst.Y)*Recover;
+				Player.GetPSprite(Lay1).Scale = (invoker.RecScal,invoker.RecScal)+(Player.GetPSprite(Lay1).Scale-(invoker.RecScal,invoker.RecScal))*Recover;
+				Player.GetPSprite(Lay1).Rotation *= Recover;
+			}
+			MI1G AAAA 1{
 				Float Recover = CFRandom(.6, .7);
 				Player.GetPSprite(Lay1).X *= Recover;
 				Player.GetPSprite(Lay1).Y *= Recover;
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
 				Player.GetPSprite(Lay1).Rotation *= Recover;
 			}
-			#### A 2{
-				A_OverlayOffset(Lay1, CFRandom(-4, 4), CFRandom(-2, 4), WOF_INTERPOLATE);
-				Float Scal = CFRandom(.93, 1.04);
-				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
-			}
-			#### A 3{
+			#### A 1{
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
