@@ -1,157 +1,147 @@
 Extend Class MRIntWeaps_Shotgun
 {
-	Action Void A_FiringParticles()//Sparks
+	MRIntWeaps_SmokeContainer Particles[30];
+	Const ParLay = LHand-1;
+	
+	Action Void A_FiringParticles()
 	{
-		if(!MRIntW_ShotgunSparks)Return;
-		Vector3 PPos = (Pos.XY, Player.ViewZ);
+		//Buckshot sparks
+		if(Random(0, 20)<2)Return;
+		For(int i1=Random(0, 7);i1<10;i1++){
 		
-		PPos.XY += AngleToVector(Angle, 5)*Cos(abs(Pitch));
-		PPos.Z += -Sin(Pitch)*5;
-		
-		Vector2 Ofst;
-		
-		if(Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Player.FindPSprite(PSP_WEAPON).X, Player.FindPSprite(PSP_WEAPON).Y);
-		Ofst += (Player.FindPSprite(Lay1).X, Player.FindPSprite(Lay1).Y);
-						
-		Ofst.Y += 23 + CRandom(0, 3)*3;
-		
-		Ofst *= .032;
-		
-		PPos.XY -= AngleToVector(Angle+90, Ofst.X);
-		PPos.XY += AngleToVector(Angle, Ofst.Y*1.3)*Sin(-Pitch);
-		PPos.Z += -Cos(Pitch)*Ofst.Y;
-		
-		For(int i=CRandom(0, 5);i<8;i++)
-		{
-			int Col[3];
-			Col[0] = 255;
-			Col[1] = Col[0]*1;
-			Col[2] = Col[1]*CFRandom(0, .5);
-		
-			Double Spread = CFRandomPick(CFRandom(-20, -4), CFRandom(4, 20));
-			Double Pow = CFRandom(.9, 2)*2;
-			Vector3 PVel;
-			Double Pit = Pitch + CFRandom(-5, 10);
-			PVel.XY = AngleToVector(Angle, Pow)*Cos(Pit);
-			PVel.Z = -Sin(Pit)*Pow;
-			PVel.XY -= AngleToVector(Angle+90, Spread*.03);
+			int Par = -1;
+
+			For(int i=0;i<invoker.Particles.Size();i++){
+				if(!invoker.Particles[i]){
+					Par = i;
+					invoker.Particles[Par] = New("MRIntWeaps_SmokeContainer");
+					Break;
+				}
+			}
 			
-			MRIntWeaps_Smoker.MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_ADD, CRandom(15, 35), CFRandom(.03, .2), 0, PPos, Vel + PVel, -PVel*.01 + (0,0,-.1), 1, 0, -.01);
+			if(Par<0)Return;
+			
+			invoker.Particles[Par].Age = 40;
+			invoker.Particles[Par].Vel.XY = (CFRandom(-2.5, 2.5), -CFRandom(4, 6));
+			
+			int Lay = ParLay-Par;
+			
+			A_Overlay(Lay, "Particle");
+			Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
+			Bob *= CVar.FindCVar("wbobfire").GetFloat();
+			A_OverlayOffset(Lay, 
+				Player.GetPSprite(PSP_WEAPON).X + Player.GetPSprite(Lay1).X + Bob.X + 130,
+				Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 85
+			);
 		}
+	}
+	
+	States{
+		Particle:
+			NSHS B 1 BRIGHT {
+				A_OverlayTranslation(OverlayId(), "MrIntWParYellow");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+				if(!MRIntW_ShotgunSparks)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				Double Scal = FRandom(.02, .06);
+				A_OverlayScale(OverlayId(), Scal, Scal);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayAlpha(OverlayId(), .8);
+			}
+			NSHS # 1 BRIGHT{
+				Let Par = invoker.Particles[-OverlayId()+ParLay];
+				if(!Par){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+				
+				Par.Vel.Y += .7;
+				Par.Age--;
+				A_OverlayOffset(OverlayId(), Par.Vel.X, Par.Vel.Y, WOF_ADD);
+				Double DownS = FRandom(-.005, -.008);
+				A_OverlayScale(OverlayId(), DownS, DownS, WOF_ADD);
+				Player.GetPSprite(OverlayId()).Alpha -= .05;
+				
+				if(Par.Age<1 || Player.GetPSprite(OverlayId()).Scale.X<=0 || Player.GetPSprite(OverlayId()).Alpha<=0){
+					Par.Destroy();
+					invoker.Particles[-OverlayId()+ParLay] = Null;
+					A_ClearOverlays(OverlayId(), OverlayId());
+					A_OverlayAlpha(OverlayId(), 0);
+				}
+			}
+			Wait;
 	}
 }
 
 Extend Class MRIntWeaps_PlasmaRifle
 {
-	Double OldBob;
+	MRIntWeaps_SmokeContainer Particles[30];
+	Const ParLay = -5;
+	
 	Action Void A_FiringParticles()
 	{
-		if(!MRIntW_PlasmaParticles)Return;
-		if(Vel.Z!=0)Return;
-		//Muzzle flare
-		Vector3 NextPos = Pos;
-		Double NAngle = Angle + Player.Cmd.Yaw*.001;
-		Double NPitch = Pitch + Player.Cmd.Pitch*.001;
-		
-		Vector3 PPos = Pos;
-		
-		Double ViewHeight = (PlayerPawn(Self).ViewHeight + player.crouchviewdelta);
-		Double Bob = (Player.ViewZ - Pos.Z) - ViewHeight;
-		
-		PPos.Z += ViewHeight + invoker.OldBob;
-		
-		NextPos.Z += ViewHeight + invoker.OldBob;
-		
-		PPos.XY += AngleToVector(Angle, 5)*Cos(abs(Pitch));
-		PPos.Z += -Sin(Pitch)*5;
-		
-		NextPos.XY += AngleToVector(NAngle, 5)*Cos(abs(NPitch));
-		NextPos.Z += -Sin(NPitch)*5;
-		
-		Vector2 Ofst;
-		
-		if(Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Player.FindPSprite(PSP_WEAPON).X, Player.FindPSprite(PSP_WEAPON).Y);
-		Ofst += (Player.FindPSprite(Lay1).X, Player.FindPSprite(Lay1).Y);
-						
-		Ofst.Y += 22;
-		
-		Ofst *= .032;
-		
-		PPos.XY -= AngleToVector(Angle+90, Ofst.X);
-		PPos.XY += AngleToVector(Angle, Ofst.Y*1.3)*Sin(-Pitch);
-		PPos.Z += -Cos(Pitch)*Ofst.Y;
-		
-		NextPos.XY -= AngleToVector(NAngle+90, Ofst.X);
-		NextPos.XY += AngleToVector(NAngle, Ofst.Y*1.3)*Sin(-NPitch);
-		NextPos.Z += -Cos(NPitch)*Ofst.Y;
-		
-		int Col[3];
-		
-		Col[2] = 255;
-		Col[1] = Col[2]*CFRandom(.5, 1);
-		Col[0] = Col[1]*CFRandom(.8, 1);
-		
-		Double Bobb = Bob-invoker.OldBob;
-		Double ZOfst = 0;
-						
-		if(Vel.Z != 0){
-			ZOfst = -Vel.Z*1.5;
-			Bobb = Vel.Z*1.5;
-		}
-		
-		MRIntWeaps_Smoker.MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_ADD, 1, CFRandom(2.6, 4.7), 0, PPos + (0,0,ZOfst), (Vel.XY, Bobb) + Level.Vec3Diff(PPos, NextPos), (0,0,0), CFRandom(.6, .9), 0);
 		//Small plasma particles
-		if(MRIntW_PlasmaParticles<2){
-			invoker.OldBob = Bob;
-			Return;
-		}
-		if(CRandom(0, 20)>18)Return;
-		
-		PPos = Pos;
-		PPos.Z += ViewHeight + invoker.OldBob;
-		
-		PPos.XY += AngleToVector(Angle, 5)*Cos(abs(Pitch));
-		PPos.Z += -Sin(Pitch)*5;
-		
-		Ofst = (0,0);
-		
-		if(Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Player.FindPSprite(PSP_WEAPON).X, Player.FindPSprite(PSP_WEAPON).Y);
-		Ofst += (Player.FindPSprite(Lay1).X, Player.FindPSprite(Lay1).Y);
-						
-		Ofst.Y += 23 + CRandom(0, 3)*3;
-		Double Spread = CRandomPick(CRandom(-23, -4), CRandom(4, 23));
-		Ofst.X += Spread;
-		
-		Ofst *= .032;
-		
-		PPos.XY -= AngleToVector(Angle+90, Ofst.X);
-		PPos.XY += AngleToVector(Angle, Ofst.Y*1.3)*Sin(-Pitch);
-		PPos.Z += -Cos(Pitch)*Ofst.Y;
-		
-		Double Pow = CFRandom(.9, 2)*2;
-		Vector3 PVel;
-		Double Pit = Pitch + CRandom(5, 25);
-		PVel.XY = AngleToVector(Angle, Pow)*Cos(Pit);
-		PVel.Z = -Sin(Pit)*Pow;
-		PVel.XY -= AngleToVector(Angle+90, Spread*.03);
-		
-		Double Slow = Max(1, Vel.Length());
-		
-		PVel /= Slow;
-		
-		Vector2 Fol;
-		
-		Double VelH = Vel.X*Cos(Angle+90);
-		VelH += Vel.Y*Sin(Angle+90);
-		
-		Double VelF = Vel.X*Cos(Angle);
-		VelF += Vel.Y*Sin(Angle);
-		
-		Fol = AngleToVector(Angle+90, VelH);
-		Fol += AngleToVector(Angle, Max(0, VelF));
+		if(Random(0, 20)>18)Return;
 				
-		MRIntWeaps_Smoker.MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_ADD, 15, CFRandom(.1, .5), 0, PPos + (0,0,ZOfst), (Fol, -abs(Bobb)) + PVel, -PVel*.01 + (0,0,.1-Slow*.1), CFRandom(.9, 1));
+		int Par = -1;
+
+		For(int i=0;i<invoker.Particles.Size();i++){
+			if(!invoker.Particles[i]){
+				Par = i;
+				invoker.Particles[Par] = New("MRIntWeaps_SmokeContainer");
+				Break;
+			}
+		}
 		
-		invoker.OldBob = Bob;
+		if(Par<0)Return;
+		
+		invoker.Particles[Par].Age = 40;
+		invoker.Particles[Par].Vel.XY = (CFRandom(-.9, .9), CFRandom(-.75, .75));
+		
+		int Lay = ParLay-Par;
+		
+		A_Overlay(Lay, "Particle");
+		Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
+		Bob *= CVar.FindCVar("wbobfire").GetFloat();
+		A_OverlayOffset(Lay, 
+			Player.GetPSprite(PSP_WEAPON).X + Player.GetPSprite(Lay1).X + Bob.X + 130 + invoker.Particles[Par].Vel.X*26,
+			Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 90 + invoker.Particles[Par].Vel.Y*35
+		);
+	}
+	
+	States{
+		Particle:
+			NSHS B 1 BRIGHT {
+				A_OverlayTranslation(OverlayId(), "MrIntWParIce");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+				if(MRIntW_PlasmaParticles<2)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				Double Scal = FRandom(.02, .08);
+				A_OverlayScale(OverlayId(), Scal, Scal);
+				A_OverlayPivot(OverlayId(), .5, .5);
+			}
+			NSHS # 1 BRIGHT{
+				Let Par = invoker.Particles[-OverlayId()+ParLay];
+				if(!Par){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+				
+				Par.Age--;
+				A_OverlayOffset(OverlayId(), Par.Vel.X, Par.Vel.Y, WOF_ADD);
+				Double DownS = FRandom(-.0025, -.005);
+				A_OverlayScale(OverlayId(), DownS, DownS, WOF_ADD);
+				Player.GetPSprite(OverlayId()).Alpha -= .05;
+				
+				if(Par.Age<1 || Player.GetPSprite(OverlayId()).Scale.X<=0 || Player.GetPSprite(OverlayId()).Alpha<=0){
+					Par.Destroy();
+					invoker.Particles[-OverlayId()+ParLay] = Null;
+					A_ClearOverlays(OverlayId(), OverlayId());
+					A_OverlayAlpha(OverlayId(), 0);
+				}
+			}
+			Wait;
 	}
 }
