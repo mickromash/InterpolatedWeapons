@@ -247,7 +247,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### A 1;//Shot
 			#### A 1 {//Recoil
 				Float Scal = CFRandom(.3, .4);
-				Vector2 Ofst = (CRandom(-4, 2), CFRandom(10, 17));
+				Vector2 Ofst = (CRandom(-4, 2), CFRandom(14, 20));
 				Float Rotate = CRandomPick(0, CFRandom(.9, 1.5));
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
@@ -258,29 +258,24 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
 			}
-			#### A 1;
+			#### # 1;
 			#### AAA 1{//Recover
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1));
-				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
-				Player.GetPSprite(Lay1).X *= .5;
-				Player.GetPSprite(Lay1).Y *= .5;
-				Player.GetPSprite(Lay1).Rotation *= .5;
-				
-				Player.GetPSprite(Lay2).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay2).Scale.X-1));
-				Player.GetPSprite(Lay2).Scale.Y = Player.GetPSprite(Lay2).Scale.X;
-				Player.GetPSprite(Lay2).X *= .5;
-				Player.GetPSprite(Lay2).Y *= .5;
-				Player.GetPSprite(Lay2).Rotation *= .5;
+				Float Recover = .9;
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay1).X*Recover;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).Y*Recover;
+				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
+				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation *= Recover;
 			}
-			#### A 2 {
+			#### AAA 1 {
 				if(!MRIntW_InstantFire)A_SetTics(0);
-				A_Overlayoffset(Lay1, CFRandom(-2, 2), CFRandom(2, 4), WOF_INTERPOLATE);
-				Float Scal = CFRandom(.96, .99);
-				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				Float Recover = .8;
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay1).X*Recover;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).Y*Recover;
+				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
+				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation *= Recover;
 			}
-			#### A 1 {if(!MRIntW_InstantFire)A_SetTics(0);A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);}
 			#### A 1{
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay1, CFRandom(-2, 2), CFRandom(0, 2), WOF_INTERPOLATE);
