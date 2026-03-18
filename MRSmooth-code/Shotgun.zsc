@@ -8,6 +8,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 	Const Lay1 = 2;
 	Const Lay2 = PSP_FLASH+1;
 	Const LHand = -PSP_FLASH;
+	Const Lay3 = LHand-1;//Muzzle flash flare
 	
 	int BobState, IdleDelay, ShotPower;
 		
@@ -221,6 +222,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			TNT1 A 7 {
 				A_FireShotgun();
 				A_Overlay(Lay2, "GunFlash");
+				A_Overlay(Lay3, "GunMuzzleFlashFlare");
 				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount);}//Recoil
 			}
 			TNT1 A 3 {if(!MRIntW_InstantFire)A_SetTics(0);}
@@ -250,6 +252,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130;
+				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80;
 			}
 			#### A 1;
 			#### AAA 1{//Recover
@@ -265,6 +269,9 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				Player.GetPSprite(Lay2).X *= .5;
 				Player.GetPSprite(Lay2).Y *= .5;
 				Player.GetPSprite(Lay2).Rotation *= .5;
+				
+				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130;
+				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80;
 			}
 			#### A 2 {
 				if(!MRIntW_InstantFire)A_SetTics(0);
@@ -401,6 +408,26 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				}
 			}
 			SH1F A 1 BRIGHT;
+			Stop;
+		GunMuzzleFlashFlare:
+			NSHS B 1 BRIGHT{
+				A_OverlayOffset(Lay3, 130, 80);
+				
+				A_OverlayTranslation(OverlayId(), "MrIntWParFlash");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+				//if(!)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				A_OverlayScale(OverlayId(), 1, 1);
+				A_OverlayPivot(OverlayId(), .5, .5);
+			}
+			#### ## 1 BRIGHT{
+				A_OverlayAlpha(Lay3, CFRandom(.15, .4));
+				A_OverlayScale(OverlayId(), 1.2, 1.2, WOF_INTERPOLATE);
+			}
+			#### # 1 BRIGHT{
+				A_OverlayAlpha(Lay3, CFRandom(.15, .4));
+				A_OverlayScale(OverlayId(), 1, 1, WOF_INTERPOLATE);
+			}
 			Stop;
 		Flash:
 			TNT1 A 4 A_Light1();
