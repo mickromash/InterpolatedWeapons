@@ -104,6 +104,9 @@ OptionMenu "MRIntWeaps_ParticlesMenu"
 	StaticText ""
 	StaticText "$TAG_PLASMARIFLE", "Fire"
 	Option "$MRIntW_PlasmaParticles", "MRIntW_PlasmaParticles", "MRIntW_PlasmaParticlesValues"
+	StaticText ""
+	StaticText "$TAG_BFG9000", "Fire"
+	Option "$MRIntW_BFGParticles", "MRIntW_BFGParticles", "OnOff"
 }
 
 OptionMenu "MRIntWeaps_SoundMenu"

@@ -57,3 +57,5 @@ nosave int MRIntW_ChaingunMaxSmokes = 3;//Maximum smoking barrels
 nosave bool MRIntW_RocketSmoke = true;//Smoke from muzzle
 //Plasmagun
 nosave int MRIntW_PlasmaParticles = 1;
+//BFG 9000
+nosave bool MRIntW_BFGParticles = false;

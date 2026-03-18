@@ -108,6 +108,7 @@ MRIntW_PlasmaParticles = "Firing particles";
 MRIntW_PlasmaParticles0 = "None";
 MRIntW_PlasmaParticles1 = "Only muzzle flare";
 MRIntW_PlasmaParticles2 = "Flare + particles";
+MRIntW_BFGParticles = "Firing particles";
 
 
 MRIntWeaps_SoundMenu = "Sounds settings (add-on required)";
@@ -218,6 +219,8 @@ MRIntW_PlasmaParticles = "Частицы при стрельбе";
 MRIntW_PlasmaParticles0 = "Нет";
 MRIntW_PlasmaParticles1 = "Только свечение";
 MRIntW_PlasmaParticles2 = "Свечение + частицы";
+MRIntW_BFGParticles = "Частицы при стрельбе";
+
 
 MRIntWeaps_Give = "Сделать анимации плавными";
 
