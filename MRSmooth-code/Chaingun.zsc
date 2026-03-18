@@ -442,7 +442,14 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				}
 				A_OverlayOffset(Lay2, -Ofst.X, -Ofst.Y, WOF_ADD);
 			}
-			TNT1 A 3 {//Recover
+			TNT1 AAAAA 1 {//Recover
+				Vector2 Ofst = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y)*.5;
+				For(int i=Muzzle0;i<=Ring;i++){
+					A_OverlayOffset(i, -Ofst.X, -Ofst.Y, WOF_ADD);
+				}
+				A_OverlayOffset(Lay2, -Ofst.X, -Ofst.Y, WOF_ADD);
+			}
+			TNT1 A 1 {//Recover
 				Vector2 Ofst = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				For(int i=Muzzle0;i<=Ring;i++){
 					A_OverlayOffset(i, -Ofst.X, -Ofst.Y, WOF_ADD);
