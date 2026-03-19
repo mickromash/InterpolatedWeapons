@@ -411,21 +411,21 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			Stop;
 		GunMuzzleFlashFlare:
 			NSHS B 1 BRIGHT{
-				A_OverlayOffset(Lay3, 130, 80);
+				A_OverlayOffset(OverlayId(), 130, 80);
 				
 				A_OverlayTranslation(OverlayId(), "MrIntWParFlash");
 				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
 				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
-				//if(!)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				if(!MRIntW_FlashFlare)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
 				A_OverlayScale(OverlayId(), 1, 1);
 				A_OverlayPivot(OverlayId(), .5, .5);
 			}
 			#### ## 1 BRIGHT{
-				A_OverlayAlpha(Lay3, CFRandom(.15, .4));
+				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
 				A_OverlayScale(OverlayId(), 1.2, 1.2, WOF_INTERPOLATE);
 			}
 			#### # 1 BRIGHT{
-				A_OverlayAlpha(Lay3, CFRandom(.15, .4));
+				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
 				A_OverlayScale(OverlayId(), 1, 1, WOF_INTERPOLATE);
 			}
 			Stop;

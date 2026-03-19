@@ -40,6 +40,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Const Ring = BarrelOver5+1;//Front disk
 	Const Hand = Ring+1;
 	Const Lay2 = -2;//Muzzle flash
+	Const Lay3 = -3;
 	Const AnimLay = PSP_FLASH+1;//Animator layer
 	
 	Const MaxSpeed = 15.;
@@ -367,6 +368,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				invoker.ConterClock = GetCVar("MRIntW_ChaingunCounterClock");
 				A_FireCGun();
 				A_Overlay(Lay2, "GunFlash");
+				A_Overlay(Lay3, "GunMuzzleFlashFlare");
 				if(MRIntW_Recoil){//Recoil
 					invoker.Recoil+=1;
 					A_SetPitch(Pitch-1*MRIntW_RecoilAmount);
@@ -508,6 +510,27 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			#### Z 1{
 				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, false);
+			}
+			Stop;
+		GunMuzzleFlashFlare:
+			NSHS B 1 BRIGHT{
+				A_OverlayOffset(OverlayId(), 127, 95);
+				
+				A_OverlayTranslation(OverlayId(), "MrIntWParFlash");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+				if(!MRIntW_FlashFlare)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				Double Scal = 0;
+				if(Player.FindPSprite(Lay2))Scal = Player.GetPSprite(Lay2).Scale.X;
+				A_OverlayScale(OverlayId(), Scal*1.3, Scal);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayAlpha(OverlayId(), CFRandom(.1, .3));
+			}
+			#### ##### 1 BRIGHT{
+				Double Scal = 0;
+				if(Player.FindPSprite(Lay2))Scal = Player.GetPSprite(Lay2).Scale.X;
+				A_OverlayScale(OverlayId(), Scal*1.3, Scal, WOF_INTERPOLATE);
+				A_OverlayAlpha(OverlayId(), CFRandom(.1, .3));
 			}
 			Stop;
 		Flash:

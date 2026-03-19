@@ -386,7 +386,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 Extend Class MRIntWeaps_SuperShotgun
 {
 	MRIntWeaps_SmokeContainer Particles[50];
-	Const ParLay = -2;
+	Const ParLay = -3;
 	
 	Action Void A_FiringParticles()
 	{

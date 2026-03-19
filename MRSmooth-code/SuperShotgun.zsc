@@ -9,6 +9,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	Const Lay2 = PSP_FLASH+1;//Muzzle flash
 	Const LeftHand = PSP_FLASH+40;//Hand with shells
 	Const Lay3 = 1500;//Barrels layer over shell
+	Const Lay4 = -2;
 	
 	int BobState, IdleDelay, ShotPower;
 	Bool LowerOpen, //For switching mid reload
@@ -218,6 +219,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			TNT1 A 7 {
 				A_FireShotgun2();
 				A_Overlay(Lay2, "GunFlash");
+				A_Overlay(Lay4, "GunMuzzleFlashFlare");
 				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount);}//Recoil
 			}
 			TNT1 A 3 {if(!MRIntW_InstantFire)A_SetTics(0);}
@@ -550,6 +552,26 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
 			#### OON 1 BRIGHT;
+			Stop;
+		GunMuzzleFlashFlare:
+			NSHS B 1 BRIGHT{
+				A_OverlayOffset(OverlayId(), 125, 90);
+				
+				A_OverlayTranslation(OverlayId(), "MrIntWParFlash");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+				if(!MRIntW_FlashFlare)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				A_OverlayScale(OverlayId(), 1, .7);
+				A_OverlayPivot(OverlayId(), .5, .5);
+			}
+			#### ## 1 BRIGHT{
+				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
+				A_OverlayScale(OverlayId(), 1.5, 1.2, WOF_INTERPOLATE);
+			}
+			#### # 1 BRIGHT{
+				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
+				A_OverlayScale(OverlayId(), 1.2, 1, WOF_INTERPOLATE);
+			}
 			Stop;
 			
 			

@@ -22,6 +22,7 @@ server bool MRIntW_FastPistol = false;//Increase pistol fire rate
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
 user bool MRIntW_BrownGloves = true;//Sprites with original gloves
 nosave bool MRIntW_NoMuzzleFlash = false;
+nosave bool MRIntW_FlashFlare = false;
 //Fist
 user bool MRIntW_BareHands = true;//Fists use sprites without gloves
 user int MRIntW_BersShake = 1;//0 - none, 1 - only shake fist + left hand idle animation, 2 - shake all weapons + left hand idle animation
