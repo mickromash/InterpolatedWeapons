@@ -98,6 +98,7 @@ Extend Class MRIntWeaps_PlasmaRifle
 		
 		invoker.Particles[Par].Age = 40;
 		invoker.Particles[Par].Vel.XY = (CFRandom(-.9, .9), CFRandom(-.75, .75));
+		invoker.Particles[Par].Vel.Z = FRandom(-.0025, -.005);
 		
 		int Lay = ParLay-Par;
 		
@@ -108,6 +109,50 @@ Extend Class MRIntWeaps_PlasmaRifle
 			Player.GetPSprite(PSP_WEAPON).X + Player.GetPSprite(Lay1).X + Bob.X + 130 + invoker.Particles[Par].Vel.X*26,
 			Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 90 + invoker.Particles[Par].Vel.Y*35
 		);
+		
+		Double Scal = FRandom(.02, .08);
+		A_OverlayScale(Lay, Scal, Scal);
+	}
+	
+	int Shots;
+	
+	Action Void A_FallingParticles(Double Amount)
+	{
+		if(invoker.Shots<1)Return;
+		
+		if(Amount<=.2)Return;
+		
+		int Par = -1;
+
+		For(int i=0;i<invoker.Particles.Size();i++){
+			if(!invoker.Particles[i]){
+				Par = i;
+				invoker.Particles[Par] = New("MRIntWeaps_SmokeContainer");
+				Break;
+			}
+		}
+		
+		if(Par<0)Return;
+		
+		invoker.Particles[Par].Age = 60;
+		invoker.Particles[Par].Vel.XY = (CFRandom(4, 5), -CFRandom(2, 4));
+		invoker.Particles[Par].Gravity = 1;
+		invoker.Particles[Par].Vel.Z = -FRandom(.004, .007);
+		
+		int Lay = ParLay-Par;
+		
+		Double Ofst = CFRandom(-10, 10);
+		
+		A_Overlay(Lay, "Particle");
+		Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
+		Bob *= CVar.FindCVar("wbobfire").GetFloat();
+		A_OverlayOffset(Lay, 
+			Player.GetPSprite(PSP_WEAPON).X + Player.GetPSprite(Lay1).X + Bob.X + 80 + Ofst,
+			Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 45 + Ofst*.75
+		);
+		
+		Double Scal = FRandom(.06, .14);
+		A_OverlayScale(Lay, Scal, Scal);
 	}
 	
 	States{
@@ -118,8 +163,6 @@ Extend Class MRIntWeaps_PlasmaRifle
 				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
 				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
 				if(MRIntW_PlasmaParticles<2)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
-				Double Scal = FRandom(.02, .08);
-				A_OverlayScale(OverlayId(), Scal, Scal);
 				A_OverlayPivot(OverlayId(), .5, .5);
 			}
 			NSHS # 1 BRIGHT{
@@ -130,8 +173,9 @@ Extend Class MRIntWeaps_PlasmaRifle
 				}
 				
 				Par.Age--;
+				Par.Vel.Y += Par.Gravity;
 				A_OverlayOffset(OverlayId(), Par.Vel.X, Par.Vel.Y, WOF_ADD);
-				Double DownS = FRandom(-.0025, -.005);
+				Double DownS = Par.Vel.Z;
 				A_OverlayScale(OverlayId(), DownS, DownS, WOF_ADD);
 				Player.GetPSprite(OverlayId()).Alpha -= .05;
 				

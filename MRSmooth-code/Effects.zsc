@@ -188,6 +188,7 @@ Class MRIntWeaps_SmokeContainer: Object play
 {
 	Vector3 Vel;
 	int Age;
+	double Gravity;
 }
 
 Extend Class MRIntWeaps_Chainsaw

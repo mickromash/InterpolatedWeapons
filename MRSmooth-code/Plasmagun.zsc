@@ -54,6 +54,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		Actor a = SpawnPlayerMissile("PlasmaBall");
 		if(a)a.A_StopSound();
 		A_StartSound("MRIntW/PlasmaFire", CHAN_AUTO, pitch:i_timescale);
+		invoker.Shots++;
 	}
 	
 	MRIntWeaps_Smoker Smoker;
@@ -298,6 +299,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			#### B 1{
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(Lay1, -7, 0, WOF_ADD);
+				
+				For(int i = ParLay-29;i<=ParLay;i++){
+					if(Player.FindPSprite(i))Player.GetPSprite(i).Alpha *= 0;
+				}
 			}
 			PLSR D 1 {
 				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("PL2RA0");
@@ -342,16 +347,18 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y + invoker.Muzzle*8;
 			}
 			#### ## 1{
-				invoker.Muzzle = CFRandom(0, .5);
+				invoker.Muzzle = FRandom(0, .5);
 				A_IdleAnimation(Lay1);
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y + invoker.Muzzle*8;
+				A_FallingParticles(invoker.Muzzle);
 			}
 			#### ## 1{
-				invoker.Muzzle = CFRandom(0, .2);
+				invoker.Muzzle = FRandom(0, .2);
 				A_IdleAnimation(Lay1);
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y + invoker.Muzzle*8;
+				A_FallingParticles(invoker.Muzzle);
 			}
 			#### ## 1{
 				invoker.Muzzle = 0;
