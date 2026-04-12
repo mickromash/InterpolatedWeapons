@@ -1,5 +1,7 @@
 Extend Class MRIntWeaps_Pistol
 {
+	Const Gloves = 4;
+	
 	States{
 		RifleRaise:
 			TNT1 AAAA 1 {
@@ -10,7 +12,7 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayScale(Lay1, .6, .6);
 				A_OverlayRotate(Lay1, -10);
 			}
-			R1FG A 1{if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("R2FGA0");}
+			R1FG A 1{A_GlovesColor(1);}
 			#### AAAAAA 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(Lay1, -7, -9, WOF_ADD);
@@ -40,23 +42,26 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayOffset(Lay1, 0, 0);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+				
+				A_GlovesColor(1);
 			}
 		RifleWait:
 			R1FG A 1 {
-				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("R2FGA0");
+				A_GlovesColor(1);
 				A_IdleAnimation(Lay1);
 			}
-			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayFlags(Gloves, PSPF_INTERPOLATE, false);}
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		RifleLower:
 			R1FG A 1 {
-				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("R2FGA0");
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayOffset(Lay1, 0, Player.GetPSprite(PSP_WEAPON).Y);
 				A_OverlayRotate(Lay1, 0);
 				A_OverlayScale(Lay1, 1, 1);
 				A_OverlayPivot(Lay1, .5, 1);
+				
+				A_GlovesColor(1);
 			}
 			#### ## 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
@@ -78,30 +83,30 @@ Extend Class MRIntWeaps_Pistol
 		RifleFire:
 			R1FG A 0{
 				A_OverlayPivot(Lay1, CFRandom(.4, .7), CFRandom(.4, .6));
-				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("R2FGA0");
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				
+				A_GlovesColor(1);
 			}
 			#### # 0 A_JumpIf(MRIntW_InstantFire||MRIntW_FastPistol, 5);
 			#### A 1;
-			#### A 1 A_OverlayOffset(Lay1, 0, -1, WOF_ADD);
-			#### AA 1 A_OverlayOffset(Lay1, 0, 1, WOF_ADD);
+			#### A 1 {A_OverlayOffset(Lay1, 0, -1, WOF_ADD);A_OverlayOffset(Gloves, 0, -1, WOF_ADD);}
+			#### AA 1 {A_OverlayOffset(Lay1, 0, 1, WOF_ADD);A_OverlayOffset(Gloves, 0, 1, WOF_ADD);}
 			#### A 1;//Shot
 			#### AA 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				Float Scal = CFRandom(.05, .06);
+				Vector2 Scal = (CFRandom(.05, .06), CFRandom(.065, .077));
 				Vector2 Ofst = (CFRandom(-.5, .5), CFRandom(5, 10));
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
-				A_OverlayScale(Lay1, Scal, Scal+CFRandom(.015, .017), WOF_ADD);
+				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
-
-				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
-				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
-				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
-				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
-
+				
+				A_OverlayScale(Lay2, Scal.X, Scal.Y, WOF_ADD);
+				A_OverlayOffset(Lay2, Ofst.X, Ofst.Y, WOF_ADD);
+				A_OverlayRotate(Lay2, Rotate, WOF_ADD);
+				
 				Ofst *= .4;
 				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
 
@@ -125,17 +130,16 @@ Extend Class MRIntWeaps_Pistol
 				}
 			}
 			#### A 1{
-				Float Scal = CFRandom(.01, .03);
+				Vector2 Scal = (CFRandom(.01, .03), CFRandom(.01, .03)+CFRandom(.014, .013));
 				Vector2 Ofst = (CFRandom(-.5, .5), 0);
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
-				A_OverlayScale(Lay1, Scal, Scal+CFRandom(.014, .013), WOF_ADD);
+				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
-
-				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
-				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
-				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
-				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				
+				A_OverlayScale(Lay2, Scal.X, Scal.Y, WOF_ADD);
+				A_OverlayOffset(Lay2, Ofst.X, Ofst.Y, WOF_ADD);
+				A_OverlayRotate(Lay2, Rotate, WOF_ADD);
 
 				Ofst *= .4;
 				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
@@ -155,17 +159,16 @@ Extend Class MRIntWeaps_Pistol
 				}
 			}
 			#### AAA 1{
-				Float Scal = CFRandom(.01, .03);
+				Vector2 Scal = (CFRandom(.01, .03), CFRandom(.01, .03)+CFRandom(.008, .012));
 				Vector2 Ofst = (CFRandom(-.5, .5), 0);
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
-				A_OverlayScale(Lay1, Scal, Scal+CFRandom(.008, .012), WOF_ADD);
+				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
-
-				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
-				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
-				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
-				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				
+				A_OverlayScale(Lay2, Scal.X, Scal.Y, WOF_ADD);
+				A_OverlayOffset(Lay2, Ofst.X, Ofst.Y, WOF_ADD);
+				A_OverlayRotate(Lay2, Rotate, WOF_ADD);
 
 				Ofst *= .4;
 				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
@@ -179,9 +182,11 @@ Extend Class MRIntWeaps_Pistol
 			}
 			#### A 1{
 				Float Scal = CFRandom(.95, 1.05);
+				Vector2 Ofst = (CFRandom(-2, 2), CFRandom(-1, 4));
+				Double Rotation = CFRandom(-.5, .5);
 				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
-				A_OverlayOffset(Lay1, CFRandom(-2, 2), CRandom(-1, 4));
-				A_OverlayRotate(Lay1, CFRandom(-.5, .5));
+				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y);
+				A_OverlayRotate(Lay1, Rotation);
 			}
 			#### AAA 1{
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.4;
