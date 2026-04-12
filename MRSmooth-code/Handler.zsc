@@ -182,6 +182,13 @@ Class MRIntWeaps_Handler: EventHandler
 	Override Void WorldLoaded(WorldEvent e)
 	{
 		LoadingDelay = 3;
+		For(int i=0;i<MAXPLAYERS;i++){
+			if(!Players[i].mo)Continue;
+			
+			if(Players[i].mo.FindInventory("MRIntWeaps_Fist")){
+				MRIntWeaps_Fist(Players[i].mo.FindInventory("MRIntWeaps_Fist")).GlovesTrans = 0;
+			}
+		}
 		//Console.Printf("World Loaded");
 	}
 }
