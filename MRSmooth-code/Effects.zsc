@@ -9,9 +9,14 @@ Extend Class MRIntWeaps_Handler
 	
 	Void UpdateCasings(MRIntWeaps_Casing a)//Pushes spawned casing into a list
 	{
-		For(int i=0;i<Max(0, Casings.Size()-MRIntW_CasingsAmount+1);i++)
+		/*if(MRIntW_CasingsAmount<1){
+			if(a)a.Destroy();
+			Return;
+		}*/
+		
+		For(int i=0;i<Max(0, Casings.Size()-Max(1, MRIntW_CasingsAmount)+1);i++)
 		{
-			if(Casings[i]){Casings[i].Destroy();Casings.Delete(i);i--;}
+			if(Casings[i]){Casings[i].Fade();Casings.Delete(i);i--;}
 		}
 		if(!a)Return;
 		Casings.Push(a);

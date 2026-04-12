@@ -184,6 +184,14 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		A_OverlayTranslation(Lay, "");
 	}
 	
+	Action Void A_GlovesColor()
+	{
+		Let Feest = MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist"));
+		if(!Feest)Return;
+		
+		Player.GetPSprite(OverlayId()).Translation = Feest.GlovesTrans;
+	}
+	
 	States{
 		Select:
 			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "GunRaise");}
@@ -542,12 +550,12 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		HandIdle1:
 			CH1H A 1{
 				invoker.HandPos = 1;
-				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("CH2HA0");
 				A_OverlayPivot(Hand, 1, 0);
 				A_OverlayOffset(Hand, -5*invoker.HandPos, 20*invoker.HandPos);
 				A_OverlayScale(Hand, .8+invoker.HandPos*.5, .8+invoker.HandPos*.5);
 				
 				invoker.IdleDelay = -35*CRandom(20, 40);
+				A_GlovesColor();
 			}
 			#### ######## 1{
 				invoker.HandPos -= .125;
@@ -591,12 +599,12 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Wait;
 		HandIdleEnd:
 			CH1H A 1{
-				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("CH2HA0");
 				A_OverlayPivot(Hand, 1, 0);
 				
 				A_OverlayOffset(Hand, invoker.HandVector.X, invoker.HandVector.Y);
 				A_OverlayScale(Hand, .8+invoker.HandPos*.5, .8+invoker.HandPos*.5);
 				A_OverlayRotate(Hand, -6+6*invoker.HandPos);
+				A_GlovesColor();
 			}
 			#### ########## 1{
 				invoker.HandPos += .1;
@@ -609,13 +617,13 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Stop;
 		HandIdleBreak:
 			CH1H A 1{
-				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("CH2HA0");
 				A_OverlayPivot(Hand, 1, 0);
 				A_ClearOverlays(Hand+1, Hand+1);
 				
 				A_OverlayOffset(Hand, invoker.HandVector.X-3, invoker.HandVector.Y-3);
 				A_OverlayScale(Hand, .8+invoker.HandPos*.5, .8+invoker.HandPos*.5);
 				A_OverlayRotate(Hand, -6+6*invoker.HandPos-2);
+				A_GlovesColor();
 			}
 			#### # 1{
 				if(invoker.HandPos>=1){
@@ -632,8 +640,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		HandIdleEndSpeen:
 			CH1H A 1{
 				A_OverlayPivot(Hand, 1, 0);
-				if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("CH2HA0");
 				A_OverlayOffset(Hand, invoker.HandVector.X-2, invoker.HandVector.Y+3);
+				A_GlovesColor();
 			}
 			#### # 1{
 				if(invoker.HandPos>=1.25){
@@ -664,8 +672,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Stop;
 			
 		Sprites:
-			MRD2 A 0;
-			CH2H A 0;
 			CH2G A 0;
 			CH2M A 0;
 			CH2B A 0;

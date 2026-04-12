@@ -42,7 +42,9 @@ OptionMenu "MRIntWeaps_AnimMenu"
 {
 	Title "$MRIntWeaps_AnimMenu"
 	StaticText ""
-	Option "$MRIntW_BrownGloves", "MRIntW_BrownGloves", "YesNo"
+	Option "$MRIntW_GlovesColor", "MRIntW_GlovesColor", "MRIntW_GlovesColorValues"
+	ColorPicker "$MRIntW_GlovesColorShade", "MRIntW_GlovesColorShade"
+	ColorPicker "$MRIntW_GlovesColorLight", "MRIntW_GlovesColorLight"
 	StaticText ""
 	Option "$MRIntW_BobStyle", "MRIntW_BobStyle", "MRIntW_BobStyleValues"
 	Slider "$MRIntW_BobRangeX", "MRIntW_BobRangeX", 0, 3, .1
@@ -78,6 +80,9 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	StaticText "$TAG_SHOTGUN", "Fire"
 	Option "$MRIntW_ShotgunSmoke", "MRIntW_ShotgunSmoke", "YesNo"
 	Option "$MRIntW_ShotgunSparks", "MRIntW_ShotgunSparks", "YesNo"
+	Slider "$MRIntW_ShotgunPumpAngle", "MRIntW_ShotgunPumpAngle", -2, 2, .1, 1
+	Option "$MRIntW_ShotgunPumpRandom", "MRIntW_ShotgunPumpRandom", "YesNo"
+	Slider "$MRIntW_ShotgunPumpRandRotation", "MRIntW_ShotgunPumpRandRotation", 0, 2, .1, 1, "MRIntW_ShotgunPumpRandom"
 	StaticText ""
 	StaticText "$TAG_SuperShotgun", "Fire"
 	Option "$MRIntW_SSGSmoke", "MRIntW_SSGSmoke", "YesNo"
@@ -86,7 +91,7 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	StaticText "$TAG_CHAINGUN", "Fire"
 	Option "$MRIntW_ChaingunFixed", "MRIntW_ChaingunFixed", "YesNo"
 	Slider "$MRIntW_ChaingunSpeed", "MRIntW_ChaingunSpeed", 1, 5, 1, 2
-	Slider "$MRIntW_ChaingunStopTime", "MRIntW_ChaingunStopTime", 0, 1, .05, 2
+	Slider "$MRIntW_ChaingunStopTime", "MRIntW_ChaingunStopTime", .05, 1, .05, 2
 	Option "$MRIntW_ChaingunCounterClock", "MRIntW_ChaingunCounterClock", "YesNo"
 	Slider "$MRIntW_ChaingunMaxSmokes", "MRIntW_ChaingunMaxSmokes", 1, 6, 1, 0, "MRIntW_FlowingSmoke"
 	StaticText ""
@@ -111,9 +116,21 @@ OptionMenu "MRIntWeaps_SoundMenu"
 
 OptionValue "MRIntW_CasingsValues"
 {
-	0, "$MRIntW_Casings0"
-	1, "$MRIntW_Casings1"
-	2, "$MRIntW_Casings2"
+	0, "$MRIntW_Casings0"//None
+	1, "$MRIntW_Casings1"//Visual only
+	2, "$MRIntW_Casings2"//Visual + physical
+}
+
+OptionValue "MRIntW_GlovesColorValues"
+{
+	0, "$MRIntW_GlovesColor0"//Tan (Classic)
+	1, "$MRIntW_GlovesColor1"//Black
+	2, "$MRIntW_GlovesColor2"//Tan (Classic)
+	3, "$MRIntW_GlovesColor3"//Tan (Classic)
+	4, "$MRIntW_GlovesColor4"//Tan (Classic)
+	5, "$MRIntW_GlovesColor5"//Tan (Classic)
+	6, "$MRIntW_GlovesColor6"//Tan (Classic)
+	7, "$MRIntW_GlovesColor7"//Custom
 }
 
 OptionValue "MRIntW_BobStyleValues"

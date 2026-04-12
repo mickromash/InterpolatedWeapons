@@ -9,10 +9,10 @@ nosave bool MRIntW_FlowingSmoke = false;//Smoke from barrels after firing
 nosave float MRIntW_FlowingSmokeLength = 1;
 nosave float MRIntW_FlowingSmokeAlpha = .1;
 nosave float MRIntW_FlowingSmokePrecision = 1;
-nosave int MRIntW_BobStyle = 4;
+nosave int MRIntW_BobStyle = 4;//0 - Normal, 1 - Alpha jumpy, 2 - Alpha, 3 - Jumpy, 4 - Smooth, 5 - Alpha smooth, 6 - None
 nosave float MRIntW_BobRangeX = 1;
 nosave float MRIntW_BobRangeY = 1;
-nosave bool MRIntW_Bounce = true;
+nosave bool MRIntW_Bounce = true;//Bounce weapon on landing
 user bool MRIntW_IdleAnims = true;//Idle animations
 server bool MRIntW_Recoil = false;//Visual recoil and screen shaking
 server float MRIntW_RecoilAmount = 1;
@@ -21,8 +21,11 @@ server bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
 user bool MRIntW_BrownGloves = true;//Sprites with original gloves
-nosave bool MRIntW_NoMuzzleFlash = false;
-nosave bool MRIntW_FlashFlare = false;
+user int MRIntW_GlovesColor = 0;//0 - Tan (Classic), 1 - Black, 2 - Brown, 3 - Green, 4 - Red, 5 - Grey, 6 - Blue, 7 - Custom
+user color MRIntW_GlovesColorShade = "2 2 2";//Shades color
+user color MRIntW_GlovesColorLight = "EF EF EF";//Lights color
+nosave bool MRIntW_NoMuzzleFlash = false;//Don't display muzzle flashes
+nosave bool MRIntW_FlashFlare = false;//Flares around muzzle flashas
 //Fist
 user bool MRIntW_BareHands = true;//Fists use sprites without gloves
 user int MRIntW_BersShake = 1;//0 - none, 1 - only shake fist + left hand idle animation, 2 - shake all weapons + left hand idle animation
@@ -45,6 +48,9 @@ user bool MRIntW_Rifle = false;//Replace pistol with the rifle
 //Shotgun
 nosave bool MRIntW_ShotgunSmoke = true;//Smoke from chamber
 nosave bool MRIntW_ShotgunSparks = false;
+nosave float MRIntW_ShotgunPumpAngle = 0;
+nosave bool MRIntW_ShotgunPumpRandom = false;
+nosave float MRIntW_ShotgunPumpRandRotation = 1;
 //Super Shotgun
 nosave bool MRIntW_SSGSmoke = true;//Smoke from barrels when reloading
 nosave bool MRIntW_SSGSparks = false;

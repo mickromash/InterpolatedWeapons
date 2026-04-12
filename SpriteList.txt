@@ -1,19 +1,12 @@
 Fist
 {
-	//Black gloves
+	//Gloves
 	PUN1 A - Right hand ready
 	PUN1 E - Left hand punch
 	PUN1 D (textures) - Left hand punch brass knuckles
 	PUN1 B - Left hand raise animation brass knuckles
 	PUN1 C - Left hand ready brass knuckles
-	
-	//Brown gloves
-	PUN1 A - Right hand ready
-	PUN1 E - Left hand punch
-	PUN1 D (textures) - Left hand punch brass knuckles
-	PUN1 B - Left hand raise animation brass knuckles
-	PUN1 C - Left hand ready brass knuckles
-	
+		
 	//No gloves
 	PUN1 A - Right hand ready
 	PUN1 E - Left hand punch
@@ -24,95 +17,54 @@ Fist
 
 Chainsaw
 {
-	//Black gloves
 	SAW1 CDEF - Ready animation
 	SAW1 G (textures) - Cutting animation
 	SAW1 HIJ - Cutting animation
 	SAW1 Y (textures) - Starting hand
 	
-	//Brown gloves
-	SAW2 CDEF - Ready animation
-	SAW2 GHIJ (textures) - Cutting animation
-	SAW2 Y - Starting hand
-	
-	//Both
 	SAW1 Z - Starting rope
 }
 
 Pistol
 {
-	//Black gloves
 	P1SG A (textures) - Ready
 	P1SG HBCFGED (textures) - Firing animation
-	
-	//Brown gloves
-	P2SG A (textures) - Ready
-	P2SG HBCFED (textures) - Firing animation
-	
-	//Both
+		
 	P1SF ABC (texture) - Flash animation
 }
 
 Rifle
 {
-	//Black gloves
 	R1FG A (textures) - Ready
 	
-	//Brown gloves
-	R2FG A (textures) - Ready
-	
-	//Both
 	RIFF ABCD (textires) - Flash animation
 	RIFA A - World sprite
 }
 
 Shotgun
 {
-	//Black gloves
 	SH1G A (textures) - Ready
 	SH1G B - Pump animation
 	SH1G C (textures) - Pump animation
 	SH1G DEFGH - Pump animation
 	
-	
-	//Brown gloves
-	SH2G A (textures) - Ready
-	SH2G B (textures) - Pump animation
-	SH2G C (textures) - Pump animation
-	SH2G DEFGH - Pump animation
-	
-	//Both
 	SH1F AB - Flash animation
 	SH1G Z - Deselect handless sprite
 }
 
 Super Shotgun
 {
-	//Black gloves
 	SH12 A - Ready
 	SH12 BCD (textures) - Opening animation
 	SH12 P (textures) - Opening animation (SH12 E with casings inside)
 	SH12 E - Opening animation
-	//Both
 	SH12 F - Opened
 	SH12 I - Opened, barrel part covering casings and loading shell
-	//Black gloves
 	SH12 JK - Closing animation
 	SH12 Q (textures) - Same as B, but with better transition into A
 	
 	SH12 GH - Loading hand
 	
-	//Brown gloves
-	SH22 A - Ready
-	SH22 BCD (textures) - Opening animation
-	SH22 P (textures) - Opening animation (SH12 E with casings inside)
-	SH22 E (textures) - Opening animation
-	SH22 JK (textures) - Closing animation
-	SH22 Q (textures) - Same as B, but with better transition into A
-	
-	SH22 GH - Loading hand
-	
-	//Both
 	SH12 NO - Flash animation
 }
 
@@ -127,11 +79,7 @@ Chaingun
 	CH1R ABCD (textures) - Closest disk rotation
 	CH1F ABC (textures) - Flash animation
 	
-	//Black gloves
 	CH1H A (textures) - Idle animation hand
-	
-	//Brown gloves
-	CH2H A (textures) - Idle animation hand
 }
 
 Rocket Launcher
@@ -152,15 +100,9 @@ Plasma Rifle
 	PLSO BCDEFGH - Muzzle firing
 	PLSF BCDEFGH - Flash animation
 	
-	//Black gloves
 	PLSR ABC (textures) - "Recoil" animation
 	PLSR D (textures) - Body recoil
-	
-	//Brown gloves
-	PL2R ABC (textures) - "Recoil" animation
-	PL2R D (textures) - Body recoil
-	
-	//Both
+
 	PLSO I (textures) - Muzzle recoil
 }
 
@@ -179,8 +121,7 @@ Dead Hands
 {
 	All in textures
 	
-	MRD1 - Black gloves
-	MRD2 - Brown gloves
+	MRD1
 	
 	A, B:
 			   %#%   %##%                                       			   %## ###                                          

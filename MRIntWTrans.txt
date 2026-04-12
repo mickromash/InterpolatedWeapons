@@ -1,0 +1,129 @@
+#include "zcommon.acs"
+
+int OyBlya[3];
+
+Script "MRIntWeaps_GlovesShade" (int arg0, int arg1, int arg2)
+{
+	OyBlya[0] = FixedDiv(arg0, 100);
+	OyBlya[1] = FixedDiv(arg1, 100);
+	OyBlya[2] = FixedDiv(arg2, 100);
+}
+
+Script "MRIntWeaps_GlovesColor" (int arg0, int arg1, int arg2, int arg3)
+{
+	arg0 = FixedDiv(arg0, 100);
+	arg1 = FixedDiv(arg1, 100);
+	arg2 = FixedDiv(arg2, 100);
+	CreateTranslation(arg3, 112:127=%[OyBlya[0],OyBlya[1],OyBlya[2]]:[arg0,arg1,arg2]);
+	
+	Thing_SetTranslation(0, arg3);
+}
+
+Script "MRIntWeaps_GlovesColorRifle" (int arg0, int arg1, int arg2, int arg3)
+{
+	arg0 = FixedDiv(arg0, 100);
+	arg1 = FixedDiv(arg1, 100);
+	arg2 = FixedDiv(arg2, 100);
+	CreateTranslation(arg3, 112:127=%[OyBlya[0],OyBlya[1],OyBlya[2]]:[arg0,arg1,arg2], 199:207=116:124, 241:245=123:127);
+	
+	Thing_SetTranslation(0, arg3);
+}
+
+Script "MRIntWeaps_GlovesColorPistol" (int arg0, int arg1, int arg2, int arg3)
+{
+	arg0 = FixedDiv(arg0, 100);
+	arg1 = FixedDiv(arg1, 100);
+	arg2 = FixedDiv(arg2, 100);
+	CreateTranslation(arg3, 112:127=%[OyBlya[0],OyBlya[1],OyBlya[2]]:[arg0,arg1,arg2], 197:201=9:11, 251:253=125:127, 175:181=152:159);
+	
+	Thing_SetTranslation(0, arg3);
+}
+
+Script "MRIntWeaps_GlovesColorPresset" (int arg0, int arg1)
+{
+	Switch(arg0){
+		Case 0://Classic
+			CreateTranslation(arg1, 112:127=57:79);
+			Break;
+		Case 1://Black
+			CreateTranslation(arg1, 112:127=[40,40,40]:[0,0,0]);
+			Break;
+		Case 2://Brown
+			CreateTranslation(arg1, 112:127=%[0.0,0.0,0.0]:[0.89,0.55,0.28]);
+			Break;
+		Case 3://Green
+			CreateTranslation(arg1, 112:127=%[0.0,0.0,0.0]:[0.58,1.45,0.55]);
+			Break;
+		Case 4://Red
+			CreateTranslation(arg1, 112:127=%[0.0,0.0,0.0]:[1.03,0.22,0.24]);
+			Break;
+		Case 5://Grey
+			CreateTranslation(arg1, 112:127=%[0.0,0.0,0.0]:[0.86,0.86,0.86]);
+			Break;
+		Case 6://Blue
+			CreateTranslation(arg1, 112:127=%[0.0,0.0,0.0]:[0.31,0.51,1.66]);
+			Break;
+		
+	}
+	
+	Thing_SetTranslation(0, arg1);
+}
+
+Script "MRIntWeaps_GlovesColorPressetRifle" (int arg0, int arg1)
+{
+	Switch(arg0){
+		Case 0://Classic
+			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127, 112:127=57:79);
+			Break;
+		Case 1://Black
+			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127, 112:127=[40,40,40]:[0,0,0]);
+			Break;
+		Case 2://Brown
+			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127, 112:127=%[0.0,0.0,0.0]:[0.89,0.55,0.28]);
+			Break;
+		Case 3://Green
+			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127, 112:127=%[0.0,0.0,0.0]:[0.58,1.45,0.55]);
+			Break;
+		Case 4://Red
+			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127, 112:127=%[0.0,0.0,0.0]:[1.03,0.22,0.24]);
+			Break;
+		Case 5://Grey
+			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127, 112:127=%[0.0,0.0,0.0]:[0.86,0.86,0.86]);
+			Break;
+		Case 6://Blue
+			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127, 112:127=%[0.0,0.0,0.0]:[0.31,0.51,1.66]);
+			Break;
+			
+	}
+	
+	Thing_SetTranslation(0, arg1);
+}
+
+Script "MRIntWeaps_GlovesColorPressetPistol" (int arg0, int arg1)
+{
+	Switch(arg0){
+		Case 0://Classic
+			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=57:79);
+			Break;
+		Case 1://Black
+			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=[40,40,40]:[0,0,0]);
+			Break;
+		Case 2://Brown
+			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.89,0.55,0.28]);
+			Break;
+		Case 3://Green
+			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.58,1.45,0.55]);
+			Break;
+		Case 4://Red
+			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[1.03,0.22,0.24]);
+			Break;
+		Case 5://Grey
+			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.86,0.86,0.86]);
+			Break;
+		Case 6://Blue
+			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.31,0.51,1.66]);
+			Break;
+	}
+	
+	Thing_SetTranslation(0, arg1);
+}

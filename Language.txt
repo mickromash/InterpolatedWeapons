@@ -35,7 +35,19 @@ MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled."
 
 MRIntWeaps_AnimMenu = "Animations settings";
 
-MRIntW_BrownGloves = "Brown gloves";
+//MRIntW_BrownGloves = "Brown gloves";
+MRIntW_GlovesColor = "Gloves color";
+MRIntW_GlovesColor0 = "Classic";
+MRIntW_GlovesColor1 = "Black";
+MRIntW_GlovesColor2 = "Brown";
+MRIntW_GlovesColor3 = "Green";
+MRIntW_GlovesColor4 = "Red";
+MRIntW_GlovesColor5 = "Grey";
+MRIntW_GlovesColor6 = "Blue";
+MRIntW_GlovesColor7 = "Custom";
+MRIntW_GlovesColorShade = "Custom color shades";
+MRIntW_GlovesColorLight = "Custom color lights";
+
 MRIntW_Bounce = "Bounce on land";
 
 MRIntW_BobStyle = "Weapon bob style";
@@ -90,6 +102,9 @@ MRIntW_LHand = "Hold the pistol in the left hand";
 MRIntW_Rifle = "Replace the pistol with the rifle";
 
 MRIntW_ShotgunSmoke = "Smoke from chamber";
+MRIntW_ShotgunPumpAngle = "Pump gun angle";
+MRIntW_ShotgunPumpRandom = "Randomize angle";
+MRIntW_ShotgunPumpRandRotation = "Random radius";
 
 MRIntW_SSGSmoke = "Smoke from barrels when reloading";
 
@@ -163,7 +178,21 @@ MRIntW_BobRangeX = "Радиус по горизонтали";
 MRIntW_BobRangeY = "Радиус по вертикали";
 
 MRIntW_IdleAnims = "Анимации безделья";
-MRIntW_BrownGloves = "Коричневые перчатки";
+
+//MRIntW_BrownGloves = "Коричневые перчатки";
+
+MRIntW_GlovesColor = "Цвет перчаток";
+MRIntW_GlovesColor0 = "Классический";
+MRIntW_GlovesColor1 = "Чёрный";
+MRIntW_GlovesColor2 = "Коричневый";
+MRIntW_GlovesColor3 = "Зелёный";
+MRIntW_GlovesColor4 = "Красный";
+MRIntW_GlovesColor5 = "Серый";
+MRIntW_GlovesColor6 = "Синий";
+MRIntW_GlovesColor7 = "Свой";
+MRIntW_GlovesColorShade = "Тёмные участки";
+MRIntW_GlovesColorLight = "Светлые участки";
+
 MRIntW_LowHealthShake = "Тряка рук при низком здоровье";
 MRIntW_NoMuzzleFlash = "Отключить дульные вспышки";
 MRIntW_FlashFlare = "Свечение от дульных вспышек";
@@ -202,6 +231,9 @@ MRIntW_LHand = "Держать пистолет в левой руке";
 MRIntW_Rifle = "Заменить пистолет на винтовку";
 
 MRIntW_ShotgunSmoke = "Дым из патронника";
+MRIntW_ShotgunPumpAngle = "Наклон во время перезарядки";
+MRIntW_ShotgunPumpRandom = "Случайный наклон";
+MRIntW_ShotgunPumpRandRotation = "Радиус случайного наклона";
 
 MRIntW_SSGSmoke = "Дым из казённика";
 

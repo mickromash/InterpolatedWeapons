@@ -249,6 +249,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(Lay1).Sprite = GetSPriteIndex("MRD2A0");}
 		DyingRightHand:
 			#### # 1 {
+				A_GlovesColor();
 				int L, R;
 				L = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
 				invoker.DeadVariants.Delete(L);
@@ -263,6 +264,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 				A_OverlayOffset(Lay1, 5, -10, WOF_ADD);
 			}
 			#### BBB 1{
+				A_GlovesColor();
 				A_OverlayScale(Lay1, .2, .2, WOF_ADD);
 				A_OverlayOffset(Lay1, 5, 20, WOF_ADD);
 			}
@@ -287,6 +289,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 				A_OverlayRotate(Lay1, 30);
 			}
 			#### D 1{
+				A_GlovesColor();
 				A_OverlayOffset(Lay1, 90, (Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1.2, 1.2);
 				A_OverlayRotate(Lay1, 30);
@@ -295,6 +298,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 		RightHandDead1:
 			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
 			#### D 1 {
+				A_GlovesColor();
 				A_OverlayOffset(Lay1, 70-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6-20, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 8);
 				A_OverlayScale(Lay1, 1.4, 1.3);
@@ -303,6 +307,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 		RightHandDead2:
 			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
 			#### F 1 {
+				A_GlovesColor();
 				A_OverlayOffset(Lay1, 150-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 80);
 				A_OverlayScale(Lay1, 1, .9);
@@ -311,6 +316,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 		RightHandDead3:
 			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
 			#### G 1 {
+				A_GlovesColor();
 				A_OverlayFlags(Lay1, PSPF_FLIP, true);
 				A_OverlayOffset(Lay1, 240-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 10);
@@ -321,6 +327,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 		DyingLeftHand:
 			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(DieLay).Sprite = GetSPriteIndex("MRD2A0");}
 			#### E 1 {
+				A_GlovesColor();
 				A_OverlayFlags(DieLay, PSPF_FLIP, true);
 				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
 				A_OverlayOffset(DieLay, -140-DeltaAngle(Angle, invoker.DeadAngle)*4, 25);
@@ -349,6 +356,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 				}
 			}
 			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
+				A_GlovesColor();
 				A_OverlayFlags(DieLay, PSPF_FLIP, true);
 				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
 				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
@@ -357,6 +365,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 				A_SetTics(CRandom(0, 1));
 			}
 			#### D 1 {
+				A_GlovesColor();
 				A_OverlayOffset(DieLay, -130-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
 				A_OverlayRotate(DieLay, 30);
 				A_OverlayScale(DieLay, 1, 1);
@@ -365,6 +374,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 		LeftHandDead2:
 			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
 			#### F 1 {
+				A_GlovesColor();
 				A_OverlayFlags(DieLay, PSPF_FLIP, true);
 				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
 				A_OverlayRotate(DieLay, 80);
@@ -374,6 +384,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 		LeftHandDead3:
 			MRD1 A 0 {if(GetCVar("MRIntW_BrownGloves"))Player.GetPSprite(OverlayId()).Sprite = GetSPriteIndex("MRD2A0");}
 			#### G 1 {
+				A_GlovesColor();
 				A_OverlayFlags(DieLay, PSPF_FLIP, false);
 				A_OverlayOffset(DieLay, 0-DeltaAngle(Angle, invoker.DeadAngle)*4, (Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
 				A_OverlayRotate(DieLay, 10);

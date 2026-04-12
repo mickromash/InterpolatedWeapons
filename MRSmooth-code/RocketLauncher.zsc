@@ -31,6 +31,14 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	Vector2 RecOfst;
 	Double RecScal;
 	
+	Action Void A_GlovesColor()
+	{
+		Let Feest = MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist"));
+		if(!Feest)Return;
+		
+		Player.GetPSprite(OverlayId()).Translation = Feest.GlovesTrans;
+	}
+	
 	States
 	{
 		Select:
@@ -269,10 +277,6 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			TNT1 A 4;
 			TNT1 AA 4 A_Light2();
 			Goto LightDone;
-		
-		Sprites:
-			MRD2 A 0;
-			Stop;
 	}
 	
 	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
