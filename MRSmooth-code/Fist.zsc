@@ -30,16 +30,18 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			Handler.LoadingDelay--;
 		}
 		
+		if(!Owner.Player)Return;
+		
 		if(GetAge()%4==0){
-			if(GlovesLights != CVar.GetCVar("MRIntW_GlovesColor1", Owner.Player).GetInt()||
-				GlovesShades != CVar.GetCVar("MRIntW_GlovesColor0", Owner.Player).GetInt()||
+			if(GlovesLights != CVar.GetCVar("MRIntW_GlovesColorLight", Owner.Player).GetInt()||
+				GlovesShades != CVar.GetCVar("MRIntW_GlovesColorShade", Owner.Player).GetInt()||
 				Owner.GetCVar("MRIntW_GlovesColor") != GlovesColor||
 				GlovesTrans == 0
 			){
 				GlovesColor = Owner.GetCVar("MRIntW_GlovesColor");
-				GlovesShades = CVar.GetCVar("MRIntW_GlovesColor0", Owner.Player).GetInt();
+				GlovesShades = CVar.GetCVar("MRIntW_GlovesColorShade", Owner.Player).GetInt();
 				ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
-				GlovesLights = CVar.GetCVar("MRIntW_GlovesColor1", Owner.Player).GetInt();
+				GlovesLights = CVar.GetCVar("MRIntW_GlovesColorLight", Owner.Player).GetInt();
 				if(GlovesColor<7){
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPressetRifle", GlovesColor, Owner.PlayerNumber() + 2800);
 					RifleGlovesTrans = Translation;
