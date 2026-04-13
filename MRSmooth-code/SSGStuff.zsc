@@ -38,11 +38,13 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 		
 		if(Age<CaseLife-5)PSP.Y += Owner.Player.Cmd.Pitch*.005;
 		PSP.Y += Owner.Vel.Z;
-		PSP.Y -= VelZ*80*VelMult;
+		PSP.Y -= VelZ*80*VelMult*PSP.Scale.X;
 		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
 		PSP.X -= 21*VelMult*PSP.Scale.X;
 		PSP.Scale *= 1+.05*CasingDir[index]*CasingSpeed;
-		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005;
+		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005*Cos(Owner.Pitch);
+		PSP.Y += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*Sin(Owner.Pitch);
+		PSP.Scale.X -= Sin(Owner.Pitch)*.1;
 		PSP.Scale.X = Max(0, PSP.Scale.X);
 		PSP.Scale.Y = PSP.Scale.X;
 		PSP.Rotation += 40;
@@ -54,11 +56,19 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 	{
 		if(MRIntW_Casings<2)Return;
 		
-		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ);
-		Pos.XY += AngleToVector(Owner.Angle+100, 5);
+		Vector3 Pos;
+		Pos.XY += AngleToVector(Owner.Angle+90, 7);
+		Pos.XY += AngleToVector(Owner.Angle, -4)*Sin(Owner.Pitch);
+		Pos.Z += -2*Cos(Owner.Pitch);
+		Pos += (Owner.Pos.XY, Owner.Player.ViewZ);
+		
+		Double VelZ = -CFRandom(1, 2);
+		Double VelX = CFRandom(5, 6);
 		Vector3 Vel = Owner.Vel;
-		Vel += AngleToVector(Owner.Angle+100 + CFRandom(0, 20), CFRandom(3, 5));
-		Vel.Z += CFRandom(-1, 1);
+		Vel.XY += AngleToVector(Owner.Angle+90, VelX);
+		Vel.Z += VelX*Sin(Owner.Pitch);
+		Vel.Z += VelZ;
+		Vel.XY += AngleToVector(Owner.Angle, VelZ)*Sin(Owner.Pitch);
 		
 		Let a = MRIntWeaps_Casing.SpawnCasing(Pos, Vel, true, Scale:(.1, .1));
 		
