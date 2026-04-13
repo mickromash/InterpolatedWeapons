@@ -65,18 +65,20 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		
 		MuzzleSmoke();
 		
-		if(Owner.Health>0 && abs(Speed)>0){
-			if(!(Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Fire"))) && !DontStop && HandPos>.3)Speed *= 1-Owner.GetCVar("MRIntW_ChaingunStopTime");
-			Rotation += ConterClock?-Speed:Speed;
-			if(Rotation!=0 && (Rotation>360||Rotation<-360))Rotation %= 360;
-			
-			GunFrame += Speed*.03;
-			if(GunFrame>=4)GunFrame -= 4;
-			else if(GunFrame<0)GunFrame += 4;
-			
-			if(Owner.Player.FindPSprite(Lay1))Owner.Player.GetPSprite(Lay1).Frame = GunFrame;
+		if(Owner.Health>0){
+			if(abs(Speed)>0){
+				if(!(Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Fire"))) && !DontStop && HandPos>.3)Speed *= 1-Owner.GetCVar("MRIntW_ChaingunStopTime");
+				Rotation += ConterClock?-Speed:Speed;
+				if(Rotation!=0 && (Rotation>360||Rotation<-360))Rotation %= 360;
+				
+				GunFrame += Speed*.03;
+				if(GunFrame>=4)GunFrame -= 4;
+				else if(GunFrame<0)GunFrame += 4;
+				
+				if(Owner.Player.FindPSprite(Lay1))Owner.Player.GetPSprite(Lay1).Frame = GunFrame;
+			}
 		}
-		
+		else Speed = 0;
 		DontStop = false;
 		
 		//Disabling weapon interpolation while game is loading
@@ -92,7 +94,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		Super.PostBeginPlay();
 		IdleDelay = -35*4;
 		Rotation = 30;
-		HandPos = 1;
 	}
 	
 	action void A_FireCGun()
@@ -252,6 +253,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			
 		GunRaise:
 			TNT1 A 4 {
+				invoker.HandPos = 1;
 				A_Overlay(Muzzle0, "Muzzle");
 				A_Overlay(Muzzle1, "Muzzle");
 				A_Overlay(Muzzle2, "Muzzle");
