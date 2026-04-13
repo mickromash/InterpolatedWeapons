@@ -148,6 +148,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayRotate(Lay1, 20);
 			}
 			TNT1 AAAA 1 {
+				A_GlovesColor(1);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayOffset(Lay1, -12, 65);
