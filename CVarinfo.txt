@@ -20,10 +20,10 @@ server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting
 server bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
-user bool MRIntW_BrownGloves = true;//Sprites with original gloves
 user int MRIntW_GlovesColor = 0;//0 - Tan (Classic), 1 - Black, 2 - Brown, 3 - Green, 4 - Red, 5 - Grey, 6 - Blue, 7 - Custom
 user color MRIntW_GlovesColorShade = "2 2 2";//Shades color
 user color MRIntW_GlovesColorLight = "EF EF EF";//Lights color
+server color MRIntW_GlovesColorTemp = "0 0 0";//Used to set MRIntW_GlovesColorLight to random values
 nosave bool MRIntW_NoMuzzleFlash = false;//Don't display muzzle flashes
 nosave bool MRIntW_FlashFlare = false;//Flares around muzzle flashas
 //Fist

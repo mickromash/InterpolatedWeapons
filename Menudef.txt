@@ -45,6 +45,8 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Option "$MRIntW_GlovesColor", "MRIntW_GlovesColor", "MRIntW_GlovesColorValues"
 	ColorPicker "$MRIntW_GlovesColorShade", "MRIntW_GlovesColorShade"
 	ColorPicker "$MRIntW_GlovesColorLight", "MRIntW_GlovesColorLight"
+	Command "$MRIntW_RandomGlovesColor2", MRIntW_RandomGlovesColor2
+	Command "$MRIntW_RandomGlovesColor1", MRIntW_RandomGlovesColor1
 	StaticText ""
 	Option "$MRIntW_BobStyle", "MRIntW_BobStyle", "MRIntW_BobStyleValues"
 	Slider "$MRIntW_BobRangeX", "MRIntW_BobRangeX", 0, 3, .1

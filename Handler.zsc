@@ -1,0 +1,201 @@
+/*
+	Handling animations activation, mod disabling or any other global actions/events
+*/
+
+Class MRIntWeaps_Handler: EventHandler
+{
+	Static Const String Weapons[] = {//Weapons to replace
+		"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun",
+		"Chaingun", "RocketLauncher", "PlasmaRifle", "BFG9000"
+	};
+	
+	Array<Actor> Berserks;
+	MRIntWeaps_Smoker Smokers[MAXPLAYERS];
+	
+	Void GiveWeapons(Actor Plr)//Replace player's vanilla weapons with the mods'
+	{
+		if(!Plr)Return;
+		
+		String Select;
+		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
+		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
+		
+		Bool GotWeapon[9];
+		
+		Inventory Item = Plr.Inv;
+		while(Item != Null){
+			Let CurItem = Item;
+			Item = Item.Inv;
+			if(Weapon(CurItem)){
+				For(int i=0;i<Weapons.Size();i++){
+					if(CurItem is Weapons[i])GotWeapon[i] = true;
+				}
+				Plr.RemoveInventory(CurItem);
+			}
+		}
+		
+		For(int i=0;i<Weapons.Size();i++){
+			if(!GotWeapon[i])Continue;
+			
+			if(!Plr.FindInventory("MRIntWeaps_"..Weapons[i])){
+				int CurAmmo;
+				Class<Ammo> Amo;
+				if(GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1!=""){
+					Amo = GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1;
+					CurAmmo = Plr.CountInv(Amo);
+				}
+				Plr.GiveInventory("MRIntWeaps_"..Weapons[i], 1);
+				if(Amo){
+					Plr.SetInventory(Amo, CurAmmo, true);
+				}
+			}
+		}
+		
+		if(Select!="")Plr.A_SelectWeapon("MRIntWeaps_"..Select);
+		
+		if(!Smokers[Plr.PlayerNumber()])
+		{
+			Smokers[Plr.PlayerNumber()] = New('MRIntWeaps_Smoker');
+			Smokers[Plr.PlayerNumber()].Owner = Plr;
+		}
+	}
+	
+	Void TakeWeapons(Actor Plr)//Replace player's weapons from the mod with vanilla ones
+	{
+		if(!Plr)Return;
+		
+		String Select;
+		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
+		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
+		
+		For(int i=0;i<Weapons.Size();i++){
+			Let Weap = Plr.FindInventory("MRIntWeaps_"..Weapons[i]);
+			if(Weap){
+				Weap.Destroy();
+				
+				if(!Plr.FindInventory(Weapons[i])){
+					int CurAmmo;
+					Class<Ammo> Amo;
+					if(GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1!=""){
+						Amo = GetDefaultByType((Class<Weapon>)(Weapons[i])).AmmoType1;
+						CurAmmo = Plr.CountInv(Amo);
+					}
+					Plr.GiveInventory(Weapons[i], 1);
+					if(Amo){
+						Plr.SetInventory(Amo, CurAmmo, true);
+					}
+				}
+			}
+		}
+		Select.Replace("MRIntWeaps_", "");
+		if(Select!="")Plr.A_SelectWeapon(Select);
+	}
+	
+	Void RemoveWeapons()//Replace mods weapons on the level with vanilla ones
+	{
+		Let iter = ThinkerIterator.Create("Weapon");
+		Actor Weap;
+		
+		int Akhtung;
+		While(Weap = Weapon(iter.Next())){
+			Akhtung++;
+			if(Akhtung>2000)Break;
+
+			String ClassName = Weap.GetClassName();
+			ClassName = ClassName.MakeLower();
+
+			if(ClassName.IndexOf("mrintweaps_")>-1){
+				ClassName.Replace("mrintweaps_", "");
+				Let a = Weap.Spawn(ClassName, Weap.Pos);
+				a.Vel = Weap.Vel;
+				Weap.Destroy();
+			}
+		}
+		
+		For(int i=0;i<Berserks.Size();i++){if(Berserks[i])Berserks[i].Destroy();}
+		Berserks.Clear();
+	}
+	
+	Override Void PlayerSpawned(PlayerEvent e)
+	{
+		GiveWeapons(Players[e.PlayerNumber].mo);
+	}
+	
+	Override Void PlayerRespawned(PlayerEvent e)
+	{
+		GiveWeapons(Players[e.PlayerNumber].mo);
+	}
+	
+	Override Void WorldThingSpawned(WorldEvent e)
+	{
+		if(!e.Thing)Return;
+				
+		if(e.Thing is 'Berserk' || Actor.GetReplacee('Berserk') == e.Thing.GetClass()){
+			Let a = e.Thing.Spawn("MRIntWeaps_FistSelector", e.Thing.Pos);
+			a.Master = e.Thing;
+			Berserks.Push(a);
+		}
+	}
+	
+	Override Void NetworkProcess(ConsoleEvent e)
+	{
+		if(e.name ~== "MRIntWeaps_Uninstall"){
+			For(int i=0;i<MAXPLAYERS;i++){
+				if(Players[i].mo)TakeWeapons(Players[i].mo);
+			}
+			RemoveWeapons();
+			Uninstalled = true;
+			Destroy();
+			Return;
+		}
+		
+		Let Plr = Players[e.Player].mo;
+		if(!Plr)Return;
+		
+		if(e.name ~== "MRIntWeaps_Give"){
+			GiveWeapons(Plr);
+			Return;
+		}
+		if(e.name ~== "MRIntWeaps_Take"){
+			TakeWeapons(Plr);
+			Return;
+		}
+		if(e.Name ~== "MRIntW_Casings")
+		{
+			Console.Printf("Casings: "..Casings.Size());
+			Return;
+		}
+		if(e.name ~== "MRIntWeaps_RandomGlovesColor"){
+			Color Rand = Color(Random(0,255), Random(0,255), Random(0,255));
+			
+			CVar.FindCVar("MRIntW_GlovesColorTemp").SetInt(Rand);
+			Return;
+		}
+	}
+	
+	Bool Uninstalled;
+	Override Void OnDestroy()
+	{
+		if(Uninstalled)Console.Printf(StringTable.Localize("$MRIntWeaps_Uninstalled"));
+	}
+	
+	int LoadingDelay;//Disabling weapon interpolation while game is loading, otherwise weapon sprite will appear in the middle of the screen
+	Override Void OnRegister()
+	{
+		LoadingDelay = 3;
+		//Console.Printf("Register");
+	}
+	
+	Override Void WorldLoaded(WorldEvent e)
+	{
+		LoadingDelay = 3;
+		For(int i=0;i<MAXPLAYERS;i++){
+			if(!Players[i].mo)Continue;
+			
+			if(Players[i].mo.FindInventory("MRIntWeaps_Fist")){
+				MRIntWeaps_Fist(Players[i].mo.FindInventory("MRIntWeaps_Fist")).GlovesTrans = 0;
+			}
+		}
+		//Console.Printf("World Loaded");
+	}
+}

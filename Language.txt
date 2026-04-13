@@ -47,6 +47,8 @@ MRIntW_GlovesColor6 = "Blue";
 MRIntW_GlovesColor7 = "Custom";
 MRIntW_GlovesColorShade = "Custom color shades";
 MRIntW_GlovesColorLight = "Custom color lights";
+MRIntW_RandomGlovesColor2 = "Set random color shades";
+MRIntW_RandomGlovesColor1 = "Set random color lights";
 
 MRIntW_Bounce = "Bounce on land";
 
@@ -192,6 +194,8 @@ MRIntW_GlovesColor6 = "Синий";
 MRIntW_GlovesColor7 = "Свой";
 MRIntW_GlovesColorShade = "Тёмные участки";
 MRIntW_GlovesColorLight = "Светлые участки";
+MRIntW_RandomGlovesColor2 = "Случайные тёмные участки";
+MRIntW_RandomGlovesColor1 = "Случайные светлые участки";
 
 MRIntW_LowHealthShake = "Тряка рук при низком здоровье";
 MRIntW_NoMuzzleFlash = "Отключить дульные вспышки";
