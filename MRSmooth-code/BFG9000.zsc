@@ -244,6 +244,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			}
 			BF1F C 1 BRIGHT {invoker.LightUpMuzzle = false;A_OverlayScale(Lay4, -.05, -.2, WOF_ADD);Player.GetPSprite(Lay4).Alpha -= .15;}
 			Stop;
+			
 		GunMuzzleFlashFlare:
 			NSHS B 1 BRIGHT{
 				A_OverlayOffset(OverlayId(), 130, 90);
@@ -258,7 +259,6 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			}
 		Loopec:
 			#### # 1 BRIGHT{
-				Player.GetPSprite(OverlayId()).Alpha *= .98;
 				Double Scal = .9*Clamp(invoker.Power-1, .05, 1);
 				A_OverlayScale(OverlayId(), Scal, Scal*.8, WOF_INTERPOLATE);
 				
@@ -273,14 +273,12 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			}
 			#### # 1 BRIGHT{
 				A_OverlayScale(OverlayId(), .8, .5, WOF_ADD);
-				Player.GetPSprite(OverlayId()).Alpha -= .1;
 
 				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X + 130;
 				Player.GetPSprite(OverlayID()).Y = Player.GetPSprite(Lay1).Y + 85;
 			}
 			#### # 1 BRIGHT{
 				A_OverlayScale(OverlayId(), .7, .4, WOF_ADD);
-				Player.GetPSprite(OverlayId()).Alpha -= .1;
 				
 				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X + 130;
 				Player.GetPSprite(OverlayID()).Y = Player.GetPSprite(Lay1).Y + 80;
