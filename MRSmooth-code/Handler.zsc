@@ -163,6 +163,13 @@ Class MRIntWeaps_Handler: EventHandler
 		if(e.Name ~== "MRIntW_Casings")
 		{
 			Console.Printf("Casings: "..Casings.Size());
+			Return;
+		}
+		if(e.name ~== "MRIntWeaps_RandomGlovesColor"){
+			Color Rand = Color(Random(0,255), Random(0,255), Random(0,255));
+			
+			CVar.FindCVar("MRIntW_GlovesColorTemp").SetInt(Rand);
+			Return;
 		}
 	}
 	

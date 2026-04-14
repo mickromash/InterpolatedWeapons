@@ -12,7 +12,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 	Double CurBounce, BounceStrength;
 	Bool Bouncing;
 	Color GlovesShades, GlovesLights;
-	int GlovesTrans, RifleGlovesTrans, PistolGlovesTrans, GlovesColor;
+	int GlovesTrans, RifleGlovesTrans, PistolGlovesTrans, GlovesColor, ColDir;
 	
 	Override Void DoEffect()
 	{
@@ -32,7 +32,65 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		
 		if(!Owner.Player)Return;
 		
-		if(GetAge()%4==0){
+		if(GlovesColor==8){
+			Array<int> AllCols;
+			int Cols[6];
+			AllCols.Push(GlovesLights.R);
+			AllCols.Push(GlovesLights.G);
+			AllCols.Push(GlovesLights.B);
+			AllCols.Push(GlovesShades.R);
+			AllCols.Push(GlovesShades.G);
+			AllCols.Push(GlovesShades.B);
+						
+			Cols[0] = AllCols[ColDir];
+			Cols[ColDir] = AllCols[0];
+			
+
+			For(int i=1;i<6;i++){
+				if(i==ColDir)Continue;
+				Cols[i] = AllCols[i];
+			}
+			
+			int Increa = CRandom(1, 3);
+			Cols[0]+=Increa;
+			
+			For(int i=1;i<3;i++){
+				int Take = Min(Increa, CRandom(1, 2));
+				Increa -= Take;
+				Cols[i] -= Max(0, Take);
+				if(Cols[i]<=0)Cols[i] = 0;
+			}
+			
+			int Hold = Cols[ColDir];
+			Cols[ColDir] = Cols[0];
+			Cols[0] = Hold;
+			
+			if(Cols[ColDir]>=255){
+				Cols[ColDir] = 255;
+				ColDir++;
+				if(ColDir>=3)ColDir = 0;
+			}
+			
+			For(int i=3;i<6;i++){
+				Cols[i] = 0;//50-Cols[i-3];
+			}
+			
+			GlovesShades = Color(Cols[3],Cols[4],Cols[5]);
+			GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
+			
+			ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
+			
+			ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+			RifleGlovesTrans = Translation;
+			ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+			PistolGlovesTrans = Translation;
+			ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+			GlovesTrans = Translation;
+			
+			GlovesColor = Owner.GetCVar("MRIntW_GlovesColor");
+		}
+		
+		else if(GetAge()%4==0){
 			if(GlovesLights != CVar.GetCVar("MRIntW_GlovesColorLight", Owner.Player).GetInt()||
 				GlovesShades != CVar.GetCVar("MRIntW_GlovesColorShade", Owner.Player).GetInt()||
 				Owner.GetCVar("MRIntW_GlovesColor") != GlovesColor||

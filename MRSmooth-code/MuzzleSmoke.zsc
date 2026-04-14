@@ -9,7 +9,6 @@ Class MRIntWeaps_Smoker: Object play
 		FSpawnParticleParams p;
 		p.Accel = Accel;
 		p.Vel = Vel;
-		
 		p.Pos = Pos;
 		
 		p.Color1 = Col;
