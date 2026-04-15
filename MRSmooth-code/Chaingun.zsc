@@ -66,6 +66,16 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		MuzzleSmoke();
 		
 		if(Owner.Health>0){
+			if(Owner.Player.WeaponState&WF_WEAPONREADY  && Owner.Player.Cmd.Buttons&BT_ALTATTACK){//Alt fire
+				if(abs(Speed)<10)Speed--;
+				
+				For(int i=Muzzle0;i<=Muzzle5;i++){
+					if(Owner.Player.FindPSprite(i))Owner.Player.GetPSprite(i).bInterpolate = true;
+				}
+				
+				DontStop = true;
+			}
+			
 			if(abs(Speed)>0){
 				if(!(Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Fire"))) && !DontStop && HandPos>.3)Speed *= 1-Owner.GetCVar("MRIntW_ChaingunStopTime");
 				Rotation += ConterClock?-Speed:Speed;
@@ -469,18 +479,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayOffset(Lay2, -Ofst.X, -Ofst.Y, WOF_ADD);
 			}
 			Stop;
-		AltFire:
-			TNT1 A 1 {
-				if(abs(invoker.Speed)<10)invoker.Speed--;
-				
-				For(int i=Muzzle0;i<=Muzzle5;i++){
-					A_OverlayFlags(i, PSPF_INTERPOLATE, true);
-				}
-				
-				invoker.DontStop = true;
-			}
-			#### # 0 A_Refire();
-			Goto Ready;
 		GunFlash://Muzzle flash
 			CH1F A 1 BRIGHT {
 				Player.GetPSprite(Lay1).Sprite = GetSpriteIndex("CH2GA0");
