@@ -1,3 +1,7 @@
+/*
+	Menu with secret gloves colors
+*/
+
 Class MRIntWeaps_EasterMenu: OptionMenu
 {
 	int Mus;
