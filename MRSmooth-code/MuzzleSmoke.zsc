@@ -1,3 +1,7 @@
+/*
+	Bioshock ahh particle muzzle smoke
+*/
+
 
 Const MRIntW_MaxSmoke = 35*15;
 Const MRintW_FadeStart = 40;

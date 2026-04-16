@@ -1,3 +1,7 @@
+/*
+	Gloves color generation
+*/
+
 Extend Class MRIntWeaps_Fist
 {
 	Color GlovesShades, GlovesLights, GlovesFireShades, GlovesFireLights;

@@ -1,3 +1,7 @@
+/*
+	Additional overlays similar to ZDoom particles
+*/
+
 Extend Class MRIntWeaps_Shotgun
 {
 	MRIntWeaps_SmokeContainer Particles[30];
