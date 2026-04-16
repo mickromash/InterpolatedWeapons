@@ -251,6 +251,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			Stop;
 		RightHandPunch:
 			PUN1 A 1 {
+				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
 				A_OverlayOffset(OverlayId(), invoker.RightHand.X+5, invoker.RightHand.Y+5, WOF_INTERPOLATE);
 				A_SetHandsSprite();
 				Player.GetPSprite(OverlayId()).Translation = invoker.GlovesTrans;
@@ -306,6 +307,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayScale(OverlayId(), CFRandom(-.02, .02), CFRandom(-.02, .02), WOF_ADD);
 					A_OverlayRotate(OverlayId(), CFRandom(0, 4), WOF_ADD);
 				}
+				if(!invoker.SecondFist)invoker.RightHand = (Player.GetPSprite(OverlayId()).X, Player.GetPSprite(OverlayId()).Y+32);
 			}
 			Stop;
 		LeftHandPunchThru://If killing an enemy
