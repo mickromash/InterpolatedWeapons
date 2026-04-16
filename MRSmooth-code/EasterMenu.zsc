@@ -1,0 +1,218 @@
+Class MRIntWeaps_EasterMenu: OptionMenu
+{
+	int Mus;
+	Override Void Init(Menu parent, OptionMenuDescriptor desc){
+		super.Init(parent, desc);
+		Mus = 0;
+		Sprite = Texman.CheckForTexture("PUNGD0");
+		Alpha = 1.2;
+	}
+	
+	TextureID Sprite;
+	Vector2 Pos, Scale;
+	Double Alpha;
+	Bool Flip;
+	
+	Override Void Drawer()
+	{
+		Super.Drawer();
+		
+		if(Mus>69+60)Return;
+		
+		if(Mus>69+48){
+			Alpha -= .1;
+		}
+		else Scale *= .8;
+		
+		Switch(Mus)
+		{
+			Case 0:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 0, CHANF_UI, pitch: 1);
+				Break;
+			Case 3:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 8:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1.7);
+				Break;
+				
+			Case 13:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 17:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 0, CHANF_UI, pitch: 1);
+				Break;
+			Case 22:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1.6);
+				Break;
+				
+			Case 27:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 30:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 35:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1.5);
+				Break;
+				
+			Case 40:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 43:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 48:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1.35);
+				Break;
+				
+			Case 53:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 56:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 61:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1.4);
+				Break;
+			Case 62:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1.45);
+				Break;
+				
+			Case 0+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 0, CHANF_UI, pitch: 1);
+				Break;
+			Case 3+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 8+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1.7);
+				Break;
+				
+			Case 13+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 17+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 0, CHANF_UI, pitch: 1);
+				Break;
+			Case 22+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1.6);
+				Break;
+				
+			Case 27+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 30+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 35+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1.5);
+				Break;
+				
+			Case 40+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 43+69:
+				Scale = Texman.GetScaledSize(Sprite)*CFRandom(1, 2);
+				Flip = !Flip;
+				Pos = (CRandom(0, Screen.GetWidth()-Scale.X), CRandom(0, Screen.GetHeight()-Scale.Y));
+				S_StartSound("player/male/fist", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+			Case 48+69:
+				Sprite = Texman.CheckForTexture("TROOH1");
+				Scale = Texman.GetScaledSize(Sprite);
+				Pos = (Screen.GetWidth()*.5 - Scale.X*CleanXFac, Screen.GetHeight()+Scale.Y*CleanXFac*5);
+				Scale *= CleanXFac*10;
+				Flip = false;
+				
+				S_StartSound("grunt/pain", 1, CHANF_UI, 1, ATTN_NORM, 1);
+				Break;
+		}
+		Mus++;
+		
+		Screen.DrawTexture(Sprite, false, Pos.X, Pos.Y,
+				DTA_DestWidthF, Scale.X,
+				DTA_DestHeightF, Scale.Y,
+				DTA_FlipX, Flip,
+				DTA_Alpha, Alpha
+		);
+	}
+}

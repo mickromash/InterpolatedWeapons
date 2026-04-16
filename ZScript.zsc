@@ -18,3 +18,5 @@ Version "4.0"
 #include "MRSmooth-code/Particles.zsc"
 #include "MRSmooth-code/SSGStuff.zsc"
 #include "MRSmooth-code/Dying.zsc"
+
+#include "MRSmooth-code/EasterMenu.zsc"
