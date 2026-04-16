@@ -29,7 +29,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		}
 		
 		if(!Owner.Player)Return;
-		
+				
 		UpdateGloves();
 		
 		Let Weap = Owner.Player.ReadyWeapon;
@@ -407,6 +407,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayOffset(OverlayId(), -80, 40, WOF_INTERPOLATE);
 				A_OverlayRotate(OverlayId(), 4, WOF_ADD);
 				if(GetCVar("MRIntW_PunchingFist")<1||invoker.SecondFist)invoker.LeftHand = (Player.GetPSprite(OverlayId()).X, Player.GetPSprite(OverlayId()).Y);
+				else invoker.RightHand = (Player.GetPSprite(OverlayId()).X, Player.GetPSprite(OverlayId()).Y);
 			}
 			#### # 0 A_JumpIf(GetCVar("MRIntW_PunchingFist")>0 && !invoker.SecondFist, "Null");
 			#### # 2 A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, false);
@@ -546,7 +547,9 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			}
 			TNT1 A 5;
 			TNT1 A 5 {A_Refire();if(!(Player.OldButtons&BT_ATTACK||Player.Cmd.Buttons&BT_ATTACK))A_Overlay(RightLay, "RightHandUp");}
-			TNT1 A 0 {if(!(Player.OldButtons&BT_ATTACK||Player.Cmd.Buttons&BT_ATTACK))A_Overlay(RightLay, "RightHandUp", true);}
+			TNT1 A 0 {
+				if(!InStateSequence(Player.GetPSprite(RightLay).CurState, invoker.FindState("RightHandUp")))A_Overlay(RightLay, "RightHandUp");
+			}
 			Goto Ready;
 		//Caching sprites
 		Sprites:
