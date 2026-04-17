@@ -21,6 +21,7 @@ OptionMenu "MRIntWeaps_Menu"
 	Option "$MRIntW_FlowingSmoke", "MRIntW_FlowingSmoke", "YesNo"
 	Slider "$MRIntW_FlowingSmokeLength", "MRIntW_FlowingSmokeLength", .1, 5, .5, 2, "MRIntW_FlowingSmoke"
 	Slider "$MRIntW_FlowingSmokeAlpha", "MRIntW_FlowingSmokeAlpha", .025, 1, .025, 2, "MRIntW_FlowingSmoke"
+	Slider "$MRIntW_FlowingSmokeMaxTime", "MRIntW_FlowingSmokeMaxTime", .1, 2, .1, 2, "MRIntW_FlowingSmoke"
 	Slider "$MRIntW_FlowingSmokePrecision", "MRIntW_FlowingSmokePrecision", .1, 1.5, .05, 2, "MRIntW_FlowingSmoke"
 	StaticText ""
 	//Server
@@ -126,6 +127,12 @@ OptionMenu "MRIntWeaps_EasterMenu"
 	Command "", Pustota3
 	Command "", Pustota4
 	Option "$MRIntW_GlovesColor", "MRIntW_GlovesColor", "MRIntW_GlovesColorValuesSpecial"
+	StaticText ""
+	StaticText ""
+	StaticText ""
+	StaticText ""
+	StaticText ""
+	StaticText ""
 }
 
 
@@ -150,8 +157,10 @@ OptionValue "MRIntW_GlovesColorValues"
 
 OptionValue "MRIntW_GlovesColorValuesSpecial"
 {
-	8, "$MRIntW_GlovesColor8"//Rainbow
-	9, "$MRIntW_GlovesColor9"//Glow
+	8, "$MRIntW_GlovesColor8"//Glow
+	9, "$MRIntW_GlovesColor9"//Rainbow
+	10, "$MRIntW_GlovesColor10"//Fast rainbow
+	11, "$MRIntW_GlovesColor11"//Epilepsy
 }
 
 OptionValue "MRIntW_BobStyleValues"

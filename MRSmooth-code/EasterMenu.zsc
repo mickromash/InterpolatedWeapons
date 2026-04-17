@@ -219,4 +219,24 @@ Class MRIntWeaps_EasterMenu: OptionMenu
 				DTA_Alpha, Alpha
 		);
 	}
+	
+	Override Bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		Bool Ret = Super.MenuEvent(mkey, fromcontroller);
+		
+		Array<OptionMenuItemStaticText> Text;
+		For(int i=-4;i<0;i++){
+			if(OptionMenuItemStaticText(mDesc.mItems[mDesc.mItems.Size()-1]))Text.Push(OptionMenuItemStaticText(mDesc.mItems[mDesc.mItems.Size()+i]));
+		}
+		
+		if(CVar.FindCVar("MRIntW_GlovesColor").GetInt()>9){
+			For(int i=0;i<Text.Size();i++){
+				if(Text[i])Text[i].mLabel = "$MRIntW_EpilepsyDesc"..(i+1);
+			}
+		}
+		else For(int i=0;i<Text.Size();i++){
+				if(Text[i])Text[i].mLabel = "";
+		}
+		Return Ret;
+	}
 }

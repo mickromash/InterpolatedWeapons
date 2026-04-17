@@ -6,6 +6,7 @@ MRIntW_Smoke = "Firing smoke";
 MRIntW_FlowingSmoke = "Flowing smoke";
 MRIntW_FlowingSmokeLength = "Flowing smoke length";
 MRIntW_FlowingSmokeAlpha = "Flowing smoke opacity";
+MRIntW_FlowingSmokeMaxTime = "Max. smoke time";
 MRIntW_FlowingSmokePrecision = "Flowing smoke particles amount";
 
 MRIntW_Casings = "Casings";
@@ -45,12 +46,19 @@ MRIntW_GlovesColor4 = "Red";
 MRIntW_GlovesColor5 = "Grey";
 MRIntW_GlovesColor6 = "Blue";
 MRIntW_GlovesColor7 = "Custom";
-MRIntW_GlovesColor8 = "Rainbow";
-MRIntW_GlovesColor9 = "Glow";
+MRIntW_GlovesColor8 = "Glow";
+MRIntW_GlovesColor9 = "Rainbow";
+MRIntW_GlovesColor10 = "Fast rainbow";
+MRIntW_GlovesColor11 = "Epilepsy";
 MRIntW_GlovesColorShade = "Custom color shades";
 MRIntW_GlovesColorLight = "Custom color lights";
 MRIntW_RandomGlovesColor2 = "Set random color shades";
 MRIntW_RandomGlovesColor1 = "Set random color lights";
+
+MRIntW_EpilepsyDesc1 = "With current settings, colors of the gloves may change very fast";
+MRIntW_EpilepsyDesc2 = "and even cause an epileptic seizure.";
+MRIntW_EpilepsyDesc3 = "If you are sure you don't have epilepsy, type MRIntW_Epilepsy 0 into the console";
+MRIntW_EpilepsyDesc4 = "";
 
 MRIntW_Bounce = "Bounce on land";
 
@@ -115,7 +123,7 @@ MRIntW_SSGSmoke = "Smoke from barrels when reloading";
 MRIntW_ChaingunMaxSmokes = "Max smoking barrels";
 MRIntW_ChaingunSpeed = "Rotation speed";
 MRIntW_ChaingunFixed = "Fixed barrels position";
-MRIntW_ChaingunStopTime = "Stop time";
+MRIntW_ChaingunStopTime = "Stopping speed";
 MRIntW_ChaingunCounterClock = "CounterClockwise rotation";
 
 
@@ -145,6 +153,7 @@ MRIntW_Smoke = "Клубы дыма от выстрелов";
 MRIntW_FlowingSmoke = "Струящийся дым";
 MRIntW_FlowingSmokeLength = "Длина струящегося дыма";
 MRIntW_FlowingSmokeAlpha = "Непрозрачность струящегося дыма";
+MRIntW_FlowingSmokeMaxTime = "Макс. время дыма";
 MRIntW_FlowingSmokePrecision = "Количество частиц в дыме";
 
 MRIntW_Casings = "Гильзы";
@@ -194,12 +203,19 @@ MRIntW_GlovesColor4 = "Красный";
 MRIntW_GlovesColor5 = "Серый";
 MRIntW_GlovesColor6 = "Синий";
 MRIntW_GlovesColor7 = "Свой";
-MRIntW_GlovesColor8 = "Радуга";
-MRIntW_GlovesColor9 = "Свечение";
+MRIntW_GlovesColor8 = "Свечение";
+MRIntW_GlovesColor9 = "Радуга";
+MRIntW_GlovesColor10 = "Быстрая радуга";
+MRIntW_GlovesColor11 = "Эпилепсия";
 MRIntW_GlovesColorShade = "Тёмные участки";
 MRIntW_GlovesColorLight = "Светлые участки";
 MRIntW_RandomGlovesColor2 = "Случайные тёмные участки";
 MRIntW_RandomGlovesColor1 = "Случайные светлые участки";
+
+MRIntW_EpilepsyDesc1 = "С данными настройками цвета перчаток меняются очень быстро";
+MRIntW_EpilepsyDesc2 = "и могут вызвать приступ эпилепсии.";
+MRIntW_EpilepsyDesc3 = "Если вы уверены что не страдаете эпилепсией,";
+MRIntW_EpilepsyDesc4 = "откройте консоль и впишите MRIntW_Epilepsy 0";
 
 MRIntW_LowHealthShake = "Тряка рук при низком здоровье";
 MRIntW_NoMuzzleFlash = "Отключить дульные вспышки";
@@ -248,7 +264,7 @@ MRIntW_SSGSmoke = "Дым из казённика";
 MRIntW_ChaingunMaxSmokes = "Макс. дымящихся стволов";
 MRIntW_ChaingunSpeed = "Скорость вращения";
 MRIntW_ChaingunFixed = "Фиксированное положение стволов";
-MRIntW_ChaingunStopTime = "Время торможения";
+MRIntW_ChaingunStopTime = "Скорость торможения";
 MRIntW_ChaingunCounterClock = "Вращать стволы против часовой";
 
 
