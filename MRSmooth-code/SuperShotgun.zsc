@@ -452,6 +452,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				invoker.MuzzleSmoke((60, 75), (62, 75), .7, .7);
 			}
 			#### F 1 {
+				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+					A_OverlayRenderStyle(Lay3, STYLE_None);
+				}
+				
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
 				A_OverlayOffset(Lay1, -6, -3, WOF_ADD);
 				
