@@ -4,26 +4,35 @@ nosave int MRIntW_CasingsAmount = 300;
 nosave float MRIntW_CasingsVolume = 1;
 nosave bool MRIntW_CasingsLowRes = false;
 nosave bool MRIntW_CasingsClusteringReduce = true;
+
 nosave bool MRIntW_Smoke = false;//Firing smoke
 nosave bool MRIntW_FlowingSmoke = false;//Smoke from barrels after firing
 nosave float MRIntW_FlowingSmokeLength = 1;
 nosave float MRIntW_FlowingSmokeAlpha = .1;
+nosave float MRIntW_FlowingSmokeMaxTime = 1;
 nosave float MRIntW_FlowingSmokePrecision = 1;
+
 nosave int MRIntW_BobStyle = 4;//0 - Normal, 1 - Alpha jumpy, 2 - Alpha, 3 - Jumpy, 4 - Smooth, 5 - Alpha smooth, 6 - None
 nosave float MRIntW_BobRangeX = 1;
 nosave float MRIntW_BobRangeY = 1;
 nosave bool MRIntW_Bounce = true;//Bounce weapon on landing
+
 user bool MRIntW_IdleAnims = true;//Idle animations
+
 server bool MRIntW_Recoil = false;//Visual recoil and screen shaking
 server float MRIntW_RecoilAmount = 1;
 server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting
 server bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
-user int MRIntW_GlovesColor = 0;//0 - Tan (Classic), 1 - Black, 2 - Brown, 3 - Green, 4 - Red, 5 - Grey, 6 - Blue, 7 - Custom, 8 - Rainbow
+
+user int MRIntW_GlovesColor = 0;//0 - Tan (Classic), 1 - Black, 2 - Brown, 3 - Green, 4 - Red, 5 - Grey, 6 - Blue, 7 - Custom, 8 - Glow, 9 - Slow rainbow, 10 - Fast rainbow, 11 - Epilepsy
 user color MRIntW_GlovesColorShade = "2 2 2";//Shades color
 user color MRIntW_GlovesColorLight = "EF EF EF";//Lights color
 server color MRIntW_GlovesColorTemp = "0 0 0";//Used to set MRIntW_GlovesColorLight to random values
+
+nosave bool MRIntW_Epilepsy = true;
+
 nosave bool MRIntW_NoMuzzleFlash = false;//Don't display muzzle flashes
 nosave bool MRIntW_FlashFlare = false;//Flares around muzzle flashas
 //Fist

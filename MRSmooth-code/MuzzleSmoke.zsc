@@ -159,7 +159,7 @@ Extend Class MRIntWeaps_Pistol
 			Smoker.ResetInterpolation = true;
 			Return;
 		}
-		Smoke-=.1;
+		Smoke -= .1;
 		
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 		
@@ -218,7 +218,7 @@ Extend Class MRIntWeaps_Pistol
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<MRIntW_MaxSmoke)Smoke += CRandom(1, 2);
+		if(Smoke<MRIntW_MaxSmoke*MRIntW_FlowingSmokeMaxTime)Smoke += CRandom(1, 2);
 	}
 }
 
@@ -244,7 +244,7 @@ Extend Class MRIntWeaps_Shotgun
 			Smoker.ResetInterpolation = true;
 			Return;
 		}
-		Smoke-=.05;
+		Smoke -= .05;
 		
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 			
@@ -301,7 +301,7 @@ Extend Class MRIntWeaps_Shotgun
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<MRIntW_MaxSmoke*.4)Smoke += CRandom(2, 3);
+		if(Smoke<MRIntW_MaxSmoke*.4*MRIntW_FlowingSmokeMaxTime)Smoke += CRandom(2, 3);
 	}
 }
 
@@ -329,7 +329,7 @@ Extend Class MRIntWeaps_Chaingun
 			Smoker.ResetInterpolation = true;
 			Return;
 		}
-		Smoke-=.2;
+		Smoke -= .2;
 		
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 		
@@ -385,7 +385,7 @@ Extend Class MRIntWeaps_Chaingun
 			}
 		}
 		
-		if(Smoke<MRIntW_MaxSmoke)Smoke += CFRandom(1, 1.1);
+		if(Smoke<MRIntW_MaxSmoke*MRIntW_FlowingSmokeMaxTime)Smoke += CFRandom(1, 1.1);
 	}
 }
 
@@ -415,7 +415,7 @@ Extend Class MRIntWeaps_RocketLauncher
 			Smoker.ResetInterpolation = true;
 			Return;
 		}
-		Smoke-=.2;
+		Smoke -= .2;
 		
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 			
@@ -472,6 +472,6 @@ Extend Class MRIntWeaps_RocketLauncher
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<35)Smoke += CRandom(7, 9);
+		if(Smoke<35*MRIntW_FlowingSmokeMaxTime)Smoke += CRandom(7, 9);
 	}
 }
