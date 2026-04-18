@@ -18,7 +18,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount);}
+		if(Recoil>0){
+			Double Recover = .125*MRIntW_RecoilRecover;
+			Recoil -= Recover;
+			Owner.A_SetPitch(Owner.Pitch+Recover*MRIntW_RecoilAmount);
+		}
 		
 		For(int i=0;i<Casings.Size();i++){
 			if(Casings[i])DoCasing(i);
@@ -240,7 +244,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_FireShotgun2();
 				A_Overlay(Lay2, "GunFlash");
 				A_Overlay(Lay4, "GunMuzzleFlashFlare");
-				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount);}//Recoil
+				if(MRIntW_Recoil){invoker.Recoil=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount, MRIntW_RecoilRecover?0:SPF_INTERPOLATE);}//Recoil
 			}
 			TNT1 A 3 {if(!MRIntW_InstantFire)A_SetTics(0);}
 			TNT1 A 7;//B
@@ -268,9 +272,13 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### A 1 A_OverlayOffset(Lay1, 0, 3, WOF_ADD);
 			#### A 1;//Shot
 			#### A 1 {//Recoil
-				Float Scal = CFRandom(.3, .4);
-				Vector2 Ofst = (CRandom(-4, 2), CFRandom(14, 20));
-				Float Rotate = CRandomPick(0, CFRandom(.9, 1.5));
+				Vector2 Pivot = (CFRandom(.35, .65), CFRandom(0, .5));
+				A_OverlayPivot(Lay1, Pivot.X, Pivot.Y);
+				A_OverlayPivot(Lay2, Pivot.X, Pivot.Y);
+				
+				Float Scal = CFRandom(.4, .5);
+				Vector2 Ofst = (-(Pivot.X-.5)*2, CFRandom(10, 15));
+				Float Rotate = (Pivot.X-.5)*4;
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
@@ -280,16 +288,28 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
 			}
-			#### # 1;
-			#### AAA 1{//Recover
+			#### # 1{
+				Float Scal = CFRandom(.1, .15);
+				Vector2 Ofst = (-(Player.GetPSprite(Lay1).Pivot.X-.5), CFRandom(3, 6));
+				Float Rotate = (Player.GetPSprite(Lay1).Pivot.X-.5)*2;
+				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
+				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
+				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
+				
+				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
+				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+			}
+			#### AAAA 1{//Recover
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				Float Recover = .9;
+				Float Recover = .7;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay1).X*Recover;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).Y*Recover;
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation *= Recover;
 			}
-			#### AAA 1 {
+			#### AA 1 {
 				if(!MRIntW_InstantFire)A_SetTics(0);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				Float Recover = .8;
@@ -442,6 +462,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayRotate(Lay3, 4);
 			}
 			#### F 1 {
+				A_OverlayFlags(Lay3, PSPF_FORCESTYLE|PSPF_RENDERSTYLE, true);
+				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+					A_OverlayRenderStyle(Lay3, STYLE_None);
+				}
+				
 				Player.GetPSprite(OverlayId()).Translation = 0;
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
 				A_OverlayOffset(Lay1, 10, 5);
@@ -452,10 +477,6 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				invoker.MuzzleSmoke((60, 75), (62, 75), .7, .7);
 			}
 			#### F 1 {
-				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
-					A_OverlayRenderStyle(Lay3, STYLE_None);
-				}
-				
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
 				A_OverlayOffset(Lay1, -6, -3, WOF_ADD);
 				
