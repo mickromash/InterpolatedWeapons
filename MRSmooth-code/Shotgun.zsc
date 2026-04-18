@@ -15,7 +15,11 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount);}
+		if(Recoil>0){
+			Double Recover = .125*MRIntW_RecoilRecover;
+			Recoil -= Recover;
+			Owner.A_SetPitch(Owner.Pitch+Recover*MRIntW_RecoilAmount);
+		}
 		
 		For(int i=0;i<Casings.Size();i++){
 			if(Casings[i])DoCasing(i);
@@ -245,7 +249,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_FireShotgun();
 				A_Overlay(Lay2, "GunFlash");
 				A_Overlay(Lay3, "GunMuzzleFlashFlare");
-				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount);}//Recoil
+				if(MRIntW_Recoil){invoker.Recoil=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount, MRIntW_RecoilRecover?0:SPF_INTERPOLATE);}//Recoil
 			}
 			TNT1 A 3 {if(!MRIntW_InstantFire)A_SetTics(0);}
 			TNT1 BC 5;
@@ -266,8 +270,12 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### A 1 A_OverlayOffset(Lay1, 0, 3, WOF_ADD);
 			#### A 1;//Shot
 			#### A 1 {//Recoil
-				Float Scal = CFRandom(.2, .3);
-				Vector2 Ofst = (-CFRandom(2, 3), CFRandom(8, 15));
+				Vector2 Pivot = (CFRandom(.3, .7), CFRandom(0, .5));
+				A_OverlayPivot(Lay1, Pivot.X, Pivot.Y);
+				A_OverlayPivot(Lay2, Pivot.X, Pivot.Y);
+				
+				Float Scal = CFRandom(.3, .4);
+				Vector2 Ofst = (-CFRandom(2, 3), CFRandom(7, 11));
 				Float Rotate = CRandomPick(0, CFRandom(.9, 1.5));
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
@@ -285,6 +293,24 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1));
 				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
+				Player.GetPSprite(Lay1).X *= .4;
+				Player.GetPSprite(Lay1).Y *= .4;
+				Player.GetPSprite(Lay1).Rotation *= .4;
+				
+				Player.GetPSprite(Lay2).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay2).Scale.X-1));
+				Player.GetPSprite(Lay2).Scale.Y = Player.GetPSprite(Lay2).Scale.X;
+				Player.GetPSprite(Lay2).X *= .4;
+				Player.GetPSprite(Lay2).Y *= .4;
+				Player.GetPSprite(Lay2).Rotation *= .4;
+				
+				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130;
+				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80;
+			}
+			#### ## 1 {
+				if(!MRIntW_InstantFire)A_SetTics(0);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1));
+				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
 				Player.GetPSprite(Lay1).X *= .5;
 				Player.GetPSprite(Lay1).Y *= .5;
 				Player.GetPSprite(Lay1).Rotation *= .5;
@@ -297,13 +323,6 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				
 				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130;
 				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80;
-			}
-			#### A 2 {
-				if(!MRIntW_InstantFire)A_SetTics(0);
-				A_Overlayoffset(Lay1, CFRandom(-2, 2), CFRandom(2, 4), WOF_INTERPOLATE);
-				Float Scal = CFRandom(.96, .99);
-				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 			}
 			#### A 1 {if(!MRIntW_InstantFire)A_SetTics(0);A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);}
 			#### A 1{
