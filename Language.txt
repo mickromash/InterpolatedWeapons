@@ -11,8 +11,8 @@ MRIntW_FlowingSmokePrecision = "Flowing smoke particles amount";
 
 MRIntW_Casings = "Casings";
 MRIntW_Casings0 = "No";
-MRIntW_Casings1 = "Only visual";
-MRIntW_Casings2 = "Visual + object";
+MRIntW_Casings1 = "Animation only";
+MRIntW_Casings2 = "Animation + object";
 
 MRIntW_CasingsRandom = "Max. casings speed";
 MRIntW_CasingsAmount = "Max. casings amount";
@@ -22,6 +22,7 @@ MRIntW_CasingsClusteringReduce = "Reduce casings bunches";
 MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
 MRIntW_Recoil = "\cv⊛\c- Visual recoil";
 MRIntW_RecoilAmount = "\cv⊛\c- Recoil amount";
+MRIntW_RecoilRecover = "\cv⊛\c- Recoil compensation";
 MRIntW_InstantFire = "\cv⊛\c- Instant firing";
 MRIntW_FastPistol = "\cv⊛\c- Faster pistol";
 MRIntW_BetterAlert = "\cv⊛\c- Better monster alerting";
@@ -158,8 +159,8 @@ MRIntW_FlowingSmokePrecision = "Количество частиц в дыме";
 
 MRIntW_Casings = "Гильзы";
 MRIntW_Casings0 = "Нет";
-MRIntW_Casings1 = "Только визуальные";
-MRIntW_Casings2 = "Визуальные + физические";
+MRIntW_Casings1 = "Только анимация";
+MRIntW_Casings2 = "Анимация + объекты";
 
 MRIntW_CasingsRandom = "Макс. скорость гильз";
 MRIntW_CasingsAmount = "Макс. количество гильз";
@@ -169,6 +170,7 @@ MRIntW_CasingsClusteringReduce = "Оптимизировать скоплени�
 MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
 MRIntW_Recoil = "\cv⊛\c- Визуальная отдача";
 MRIntW_RecoilAmount = "\cv⊛\c- Сила отдачи";
+MRIntW_RecoilRecover = "\cv⊛\c- Компенсация отдачи";
 MRIntW_InstantFire = "\cv⊛\c- Мгновенные выстрелы";
 MRIntW_FastPistol = "\cv⊛\c- Скорострельный пистолет";
 MRIntW_BetterAlert = "\cv⊛\c- Реалистичное привлечение внимания монстров";

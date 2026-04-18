@@ -16,7 +16,11 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.25;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount);}
+		if(Recoil>0){
+			Double Recover = .125*MRIntW_RecoilRecover;
+			Recoil -= Recover;
+			Owner.A_SetPitch(Owner.Pitch+Recover*MRIntW_RecoilAmount);
+		}
 		
 		MuzzleSmoke();
 		
@@ -173,7 +177,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				if(a)a.A_StopSound();
 				A_StartSound("MRIntW/RLFire", CHAN_AUTO, pitch:i_timescale);
 				
-				if(MRIntW_Recoil){invoker.Recoil+=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount);}//Recoil
+				if(MRIntW_Recoil){invoker.Recoil=2.5;A_SetPitch(Pitch-2.5*MRIntW_RecoilAmount, MRIntW_RecoilRecover?0:SPF_INTERPOLATE);}//Recoil
 			}
 			TNT1 A 6 {if(!MRIntW_InstantFire)A_SetTics(0);else if(Player.GetPSprite(Lay1).Tics<4)A_WeaponReady(WRF_NOFIRE);}
 			TNT1 B 0 A_ReFire();

@@ -15,7 +15,11 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*MRIntW_RecoilAmount);}
+		if(Recoil>0){
+			Double Recover = .25*MRIntW_RecoilRecover;
+			Recoil -= Recover;
+			Owner.A_SetPitch(Owner.Pitch+Recover*MRIntW_RecoilAmount);
+		}
 
 		For(int i=0;i<Casings.Size();i++){
 			if(Casings[i])DoCasing(i);
@@ -208,7 +212,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_FirePistol();
 				A_Overlay(Lay2, "GunFlash");
 				A_Overlay(Lay3, "GunMuzzleFlashFlare");
-				if(MRIntW_Recoil){invoker.Recoil+=2;A_SetPitch(Pitch-2*MRIntW_RecoilAmount);}//Recoil
+				if(MRIntW_Recoil){invoker.Recoil=2;A_SetPitch(Pitch-2*MRIntW_RecoilAmount, MRIntW_RecoilRecover?0:SPF_INTERPOLATE);}//Recoil
 			}
 			TNT1 A 4 {invoker.IncreaseSmoke();}
 			TNT1 A 4 {if(!MRIntW_InstantFire||MRIntW_FastPistol)A_SetTics(0);else if(Player.GetPSprite(Lay1).Tics<4)A_WeaponReady(WRF_NOFIRE);}

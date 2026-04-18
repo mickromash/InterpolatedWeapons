@@ -55,8 +55,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Override Void DoEffect()
 	{
 		if(Recoil>0){
-			Recoil-=.5;
-			Owner.A_SetPitch(Owner.Pitch+.5*MRIntW_RecoilAmount);
+			Double Recover = .25*MRIntW_RecoilRecover;
+			Recoil -= Recover;
+			Owner.A_SetPitch(Owner.Pitch+Recover*MRIntW_RecoilAmount);
 		}
 		
 		For(int i=0;i<Casings.Size();i++){
@@ -390,8 +391,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_Overlay(Lay2, "GunFlash");
 				A_Overlay(Lay3, "GunMuzzleFlashFlare");
 				if(MRIntW_Recoil){//Recoil
-					invoker.Recoil+=1;
-					A_SetPitch(Pitch-1*MRIntW_RecoilAmount);
+					invoker.Recoil=1;
+					A_SetPitch(Pitch-1*MRIntW_RecoilAmount, MRIntW_RecoilRecover?0:SPF_INTERPOLATE);
 					A_SetAngle(Angle);
 				}
 				A_Overlay(AnimLay, "GunFire");

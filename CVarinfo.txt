@@ -21,6 +21,8 @@ user bool MRIntW_IdleAnims = true;//Idle animations
 
 server bool MRIntW_Recoil = false;//Visual recoil and screen shaking
 server float MRIntW_RecoilAmount = 1;
+server float MRIntW_RecoilRecover = 1;
+
 server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting
 server bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
