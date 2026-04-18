@@ -73,6 +73,11 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	Double Blya;
 	
 	int LowerDir;
+	
+	Vector2 SelPos;
+	Double SelRot;
+	Double SelScale;
+	int SelFrame;
 	States{
 		Select:
 			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "GunRaise");}
@@ -164,25 +169,45 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayOffset(Lay1, 6, -12, WOF_ADD);
 				A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 				A_OverlayRotate(Lay1, -.6, WOF_ADD);
+				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
+				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
+				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### C 1 {
 				A_OverlayOffset(Lay1, 6, -14, WOF_ADD);
 				A_OverlayScale(Lay1, 0, 0, WOF_ADD);
 				A_OverlayRotate(Lay1, -.6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
+				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
+				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### CC 1 {
 				A_OverlayOffset(Lay1, 6, -12, WOF_ADD);
 				A_OverlayScale(Lay1, 0, 0, WOF_ADD);
 				A_OverlayRotate(Lay1, -.6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
+				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
+				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### C 1 {
 				A_OverlayOffset(Lay1, 2, -4, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
+				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
+				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### BA 1 {
 				A_OverlayOffset(Lay1, 2, -4, WOF_ADD);
+				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
+				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
+				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### A 0 {
 				invoker.InterpolateMuzzle = false;
@@ -214,6 +239,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);}
 			Loop;
 		GunLower:
+			#### # 0 A_JumpIf(!Player.FindPSprite(Lay2), "GunLowerAlt");
 			PL1G A 1 {
 				invoker.LowerDir = CRandomPick(-1, 1);
 				invoker.InterpolateMuzzle = 2;
@@ -263,7 +289,23 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayRotate(Lay2, 7*invoker.LowerDir, WOF_ADD);
 			}
 			Stop;
-			
+		GunLowerAlt:
+			PLSR C 1 {
+				A_GlovesColor();
+				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(Lay1, invoker.SelPos.X, invoker.SelPos.Y);
+				A_OverlayRotate(Lay1, invoker.SelRot);
+				A_OverlayScale(Lay1, invoker.SelScale, invoker.SelScale);
+				Player.GetPSprite(Lay1).Frame = invoker.SelFrame;
+			}
+			#### ########## 1 {
+				A_OverlayOffset(Lay1, -4, 10, WOF_ADD);
+				A_OverlayRotate(Lay1, 1, WOF_ADD);
+				A_OverlayScale(Lay1, .01, .01, WOF_ADD);
+			}
+			Stop;
+		
 		Fire:
 			#### # 0 {Player.SetPsprite(Lay1, invoker.FindState("GunFire"));}
 			TNT1 A 3 {
