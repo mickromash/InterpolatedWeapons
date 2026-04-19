@@ -15,6 +15,7 @@ nosave float MRIntW_FlowingSmokePrecision = 1;
 nosave int MRIntW_BobStyle = 4;//0 - Normal, 1 - Alpha jumpy, 2 - Alpha, 3 - Jumpy, 4 - Smooth, 5 - Alpha smooth, 6 - None
 nosave float MRIntW_BobRangeX = 1;
 nosave float MRIntW_BobRangeY = 1;
+nosave float MRIntW_BobRangeZ = .5;
 nosave bool MRIntW_Bounce = true;//Bounce weapon on landing
 
 user bool MRIntW_IdleAnims = true;//Idle animations

@@ -54,7 +54,11 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	
 	States{
 		Select:
-			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "SawRaise");}
+			TNT1 A 0 {
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
+				invoker.ResetDead();
+				A_Overlay(Lay1, "SawRaise");
+			}
 		Raise:
 			#### A 1 A_Raise();
 			Loop;

@@ -87,12 +87,17 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	
 	States{
 		Select:
-			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "GunRaise");}
+			TNT1 A 0 {
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
+				invoker.ResetDead();
+				A_Overlay(Lay1, "GunRaise");
+			}
 		Raise:
 			#### A 1 A_Raise();
 			Loop;
 		Deselect:
 			TNT1 A 0 {
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
 				if(!invoker.LowerOpen)A_Overlay(Lay1, "GunLower");
 			}
@@ -236,10 +241,19 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			Goto GunWait;
 		
 		Ready:
-			TNT1 A 1 A_WeaponReady;
-			Loop;
+			TNT1 A 0 {
+				A_OverlayPivot(Lay1, .5, .5);
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 1, 5);
+				EventHandler.SendNetworkEvent("MRIntW_BobZLays", Lay1);
+			}
+			TNT1 A 1 A_WeaponReady();
+			Wait;
 		Fire:
-			TNT1 A 3 {A_Overlay(Lay1, "GunFire");if(MRIntW_InstantFire)A_SetTics(0);}
+			TNT1 A 3 {
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
+				A_Overlay(Lay1, "GunFire");
+				if(MRIntW_InstantFire)A_SetTics(0);
+			}
 			TNT1 A 7 {
 				A_FireShotgun2();
 				A_Overlay(Lay2, "GunFlash");
@@ -549,7 +563,13 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### Q 1 {A_OverlayRotate(Lay1, 0);A_OverlayOffset(Lay1, -5, -5);invoker.MuzzleSmoke((-17, 8), (-3, 3), 1.05, 1.05);}
 			#### Q 1 {A_OverlayOffset(Lay1, -10, 10, WOF_INTERPOLATE);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);invoker.MuzzleSmoke((-17, 8), (-3, 3), 1.02, 1.02);}
 			#### A 1 {A_OverlayOffset(Lay1, -CFRandom(4, 8), CFRandom(3, 6));A_OverlayRotate(Lay1, CFRandom(1, 2));invoker.Reloading = false;}
-			#### A 2 {A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);}
+			#### A 2 {
+				A_OverlayPivot(Lay1, .5, .5);
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 1, 5);
+				EventHandler.SendNetworkEvent("MRIntW_BobZLays", Lay1);
+				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+			}
 			Goto GunWait;
 		Barrels:
 			SH12 I 1 A_OverlayOffset(Lay3, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);

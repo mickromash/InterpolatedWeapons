@@ -78,15 +78,20 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 		
 	}
-
+	
 	States{
 		Select:
-			TNT1 A 0 {invoker.ResetDead();A_Overlay(Lay1, "GunRaise");}
+			TNT1 A 0 {
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
+				invoker.ResetDead();
+				A_Overlay(Lay1, "GunRaise");
+			}
 		Raise:
 			#### A 1 A_Raise();
 			Loop;
 		Deselect:
 			TNT1 A 0 {
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
 				A_Overlay(Lay1, "GunLower");
 			}
@@ -203,11 +208,20 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Goto GunWait;
 
 		Ready:
+			TNT1 A 0 {
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 1, 5);
+				EventHandler.SendNetworkEvent("MRIntW_BobZLays", Lay1);
+				A_OverlayPivot(Lay1, .5, .5);
+			}
 			TNT1 A 1 A_WeaponReady();
-			Loop;
+			Wait;
 
 		Fire:
-			TNT1 A 4 {A_Overlay(Lay1, "GunFire");if(MRIntW_InstantFire||MRIntW_FastPistol)A_SetTics(0);}
+			TNT1 A 4 {
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
+				A_Overlay(Lay1, "GunFire");
+				if(MRIntW_InstantFire||MRIntW_FastPistol)A_SetTics(0);
+			}
 			TNT1 A 6 {
 				A_FirePistol();
 				A_Overlay(Lay2, "GunFlash");
@@ -325,9 +339,11 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay1).X *= .4;
 				Player.GetPSprite(Lay1).Y *= .4;
 				Player.GetPSprite(Lay1).Rotation *= .4;
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 1, 5);
+				EventHandler.SendNetworkEvent("MRIntW_BobZLays", Lay1);
 			}
 			#### A 2{
-				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayPivot(Lay1, .5, .5);
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 			}

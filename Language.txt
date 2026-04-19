@@ -72,8 +72,9 @@ MRIntW_BobStyle5 = "Alpha smooth";
 MRIntW_BobStyle1 = "Alpha jumpy";
 MRIntW_BobStyle6 = "No bob";
 
-MRIntW_BobRangeX = "Bob X radius";
-MRIntW_BobRangeY = "Bob Y radius";
+MRIntW_BobRangeX = "Bob X range";
+MRIntW_BobRangeY = "Bob Y range";
+MRIntW_BobRangeZ = "Bob Z range";
 
 MRIntW_IdleAnims = "Idle animations";
 
@@ -191,6 +192,7 @@ MRIntW_BobStyle6 = "Отключено";
 
 MRIntW_BobRangeX = "Радиус по горизонтали";
 MRIntW_BobRangeY = "Радиус по вертикали";
+MRIntW_BobRangeZ = "Радиус глубины";
 
 MRIntW_IdleAnims = "Анимации безделья";
 
