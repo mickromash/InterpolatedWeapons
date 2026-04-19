@@ -40,6 +40,7 @@ nosave bool MRIntW_NoMuzzleFlash = false;//Don't display muzzle flashes
 nosave bool MRIntW_FlashFlare = false;//Flares around muzzle flashas
 //Fist
 user bool MRIntW_BareHands = true;//Fists use sprites without gloves
+user bool MRIntW_GloveStrip = true;//Alternative select animation for barehands
 user int MRIntW_BersShake = 1;//0 - none, 1 - only shake fist + left hand idle animation, 2 - shake all weapons + left hand idle animation
 user bool MRIntW_LowHealthShake = false;
 user bool MRIntW_RightPunch = false;//Mirror fist sprites

@@ -88,6 +88,7 @@ MRIntW_NoMuzzleFlash = "Disable muzzle flashes";
 MRIntW_FlashFlare = "Muzzle flash flare";
 
 MRIntW_BareHands = "Bare hands";
+MRIntW_GloveStrip = "Glove strip animation";
 
 MRIntW_RightPunch = "Switch main fist";
 MRIntW_SecondFist = "Second fist always on screen";
@@ -231,6 +232,7 @@ MRIntW_BersShake1 = "Только без оружия";
 MRIntW_BersShake2 = "Да";
 
 MRIntW_BareHands = "Снимать перчатки";
+MRIntW_GloveStrip = "Анимация снятия перчаток";
 
 MRIntW_RightPunch = "Сменить основную руку";
 MRIntW_SecondFist = "Всегда показывать второй кулак";

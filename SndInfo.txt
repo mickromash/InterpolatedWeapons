@@ -1,5 +1,6 @@
 MRIntW/FistSwing "Sounds/FistSwing.wav"
 MRIntW/FistSelect ""
+MRIntW/FistAltSelect "Sounds/GloveStrip.ogg"
 MRIntW/FistDeselect ""
 MRIntW/FistPunchFleshKnuckles ""
 MRIntW/FistPunchFlesh ""
