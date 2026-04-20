@@ -243,12 +243,22 @@ Class MRIntWeaps_Handler: EventHandler
 		
 		if(!DoBobZ)Return;
 		
-		if(!BobZ)BobZ = LinearValueInterpolator.Create(MRIntWeaps_Fist.GetBobZ(Players[ConsolePlayer].ReadyWeapon, BobZCenter)*1000, 60);
-		BobZ.Update(MRIntWeaps_Fist.GetBobZ(Players[ConsolePlayer].ReadyWeapon, BobZCenter)*1000);
+		Double Bob = MRIntWeaps_Fist.GetBobZ(Players[ConsolePlayer].ReadyWeapon, BobZCenter)*1000;
+		
+		if(!BobZ)BobZ = LinearValueInterpolator.Create(Bob, 50);
+		BobZ.Update(Bob);
 		
 		SendNetworkEvent("MRIntW_UpdateBobZ", BobZ.GetValue());
+	}
+	
+	Override Void UiTick()
+	{
+		if(!Players[ConsolePlayer].ReadyWeapon)Return;
 		
-		Double Bob = BobZ.GetValue();
-		Bob *= .001;
+		if(!DoBobZ)Return;
+		
+		Double Bob = MRIntWeaps_Fist.GetBobZ(Players[ConsolePlayer].ReadyWeapon, BobZCenter)*1000;
+		if(!BobZ)BobZ = LinearValueInterpolator.Create(Bob, 50);
+		if(Bob-BobZ.GetValue()>100)BobZ.Reset(Bob);
 	}
 }
