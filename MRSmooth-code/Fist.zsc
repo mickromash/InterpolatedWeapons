@@ -149,7 +149,9 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		RightHandLower://Deselect animation
+			#### # 0 A_JumpIf(GetCVar("MRIntW_BareHands") && GetCVar("MRIntW_GloveStrip"), "TakeOnGloves");
 			PUN1 A 1{
+				if(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake")))A_Overlay(LeftLay, "LeftHandLower");
 				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
 				A_SetHandsSprite();
 				A_OverlayFlags(RightLay, PSPF_ADDWEAPON, false);
@@ -201,6 +203,10 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				
 				A_Overlay(-5, "LeftHandTakingOffUnder");
 				A_OverlayFlags(-5, PSPF_ADDWEAPON, false);
+				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(-5, PSPF_MIRROR|PSPF_FLIP, true);
+				A_OverlayPivot(-5, .5, .5);
+				A_OverlayRotate(-5, -30);
+				A_OverlayOffset(-5, 135, 95);
 			}
 			#### ##### 1{
 				For(int i=0;i<3;i++)A_OverlayFlags(RightLay+i, PSPF_INTERPOLATE, true);
@@ -278,14 +284,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			#### # 0 A_ClearOverlays(-5, -5);
 			Stop;
 		LeftHandTakingOffUnder:
-			PUN3 G 1{
-				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
-				A_OverlayPivot(-5, .5, .5);
-				A_OverlayRotate(-5, -30);
-				A_OverlayOffset(-5, 135, 95);
-			}
-			PUN3 G 1{
-			}
+			PUN3 G 1;
 			Wait;
 		GloveTakingOff:
 			PUN1 A 1{
@@ -317,6 +316,159 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			#### # 0{if(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake")))A_Overlay(LeftLay, "LeftHandUp");}
 			Stop;
 		
+		TakeOnGloves:
+			PUN3 A 1{
+				A_ClearOverlays(LeftLay, LeftLay);
+				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
+				A_OverlayPivot(RightLay, 0, 0);
+				A_OverlayOffset(RightLay, 0, Player.GetPSprite(PSP_WEAPON).Y);
+				A_OverlayScale(RightLay, .98, .98, WOF_INTERPOLATE);
+				A_OverlayRotate(RightLay, 0, WOF_INTERPOLATE);
+				A_OverlayFlags(RightLay, PSPF_ADDWEAPON, false);
+				
+				A_Overlay(RightLay+2, "LeftHandTakingOn");
+				A_OverlayFlags(RightLay+2, PSPF_ADDWEAPON, false);
+				A_Overlay(-5, "LeftHandTakingOffUnder");
+				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(-5, PSPF_MIRROR|PSPF_FLIP, true);
+				A_OverlayFlags(-5, PSPF_ADDWEAPON, false);
+				A_OverlayPivot(-5, .5, .5);
+				A_OverlayOffset(-5, 0, Player.GetPSprite(PSP_WEAPON).Y);
+				A_OverlayRotate(-5, 0);
+				A_OverlayScale(-5, .01, .01);
+			}
+			PUN3 ## 1 {
+				A_OverlayOffset(RightLay, -2, 2, WOF_ADD);
+				A_OverlayScale(RightLay, -.04, -.04, WOF_ADD);
+			}
+			#### ## 1{
+				A_OverlayOffset(RightLay, -1, 6, WOF_ADD);
+				A_OverlayRotate(RightLay, 2, WOF_ADD);
+			}
+			#### # 0 A_StartSound("MRIntW/FistAltDeselect", CHAN_AUTO, volume:.7, pitch:CFRandom(.8, .85)*i_timescale);
+			#### # 1 {
+				A_OverlayOffset(RightLay, 2, 4, WOF_ADD);
+				A_OverlayRotate(RightLay, 1.5, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(RightLay, -3.25, -2.5, WOF_ADD);
+				A_OverlayRotate(RightLay, -1, WOF_ADD);
+				A_OverlayScale(RightLay, 0, -.025, WOF_ADD);
+				
+				A_OverlayOffset(OverlayId(), -1, 3, WOF_ADD);
+			}
+			#### ## 1 {
+				A_OverlayOffset(RightLay, -5, 3, WOF_ADD);
+				A_OverlayRotate(RightLay, 3, WOF_ADD);
+				A_OverlayScale(RightLay, 0, -.05, WOF_ADD);
+				
+				A_OverlayOffset(OverlayId(), -1, 3, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(RightLay, -7, 4, WOF_ADD);
+				A_OverlayRotate(RightLay, 2, WOF_ADD);
+				
+				A_OverlayOffset(OverlayId(), -1, 3, WOF_ADD);
+			}
+			TNT1 A 1;
+			Wait;
+		LeftHandTakingOn:
+			TNT1 A 0 A_JumpIf(!(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake"))), 4);
+			PUN3 C 1 {
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayOffset(OverlayId(), 0, Player.GetPSprite(PSP_WEAPON).Y);
+				A_OverlayRotate(OverlayId(), 0);
+				A_OverlayScale(OverlayId(), 1, 1);
+			}
+			#### ## 1 {
+				A_OverlayOffset(OverlayId(), 2, 17, WOF_ADD);
+				A_OverlayRotate(OverlayId(), -5, WOF_ADD);
+				A_OverlayScale(OverlayId(), 0, -.1, WOF_ADD);
+			}
+			#### F 0 {
+				A_OverlayFlags(OverlayId(), PSPF_ADDWEAPON, false);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayOffset(OverlayId(), 0, 85);
+				A_OverlayScale(OverlayId(), 1, 1);
+				A_OverlayRotate(OverlayId(), 35);
+				A_OverlayOffset(-5, 0, 85);
+				A_OverlayScale(-5, 1, 1);
+				A_OverlayRotate(-5, 35);
+				
+				A_OverlayScale(-5, 1, 1);
+			}
+			PUN3 F 1 {
+				if(!(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake"))))A_SetTics(4);
+			}
+			PUN3 F 1 {
+				A_Overlay(OverlayId()-1, "GloveTakingOn");
+				A_OverlayFlags(-5, PSPF_INTERPOLATE, true);
+			}
+			PUN3 ### 1 {
+				A_OverlayOffset(OverlayId(), 15, -14, WOF_ADD);
+				A_OverlayRotate(OverlayId(), -5, WOF_ADD);
+				
+				A_OverlayOffset(OverlayId(), -1, 3, WOF_ADD);
+				
+				Player.GetPSprite(-5).X = Player.GetPSprite(OverlayId()).X;
+				Player.GetPSprite(-5).Y = Player.GetPSprite(OverlayId()).Y;
+				Player.GetPSprite(-5).Scale = Player.GetPSprite(OverlayId()).Scale;
+				Player.GetPSprite(-5).Rotation = Player.GetPSprite(OverlayId()).Rotation;
+			}
+			#### ## 1 {
+				A_OverlayOffset(OverlayId(), 14, -2, WOF_ADD);
+				A_OverlayRotate(OverlayId(), -4, WOF_ADD);
+				
+				A_OverlayOffset(OverlayId(), -1, 3, WOF_ADD);
+				
+				Player.GetPSprite(-5).X = Player.GetPSprite(OverlayId()).X;
+				Player.GetPSprite(-5).Y = Player.GetPSprite(OverlayId()).Y;
+				Player.GetPSprite(-5).Scale = Player.GetPSprite(OverlayId()).Scale;
+				Player.GetPSprite(-5).Rotation = Player.GetPSprite(OverlayId()).Rotation;
+			}
+			#### ### 1 {
+				A_OverlayOffset(OverlayId(), 8, 3, WOF_ADD);
+				A_OverlayRotate(OverlayId(), -10, WOF_ADD);
+				
+				A_OverlayOffset(OverlayId(), -1, 3, WOF_ADD);
+				
+				Player.GetPSprite(-5).X = Player.GetPSprite(OverlayId()).X;
+				Player.GetPSprite(-5).Y = Player.GetPSprite(OverlayId()).Y;
+				Player.GetPSprite(-5).Scale = Player.GetPSprite(OverlayId()).Scale;
+				Player.GetPSprite(-5).Rotation = Player.GetPSprite(OverlayId()).Rotation;
+			}
+			Wait;
+		GloveTakingOn:
+			PUN1 F 1{
+				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
+				Player.GetPSprite(OverlayId()).Translation = invoker.GlovesTrans;
+				
+				A_OverlayFlags(OverlayId(), PSPF_ADDWEAPON, false);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayRotate(OverlayId(), 38);
+				A_OverlayOffset(OverlayId(), -160, 88);
+				A_OverlayScale(OverlayId(), .9, .9);
+			}
+			#### ### 1 {
+				A_OverlayOffset(OverlayId(), 15, -14, WOF_ADD);
+				A_OverlayRotate(OverlayId(), -5, WOF_ADD);
+				A_OverlayOffset(OverlayId(), -1, 3, WOF_ADD);
+			}
+			#### #### 1 {
+				A_OverlayOffset(OverlayId(), 14, -4, WOF_ADD);
+				A_OverlayRotate(OverlayId(), -6, WOF_ADD);
+				A_OverlayOffset(OverlayId(), -1, 3, WOF_ADD);
+			}
+			#### A 1 {
+				A_OverlayOffset(OverlayId(), -57-7, 26+21);
+				A_OverlayRotate(OverlayId(), 20);
+			}
+			#### # 1 {
+				A_OverlayOffset(OverlayId(), -1, 1, WOF_ADD);
+				A_OverlayRotate(OverlayId(), 2, WOF_ADD);
+				A_OverlayOffset(OverlayId(), -1, 3, WOF_ADD);
+			}
+			Wait;
+			
 		RightHandUp://After punching
 			PUN1 A 1 {
 				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
@@ -639,7 +791,6 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					Return;
 				}
 				A_Overlay(RightLay, "RightHandLower");
-				if(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake")))A_Overlay(LeftLay, "LeftHandLower");
 			}
 		Lower:
 			#### A 1 A_Lower();
