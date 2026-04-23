@@ -3,7 +3,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 	Default{
 		Weapon.SlotNumber 1;
 		+Weapon.NOALERT
-		MissileHeight .25;
+		//MissileHeight .25;
 	}
 	
 	Const RightLay = 2;//Right hand
@@ -798,7 +798,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			
 		Ready:
 			TNT1 A 0 {
-				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 1, 10);
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 1, 5);
 				EventHandler.SendNetworkEvent("MRIntW_BobZLays", LeftLay, RightLay);
 				A_OverlayPivot(LeftLay, .5, .5);
 				A_OverlayPivot(RightLay, .5, .5);
