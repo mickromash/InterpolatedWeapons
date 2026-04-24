@@ -216,7 +216,6 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				A_OverlayScale(Lay1, .4, .4, WOF_ADD);
 				A_OverlayOffset(Lay1, invoker.RecoilDir, 2, WOF_ADD);
 				A_OverlayRotate(Lay1, -invoker.RecoilDir, WOF_ADD);
-				//A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				
 				A_OverlayScale(Lay2, .4, .4, WOF_ADD);
 				A_OverlayOffset(Lay2, invoker.RecoilDir, 2, WOF_ADD);

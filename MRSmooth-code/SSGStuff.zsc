@@ -29,7 +29,7 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 		}
 		if(Age==CaseLife-10)SpawnRealCasing();
 		
-		//if(Age<CaseLife)PSP.bInterpolate = true;
+		if(Age<CaseLife)PSP.bInterpolate = true;//interpolates casings rotation but causes wobble
 		Double VelZ = (Age-(CaseLife-4-Min(2, 1-CasingSpeed)))/2;
 		VelZ /= CaseLife/2;
 		if(VelZ==0)VelZ = -.01;

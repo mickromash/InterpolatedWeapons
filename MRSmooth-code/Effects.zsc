@@ -258,7 +258,7 @@ Extend Class MRIntWeaps_Pistol
 		if(!PSP)Return;
 		int Age = PSP.Tics;
 		if(Age<2||Age>=CaseLife)Return;
-		
+				
 		if(PSP.Y>280+32){
 			Owner.Player.SetPsprite(Lay, Null);
 			Casings[index] = false;
@@ -267,7 +267,7 @@ Extend Class MRIntWeaps_Pistol
 			Return;
 		}
 		
-		//if(Age<CaseLife)PSP.bInterpolate = true;
+		//if(Age<CaseLife)PSP.bInterpolate = true;//interpolates casings rotation but causes wobble
 		Double VelZ = (Age-(CaseLife-3-Min(2, 1-CasingSpeed)))/2;
 		VelZ /= CaseLife/2;
 		if(VelZ==0)VelZ = -.01;
@@ -402,7 +402,7 @@ Extend Class MRIntWeaps_Shotgun
 		}
 		if(Age==CaseLife-10)SpawnRealCasing();
 		
-		//if(Age<CaseLife)PSP.bInterpolate = true;
+		//if(Age<CaseLife)PSP.bInterpolate = true;//interpolates casings rotation but causes wobble
 		Double VelZ = (Age-(CaseLife-5-Min(2, 1-CasingSpeed)))/2;
 		VelZ /= CaseLife/2;
 		if(VelZ==0)VelZ = -.01;
@@ -571,7 +571,7 @@ Extend Class MRIntWeaps_Chaingun
 			Return;
 		}
 		
-		//if(Age<CaseLife)PSP.bInterpolate = true;
+		//if(Age<CaseLife)PSP.bInterpolate = true;//interpolates casings rotation but causes wobble
 		Double VelZ = (Age-(CaseLife-4-Min(2, 1-CasingSpeed)))/2;
 		VelZ /= CaseLife/2;
 		if(VelZ==0)VelZ = -.01;
