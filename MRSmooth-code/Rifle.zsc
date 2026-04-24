@@ -2,6 +2,9 @@ Extend Class MRIntWeaps_Pistol
 {
 	Const Gloves = 4;
 	
+	Vector2 RecOfst, LastPos;
+	Double RecScal, LastScal;
+	
 	States{
 		RifleRaise:
 			TNT1 AAAA 1 {
@@ -82,10 +85,14 @@ Extend Class MRIntWeaps_Pistol
 
 		RifleFire:
 			R1FG A 0{
+				if(invoker.LastScal == 0){
+					invoker.LastScal = 1;
+					invoker.LastPos = (0,0);
+				}
 				A_OverlayPivot(Lay1, CFRandom(.4, .7), CFRandom(.4, .6));
-				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, invoker.LastPos.X, invoker.LastPos.Y, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
-				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, invoker.LastScal, invoker.LastScal, WOF_INTERPOLATE);
 				
 				A_GlovesColor(1);
 			}
@@ -96,8 +103,9 @@ Extend Class MRIntWeaps_Pistol
 			#### A 1;//Shot
 			#### AA 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				Vector2 Scal = (CFRandom(.05, .06), CFRandom(.065, .077));
-				Vector2 Ofst = (CFRandom(-.5, .5), CFRandom(5, 10));
+				Vector2 Scal = (CFRandom(.05, .06), 0);
+				Scal.Y = Scal.X*1.5;
+				Vector2 Ofst = (CFRandom(-.5, .5), CFRandom(5, 7));
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
@@ -130,7 +138,8 @@ Extend Class MRIntWeaps_Pistol
 				}
 			}
 			#### A 1{
-				Vector2 Scal = (CFRandom(.01, .03), CFRandom(.01, .03)+CFRandom(.014, .013));
+				Vector2 Scal = (CFRandom(.01, .03), 0);
+				Scal.Y = Scal.X*2;
 				Vector2 Ofst = (CFRandom(-.5, .5), 0);
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
@@ -158,8 +167,9 @@ Extend Class MRIntWeaps_Pistol
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
 				}
 			}
-			#### AAA 1{
-				Vector2 Scal = (CFRandom(.01, .03), CFRandom(.01, .03)+CFRandom(.008, .012));
+			#### AA 1{
+				Vector2 Scal = (CFRandom(.01, .03), 0);
+				Scal.Y = Scal.X*2;
 				Vector2 Ofst = (CFRandom(-.5, .5), 0);
 				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
@@ -173,26 +183,36 @@ Extend Class MRIntWeaps_Pistol
 				Ofst *= .4;
 				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
 			}
+			#### # 0 {
+				invoker.RecOfst = (CFRandom(-4, 4), CFRandom(-2, 4));
+				invoker.RecScal = CFRandom(.95, .98);
+			}
 			#### AAA 1{
-				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1));
-				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
-				Player.GetPSprite(Lay1).X *= .4;
-				Player.GetPSprite(Lay1).Y *= .4;
-				Player.GetPSprite(Lay1).Rotation *= .4;
+				Float Recover = CFRandom(.6, .7);
+				Player.GetPSprite(Lay1).X = invoker.RecOfst.X+(Player.GetPSprite(Lay1).X-invoker.RecOfst.X)*Recover;
+				Player.GetPSprite(Lay1).Y = invoker.RecOfst.Y+(Player.GetPSprite(Lay1).Y-invoker.RecOfst.Y)*Recover;
+				Player.GetPSprite(Lay1).Scale = (invoker.RecScal,invoker.RecScal)+(Player.GetPSprite(Lay1).Scale-(invoker.RecScal,invoker.RecScal))*Recover;
+			
+				invoker.LastPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.LastScal = Player.GetPSprite(Lay1).Scale.X;
 			}
 			#### A 1{
-				Float Scal = CFRandom(.95, 1.05);
-				Vector2 Ofst = (CFRandom(-2, 2), CFRandom(-1, 4));
-				Double Rotation = CFRandom(-.5, .5);
-				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
-				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y);
-				A_OverlayRotate(Lay1, Rotation);
+				Float Recover = CFRandom(.8, .9);
+				Player.GetPSprite(Lay1).X = invoker.RecOfst.X+(Player.GetPSprite(Lay1).X-invoker.RecOfst.X)*Recover;
+				Player.GetPSprite(Lay1).Y = invoker.RecOfst.Y+(Player.GetPSprite(Lay1).Y-invoker.RecOfst.Y)*Recover;
+				Player.GetPSprite(Lay1).Scale = (invoker.RecScal,invoker.RecScal)+(Player.GetPSprite(Lay1).Scale-(invoker.RecScal,invoker.RecScal))*Recover;
+			
+				invoker.LastPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.LastScal = Player.GetPSprite(Lay1).Scale.X;
 			}
-			#### AAA 1{
+			#### AAAA 1{
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.4;
 				Player.GetPSprite(Lay1).X *= .4;
 				Player.GetPSprite(Lay1).Y *= .4;
 				Player.GetPSprite(Lay1).Rotation *= .4;
+				
+				invoker.LastPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.LastScal = Player.GetPSprite(Lay1).Scale.X;
 			}
 			#### A 1{
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
