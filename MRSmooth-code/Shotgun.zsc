@@ -299,8 +299,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
-				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130;
-				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80;
+				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130+(Player.GetPSprite(Lay1).Pivot.X-.5)*(Player.GetPSprite(Lay1).Scale.X*Player.GetPSprite(Lay1).Scale.X);
+				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80+(Player.GetPSprite(Lay1).Pivot.Y-.5)*(Player.GetPSprite(Lay1).Scale.Y*Player.GetPSprite(Lay1).Scale.Y);
 			}
 			#### A 1;
 			#### AAA 1{//Recover
@@ -317,8 +317,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				Player.GetPSprite(Lay2).Y *= .4;
 				Player.GetPSprite(Lay2).Rotation *= .4;
 				
-				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130;
-				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80;
+				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130+(Player.GetPSprite(Lay1).Pivot.X-.5)*(Player.GetPSprite(Lay1).Scale.X*Player.GetPSprite(Lay1).Scale.X);
+				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80+(Player.GetPSprite(Lay1).Pivot.Y-.5)*(Player.GetPSprite(Lay1).Scale.Y*Player.GetPSprite(Lay1).Scale.Y);
 			}
 			#### ## 1 {
 				if(!MRIntW_InstantFire)A_SetTics(0);
@@ -518,16 +518,16 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				}
 				
 				if(!MRIntW_FlashFlare)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
-				A_OverlayScale(OverlayId(), 1, 1);
+				A_OverlayScale(OverlayId(), .6, .6);
 				A_OverlayPivot(OverlayId(), .5, .5);
 			}
 			#### ## 1 BRIGHT{
 				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
-				A_OverlayScale(OverlayId(), 1.2, 1.2, WOF_INTERPOLATE);
+				A_OverlayScale(OverlayId(), 1, 1, WOF_INTERPOLATE);
 			}
 			#### # 1 BRIGHT{
 				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
-				A_OverlayScale(OverlayId(), 1, 1, WOF_INTERPOLATE);
+				A_OverlayScale(OverlayId(), .5, .5, WOF_INTERPOLATE);
 			}
 			Stop;
 		Flash:

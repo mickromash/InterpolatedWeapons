@@ -301,6 +301,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				Player.GetPSprite(Lay4).X = Player.GetPSprite(Lay2).X+125;
+				Player.GetPSprite(Lay4).Y = Player.GetPSprite(Lay2).Y+90;
 			}
 			#### # 1{
 				Float Scal = CFRandom(.1, .15);
@@ -314,6 +316,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				Player.GetPSprite(Lay4).X = Player.GetPSprite(Lay2).X+125;
+				Player.GetPSprite(Lay4).Y = Player.GetPSprite(Lay2).Y+90;
 			}
 			#### AAAA 1{//Recover
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
@@ -322,6 +326,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).Y*Recover;
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation *= Recover;
+				if(Player.FindPSprite(Lay4)){
+					Player.GetPSprite(Lay4).X = Player.GetPSprite(Lay2).X+125;
+					Player.GetPSprite(Lay4).Y = Player.GetPSprite(Lay2).Y+90;
+				}
 			}
 			#### AA 1 {
 				if(!MRIntW_InstantFire)A_SetTics(0);
