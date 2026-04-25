@@ -56,7 +56,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		Select:
 			TNT1 A 0 {
 				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
-				invoker.ResetDead();
+				if(invoker.Dropped)invoker.Dropped.Destroy();
 				A_Overlay(Lay1, "SawRaise");
 			}
 		Raise:

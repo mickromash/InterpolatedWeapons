@@ -147,6 +147,9 @@ MRIntWeaps_SoundMenu = "Sounds settings (add-on required)";
 MRIntW_ShotgunSound = "Shotgun custom firing sound";
 MRIntW_ChaingunSound = "Chaingun custom firing sound";
 
+
+TAG_RIFLE = "Rifle";
+
 [ru]
 
 MRIntWeaps_Menu = "Настроить интерполированное оружие";
@@ -297,3 +300,6 @@ MRIntWeaps_SoundMenu = "Настройки звуков (требуется ад
 
 MRIntW_ShotgunSound = "Звуки дробовика из аддона";
 MRIntW_ChaingunSound = "Звуки пулемёта из аддона";
+
+
+TAG_RIFLE = "Винтовка";
