@@ -53,6 +53,7 @@ Extend Class MRIntWeaps_Pistol
 				A_GlovesColor(1);
 				A_IdleAnimation(Lay1);
 			}
+			#### # 0 A_JumpIf(invoker.IsRifle!=GetCVar("MRIntW_Rifle"), "RifleLower");
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayFlags(Gloves, PSPF_INTERPOLATE, false);}
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
@@ -81,6 +82,8 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayOffset(Lay1, 7, 7, WOF_ADD);
 				A_OverlayRotate(Lay1, 2, WOF_ADD);
 			}
+			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			#### # 0 A_JumpIf(Player.GetPSprite(PSP_WEAPON).Y<=40, "GunRaise");
 			Stop;
 
 		RifleFire:
