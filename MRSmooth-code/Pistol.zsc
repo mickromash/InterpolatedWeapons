@@ -11,6 +11,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Const Lay3 = -PSP_FLASH;
 
 	int BobState, IdleDelay;
+	Bool IsRifle, LeftHanded;
 
 	Float Recoil;
 	Override Void DoEffect()
@@ -58,7 +59,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			accurate = true;
 		}
 
-		A_StartSound(GetCVar("MRIntW_Rifle")?"MRIntW/RifleFire":"weapons/pistol", CHAN_WEAPON, pitch:i_timescale);
+		A_StartSound(invoker.IsRifle?"MRIntW/RifleFire":"weapons/pistol", CHAN_WEAPON, pitch:i_timescale);
 		GunShot (accurate, "BulletPuff", BulletSlope ());
 	}
 	
@@ -82,8 +83,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	States{
 		Select:
 			TNT1 A 0 {
+				if(invoker.IsRifle)invoker.SetTag("$TAG_RIFLE");
+				else invoker.SetTag("$TAG_PISTOL");
 				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
-				invoker.ResetDead();
+				if(invoker.Dropped)invoker.Dropped.Destroy();
 				A_Overlay(Lay1, "GunRaise");
 			}
 		Raise:
@@ -91,6 +94,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Loop;
 		Deselect:
 			TNT1 A 0 {
+				if(invoker.IsRifle)invoker.SetTag("$TAG_RIFLE");
+				else invoker.SetTag("$TAG_PISTOL");
 				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
 				A_Overlay(Lay1, "GunLower");
@@ -100,12 +105,17 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Loop;
 
 		GunRaise:
-			#### # 0 A_JumpIf(GetCVar("MRIntW_Rifle"), "RifleRaise");
+			#### # 0 {
+				invoker.IsRifle = GetCVar("MRIntW_Rifle");
+				invoker.LeftHanded = GetCVar("MRIntW_LHand");
+			}
+			#### # 0 A_JumpIf(invoker.IsRifle, "RifleRaise");
 			TNT1 AAAA 1 {
 				A_GlovesColor();
 				if(invoker.Dropped)invoker.Dropped.Destroy();
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
-				if(GetCVar("MRIntW_LHand"))A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);//Left handed
+				if(invoker.LeftHanded)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);//Left handed
+				else A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, false);
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayOffset(Lay1, -28, 90);
 				A_OverlayScale(Lay1, .8, .8);
@@ -130,21 +140,23 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayRotate(Lay1, 0);
 			}
 		GunWait:
-			#### # 0 A_JumpIf(GetCVar("MRIntW_Rifle"), "RifleWait");
+			#### # 0 A_JumpIf(invoker.IsRifle, "RifleWait");
 			P1SG A 1 {
 				A_GlovesColor();
 				A_IdleAnimation(Lay1);
-				if(GetCVar("MRIntW_LHand"))A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
+				if(invoker.LeftHanded)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
 				else A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, false);
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			#### # 0 A_JumpIf(invoker.LeftHanded!=GetCVar("MRIntW_LHand"), "GunLower");
+			#### # 0 A_JumpIf(invoker.IsRifle!=GetCVar("MRIntW_Rifle"), "GunLower");
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		GunLower:
-			#### # 0 A_JumpIf(GetCVar("MRIntW_Rifle"), "RifleLower");
+			#### # 0 A_JumpIf(invoker.IsRifle, "RifleLower");
 			P1SG A 1 {
 				A_GlovesColor();
-				if(GetCVar("MRIntW_LHand"))A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
+				if(invoker.LeftHanded)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayOffset(Lay1, 0, Player.GetPSprite(PSP_WEAPON).Y);
 				A_OverlayRotate(Lay1, 0);
@@ -166,10 +178,12 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayOffset(Lay1, 10, 7, WOF_ADD);
 				A_OverlayRotate(Lay1, 3, WOF_ADD);
 			}
+			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			#### # 0 A_JumpIf(Player.GetPSprite(PSP_WEAPON).Y<=40, "GunRaise");
 			Stop;
 		GunIdle1:
 			#### # 0 {
-				if(GetCVar("MRIntW_Rifle"))A_GlovesColor(1);
+				if(invoker.IsRifle)A_GlovesColor(1);
 				else A_GlovesColor();
 				A_OverlayPivot(Lay1, .5, 1);
 				invoker.BobState = 0;
@@ -234,10 +248,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Goto Ready;
 
 		GunFire:
-			#### # 0 A_JumpIf(GetCVar("MRIntW_Rifle"), "RifleFire");
+			#### # 0 A_JumpIf(invoker.IsRifle, "RifleFire");
 			P1SG A 0{
 				A_GlovesColor();
-				if(GetCVar("MRIntW_LHand"))A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
+				if(invoker.LeftHanded)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
 				A_OverlayPivot(Lay1, .5, .5);
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
@@ -349,12 +363,12 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			}
 			Goto GunWait;
 		GunFlash:
-			#### # 0 A_JumpIf(GetCVar("MRIntW_Rifle"), "RifleFlash");
+			#### # 0 A_JumpIf(invoker.IsRifle, "RifleFlash");
 			P1SF A 1 BRIGHT {
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				Player.GetPSprite(Lay1).Scale = Player.GetPSprite(Lay1).Scale;
 				A_OverlayFlags(Lay2, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
-				if(GetCVar("MRIntW_LHand"))A_OverlayFlags(Lay2, PSPF_MIRROR|PSPF_FLIP, true);
+				if(invoker.LeftHanded)A_OverlayFlags(Lay2, PSPF_MIRROR|PSPF_FLIP, true);
 				A_OverlayRenderStyle(Lay2, STYLE_ColorAdd);
 				A_OverlayPivot(Lay2, .5, .5);
 				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
@@ -369,8 +383,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				}
 				
 				A_OverlayOffset(OverlayId(), 127, 70);
-				if(GetCVar("MRIntW_LHand"))A_OverlayOffset(OverlayId(), 130, 70);
-				if(GetCVar("MRIntW_Rifle"))A_OverlayOffset(OverlayId(), 128+invoker.LastPos.X, 78+invoker.LastPos.Y);
+				if(invoker.LeftHanded)A_OverlayOffset(OverlayId(), 130, 70);
+				if(invoker.IsRifle)A_OverlayOffset(OverlayId(), 128+invoker.LastPos.X, 78+invoker.LastPos.Y);
 
 				A_OverlayTranslation(OverlayId(), "MrIntWParFlash");
 				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
@@ -385,18 +399,18 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				
 				if(!MRIntW_FlashFlare)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
 				A_OverlayScale(OverlayId(), .6, .6);
-				if(GetCVar("MRIntW_Rifle"))A_OverlayScale(OverlayId(), .5, .5);
+				if(invoker.IsRifle)A_OverlayScale(OverlayId(), .5, .5);
 				A_OverlayPivot(OverlayId(), .5, .5);
 			}
 			#### ## 1 BRIGHT{
 				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
 				A_OverlayScale(OverlayId(), .8, .9, WOF_INTERPOLATE);
-				if(GetCVar("MRIntW_Rifle"))A_OverlayScale(OverlayId(), .6, .7, WOF_INTERPOLATE);
+				if(invoker.IsRifle)A_OverlayScale(OverlayId(), .6, .7, WOF_INTERPOLATE);
 			}
 			#### # 1 BRIGHT{
 				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
 				A_OverlayScale(OverlayId(), .5, .5, WOF_INTERPOLATE);
-				if(GetCVar("MRIntW_Rifle"))A_OverlayScale(OverlayId(), .5, .5, WOF_INTERPOLATE);
+				if(invoker.IsRifle)A_OverlayScale(OverlayId(), .5, .5, WOF_INTERPOLATE);
 			}
 			Stop;
 
