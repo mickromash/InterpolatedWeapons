@@ -38,6 +38,8 @@ nosave bool MRIntW_Epilepsy = true;
 
 nosave bool MRIntW_NoMuzzleFlash = false;//Don't display muzzle flashes
 nosave bool MRIntW_FlashFlare = false;//Flares around muzzle flashas
+
+nosave float MRIntW_ShotgunsRecoil = 1;
 //Fist
 user bool MRIntW_BareHands = true;//Fists use sprites without gloves
 user bool MRIntW_GloveStrip = true;//Alternative select animation for barehands

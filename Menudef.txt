@@ -90,10 +90,12 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Slider "$MRIntW_ShotgunPumpAngle", "MRIntW_ShotgunPumpAngle", -2, 2, .1, 1
 	Option "$MRIntW_ShotgunPumpRandom", "MRIntW_ShotgunPumpRandom", "YesNo"
 	Slider "$MRIntW_ShotgunPumpRandRotation", "MRIntW_ShotgunPumpRandRotation", 0, 2, .1, 1, "MRIntW_ShotgunPumpRandom"
+	Slider "$MRIntW_ShotgunsRecoil", "MRIntW_ShotgunsRecoil", 0, 2, .1
 	StaticText ""
 	StaticText "$TAG_SuperShotgun", "Fire"
 	Option "$MRIntW_SSGSmoke", "MRIntW_SSGSmoke", "YesNo"
 	Option "$MRIntW_SSGSparks", "MRIntW_SSGSparks", "YesNo"
+	Slider "$MRIntW_ShotgunsRecoil", "MRIntW_ShotgunsRecoil", 0, 2, .1
 	StaticText ""
 	StaticText "$TAG_CHAINGUN", "Fire"
 	Option "$MRIntW_ChaingunFixed", "MRIntW_ChaingunFixed", "YesNo"

@@ -107,7 +107,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		
 	}
 	
-	Double PumpRotation;
+	Double PumpRotation, SpriteRecoil;
 	
 	States{
 		Select:
@@ -284,13 +284,14 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### A 1 A_OverlayOffset(Lay1, 0, 3, WOF_ADD);
 			#### A 1;//Shot
 			#### A 1 {//Recoil
-				Vector2 Pivot = (CFRandom(.3, .7), CFRandom(0, .5));
+				invoker.SpriteRecoil = MRIntW_ShotgunsRecoil;
+				Vector2 Pivot = (.5+CFRandom(-.2, .2)*invoker.SpriteRecoil, CFRandom(0, .5));
 				A_OverlayPivot(Lay1, Pivot.X, Pivot.Y);
 				A_OverlayPivot(Lay2, Pivot.X, Pivot.Y);
 				
-				Float Scal = CFRandom(.3, .4);
-				Vector2 Ofst = (-CFRandom(2, 3), CFRandom(7, 11));
-				Float Rotate = CRandomPick(0, CFRandom(.9, 1.5));
+				Float Scal = CFRandom(.3, .4)*invoker.SpriteRecoil;
+				Vector2 Ofst = (-CFRandom(2, 3), CFRandom(7, 11))*invoker.SpriteRecoil;
+				Float Rotate = CRandomPick(0, CFRandom(.9, 1.5))*invoker.SpriteRecoil;
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
@@ -305,17 +306,17 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### A 1;
 			#### AAA 1{//Recover
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1));
+				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1))*invoker.SpriteRecoil;
 				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
-				Player.GetPSprite(Lay1).X *= .4;
-				Player.GetPSprite(Lay1).Y *= .4;
-				Player.GetPSprite(Lay1).Rotation *= .4;
+				Player.GetPSprite(Lay1).X *= Min(1, .4/invoker.SpriteRecoil);
+				Player.GetPSprite(Lay1).Y *= Min(1, .4/invoker.SpriteRecoil);
+				Player.GetPSprite(Lay1).Rotation *= Min(1, .4/invoker.SpriteRecoil);
 				
-				Player.GetPSprite(Lay2).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay2).Scale.X-1));
+				Player.GetPSprite(Lay2).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay2).Scale.X-1))*invoker.SpriteRecoil;
 				Player.GetPSprite(Lay2).Scale.Y = Player.GetPSprite(Lay2).Scale.X;
-				Player.GetPSprite(Lay2).X *= .4;
-				Player.GetPSprite(Lay2).Y *= .4;
-				Player.GetPSprite(Lay2).Rotation *= .4;
+				Player.GetPSprite(Lay2).X *= Min(1, .4/invoker.SpriteRecoil);
+				Player.GetPSprite(Lay2).Y *= Min(1, .4/invoker.SpriteRecoil);
+				Player.GetPSprite(Lay2).Rotation *= Min(1, .4/invoker.SpriteRecoil);
 				
 				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130+(Player.GetPSprite(Lay1).Pivot.X-.5)*(Player.GetPSprite(Lay1).Scale.X*Player.GetPSprite(Lay1).Scale.X);
 				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80+(Player.GetPSprite(Lay1).Pivot.Y-.5)*(Player.GetPSprite(Lay1).Scale.Y*Player.GetPSprite(Lay1).Scale.Y);
@@ -323,17 +324,17 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### ## 1 {
 				if(!MRIntW_InstantFire)A_SetTics(0);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1));
+				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1))*invoker.SpriteRecoil;
 				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
-				Player.GetPSprite(Lay1).X *= .5;
-				Player.GetPSprite(Lay1).Y *= .5;
-				Player.GetPSprite(Lay1).Rotation *= .5;
+				Player.GetPSprite(Lay1).X *= Min(1, .5/invoker.SpriteRecoil);
+				Player.GetPSprite(Lay1).Y *= Min(1, .5/invoker.SpriteRecoil);
+				Player.GetPSprite(Lay1).Rotation *= Min(1, .5/invoker.SpriteRecoil);
 				
-				Player.GetPSprite(Lay2).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay2).Scale.X-1));
+				Player.GetPSprite(Lay2).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay2).Scale.X-1))*invoker.SpriteRecoil;
 				Player.GetPSprite(Lay2).Scale.Y = Player.GetPSprite(Lay2).Scale.X;
-				Player.GetPSprite(Lay2).X *= .5;
-				Player.GetPSprite(Lay2).Y *= .5;
-				Player.GetPSprite(Lay2).Rotation *= .5;
+				Player.GetPSprite(Lay2).X *= Min(1, .5/invoker.SpriteRecoil);
+				Player.GetPSprite(Lay2).Y *= Min(1, .5/invoker.SpriteRecoil);
+				Player.GetPSprite(Lay2).Rotation *= Min(1, .5/invoker.SpriteRecoil);
 				
 				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130;
 				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80;

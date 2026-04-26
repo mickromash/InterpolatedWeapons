@@ -82,8 +82,9 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(OverlayId()).Translation = Feest.PistolGlovesTrans;
 				Break;
 		}
-		
 	}
+	
+	Double SpriteRecoil;
 	
 	States{
 		Select:
@@ -286,13 +287,14 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### A 1 A_OverlayOffset(Lay1, 0, 3, WOF_ADD);
 			#### A 1;//Shot
 			#### A 1 {//Recoil
-				Vector2 Pivot = (CFRandom(.35, .65), CFRandom(0, .5));
+				invoker.SpriteRecoil = MRIntW_ShotgunsRecoil;
+				Vector2 Pivot = (.5+CFRandom(-.15, .15)*invoker.SpriteRecoil, CFRandom(0, .5));
 				A_OverlayPivot(Lay1, Pivot.X, Pivot.Y);
 				A_OverlayPivot(Lay2, Pivot.X, Pivot.Y);
 				
-				Float Scal = CFRandom(.4, .5);
-				Vector2 Ofst = (-(Pivot.X-.5)*2, CFRandom(10, 15));
-				Float Rotate = (Pivot.X-.5)*4;
+				Float Scal = CFRandom(.4, .5)*invoker.SpriteRecoil;
+				Vector2 Ofst = (-(Pivot.X-.5)*2, CFRandom(10, 15))*invoker.SpriteRecoil;
+				Float Rotate = (Pivot.X-.5)*4*invoker.SpriteRecoil;
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
@@ -305,9 +307,9 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(Lay4).Y = Player.GetPSprite(Lay2).Y+90;
 			}
 			#### # 1{
-				Float Scal = CFRandom(.1, .15);
-				Vector2 Ofst = (-(Player.GetPSprite(Lay1).Pivot.X-.5), CFRandom(3, 6));
-				Float Rotate = (Player.GetPSprite(Lay1).Pivot.X-.5)*2;
+				Float Scal = CFRandom(.1, .15)*invoker.SpriteRecoil;
+				Vector2 Ofst = (-(Player.GetPSprite(Lay1).Pivot.X-.5), CFRandom(3, 6))*invoker.SpriteRecoil;
+				Float Rotate = (Player.GetPSprite(Lay1).Pivot.X-.5)*2*invoker.SpriteRecoil;
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
