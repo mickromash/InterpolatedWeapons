@@ -299,16 +299,16 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### #### 1 {A_OverlayOffset(LHand, .5, -1, WOF_ADD);A_OverlayRotate(LHand, 1, WOF_ADD);}
 			#### ##### 1 {A_Overlayoffset(LHand, .5, -1, WOF_ADD);A_OverlayRotate(LHand, 1, WOF_ADD);A_BersShake();}
 			#### ## 1 {A_OverlayOffset(LHand, 1, -1, WOF_ADD);A_OverlayRotate(LHand, 1, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_OverlayOffset(LHand, .5, -.1, WOF_ADD);A_OverlayRotate(LHand, .6, WOF_ADD);A_OverlayScale(LHand, 0, -.025, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, .15, -.025, WOF_ADD);A_OverlayRotate(LHand, .25, WOF_ADD);A_OverlayScale(LHand, 0, -.015, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### ### 1 {A_OverlayOffset(LHand, .5, -.1, WOF_ADD);A_OverlayRotate(LHand, .6, WOF_ADD);A_OverlayScale(LHand, 0, -.0125, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### ## 1 {A_OverlayOffset(LHand, .15, -.025, WOF_ADD);A_OverlayRotate(LHand, .25, WOF_ADD);A_OverlayScale(LHand, 0, -.007, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			#### # 1 {A_OverlayOffset(LHand, -.1, .0, WOF_ADD); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, -1, 1, WOF_ADD);A_OverlayRotate(LHand, -1, WOF_ADD);A_OverlayScale(LHand, 0, .05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### ## 1 {A_OverlayOffset(LHand, -1, 1, WOF_ADD);A_OverlayRotate(LHand, -1, WOF_ADD);A_OverlayScale(LHand, 0, .025, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			#### ### 1 {A_OverlayOffset(LHand, -.5, .5, WOF_ADD);A_OverlayRotate(LHand, -.5, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, -.25, -.1, WOF_ADD);A_OverlayRotate(LHand, -.25, WOF_ADD);A_OverlayScale(LHand, 0, -.05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### # 1 {A_OverlayOffset(LHand, .0, .05, WOF_ADD);A_BersShake();A_OverlayScale(LHand, 0, -.025, WOF_ADD); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, 2, -2, WOF_ADD);A_OverlayRotate(LHand, 1, WOF_ADD);A_OverlayScale(LHand, 0, -.01, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_OverlayOffset(LHand, 1, -.1, WOF_ADD);A_OverlayRotate(LHand, .5, WOF_ADD);A_OverlayScale(LHand, 0, .025, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, -1, -.025, WOF_ADD);A_OverlayRotate(LHand, .1, WOF_ADD);A_OverlayScale(LHand, 0, .02, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### ## 1 {A_OverlayOffset(LHand, -.25, -.1, WOF_ADD);A_OverlayRotate(LHand, -.25, WOF_ADD);A_OverlayScale(LHand, 0, -.025, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### # 1 {A_OverlayOffset(LHand, .0, .05, WOF_ADD);A_BersShake();A_OverlayScale(LHand, 0, -.0125, WOF_ADD); A_SetTics(CRandom(1,2));}
+			#### ## 1 {A_OverlayOffset(LHand, 2, -2, WOF_ADD);A_OverlayRotate(LHand, 1, WOF_ADD);A_OverlayScale(LHand, 0, -.005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### ### 1 {A_OverlayOffset(LHand, 1, -.1, WOF_ADD);A_OverlayRotate(LHand, .5, WOF_ADD);A_OverlayScale(LHand, 0, .0125, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### ## 1 {A_OverlayOffset(LHand, -1, -.025, WOF_ADD);A_OverlayRotate(LHand, .1, WOF_ADD);A_OverlayScale(LHand, 0, .01, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			#### # 1 {A_OverlayOffset(LHand, -.5, 1, WOF_ADD);A_OverlayRotate(LHand, -.25, WOF_ADD); A_SetTics(CRandom(1,2));}
 			#### ## 1 {A_OverlayOffset(LHand, -.25, .5, WOF_ADD);A_OverlayRotate(LHand, -.1, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			#### ### 1 {A_OverlayOffset(LHand, .25, -.5, WOF_ADD);A_OverlayRotate(LHand, .5, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
@@ -574,28 +574,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayPivot(Lay2, .5, .5);
 				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
-			SH1F BB 1 BRIGHT{
-				if(MRIntW_Smoke){
-					For(int i=CRandom(0, 2);i<3;i++){
-						int index;
-						For(index=0;index<invoker.Smokes.Size()+1;index++){
-							if(index>=invoker.Smokes.Size()){index=-1;Break;}
-							if(!invoker.Smokes[index])Break;
-						}
-						
-						if(index<invoker.Smokes.Size() && index>-1){
-							MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
-							a.Vel = (CFRandom(-.05, .05), CFRandom(.1, .2), CFRandom(.7, 1.2));
-							invoker.Smokes[index] = a;
-														
-							A_Overlay(MuzzleSmokeStart-index, "MuzzleSmokeLay");
-							A_OverlayOffset(MuzzleSmokeStart-index, 130, 110);
-							Player.GetPSprite(MuzzleSmokeStart-index).Scale = (1,1)*CFRandom(.2, .2);
-							A_OverlayAlpha(MuzzleSmokeStart-index, CFRandom(.01, .08)*3);
-						}
-					}
-				}
-			}
+			SH1F BB 1 BRIGHT;
 			SH1F A 1 BRIGHT;
 			Stop;
 		GunMuzzleFlashFlare:
