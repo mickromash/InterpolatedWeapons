@@ -50,7 +50,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Bool CustomSound, ConterClock, DontStop;
 	
 	Vector2 HandVector;
-	
+		
 	Float Recoil;
 	Override Void DoEffect()
 	{
@@ -83,8 +83,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				if(Rotation!=0 && (Rotation>360||Rotation<-360))Rotation %= 360;
 				
 				GunFrame += Speed*.03;
-				if(GunFrame>=4)GunFrame -= 4;
-				else if(GunFrame<0)GunFrame += 4;
+				if(GunFrame>=4)GunFrame %= 4;
+				else if(GunFrame<0)GunFrame %= 4;
+				GunFrame = abs(GunFrame);
 				
 				if(Owner.Player.FindPSprite(Lay1))Owner.Player.GetPSprite(Lay1).Frame = GunFrame;
 			}
@@ -309,7 +310,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			CH1G # 0 {
 				invoker.ConterClock = GetCVar("MRIntW_ChaingunCounterClock");
-				invoker.Speed = 205.6;
+				invoker.Speed = 205.6*GetCVar("MRIntW_ChaingunStopTime");
 			}
 			CH1G ########### 1 {
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, -4, -.5, WOF_ADD);
@@ -322,7 +323,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Vector2 Ofst = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, -Ofst.X, -Ofst.Y, WOF_ADD);
 			}
-			#### # 0 {if(CRandom(0, 100)<2)invoker.Speed += CRandom(1, 7)*5;}
+			#### # 0 {if(CRandom(0, 100)<2)invoker.Speed += CRandom(1, 7)*5*GetCVar("MRIntW_ChaingunStopTime");}
 		GunWait:
 			#### # 1 {if(!(Player.Cmd.Buttons&BT_ATTACK))A_IdleAnimation(Lay1);}
 			#### # 0 {
@@ -338,17 +339,23 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				
 				if(!GetCVar("MRIntW_ChaingunFixed"))Return;
 				
+				Float StopPower = GetCVar("MRIntW_ChaingunStopTime");
+				
+				Double ToDiff = 2;
+				
 				Double CurRot = invoker.Rotation+30;
 				if(abs(CurRot)>=360)CurRot %= 360;
 				
 				int Diff = CurRot%60;
 				if(Diff>30)Diff = 60-Diff;
 				
-				if(abs(invoker.Speed)*(1-GetCVar("MRIntW_ChaingunStopTime"))>Diff)Return;
+				if(abs(invoker.Speed)>ToDiff)Return;
+				
+				//if(abs(invoker.Speed)*(1-StopPower)>Diff)Return;
 
 				if(abs(Diff)<3){invoker.Speed *= 0;Return;}
 				
-				else invoker.Speed = Diff*(GetCVar("MRIntW_ChaingunStopTime"));//Clamp(12, Diff*(GetCVar("MRIntW_ChaingunStopTime"))/*invoker.Speed*/, Diff);
+				else if(invoker.Speed<=ToDiff*StopPower)invoker.Speed = Max(Diff*StopPower, ToDiff*StopPower);//Clamp(12, Diff*(StopPower)/*invoker.Speed*/, Diff);
 				invoker.DontStop = true;
 			}
 			#### # 0 {if(invoker.IdleDelay>35 && abs(invoker.BobState)<2)A_Overlay(Hand, "HandIdle1");}
@@ -656,7 +663,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				invoker.HandPos += .4;
 				A_OverlayOffset(Hand, -3, 8, WOF_ADD);
 				A_OverlayScale(Hand, .005, .005, WOF_ADD);
-				invoker.Speed -= invoker.ConterClock?-CRandom(40, 60):CRandom(40, 60);
+				invoker.Speed -= (invoker.ConterClock?-CRandom(40, 60):CRandom(40, 60))*GetCVar("MRIntW_ChaingunStopTime");
 				invoker.DontStop = true;
 			}
 			Wait;

@@ -126,7 +126,7 @@ MRIntW_SSGSmoke = "Smoke from barrels when reloading";
 MRIntW_ChaingunMaxSmokes = "Max smoking barrels";
 MRIntW_ChaingunSpeed = "Rotation speed";
 MRIntW_ChaingunFixed = "Fixed barrels position";
-MRIntW_ChaingunStopTime = "Stopping speed";
+MRIntW_ChaingunStopTime = "Stopping power";
 MRIntW_ChaingunCounterClock = "CounterClockwise rotation";
 
 
@@ -273,7 +273,7 @@ MRIntW_SSGSmoke = "Дым из казённика";
 MRIntW_ChaingunMaxSmokes = "Макс. дымящихся стволов";
 MRIntW_ChaingunSpeed = "Скорость вращения";
 MRIntW_ChaingunFixed = "Фиксированное положение стволов";
-MRIntW_ChaingunStopTime = "Скорость торможения";
+MRIntW_ChaingunStopTime = "Сила торможения";
 MRIntW_ChaingunCounterClock = "Вращать стволы против часовой";
 
 
