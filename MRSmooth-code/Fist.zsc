@@ -374,6 +374,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			TNT1 A 1;
 			Wait;
 		LeftHandTakingOn:
+			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
 			TNT1 A 0 A_JumpIf(!(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake"))), 4);
 			PUN3 C 1 {
 				A_OverlayPivot(OverlayId(), .5, .5);
@@ -397,6 +398,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayRotate(-5, 35);
 				
 				A_OverlayScale(-5, 1, 1);
+				A_OverlayFlags(-5, PSPF_INTERPOLATE, false);
 			}
 			PUN3 F 1 {
 				if(!(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake"))))A_SetTics(4);
