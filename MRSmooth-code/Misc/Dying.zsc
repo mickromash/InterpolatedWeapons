@@ -1,0 +1,689 @@
+/*
+	First person dying animations
+*/
+
+Class MRIntWeaps_FlyingWeapon: VisualThinker
+{
+	/*
+		Weapon droppped by dying player.
+	
+		It's only a visual effect and cannot be picked up or even seen by other players.
+	*/
+	
+	String BounceSound;
+	Double BouncePitch;
+	
+	Double Gravity;
+	Bool Landed;
+	
+	Virtual Void AlignAngle()
+	{
+		if(int(Roll%180)>20){
+			Roll = abs(Roll);
+			Roll = -(Roll%180*.7+int(Roll/180)*180);
+		}
+	}
+	
+	Override Void Tick()
+	{
+		if(Landed){
+			Super.Tick();
+			Vel.XY *= .9;
+			if(CurSector){
+				if(Pos.Z>CurSector.CenterFloor())Vel.Z -= Gravity;
+				else {
+					if(Vel.Z!=0)S_StartSoundAt(Pos, BounceSound, CHAN_AUTO, 0, 1, pitch:CFRandom(.9, 1.1)+BouncePitch);
+					Pos.Z = CurSector.CenterFloor();
+					Vel.Z = 0;
+				}
+			}
+			AlignAngle();
+			Return;
+		}
+		
+		if(Level.IsFrozen())Return;
+		
+		Super.Tick();
+		
+		if(!CurSector)Return;
+		
+		Vel.XY *= .9;
+		
+		
+		if(CurSector.CenterFloor()>=Pos.Z){//Hit the floor
+			if(!Landed)S_StartSoundAt(Pos, BounceSound, CHAN_AUTO, 0, 1, pitch:CFRandom(.9, 1.1)+BouncePitch);
+			Landed = true;
+			Pos.Z = CurSector.CenterFloor();
+			Vel.Z = 0;
+			
+			if(Roll<=-270)Roll = Max(-360, Roll-10);
+			else if(Roll<=-180)Roll = (Roll+180)*.7-180;
+			else Roll *= .7;
+			Return;
+		}
+
+		Roll -= Vel.Length()*4;
+		if(Roll<=-360)Roll = abs(Roll)%360*-1;
+		Vel.Z -= Gravity;
+		
+		let tracer = new('MRIntWeaps_CollisionTracer');//Check collisions
+		
+		tracer.Pos = Pos;
+		tracer.Sec = CurSector;
+		tracer.Trace(Pos, CurSector, Vel, 15, 0, Line.ML_BLOCKEVERYTHING, true);
+		
+		if(Tracer.HitLine){//Bounce off walls
+			Vel.XY = -Vel.XY*.8;
+		}
+	}
+	
+	Static MRIntWeaps_FlyingWeapon Throw(String Sprite, String BounceSound, Vector3 Pos=(0,0,0), Vector3 Vel=(0,0,0), Double Gravity=1, Vector2 Scale=(1,1), int Translation=0, Actor Caller=Null, Name Clas='MRIntWeaps_FlyingWeapon')
+	{
+		if(Players[ConsolePlayer].Camera != Caller)Return Null;
+		
+		Let Weap = MRIntWeaps_FlyingWeapon(level.SpawnVisualThinker(Clas));
+		if(!Weap)Return Null;
+		
+		Weap.Pos = Pos;
+		Weap.Vel = Vel;
+		Weap.Gravity = Gravity;
+		Weap.Texture = Texman.CheckForTexture(Sprite);
+		Weap.BounceSound = BounceSound;
+		Name Nahme = BounceSound;
+		Switch(Nahme){
+			Case 'MRIntW/ChainsawBounce':
+				Weap.BouncePitch = -.2;
+				Break;
+			Case 'MRIntW/RifleBounce':
+			Case 'MRIntW/ShotgunBounce':
+			Case 'MRIntW/SuperShotgunBounce':
+				Weap.BouncePitch = -.05;
+				Break;
+			Case 'MRIntW/ChaingunBounce':
+				Weap.BouncePitch = -.2;
+				Break;
+			Case 'MRIntW/RocketLauncherBounce':
+				Weap.BouncePitch = -.1;
+				Break;
+			Case 'MRIntW/PlasmaRifleBounce':
+				Weap.BouncePitch = -.1;
+				Break;
+			Case 'MRIntW/BFG9000Bounce':
+				Weap.BouncePitch = -.2;
+				Break;
+		}
+		Weap.Scale = Scale;
+		Weap.Flags = SPF_ROLL|SPF_ROLLCENTER;
+		Weap.CurSector = LevelLocals.PointInSector(Pos.XY);
+		Weap.Translation = Translation;
+				
+		Return Weap;
+	}
+}
+
+Class MRIntWeaps_FlyingBFG: MRIntWeaps_FlyingWeapon
+{
+	Override Void AlignAngle()
+	{
+		if(abs(Roll)>90 && abs(Roll)<270){
+			Double Align = 150;
+			if(int(Roll%Align)>20){
+				Roll = abs(Roll);
+				Roll = -(Roll%Align*.7+int(Roll/Align)*Align);
+				
+			}
+		}
+		else if(int(Roll%180)>20){
+			Roll = abs(Roll);
+			Roll = -(Roll%180*.7+int(Roll/180)*180);
+			
+		}
+	}
+}
+
+class MRIntWeaps_CollisionTracer : LineTracer
+{
+	Line HitLine;
+	Vector3 Pos;
+	Sector Sec;
+	
+	override ETraceStatus TraceCallback()
+	{
+		switch(results.HitType)
+		{
+			case TRACE_HitWall:
+				HitLine = Results.HitLine;
+				if(!(HitLine.Flags&Line.ML_BLOCKEVERYTHING)){
+					if(Sec){
+						if(!HitLine.BackSector||!HitLine.FrontSector)Return TRACE_Stop;
+						if(Sec == HitLine.FrontSector){
+							if(HitLine.BackSector.CenterCeiling()-HitLine.BackSector.CenterFloor()<2)Return TRACE_Stop;
+							if(HitLine.BackSector.CenterFloor()>Pos.Z||
+								HitLine.BackSector.CenterCeiling()<Pos.Z)Return TRACE_Stop;
+						}
+						else if(Sec == HitLine.BackSector){
+							if(HitLine.FrontSector.CenterCeiling()-HitLine.FrontSector.CenterFloor()<2)Return TRACE_Stop;
+							if(HitLine.FrontSector.CenterFloor()>Pos.Z||
+								HitLine.FrontSector.CenterCeiling()<Pos.Z)Return TRACE_Stop;
+						}
+					}
+					HitLine = Null;
+					Return TRACE_Skip;
+				}
+			case TRACE_HitFloor:
+			case TRACE_HitCeiling:
+			case TRACE_HasHitSky:
+				Return TRACE_Stop;
+		}
+
+		return TRACE_Skip;
+	}
+}
+
+
+Extend Class MRIntWeaps_Fist
+{
+	Double DeadAngle;
+	
+	States
+	{
+		RightHandDie:
+			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
+			PUN1 A 0 A_SetHandsSprite();
+			#### ### 1 {
+				A_OverlayOffset(RightLay, 8, 4, WOF_ADD);
+				A_OverlayScale(RightLay, .2, .2, WOF_ADD);
+				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
+			}
+			#### # 0 A_Overlay(LeftLay, "LeftHandDead");
+		RightHandDead:
+			#### # 0 {
+				invoker.DeadAngle = Angle;
+			}
+			#### # 0 A_JumpIf(CRandom(0, 10)>4 && !GetCVar("MRIntW_BareHands"), "RightHandDead1");
+			#### A 1 {
+				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
+				A_OverlayOffset(RightLay, 30-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(RightLay, 8+DeltaAngle(Angle, invoker.DeadAngle)*.2, WOF_INTERPOLATE);
+				A_OverlayScale(RightLay, 1.1, 1.05);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 G 1 {
+				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
+				if(GetCVar("MRIntW_RightPunch")){
+					A_OverlayFlags(OverlayId(), PSPF_MIRROR, true);
+					A_OverlayFlags(OverlayId(), PSPF_FLIP, false);
+				}
+				else {
+					A_OverlayFlags(RightLay, PSPF_FLIP, true);
+					A_OverlayFlags(OverlayId(), PSPF_MIRROR, false);
+				}
+				A_OverlayOffset(RightLay, 240-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(RightLay, 10-DeltaAngle(Angle, invoker.DeadAngle)*.2, WOF_INTERPOLATE);
+				A_OverlayScale(RightLay, 1.3, 1);
+			}
+			Wait;
+			
+		LeftHandDie:
+			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
+			PUN1 D 0 A_SetHandsSprite();
+			#### ### 1 {
+				A_OverlayOffset(LeftLay, CFRandom(-1, 1), 15, WOF_ADD);
+				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
+			}
+			#### D 1 A_OverlayOffset(LeftLay, -3, Player.ViewZ-FloorZ, WOF_INTERPOLATE);
+		LeftHandDead:
+			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
+			PUN1 D 1 {
+				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
+				A_SetHandsSprite();
+				A_OverlayOffset(LeftLay, 110-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6-100, WOF_INTERPOLATE);
+				A_OverlayRotate(LeftLay, -25+DeltaAngle(Angle, invoker.DeadAngle)*.2, WOF_INTERPOLATE);
+				A_OverlayScale(LeftLay, 1.2, 1.2);
+			}
+			Wait;
+	}
+}
+
+Extend Class MRIntWeaps_Chainsaw
+{
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("CSAWA0", "MRIntW/ChainsawBounce", Pos, Vel, Caller:Self);
+	}
+	
+	Const DieLay = -2;
+
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_Overlay(DieLay, "DyingLeftHand");
+				A_GiveInventory("MRIntWeaps_DyingAnimation");
+			}
+			Stop;
+			
+		DyingLeftHand:
+			MRD1 E 1 {
+				A_GlovesColor(1);
+				A_OverlayFlags(DieLay, PSPF_FLIP, true);
+				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(DieLay, -140, 25);
+				A_OverlayRotate(DieLay, -20);
+			}
+			#### # 1 {
+				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(DieLay, -15, 15, WOF_ADD);
+				A_OverlayRotate(DieLay, -5, WOF_ADD);
+				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
+			}
+			Stop;
+	}
+}
+
+Extend Class MRIntWeaps_Pistol
+{
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw(invoker.IsRifle?"RIFAA0":"PISTA0",invoker.IsRifle? "MRIntW/RifleBounce":"MRIntW/PistolBounce", Pos, Vel, Scale:(.8, .8), Caller:Self);
+	}
+
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_GiveInventory("MRIntWeaps_DyingAnimation");
+			}
+			Stop;
+	}
+}
+
+Extend Class MRIntWeaps_Shotgun
+{
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("SHOTA0", "MRIntW/ShotgunBounce", Pos, Vel, Caller:Self);
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_GiveInventory("MRIntWeaps_DyingAnimation");
+			}
+			Stop;
+	}
+}
+
+//Check "SSG-Stuff.zsc" for Super Shotgun animation
+
+Extend Class MRIntWeaps_Chaingun
+{
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("MGUNA0", "MRIntW/ChaingunBounce", Pos, Vel, Caller:Self);
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_ClearOverlays(Muzzle0, Lay1-1);
+				A_ClearOverlays(Lay1+1, AnimLay);
+				A_ClearOverlays(Lay2, Lay2);
+				A_GiveInventory("MRIntWeaps_DyingAnimation");
+			}
+			Stop;
+	}
+}
+
+Extend Class MRIntWeaps_RocketLauncher
+{
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("LAUNA0", "MRIntW/RocketLauncherBounce", Pos, Vel, Caller:Self);
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_GiveInventory("MRIntWeaps_DyingAnimation");
+			}
+			Stop;
+	}
+}
+
+Extend Class MRIntWeaps_PlasmaRifle
+{
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("PLASA0", "MRIntW/PlasmaRifleBounce", Pos, Vel, Caller:Self);
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_ClearOverlays(Lay3, Lay2);
+				A_GiveInventory("MRIntWeaps_DyingAnimation");
+			}
+			TNT1 A 1 A_ClearOverlays(Lay3, Lay2);
+			Stop;
+	}
+}
+
+Extend Class MRIntWeaps_BFG9000
+{
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("BFUGA0", "MRIntW/BFG9000Bounce", Pos, Vel, Caller:Self, Clas: 'MRIntWeaps_FlyingBFG');
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_ClearOverlays(Lay4, Lay2);
+				A_ClearOverlays(Lay3, Lay3);
+				A_GiveInventory("MRIntWeaps_DyingAnimation");
+			}
+			TNT1 A 1 A_ClearOverlays(Lay4, Lay2);
+			Stop;
+	}
+}
+
+Class MRIntWeaps_DyingAnimation: CustomInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+		+Inventory.UNDROPPABLE
+		+Inventory.UNTOSSABLE
+		+Inventory.AUTOACTIVATE
+	}
+	
+	Override Void DoEffect()
+	{
+		if(Owner.Health>0){
+			Owner.UseInventory(Self);
+			Destroy();
+			Return;
+		}
+		
+		if(Owner.Player.ViewZ-Owner.Pos.Z>6)DeadAngle = Owner.Angle;
+	}
+	
+	
+	Const Lay2 = -4;
+	Const Lay1 = 7;
+	
+	Double DeadAngle;
+	int DeadHandL, DeadHandR;
+	Array<int> DeadVariants;
+	
+	Override Void BeginPlay()
+	{
+		Super.BeginPlay();
+		DeadVariants.Clear();
+		For(int i=0;i<4;i++)DeadVariants.Push(i);
+	}
+	
+	Action Void A_GlovesColor()
+	{
+		Let Feest = MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist"));
+		if(!Feest)Return;
+		
+		Player.FindPSprite(OverlayId()).Translation = Feest.GlovesTrans;
+	}
+	
+	String LastWeapon;
+	
+	States{
+		Use:
+			TNT1 A 1 {
+				if(Health>0){
+					A_ClearOverlays(Lay1, Lay1);
+					A_ClearOverlays(Lay2, Lay2);
+					if(invoker.LastWeapon!="")A_SelectWeapon(invoker.LastWeapon);
+				}
+				else {
+					if(Player.ReadyWeapon)invoker.LastWeapon = Player.ReadyWeapon.GetClassName();
+					A_Overlay(Lay1, "DyingRightHand");
+				}
+			}
+			Fail;
+		
+		DyingRightHand:
+			MRD1 # 1 {
+				A_GlovesColor();
+				int L, R;
+				L = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(L);
+				R = invoker.DeadVariants[CRandom(0, invoker.DeadVariants.Size()-1)];
+				invoker.DeadVariants.Delete(R);
+				
+				invoker.DeadHandL = L;
+				invoker.DeadHandR = R;
+				
+				A_OverlayPivot(Lay1, 0, .5);
+				A_OverlayScale(Lay1, .9, .9);
+				A_OverlayOffset(Lay1, 5, -10, WOF_ADD);
+			}
+			#### BBB 1{
+				A_OverlayScale(Lay1, .2, .2, WOF_ADD);
+				A_OverlayOffset(Lay1, 5, 20, WOF_ADD);
+			}
+			#### # 0{
+				A_Overlay(Lay2, "DeadLeftHand");
+				Switch(invoker.DeadHandR)
+				{
+					Case 1:
+						A_Overlay(OverlayId(), "RightHandDead1");
+						Break;
+					Case 2:
+						A_Overlay(OverlayId(), "RightHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "RightHandDead3");
+				}
+			}
+			#### C 1{
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30+DeltaAngle(Angle, invoker.DeadAngle)*.2);
+			}
+			#### D 1{
+				A_GlovesColor();
+				A_OverlayOffset(Lay1, 90-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6+20, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1.2, 1.2);
+				A_OverlayRotate(Lay1, 30+DeltaAngle(Angle, invoker.DeadAngle)*.2);
+			}
+			Wait;
+		RightHandDead1:
+			MRD1 D 1 {
+				A_GlovesColor();
+				A_OverlayOffset(Lay1, 70-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6-20, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 8+DeltaAngle(Angle, invoker.DeadAngle)*.2);
+				A_OverlayScale(Lay1, 1.4, 1.3);
+			}
+			Wait;
+		RightHandDead2:
+			MRD1 F 1 {
+				A_GlovesColor();
+				A_OverlayOffset(Lay1, 150-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 80+DeltaAngle(Angle, invoker.DeadAngle)*.2);
+				A_OverlayScale(Lay1, 1, .9);
+			}
+			Wait;
+		RightHandDead3:
+			MRD1 G 1 {
+				A_GlovesColor();
+				A_OverlayFlags(Lay1, PSPF_FLIP, true);
+				A_OverlayOffset(Lay1, 240-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 10-DeltaAngle(Angle, invoker.DeadAngle)*.2);
+				A_OverlayScale(Lay1, 1.3, 1);
+			}
+			Wait;
+			
+		DyingLeftHand:
+			MRD1 E 1 {
+				A_GlovesColor();
+				A_OverlayFlags(Lay2, PSPF_FLIP, true);
+				A_OverlayFlags(Lay2, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(Lay2, -140, 25);
+				A_OverlayRotate(Lay2, -20);
+			}
+			#### # 1 {
+				A_OverlayOffset(Lay2, -20, -15, WOF_ADD);
+				A_OverlayRotate(Lay2, -5, WOF_ADD);
+				A_OverlayScale(Lay2, .1, .1, WOF_ADD);
+			}
+			#### ### 1 {
+				A_OverlayOffset(Lay2, -15, 15, WOF_ADD);
+				A_OverlayRotate(Lay2, -5, WOF_ADD);
+				A_OverlayScale(Lay2, .1, .1, WOF_ADD);
+			}
+		DeadLeftHand:
+			MRD1 # 0 {
+				Switch(invoker.DeadHandL)
+				{
+					Case 2:
+						A_Overlay(OverlayId(), "LeftHandDead2");
+						Break;
+					Case 3:
+						A_Overlay(OverlayId(), "LeftHandDead3");
+				}
+			}
+			#### CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 {
+				A_GlovesColor();
+				A_OverlayFlags(Lay2, PSPF_FLIP, true);
+				A_OverlayFlags(Lay2, PSPF_ADDWEAPON, false);
+				A_OverlayOffset(Lay2, -130-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay2, 30-DeltaAngle(Angle, invoker.DeadAngle)*.2);
+				A_OverlayScale(Lay2, 1, 1);
+				A_SetTics(CRandom(0, 1));
+			}
+			#### D 1 {
+				A_GlovesColor();
+				A_OverlayOffset(Lay2, -130-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay2, 30-DeltaAngle(Angle, invoker.DeadAngle)*.2);
+				A_OverlayScale(Lay2, 1, 1);
+			}
+			Wait;
+		LeftHandDead2:
+			MRD1 F 1 {
+				A_GlovesColor();
+				A_OverlayFlags(Lay2, PSPF_FLIP, true);
+				A_OverlayOffset(Lay2, 0-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6+100, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay2, 80-DeltaAngle(Angle, invoker.DeadAngle)*.2);
+				A_OverlayScale(Lay2, 1, .9);
+			}
+			Wait;
+		LeftHandDead3:
+			MRD1 G 1 {
+				A_GlovesColor();
+				A_OverlayFlags(Lay2, PSPF_FLIP, false);
+				A_OverlayOffset(Lay2, 0-DeltaAngle(Angle, invoker.DeadAngle)*3, abs(DeltaAngle(Angle, invoker.DeadAngle)*.6)+(Player.ViewZ-FloorZ)*6, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay2, 10+DeltaAngle(Angle, invoker.DeadAngle)*.2);
+				A_OverlayScale(Lay2, 1.3, 1);
+			}
+			Wait;
+	}
+}

@@ -56,3 +56,17 @@ MRIntW/ShotgunCasingBounce1 "Sounds/SBNCE1.ogg"
 MRIntW/ShotgunCasingBounce2 "Sounds/SBNCE2.ogg"
 MRIntW/ShotgunCasingBounce3 "Sounds/SBNCE3.ogg"
 $Random MRIntW/ShotgunCasingBounce { MRIntW/ShotgunCasingBounce1 MRIntW/ShotgunCasingBounce2 MRIntW/ShotgunCasingBounce3 }
+
+
+MRIntW/WeapBounce1 "Sounds/WeapDrop1.ogg"
+MRIntW/WeapBounce2 "Sounds/WeapDrop2.ogg"
+
+$Random MRIntW/ChainsawBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
+$Random MRIntW/PistolBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
+$Random MRIntW/RifleBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
+$Random MRIntW/ShotgunBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
+$Random MRIntW/SuperShotgunBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
+$Random MRIntW/ChaingunBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
+$Random MRIntW/RocketlauncherBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
+$Random MRIntW/PlasmaRifleBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
+$Random MRIntW/BFG9000Bounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
