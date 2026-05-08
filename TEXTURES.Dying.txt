@@ -6,11 +6,11 @@ Sprite "MRD1A0", 164, 175
 	Offset -126, -118
 	Patch "MRHNDD10", 53, 98
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 	Patch "MRHNDD11", 0, 0
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 }
 
@@ -19,11 +19,11 @@ Sprite "MRD1B0", 164, 175
 	Offset -126, -118
 	Patch "MRHNDD10", 53, 98
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 	Patch "MRHNDD12", 1, 0
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 }
 
@@ -32,11 +32,11 @@ Sprite "MRD1C0", 183, 145
 	Offset -122, -131
 	Patch "MRHNDD20", 70, 50
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 	Patch "MRHNDD21", 0, 0
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 }
 
@@ -45,11 +45,11 @@ Sprite "MRD1D0", 183, 145
 	Offset -122, -131
 	Patch "MRHNDD20", 70, 50
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 	Patch "MRHNDD22", 4, 6
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 }
 
@@ -58,7 +58,7 @@ Sprite "MRD1E0", 167, 114
 	Offset -120, -144
 	Patch "MRHNDD31", 0, 0
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 }
 
@@ -67,7 +67,7 @@ Sprite "MRD1F0", 146, 220
 	Offset -61, -125
 	Patch "MRHNDD41", 0, 0
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 }
 
@@ -76,7 +76,7 @@ Sprite "MRD1G0", 82, 158
 	Offset 1, -104
 	Patch "MRHNDD51", 0, 0
 	{
-		Translation "9:12=125:125"
+		Translation "9:12=125:125", "152:159=120:123"
 	}
 }
 
