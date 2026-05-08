@@ -1,0 +1,527 @@
+/*
+	Gloves color generation
+*/
+
+Extend Class MRIntWeaps_Fist
+{
+	Actor LastActor;
+	Name LastName;
+	Color GlovesShades, GlovesLights, GlovesFireShades, GlovesFireLights, TargetColor;
+	int GlovesTrans, RifleGlovesTrans, PistolGlovesTrans, GlovesColor, ColDir, ColDir2;
+	Bool ColIncrea;
+	
+	Static Const Name Monstry[] = {
+		'DoomPlayer', 'ZombieMan', 'ShotgunGuy', 'ChaingunGuy', 'WolfensteinSS',
+		'DoomImp', 'Demon', 'Spectre', 'LostSoul', 'Cacodemon', 'Revenant',
+		'HellKnight', 'Fatso', 'Arachnotron', 'PainElemental', 'Archvile',
+		'BaronOffHell', 'CyberDemon', 'SpiderMastermind'
+	};
+	
+	Void UpdateGloves()
+	{
+		if(GlovesColor<0){
+			RifleGlovesTrans = 0;
+			PistolGlovesTrans = 0;
+			GlovesTrans = 0;
+			
+			GlovesColor = Owner.GetCVar("MRIntW_GlovesColor");
+			Return;
+		}
+		
+		else if(GlovesColor>7){
+			Switch(GlovesColor)
+			{
+				Case 8://Subtle glow
+					{
+					GlovesShades = CVar.GetCVar("MRIntW_GlovesColorShade", Owner.Player).GetInt();
+					GlovesLights = CVar.GetCVar("MRIntW_GlovesColorLight", Owner.Player).GetInt();
+					
+					Array<int> AllCols, AllSetCols;
+					int Cols[6], SetCols[6];
+					
+					AllSetCols.Push(GlovesLights.R);
+					AllSetCols.Push(GlovesLights.G);
+					AllSetCols.Push(GlovesLights.B);
+					AllSetCols.Push(GlovesShades.R);
+					AllSetCols.Push(GlovesShades.G);
+					AllSetCols.Push(GlovesShades.B);
+								
+					SetCols[0] = AllSetCols[ColDir];
+					SetCols[ColDir] = AllSetCols[0];
+					
+
+					For(int i=1;i<6;i++){
+						if(i==ColDir)Continue;
+						SetCols[i] = AllSetCols[i];
+					}
+					
+					AllCols.Push(GlovesFireLights.R);
+					AllCols.Push(GlovesFireLights.G);
+					AllCols.Push(GlovesFireLights.B);
+					AllCols.Push(GlovesFireShades.R);
+					AllCols.Push(GlovesFireShades.G);
+					AllCols.Push(GlovesFireShades.B);
+								
+					Cols[0] = AllCols[ColDir];
+					Cols[ColDir] = AllCols[0];
+					
+
+					For(int i=1;i<6;i++){
+						if(i==ColDir)Continue;
+						Cols[i] = AllCols[i];
+					}
+					
+					int Increa = CRandom(1, 3);
+					Cols[0]+=Increa;
+					
+					For(int i=1;i<3;i++){
+						if(Cols[i]<=Max(0, SetCols[i]*.9))Continue;
+						int Take = Min(Increa, CRandom(1, 2));
+						Increa -= Take;
+						Cols[i] -= Max(0, Take);
+						if(Cols[i]<=0)Cols[i] = 0;
+					}
+					
+					int Hold = Cols[ColDir];
+					Cols[ColDir] = Cols[0];
+					Cols[0] = Hold;
+					
+					Hold = SetCols[ColDir];
+					SetCols[ColDir] = SetCols[0];
+					SetCols[0] = Hold;
+					
+					if(Cols[ColDir]>=Min(255, SetCols[ColDir]*1.1)){
+						Cols[ColDir] = Min(255, SetCols[ColDir]*1.1);
+						ColDir++;
+						if(ColDir>=3)ColDir = 0;
+					}
+					
+					For(int i=3;i<6;i++){
+						Cols[i] = 50-Cols[i-3];
+					}
+					
+					GlovesFireShades = Color(Cols[3],Cols[4],Cols[5]);
+					GlovesFireLights = Color(Cols[0],Cols[1],Cols[2]);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesFireShades.R*100/255*2, GlovesFireShades.G*100/255*2, GlovesFireShades.B*100/255*2);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesFireLights.R*100/255*2, GlovesFireLights.G*100/255*2, GlovesFireLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesFireLights.R*100/255*2, GlovesFireLights.G*100/255*2, GlovesFireLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesFireLights.R*100/255*2, GlovesFireLights.G*100/255*2, GlovesFireLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+					GlovesTrans = Translation;
+					}
+					Break;
+				Case 9://Rainbow
+				Case 10://Fast rainbow
+				Case 11://Melt ya eyes
+					{
+					Array<int> AllCols;
+					int Cols[6];
+					AllCols.Push(GlovesLights.R);
+					AllCols.Push(GlovesLights.G);
+					AllCols.Push(GlovesLights.B);
+					AllCols.Push(GlovesShades.R);
+					AllCols.Push(GlovesShades.G);
+					AllCols.Push(GlovesShades.B);
+								
+					Cols[0] = AllCols[ColDir];
+					Cols[ColDir] = AllCols[0];
+					
+
+					For(int i=1;i<6;i++){
+						if(i==ColDir)Continue;
+						Cols[i] = AllCols[i];
+					}
+					
+					int Increa = CRandom(1, 3);
+					if(GlovesColor>9 && !MRIntW_Epilepsy)Increa = CRandom(25, 40);
+					Cols[0]+=Increa;
+					
+					For(int i=1;i<3;i++){
+						int Take = Clamp(Increa*CFRandom(.1, 1), 1, Increa);
+						Increa -= Take;
+						Cols[i] -= Max(0, Take);
+						if(Cols[i]<=0)Cols[i] = 0;
+					}
+					
+					int Others = Cols[1]+Cols[2];
+					
+					int Hold = Cols[ColDir];
+					Cols[ColDir] = Cols[0];
+					Cols[0] = Hold;
+					
+					if(Cols[ColDir]>=255){
+						Cols[ColDir] = 255;
+						if(Others<=255){
+							ColDir++;
+							if(ColDir>=3)ColDir = 0;
+						}
+					}
+					
+					For(int i=3;i<6;i++){
+						Double Col = Cols[i-3];
+						Col /= 255;
+						Cols[i] = (.5-Col)*50;
+						if(GlovesColor==11 && !MRIntW_Epilepsy)Cols[i] = CRandom(-4, 1)*255;
+					}
+					
+					GlovesShades = Color(Cols[3],Cols[4],Cols[5]);
+					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+					GlovesTrans = Translation;
+					}
+					Break;
+				Case 12://Light to dark
+					{
+					Array<int> Cols;
+					Cols.Push(GlovesLights.R);
+					Cols.Push(GlovesLights.G);
+					Cols.Push(GlovesLights.B);
+					Cols.Push(GlovesShades.R);
+					Cols.Push(GlovesShades.G);
+					Cols.Push(GlovesShades.B);
+					
+					if(ColIncrea){
+						int Increa = CRandom(3, 5);
+						Cols[ColDir]+=Increa;
+						if(Cols[ColDir]>=255){
+							Cols[ColDir]=255;
+							Cols[ColDir2+3]++;
+							if(Cols[ColDir2+3]>=20){
+								Cols[ColDir2+3]=20;
+								ColIncrea = false;
+							}
+						}
+						else Cols[ColDir2]+=Increa;
+					}
+					else {
+						int Increa = CRandom(1, 2);
+						if(Cols[ColDir2+3]>0)Cols[ColDir2+3]--;
+						else {
+							Cols[ColDir2+3]=0;
+							Cols[ColDir]-=Increa;
+							if(Cols[ColDir]<=0){
+								Cols[ColDir] = Cols[ColDir2] = 0;
+								ColIncrea = true;
+								ColDir++;
+								if(ColDir>2)ColDir = 0;
+								ColDir2 = CRandom(0, 2);
+							}
+							else Cols[ColDir2]-=Increa;
+						}
+					}
+										
+					GlovesShades = Color(Cols[3],Cols[4],Cols[5]);
+					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+					GlovesTrans = Translation;
+					}
+					Break;
+				Case 13://Last actor dealed damaged
+				Case 14://Last actor received damage
+					{
+					if(LastActor && LastActor.GetClassName()!=LastName){
+						For(int i=0;i<Monstry.Size();i++){
+							if(LastActor is Monstry[i])LastName = Monstry[i];
+						}
+						Switch(LastName){
+							Case 'DoomPlayer':
+								TargetColor = LastActor.Player.GetColor();
+								Break;
+							Case 'ZombieMan':
+								TargetColor = Color(130,134,106);
+								Break;
+							Case 'ShotgunGuy':
+								TargetColor = Color(40,0,0);
+								Break;
+							Case 'ChaingunGuy':
+								TargetColor = Color(85,0,0);
+								Break;
+							Case 'WolfensteinSS':
+								TargetColor = Color(7,23,95);
+								Break;
+							Case 'DoomImp':
+								TargetColor = Color(114,70,36);
+								Break;
+							Case 'Demon':
+								TargetColor = Color(193,85,90);
+								Break;
+							Case 'Spectre':
+								TargetColor = Color(23,23,23);
+								Break;
+							Case 'LostSoul':
+								TargetColor = Color(198,101,2);
+								Break;
+							Case 'Cacodemon':
+								TargetColor = Color(181,0,66);
+								Break;
+							Case 'Revenant':
+								TargetColor = Color(175,175,175);
+								Break;
+							Case 'HellKnight':
+								TargetColor = Color(245,188,152);
+								Break;
+							Case 'Fatso':
+								TargetColor = Color(195,116,71);
+								Break;
+							Case 'Arachnotron':
+								TargetColor = Color(177,137,108);
+								Break;
+							Case 'PainElemental':
+								TargetColor = Color(87,64,51);
+								Break;
+							Case 'Archvile':
+								TargetColor = Color(255,170,131);
+								Break;
+							Case 'BaronOffHell':
+								TargetColor = Color(152,44,49);
+								Break;
+							Case 'CyberDemon':
+								TargetColor = Color(245,162,122);
+								Break;
+							Case 'SpiderMastermind':
+								TargetColor = Color(180,129,113);
+								Break;
+						}
+						LastName = LastActor.GetClassName();
+					}
+					Array<int> Cols;
+					Cols.Push(GlovesLights.R);
+					Cols.Push(GlovesLights.G);
+					Cols.Push(GlovesLights.B);
+					Cols.Push(TargetColor.R);
+					Cols.Push(TargetColor.G);
+					Cols.Push(TargetColor.B);
+					
+					For(int i=0;i<3;i++){
+						if(Cols[i]<Cols[i+3])Cols[i] += Min(Cols[i+3]-Cols[i], 10);
+						else if(Cols[i]>Cols[i+3])Cols[i] -= Min(Cols[i]-Cols[i+3], 10);
+					}
+															
+					GlovesShades = Color(0,0,0);
+					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+					GlovesTrans = Translation;
+					}
+					Break;
+				Case 15://Display health
+				Case 16://Display enemy health
+					{
+					int ChangeSpeed = 5;
+					Let Aktor = Owner;
+					if(GlovesColor==16){
+						Aktor = LastActor;
+						ChangeSpeed = 20;
+					}
+					
+					if(!Aktor||Aktor.Health<1)TargetColor = Color(30,30,30);
+					
+					else {
+						Double MaxH = GetDefaultByType(Aktor.GetClass()).Health;
+						
+						Double Green = Aktor.Health;
+						if(Aktor == Owner){
+							if(Aktor.Health>=50 && Aktor.Health<100)Green = 200;
+							else if(Aktor.Health<50)Green = Aktor.Health*4;
+							else Green *= 2;
+						}
+						else {
+							if(Green>=MaxH*.5 && Green<MaxH)Green = 200;
+							else if(Green<MaxH*.5)Green = Green/MaxH*400;
+							else Green = Green/MaxH*200;
+						}
+						
+						int Blue = (Aktor.Health-MaxH)*2;
+						if(Aktor!=Owner)Blue = 0;
+						Double Red = (MaxH-Min(MaxH, Aktor.Health));
+						Red = Red/MaxH*200;
+						TargetColor = Color(int(Red), int(Green), Blue);
+					}
+					
+					Array<int> Cols;
+					Cols.Push(GlovesLights.R);
+					Cols.Push(GlovesLights.G);
+					Cols.Push(GlovesLights.B);
+					Cols.Push(TargetColor.R);
+					Cols.Push(TargetColor.G);
+					Cols.Push(TargetColor.B);
+					
+					For(int i=0;i<3;i++){
+						if(Cols[i]<Cols[i+3])Cols[i] += Min(Cols[i+3]-Cols[i], ChangeSpeed);
+						else if(Cols[i]>Cols[i+3])Cols[i] -= Min(Cols[i]-Cols[i+3], ChangeSpeed);
+					}
+															
+					GlovesShades = Color(0,0,0);
+					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+					GlovesTrans = Translation;
+					}
+					Break;
+				Case 17://Display armor
+					{
+					int Col[3];
+					
+					if(Owner.FindInventory("BasicArmor")){
+						Let Arm = BasicArmor(Owner.FindInventory("BasicArmor"));
+
+						Switch(Arm.ArmorType)
+						{
+							Case 'ArmorBonus':
+								Col[0] = Arm.Amount*1;
+								Col[1] = Arm.Amount*1.25;
+								Col[2] = Arm.Amount*1;
+								Break;
+							Case 'GreenArmor':
+								Col[0] = Arm.Amount*.15;
+								Col[1] = Arm.Amount*1.25;
+								Col[2] = Arm.Amount*.4;
+								Break;
+							Case 'BlueArmor':
+								Col[0] = Arm.Amount*.15;
+								Col[1] = Arm.Amount*.4;
+								Col[2] = Arm.Amount*1.25;
+								Break;
+							Default:
+								Col[0] = Col[1] = Col[2] = 30;
+								Break;
+						}
+					}
+					
+					TargetColor = Color(Col[0], Col[1], Col[2]);
+					
+					Array<int> Cols;
+					Cols.Push(GlovesLights.R);
+					Cols.Push(GlovesLights.G);
+					Cols.Push(GlovesLights.B);
+					Cols.Push(TargetColor.R);
+					Cols.Push(TargetColor.G);
+					Cols.Push(TargetColor.B);
+					
+					For(int i=0;i<3;i++){
+						if(Cols[i]<Cols[i+3])Cols[i] += Min(Cols[i+3]-Cols[i], 5);
+						else if(Cols[i]>Cols[i+3])Cols[i] -= Min(Cols[i]-Cols[i+3], 5);
+					}
+															
+					GlovesShades = Color(0,0,0);
+					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+					GlovesTrans = Translation;
+					}
+					Break;
+				Case 18://Display ammo
+					{
+					Float Col[3];
+					
+					if(!Owner.Player.ReadyWeapon || !Owner.Player.ReadyWeapon.AmmoType1)Col[0] = Col[1] = Col[2] = 30;
+					else if(Owner.FindInventory(Owner.Player.ReadyWeapon.AmmoType1)){
+						int MaxA = Owner.FindInventory(Owner.Player.ReadyWeapon.AmmoType1).MaxAmount;
+						int Amt = Owner.CountInv(Owner.Player.ReadyWeapon.AmmoType1);
+						
+						Col[0] = MaxA-Min(MaxA, Amt);
+						Col[0] = Col[0]/MaxA*200;
+						
+						Col[1] = Amt;
+						Col[1] = Col[1]/MaxA*200;
+					}
+					else {Col[0] = 255;Col[1] = Col[2] = 0;}
+					
+					TargetColor = Color(int(Col[0]), int(Col[1]), int(Col[2]));
+					
+					Array<int> Cols;
+					Cols.Push(GlovesLights.R);
+					Cols.Push(GlovesLights.G);
+					Cols.Push(GlovesLights.B);
+					Cols.Push(TargetColor.R);
+					Cols.Push(TargetColor.G);
+					Cols.Push(TargetColor.B);
+					
+					For(int i=0;i<3;i++){
+						if(Cols[i]<Cols[i+3])Cols[i] += Min(Cols[i+3]-Cols[i], 10);
+						else if(Cols[i]>Cols[i+3])Cols[i] -= Min(Cols[i]-Cols[i+3], 10);
+					}
+															
+					GlovesShades = Color(0,0,0);
+					GlovesLights = Color(int(Cols[0]),int(Cols[1]),int(Cols[2]));
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+					GlovesTrans = Translation;
+					}
+					Break;
+			}
+			
+			GlovesColor = Owner.GetCVar("MRIntW_GlovesColor");
+		}
+		
+		else if(GetAge()%4==0){
+			if(GlovesLights != CVar.GetCVar("MRIntW_GlovesColorLight", Owner.Player).GetInt()||
+				GlovesShades != CVar.GetCVar("MRIntW_GlovesColorShade", Owner.Player).GetInt()||
+				Owner.GetCVar("MRIntW_GlovesColor") != GlovesColor||
+				GlovesTrans == 0
+			){
+				GlovesColor = Owner.GetCVar("MRIntW_GlovesColor");
+				GlovesShades = CVar.GetCVar("MRIntW_GlovesColorShade", Owner.Player).GetInt();
+				ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
+				GlovesLights = CVar.GetCVar("MRIntW_GlovesColorLight", Owner.Player).GetInt();
+				if(GlovesColor<7){
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPressetRifle", GlovesColor, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPressetPistol", GlovesColor, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPresset", GlovesColor, Owner.PlayerNumber() + 2500);
+				}
+				else {
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+				}
+				GlovesTrans = Translation;
+			}
+			
+		}
+	}
+}
