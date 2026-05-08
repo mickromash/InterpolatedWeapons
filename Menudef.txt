@@ -36,12 +36,15 @@ OptionMenu "MRIntWeaps_Menu"
 	SubMenu "$MRIntWeaps_AnimMenu", "MRIntWeaps_AnimMenu"
 	SubMenu "$MRIntWeaps_SoundMenu", "MRIntWeaps_SoundMenu"
 	StaticText ""
+	SubMenu "$MRIntWeaps_PressetsMenu", "MRIntWeaps_PressetsMenu"
+	StaticText ""
 	Command "$MRIntWeaps_Give", "MRIntW_Give"
 	SafeCommand "$MRIntWeaps_Uninstall", MRIntW_Uninstall, "$MRIntWeaps_UninstallPromt"
 }
 
 OptionMenu "MRIntWeaps_AnimMenu"
 {
+	Class MRIntWeaps_AnimMenu
 	Title "$MRIntWeaps_AnimMenu"
 	StaticText ""
 	Option "$MRIntW_GlovesColor", "MRIntW_GlovesColor", "MRIntW_GlovesColorValues"
@@ -56,12 +59,21 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Slider "$MRIntW_BobRangeY", "MRIntW_BobRangeY", 0, 3, .1
 	Slider "$MRIntW_BobRangeZ", "MRIntW_BobRangeZ", 0, 3, .1
 	Slider "$DSPLYMNU_BOBSPEED", "wbobspeed", 0, 3, .1
+	Option "$MRIntW_VanillaFireBob", "MRIntW_VanillaFireBob", "YesNo"
 	StaticText ""
 	Option "$MRIntW_Bounce", "MRIntW_Bounce", "YesNo"
 	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "YesNo"
+	Option "$MRIntW_DamageShake", "MRIntW_DamageShake", "YesNo"
 	Option "$MRIntW_LowHealthShake", "MRIntW_LowHealthShake", "YesNo"
 	Option "$MRIntW_NoMuzzleFlash", "MRIntW_NoMuzzleFlash", "YesNo"
 	Option "$MRIntW_FlashFlare", "MRIntW_FlashFlare", "YesNo"
+	StaticText ""
+	SubMenu "$MRIntW_WeaponsMenu", "MRIntW_WeaponsMenu"
+}
+
+OptionMenu "MRIntW_WeaponsMenu"
+{
+	Title "$MRIntW_WeaponsMenu"
 	StaticText ""
 	StaticText "$TAG_FIST", "Fire"
 	Option "$MRIntW_RightPunch", "MRIntW_RightPunch", "YesNo"
@@ -99,7 +111,7 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	StaticText ""
 	StaticText "$TAG_CHAINGUN", "Fire"
 	Option "$MRIntW_ChaingunFixed", "MRIntW_ChaingunFixed", "YesNo"
-	Slider "$MRIntW_ChaingunSpeed", "MRIntW_ChaingunSpeed", 1, 5, 1, 2
+	Slider "$MRIntW_ChaingunSpeed", "MRIntW_ChaingunSpeed", 1, 5, .5, 1
 	Slider "$MRIntW_ChaingunStopTime", "MRIntW_ChaingunStopTime", .05, 1, .05, 2
 	Option "$MRIntW_ChaingunCounterClock", "MRIntW_ChaingunCounterClock", "YesNo"
 	Slider "$MRIntW_ChaingunMaxSmokes", "MRIntW_ChaingunMaxSmokes", 1, 6, 1, 0, "MRIntW_FlowingSmoke"
@@ -120,6 +132,19 @@ OptionMenu "MRIntWeaps_SoundMenu"
 	StaticText ""
 	Option "$MRIntW_ShotgunSound", "MRIntW_ShotgunSound", "YesNo"
 	Option "$MRIntW_ChaingunSound", "MRIntW_ChaingunSound", "YesNo"
+}
+
+OptionMenu "MRIntWeaps_PressetsMenu"
+{
+	Class MRIntWeaps_PressetsMenu
+	Title "$MRIntWeaps_PressetsMenu"
+	StaticText ""
+	SafeCommand "$MRIntW_PressetDefault", "MRIntW_PressetDefault", "$MRIntW_PressetDefaultPrompt"
+	SafeCommand "$MRIntW_PressetVanilla", "MRIntW_PressetVanilla", "$MRIntW_PressetVanillaPrompt"
+	SafeCommand "$MRIntW_PressetMaximum", "MRIntW_PressetMaximum", "$MRIntW_PressetMaximumPrompt"
+	SafeCommand "$MRIntW_PressetNoGameplay", "MRIntW_PressetNoGameplay", "$MRIntW_PressetNoGameplayPrompt"
+	StaticText ""
+	MRIntWeaps_WritePresset "$MRIntW_WritePresset", "$MRIntW_WritePressetPrompt"
 }
 
 OptionMenu "MRIntWeaps_EasterMenu"
@@ -162,10 +187,17 @@ OptionValue "MRIntW_GlovesColorValues"
 
 OptionValue "MRIntW_GlovesColorValuesSpecial"
 {
-	8, "$MRIntW_GlovesColor8"//Glow
+	8, "$MRIntW_GlovesColor8"//Subtle glow
 	9, "$MRIntW_GlovesColor9"//Rainbow
 	10, "$MRIntW_GlovesColor10"//Fast rainbow
 	11, "$MRIntW_GlovesColor11"//Epilepsy
+	12, "$MRIntW_GlovesColor12"//Light to dark
+	13, "$MRIntW_GlovesColor13"//Last damaged by
+	14, "$MRIntW_GlovesColor14"//Last damaged
+	15, "$MRIntW_GlovesColor15"//Health
+	16, "$MRIntW_GlovesColor16"//Enemy health
+	17, "$MRIntW_GlovesColor17"//Armor
+	18, "$MRIntW_GlovesColor18"//Ammo
 }
 
 OptionValue "MRIntW_BobStyleValues"

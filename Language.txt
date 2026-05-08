@@ -47,10 +47,17 @@ MRIntW_GlovesColor4 = "Red";
 MRIntW_GlovesColor5 = "Grey";
 MRIntW_GlovesColor6 = "Blue";
 MRIntW_GlovesColor7 = "Custom";
-MRIntW_GlovesColor8 = "Glow";
+MRIntW_GlovesColor8 = "Subtle glow";
 MRIntW_GlovesColor9 = "Rainbow";
 MRIntW_GlovesColor10 = "Fast rainbow";
 MRIntW_GlovesColor11 = "Epilepsy";
+MRIntW_GlovesColor12 = "Light to dark";
+MRIntW_GlovesColor13 = "Last damaged by";
+MRIntW_GlovesColor14 = "Last damaged";
+MRIntW_GlovesColor15 = "Health";
+MRIntW_GlovesColor16 = "Enemy health";
+MRIntW_GlovesColor17 = "Armor";
+MRIntW_GlovesColor18 = "Ammo";
 MRIntW_GlovesColorShade = "Custom color shades";
 MRIntW_GlovesColorLight = "Custom color lights";
 MRIntW_RandomGlovesColor2 = "Set random color shades";
@@ -76,13 +83,18 @@ MRIntW_BobRangeX = "Bob X range";
 MRIntW_BobRangeY = "Bob Y range";
 MRIntW_BobRangeZ = "Bob Z range";
 
+MRIntW_VanillaFireBob = "Original (DOS) DOOM firing bob";
+
 MRIntW_IdleAnims = "Idle animations";
+
+MRIntW_WeaponsMenu = "Weapons settings";
 
 MRIntW_BersShake = "Hands shaking on berserk";
 MRIntW_BersShake0 = "No";
 MRIntW_BersShake1 = "Only without weapon";
 MRIntW_BersShake2 = "Yes";
 
+MRIntW_DamageShake = "Shake hands on damage";
 MRIntW_LowHealthShake = "Low health hands shaking";
 MRIntW_NoMuzzleFlash = "Disable muzzle flashes";
 MRIntW_FlashFlare = "Muzzle flash flare";
@@ -149,6 +161,23 @@ MRIntW_ShotgunSound = "Shotgun custom firing sound";
 MRIntW_ChaingunSound = "Chaingun custom firing sound";
 
 
+MRIntWeaps_PressetsMenu = "Settings pressets";
+
+MRIntW_PressetDefault = "Reset to defaults";
+MRIntW_PressetDefaultPrompt = "Presset with default settings.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_PressetVanilla = "Vanilla presset";
+MRIntW_PressetVanillaPrompt = "Presset with settings closer to vanilla doom.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_PressetMaximum = "Advanced presset";
+MRIntW_PressetMaximumPrompt = "Presset that turns on as much mods features as possible.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_PressetNoGameplay = "Vanilla gameplay";
+MRIntW_PressetNoGameplayPrompt = "Presset that turns off all gameplay options. Any visual-only settings will not be changed.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_WritePresset = "Save current settings";
+MRIntW_WritePressetPrompt = "Save current settings into a presset?";
+MRIntW_WritePressetPrompt2 = "Save current settings into a presset?\n\nThe previous saved presset will be rewritten.";
+MRIntW_ApplyPresset = "Load saved settings";
+MRIntW_ApplyPressetPrompt = "Load previously saved settings?\nThis presset won't be deleted.\n\nAll changes will be applied as soon as you press Yes.";
+
+
 TAG_RIFLE = "Rifle";
 
 [ru]
@@ -199,6 +228,8 @@ MRIntW_BobRangeX = "Радиус по горизонтали";
 MRIntW_BobRangeY = "Радиус по вертикали";
 MRIntW_BobRangeZ = "Радиус глубины";
 
+MRIntW_VanillaFireBob = "Покачивание при стрельбе из оригинального (DOS) DOOM";
+
 MRIntW_IdleAnims = "Анимации безделья";
 
 //MRIntW_BrownGloves = "Коричневые перчатки";
@@ -212,10 +243,17 @@ MRIntW_GlovesColor4 = "Красный";
 MRIntW_GlovesColor5 = "Серый";
 MRIntW_GlovesColor6 = "Синий";
 MRIntW_GlovesColor7 = "Свой";
-MRIntW_GlovesColor8 = "Свечение";
+MRIntW_GlovesColor8 = "Слабое свечение";
 MRIntW_GlovesColor9 = "Радуга";
 MRIntW_GlovesColor10 = "Быстрая радуга";
 MRIntW_GlovesColor11 = "Эпилепсия";
+MRIntW_GlovesColor12 = "Угасание";
+MRIntW_GlovesColor13 = "Последний задамажевший";
+MRIntW_GlovesColor14 = "Последний получивший";
+MRIntW_GlovesColor15 = "Здоровье";
+MRIntW_GlovesColor16 = "Здоровье врага";
+MRIntW_GlovesColor17 = "Броня";
+MRIntW_GlovesColor18 = "Патроны";
 MRIntW_GlovesColorShade = "Тёмные участки";
 MRIntW_GlovesColorLight = "Светлые участки";
 MRIntW_RandomGlovesColor2 = "Случайные тёмные участки";
@@ -226,10 +264,13 @@ MRIntW_EpilepsyDesc2 = "и могут вызвать приступ эпилеп
 MRIntW_EpilepsyDesc3 = "Если вы уверены что не страдаете эпилепсией,";
 MRIntW_EpilepsyDesc4 = "откройте консоль и впишите MRIntW_Epilepsy 0";
 
-MRIntW_LowHealthShake = "Тряка рук при низком здоровье";
+MRIntW_DamageShake = "Тряска рук при получении урона";
+MRIntW_LowHealthShake = "Тряска рук при низком здоровье";
 MRIntW_NoMuzzleFlash = "Отключить дульные вспышки";
 MRIntW_FlashFlare = "Свечение от дульных вспышек";
 MRIntW_ShotgunsRecoil = "Сила анимации отдачи дробовиков";
+
+MRIntW_WeaponsMenu = "Настройки оружия";
 
 MRIntW_BersShake = "Тряска рук при берсерке";
 MRIntW_BersShake0 = "Нет";
@@ -302,6 +343,23 @@ MRIntWeaps_SoundMenu = "Настройки звуков (требуется ад
 
 MRIntW_ShotgunSound = "Звуки дробовика из аддона";
 MRIntW_ChaingunSound = "Звуки пулемёта из аддона";
+
+
+MRIntWeaps_PressetsMenu = "Прессеты настроек";
+
+MRIntW_PressetDefault = "Настройки по умолчанию";
+MRIntW_PressetDefaultPrompt = "Прессет с настройками по умолчанию.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetVanilla = "Ванильный прессет";
+MRIntW_PressetVanillaPrompt = "Прессет с настройками близкими к классическому Doom.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetMaximum = "Максимальный прессет";
+MRIntW_PressetMaximumPrompt = "Прессет включает максимальное количество фишек мода.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetNoGameplay = "Классический геймплей";
+MRIntW_PressetNoGameplayPrompt = "Прессет выключает все геймплейные опции мода, без изменения остальных.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_WritePresset = "Сохранить текущие настройки";
+MRIntW_WritePressetPrompt = "Сохранить текущие настройки в прессет?";
+MRIntW_WritePressetPrompt2 = "Сохранить текущие настройки в прессет?\n\nНастройки сохранённые до этого будут перезаписаны.";
+MRIntW_ApplyPresset = "Загрузить сохранённые настройки";
+MRIntW_ApplyPressetPrompt = "Загрузить прежде сохранённые настройки?\nЭтот прессет не будет удалён.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
 
 
 TAG_RIFLE = "Винтовка";

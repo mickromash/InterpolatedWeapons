@@ -2,10 +2,10 @@ nosave int MRIntW_Casings = 1;//0 - none, 1 - only visual, 2 - visual + in-game 
 user float MRIntW_CasingsRandom = 1;//Maximum casings speed
 nosave int MRIntW_CasingsAmount = 300;
 nosave float MRIntW_CasingsVolume = 1;
-nosave bool MRIntW_CasingsLowRes = false;
-nosave bool MRIntW_CasingsClusteringReduce = true;
+nosave bool MRIntW_CasingsLowRes = false;//Unused
+nosave bool MRIntW_CasingsClusteringReduce = true;//Casings optimization
 
-nosave bool MRIntW_Smoke = false;//Firing smoke
+nosave bool MRIntW_Smoke = true;//Firing smoke
 nosave bool MRIntW_FlowingSmoke = false;//Smoke from barrels after firing
 nosave float MRIntW_FlowingSmokeLength = 1;
 nosave float MRIntW_FlowingSmokeAlpha = .1;
@@ -16,7 +16,9 @@ nosave int MRIntW_BobStyle = 4;//0 - Normal, 1 - Alpha jumpy, 2 - Alpha, 3 - Jum
 nosave float MRIntW_BobRangeX = 1;
 nosave float MRIntW_BobRangeY = 1;
 nosave float MRIntW_BobRangeZ = .2;
+nosave bool MRIntW_VanillaFireBob = false;
 nosave bool MRIntW_Bounce = true;//Bounce weapon on landing
+nosave bool MRIntW_DamageShake = true;//Shake weapon on receiving damage
 
 user bool MRIntW_IdleAnims = true;//Idle animations
 
@@ -29,7 +31,7 @@ server bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
 
-user int MRIntW_GlovesColor = 0;//0 - Tan (Classic), 1 - Black, 2 - Brown, 3 - Green, 4 - Red, 5 - Grey, 6 - Blue, 7 - Custom, 8 - Glow, 9 - Slow rainbow, 10 - Fast rainbow, 11 - Epilepsy
+user int MRIntW_GlovesColor = 0;//0 - Tan (Classic), 1 - Black, 2 - Brown, 3 - Green, 4 - Red, 5 - Grey, 6 - Blue, 7 - Custom, 8 - Subtle glow, 9 - Slow rainbow, 10 - Fast rainbow, 11 - Epilepsy, 12 - Light to dark, 13 - Last damaged by, 14 - Last damaged, 15 - Health, 16 - Enemy health, 17 - Armor, 18 - Ammo
 user color MRIntW_GlovesColorShade = "2 2 2";//Shades color
 user color MRIntW_GlovesColorLight = "EF EF EF";//Lights color
 server color MRIntW_GlovesColorTemp = "0 0 0";//Used to set MRIntW_GlovesColorLight to random values
@@ -39,7 +41,7 @@ nosave bool MRIntW_Epilepsy = true;
 nosave bool MRIntW_NoMuzzleFlash = false;//Don't display muzzle flashes
 nosave bool MRIntW_FlashFlare = false;//Flares around muzzle flashas
 
-nosave float MRIntW_ShotgunsRecoil = 1;
+nosave float MRIntW_ShotgunsRecoil = 1;//Amount of recoil in shotguns firing animation
 //Fist
 user bool MRIntW_BareHands = true;//Fists use sprites without gloves
 user bool MRIntW_GloveStrip = true;//Alternative select animation for barehands
@@ -63,21 +65,25 @@ user bool MRIntW_Rifle = false;//Replace pistol with the rifle
 //Shotgun
 nosave bool MRIntW_ShotgunSmoke = true;//Smoke from chamber
 nosave bool MRIntW_ShotgunSparks = false;
-nosave float MRIntW_ShotgunPumpAngle = 0;
-nosave bool MRIntW_ShotgunPumpRandom = false;
-nosave float MRIntW_ShotgunPumpRandRotation = 1;
+nosave float MRIntW_ShotgunPumpAngle = 0;//Pump animation rotation
+nosave bool MRIntW_ShotgunPumpRandom = false;//Adding random value to pump animation angle
+nosave float MRIntW_ShotgunPumpRandRotation = 1;//Pump animation angle random value
 //Super Shotgun
 nosave bool MRIntW_SSGSmoke = true;//Smoke from barrels when reloading
 nosave bool MRIntW_SSGSparks = false;
 //Chaingun
 user bool MRIntW_ChaingunFixed = false;//Fixed chaingun rotation
 user bool MRIntW_ChaingunCounterClock = false;//Inver chaingub spin direction
-user int MRIntW_ChaingunSpeed = 1;
+user float MRIntW_ChaingunSpeed = 1;
 user float MRIntW_ChaingunStopTime = .3;
 nosave int MRIntW_ChaingunMaxSmokes = 3;//Maximum smoking barrels
 //Rocket Launcher
 nosave bool MRIntW_RocketSmoke = true;//Smoke from muzzle
 //Plasmagun
-nosave int MRIntW_PlasmaParticles = 1;
+nosave int MRIntW_PlasmaParticles = 1;//0 - None, 1 - Flare only, 2 - Flare and particles
 //BFG 9000
-nosave bool MRIntW_BFGParticles = false;
+nosave bool MRIntW_BFGParticles = true;//Fancy ahh firing animation
+
+nosave string MRIntW_PressetCust1 = "";
+
+nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
