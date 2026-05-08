@@ -1,0 +1,1107 @@
+/*
+	Weapon casings and smoke layers
+*/
+
+Const MRIntW_CasingDist = 15.;
+
+Extend Class MRIntWeaps_Handler
+{
+	Array<MRIntWeaps_Casing> Casings;
+	
+	Void UpdateCasings(MRIntWeaps_Casing a)//Pushes spawned casing into a list
+	{
+		For(int i=0;i<Max(0, Casings.Size()-Max(1, MRIntW_CasingsAmount)+1);i++)
+		{
+			if(Casings[i]){Casings[i].Fade();Casings.Delete(i);i--;}
+		}
+		
+		if(!a)Return;
+		
+		Casings.Push(a);
+	}
+	
+	Override Void WorldTick()
+	{
+		if(int(GameTic%20)!=0)Return;
+		
+		if(!MRIntW_CasingsClusteringReduce)Return;
+		
+		Array<MRIntWeaps_Casing> Checking;
+		Checking.Copy(Casings);
+		
+		For(int i=0;i<Checking.Size();i++){
+			Let Casing = Checking[i];
+			
+			if(!Casing || Casing.bDestroyed || Casing.NearCasings.Size()<30)Continue;
+			
+			For(int i1=0;i1<Casing.NearCasings.Size();i1++){
+				if(!Casing.NearCasings[i1]||Casing.NearCasings[i1].bDestroyed){
+					Casing.NearCasings.Delete(i1);
+					i1--;
+					Break;
+				}
+			}
+			
+			if(Casing.NearCasings.Size()<30)Continue;
+						
+			For(int i1=0;i1<Casing.NearCasings.Size();i1++){
+				if(!Casing.NearCasings[i1])Continue;
+				
+				//MRIntWeaps_Smoker.MRSpawnParticle(Color(255,255,255), SPF_FULLBRIGHT, STYLE_None, 35, 4, 0, Casing.NearCasings[i1].Pos, (0,0,3));
+				Casing.NearCasings[i1].Fade();
+				Casing.NearCasings.Delete(i1);
+				For(int i2=0;i2<Casing.NearCasings.Size();i2++){
+					Checking.Delete(Checking.Find(Casing.NearCasings[i2]));
+				}
+				Checking.Delete(i);
+				i--;
+				Break;
+			}
+		}
+	}
+}
+
+Class MRIntWeaps_Casing: VisualThinker
+{
+	/*
+		Spent casings
+		
+		It's only a visual effect
+	*/
+	
+	Double Gravity, Fading;
+	int Bounce;
+	Bool Landed, Stoped, ShotgunShell;
+	Array<MRIntWeaps_Casing> NearCasings;
+	
+	Override Void Tick()
+	{
+		if(Landed){
+			Super.Tick();
+			
+			if(Fading!=0){
+				Fading-=.2356;
+				Alpha = Fading;
+				if(Fading<0)Destroy();
+				Return;
+			}
+			
+			if(CurSector)Pos.Z = CurSector.CenterFloor();
+			if(Vel.XY.Length()>0){
+				Vel.XY *= .6;
+				if(int(Roll%45)>0)Roll = Roll%45*(Vel.XY.Length()/10)+int(Roll/45)*45;
+				
+				if(Vel.XY.Length()<.01)Vel.XY *= 0;
+			}
+			else if(!Stoped){
+				Stoped = true;
+				if(!MRIntW_CasingsClusteringReduce)Return;
+				
+				Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+				if(!Handler)Return;
+				
+				For(int i=0;i<Handler.Casings.Size();i++){
+					Let Casing = Handler.Casings[i];
+					if(!Casing || Casing == Self || Casing.bDestroyed || Casing.ShotgunShell != ShotgunShell || NearCasings.Find(Casing)!=NearCasings.Size())Continue;
+					
+					Vector3 Dist = Level.Vec3Diff(Pos, Casing.Pos);
+
+					if(Dist.Length()>MRIntW_CasingDist)Continue;
+					else {
+						if(Dist.Length()<1)Casing.Fade();
+						else NearCasings.Push(Casing);
+					}
+				}
+			}
+			Return;
+		}
+		
+		if(Level.IsFrozen())Return;
+		
+		Super.Tick();
+		
+		if(!CurSector)Return;
+		
+		Vel.XY *= .96;
+		
+		
+		if(CurSector.CenterFloor()>=Pos.Z){//if landed
+			Pos.Z = CurSector.CenterFloor();
+			Vel.Z = abs(-Vel.Z*CFRandom(.4, .6));
+			Bounce--;
+			if(Bounce<1){
+				Landed = true;
+				Vel.Z = 0;
+				
+				S_StartSoundAt(Pos, ShotgunShell?"MRIntW/ShotgunCasingLand":"MRIntW/PistolCasing", CHAN_AUTO, volume:.5*MRIntW_CasingsVolume, pitch:CFRandom(.9, 1.05)*i_timescale);
+				Return;
+			}
+			S_StartSoundAt(Pos, ShotgunShell?"MRIntW/ShotgunCasingBounce":"MRIntW/PistolCasing", CHAN_AUTO, volume:.5*MRIntW_CasingsVolume, pitch:CFRandom(.9, 1.05)*i_timescale);
+		}
+
+		Roll += Vel.Length()*CFRandom(4, 6);
+		if(Roll>=360)Roll = Roll%360;
+		Vel.Z -= Gravity;
+		
+		let tracer = new('MRIntWeaps_CollisionTracer');//Check collisions
+
+		tracer.Pos = Pos;
+		tracer.Sec = CurSector;
+		tracer.Trace(Pos, CurSector, Vel, 2, 0, Line.ML_BLOCKEVERYTHING, true);
+		
+		if(Tracer.HitLine){//Bounce off walls
+			S_StartSoundAt(Pos, ShotgunShell?"MRIntW/ShotgunCasingBounce":"MRIntW/PistolCasing", CHAN_AUTO, volume:.5*MRIntW_CasingsVolume, pitch:CFRandom(.9, 1.05)*i_timescale);
+			Vel.XY = -Vel.XY*.8;
+		}
+	}
+	
+	Static MRIntWeaps_Casing SpawnCasing(Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Bool ShotgunShell=false, Double Gravity=1, int Bounce=-1, Vector2 Scale=(.11,.11), int Translation=0)
+	{
+		if(MRIntW_Casings<2)Return Null;
+		
+		Let Casing = MRIntWeaps_Casing(level.SpawnVisualThinker('MRIntWeaps_Casing'));
+		if(!Casing)Return Null;
+		
+		Casing.Pos = Pos;
+		Casing.Vel = Vel;
+		Casing.Gravity = Gravity;
+		if(Bounce<0)Casing.Bounce = CRandom(4, 9);
+		else Casing.Bounce = Bounce;
+		if(ShotgunShell)Casing.Texture = Texman.CheckForTexture("SHTCB0");
+		else Casing.Texture = Texman.CheckForTexture("PISCB0");
+		Casing.Scale = Scale;
+		Casing.Flags = SPF_ROLL|SPF_ROLLCENTER;
+		Casing.CurSector = LevelLocals.PointInSector(Pos.XY);
+		Casing.Translation = Translation;
+		Casing.ShotgunShell = ShotgunShell;
+		
+		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+		if(!Handler)Return Null;
+						
+		Return Casing;
+	}
+	
+	Void Fade()
+	{
+		Fading = 1;
+	}
+}
+
+Class MRIntWeaps_SmokeContainer: Object play
+{
+	Vector3 Vel;
+	int Age;
+	double Gravity;
+}
+
+Extend Class MRIntWeaps_Chainsaw
+{
+	MRIntWeaps_SmokeContainer Smokes[40];
+	Const SmokeStart = PSP_FLASH+10;
+	
+	States{
+	
+		SmokeLay:
+			NSHS A 0{
+				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, True);
+				A_OverlayRenderStyle(OverlayId(), MRIntW_ChainsawSmoke?STYLE_TRANSLUCENT:STYLE_NONE);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
+			}
+			NSHS A 1{
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, True);
+				A_OverlayRenderStyle(OverlayId(), MRIntW_ChainsawSmoke?STYLE_TRANSLUCENT:STYLE_NONE);
+			}
+			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, True);
+				int Index = OverlayId()-SmokeStart;
+				invoker.Smokes[OverlayId()-SmokeStart].Age++;
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+				
+				Player.GetPSprite(OverlayId()).Alpha-=.015;
+				
+				Float Scale = (CFRandom(.09, .13));// + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.2);
+				Scale -= (invoker.Smokes[Index].Vel.Y);
+				Scale *= .1;
+				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
+				
+				if(Player.GetPSprite(OverlayId()).Scale.Length()>10)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				//if(invoker.Smokes[OverlayId()-SmokeStart].Age>8)Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02/* + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1)*/ + Vel.Z;
+				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
+				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
+				//if(invoker.Smokes[OverlayId()-SmokeStart].Age>8)Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02;// + (Vel.X*Cos(Angle+90) + Vel.Y*Sin(Angle+90)*5);
+				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
+				
+				if(Player.GetPSprite(OverlayId()).Alpha<=0){
+					invoker.Smokes[OverlayId()-SmokeStart].Destroy();invoker.Smokes[OverlayId()-SmokeStart]=Null;
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+			}
+			TNT1 A 0 {invoker.Smokes[OverlayId()-SmokeStart].Destroy();invoker.Smokes[OverlayId()-SmokeStart]=Null;}
+			Stop;
+	}
+}
+
+Extend Class MRIntWeaps_Pistol
+{
+	MRIntWeaps_SmokeContainer Smokes[20];
+	Const SmokeStart = -10;
+	
+	Const CaseLife = 20;
+	Bool Casings[4];
+	Float CasingDir[4], CasingSpeed;
+	Void DoCasing(int index)
+	{
+		int Lay = index+PSP_FLASH+10;
+		Let PSP = Owner.Player.GetPSprite(Lay);
+		if(!PSP)Return;
+		int Age = PSP.Tics;
+		if(Age<2||Age>=CaseLife)Return;
+				
+		if(PSP.Y>280+32){
+			Owner.Player.SetPsprite(Lay, Null);
+			Casings[index] = false;
+			
+			SpawnRealCasing();
+			Return;
+		}
+		
+		//if(Age<CaseLife)PSP.bInterpolate = true;//interpolates casings rotation but causes wobble
+		Double VelZ = (Age-(CaseLife-3-Min(2, 1-CasingSpeed)))/2;
+		VelZ /= CaseLife/2;
+		if(VelZ==0)VelZ = -.01;
+		
+		Double VelMult = CFRandom(1, 2*CasingSpeed);
+		
+		if(Age<CaseLife-5)PSP.Y += Owner.Player.Cmd.Pitch*.005;
+		PSP.Y += Owner.Vel.Z;
+		PSP.Y -= VelZ*100*VelMult*PSP.Scale.X;
+		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.0025;
+		PSP.X += 16*VelMult*PSP.Scale.X;
+		PSP.Scale *= 1+.05*CasingDir[index]*CasingSpeed;
+		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005*Cos(Owner.Pitch);
+		PSP.Y += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*Sin(Owner.Pitch);
+		PSP.Scale.X -= Sin(Owner.Pitch)*.1;
+		PSP.Scale.X = Max(0, PSP.Scale.X);
+		PSP.Scale.Y = PSP.Scale.X;
+		
+		PSP.Rotation -= 30*VelMult;
+	}
+	
+	Void SpawnRealCasing()
+	{
+		if(MRIntW_Casings<2)Return;
+		
+		Vector3 Pos;
+		Pos.XY += AngleToVector(Owner.Angle-90, 5);
+		Pos.XY += AngleToVector(Owner.Angle, -5)*Sin(Owner.Pitch);
+		Pos.Z += -5*Cos(Owner.Pitch);
+		Pos += (Owner.Pos.XY, Owner.Player.ViewZ);
+		
+		Double VelZ = -CFRandom(2, 3);
+		Double VelX = CFRandom(2, 4);
+		Vector3 Vel = Owner.Vel;
+		Vel.XY += AngleToVector(Owner.Angle-90, VelX);
+		Vel.Z += VelX*Sin(Owner.Pitch);
+		Vel.Z += VelZ;
+		Vel.XY += AngleToVector(Owner.Angle, VelZ)*Sin(Owner.Pitch);
+		
+		Let a = MRIntWeaps_Casing.SpawnCasing(Pos, Vel);
+		
+		if(a){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.UpdateCasings(a);
+		}
+	}
+	
+	Action Void A_FireSmoke(Double Offset = 0, Double Scale = 1)
+	{
+		if(!MRIntW_Smoke)Return;
+					
+		if(Players[ConsolePlayer].Camera != Self){
+			int Col = CRandom(100, 120);
+			Float Alph = CFRandom(.4, .5);
+			A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE, 9, CFRandom(2, 3), 0, 20,6,Height*.65,
+				1,0,.5, CFRandom(-.02, .02),CFRandom(-.02, .02),CFRandom(-.02, 0), 
+				Alph, Alph/8, CFRandom(2, 3));
+		}
+		
+		else{
+			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
+									
+			Float Alph = CFRandom(.16, .2);
+			
+			int Col = CRandom(170, 180);
+			Part.SColor = Color(Col,Col,Col);
+			Part.Life = 14;
+			Part.Alpha = CFRandom(.3, .4);
+			Part.Fade = Part.Alpha/(Part.Life-1);
+			Part.StartGrow = CFRandom(.7, .9)*(Scale*Scale);
+			Part.StartScale = CFRandom(.2, .3)*Scale;
+
+			Part.Place = (AngleToVector(Angle, 5)*Cos(Abs(Pitch)), -5*Sin(Pitch));//Forward from player
+			Part.Place.Z += (-1+Offset)*Cos(Abs(Pitch));//Lower down to sprite
+			Part.Place += AngleToVector(Angle, (-1+Offset)*2)*Sin(Pitch);//Lower down to sprite
+			
+			Part.Move = (AngleToVector(Angle, .2)*Cos(Abs(Pitch)), -.2*Sin(Pitch));
+			Part.Move.Z += .005*Cos(Abs(Pitch));
+			Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
+			
+			if(invoker.Smoker){
+				Part.ViewHeight = invoker.Smoker.ViewHeight;
+				Part.OldBob = invoker.Smoker.OldBob;
+				Part.Bob = invoker.Smoker.Bob;
+			}
+			
+			Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
+			Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
+			Part.Master = Self;
+		}
+	}
+	
+	States{
+		SmokeLay:
+			NSHS A 0{
+				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
+				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
+			}
+			NSHS A 1{
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
+				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
+			}
+			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
+				int Index = abs(OverlayId())+SmokeStart;
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+				
+				Player.GetPSprite(OverlayId()).Alpha-=.01;
+				
+				Float Scale = (CFRandom(.09, .13) + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.5);
+				Scale -= (invoker.Smokes[Index].Vel.Y);
+				Scale *= .1;
+				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
+				
+				if(Player.GetPSprite(OverlayId()).Scale.Length()>7)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02 + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1) + Vel.Z;
+				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
+				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
+				Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90)*5 + Vel.Y*Sin(Angle+90)*5);
+				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
+				
+				if(Player.GetPSprite(OverlayId()).Alpha<=0){
+					invoker.Smokes[abs(OverlayId())+SmokeStart].Destroy();invoker.Smokes[abs(OverlayId())+SmokeStart]=Null;
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+			}
+			TNT1 A 0 {invoker.Smokes[abs(OverlayId())+SmokeStart].Destroy();invoker.Smokes[abs(OverlayId())+SmokeStart]=Null;}
+			Stop;
+			
+		CasingLay:
+			PISC A 0 {
+				A_OverlayFlags(Overlayid(), PSPF_ADDWEAPON, false);
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				A_OverlayRenderStyle(OverlayID(), STYLE_NORMAL);
+				Player.GetPSprite(OverlayId()).bInterpolate=false;
+				A_OverlayPivot(OverlayId(), .5, .5);
+				
+				A_OverlayRotate(OverlayId(), 140);
+				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
+			}
+			PISC A 20 A_SetTics(CaseLife);
+			TNT1 A 0 {
+				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-10-PSP_FLASH]=false;
+				invoker.SpawnRealCasing();
+			}
+			Stop;
+	}
+}
+
+Extend Class MRIntWeaps_Shotgun
+{
+	MRIntWeaps_SmokeContainer Smokes[20];
+	Const SmokeStart = PSP_FLASH+10;//Chamber
+	
+	Const CaseStart = PSP_FLASH+30;
+	Const CaseLife = 20;
+	Bool Casings[2];
+	Float CasingDir[2], CasingSpeed;
+	Void DoCasing(int index)
+	{
+		int Lay = index+CaseStart;
+		Let PSP = Owner.Player.GetPSprite(Lay);
+		if(!PSP)Return;
+		int Age = PSP.Tics;
+		if(Age<2||Age>=CaseLife)Return;
+		
+		if(PSP.Y>280+32){
+			Owner.Player.SetPsprite(Lay, Null);
+			Casings[index] = false;
+			if(Age>=CaseLife-10)SpawnRealCasing();
+			Return;
+		}
+		if(Age==CaseLife-10)SpawnRealCasing();
+		
+		//if(Age<CaseLife)PSP.bInterpolate = true;//interpolates casings rotation but causes wobble
+		Double VelZ = (Age-(CaseLife-5-Min(2, 1-CasingSpeed)))/2;
+		VelZ /= CaseLife/2;
+		if(VelZ==0)VelZ = -.01;
+		
+		Double VelMult = CFRandom(1, 2*CasingSpeed);
+		
+		if(Age<CaseLife-5)PSP.Y += Owner.Player.Cmd.Pitch*.005;
+		PSP.Y += Owner.Vel.Z;
+		PSP.Y -= VelZ*100*VelMult*PSP.Scale.X;
+		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
+		PSP.X += 20*VelMult*PSP.Scale.X;
+		PSP.Scale *= 1+.05*CasingDir[index]*CasingSpeed;
+		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005*Cos(Owner.Pitch);
+		PSP.Y += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*Sin(Owner.Pitch);
+		PSP.Scale.X -= Sin(Owner.Pitch)*.05;
+		PSP.Scale.X = Max(0, PSP.Scale.X);
+		PSP.Scale.Y = PSP.Scale.X;
+		PSP.Rotation -= 30*VelMult;
+		
+		//Console.Printf("Casing "..CaseLife-Age..": "..PSP.Y);
+	}
+	
+	Void SpawnRealCasing()
+	{
+		if(MRIntW_Casings<2)Return;
+		
+		Vector3 Pos;
+		Pos.XY += AngleToVector(Owner.Angle-90, 7);
+		Pos.XY += AngleToVector(Owner.Angle, -9)*Sin(Owner.Pitch);
+		Pos.Z += -4*Cos(Owner.Pitch);
+		Pos += (Owner.Pos.XY, Owner.Player.ViewZ);
+		
+		Double VelZ = -CFRandom(1, 2);
+		Double VelX = CFRandom(5, 6);
+		Vector3 Vel = Owner.Vel;
+		Vel.XY += AngleToVector(Owner.Angle-90, VelX);
+		Vel.Z += VelX*Sin(Owner.Pitch);
+		Vel.Z += VelZ;
+		Vel.XY += AngleToVector(Owner.Angle, VelZ)*Sin(Owner.Pitch);
+		
+		Let a = MRIntWeaps_Casing.SpawnCasing(Pos, Vel, true, Scale:(.1, .1));
+		
+		if(a){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.UpdateCasings(a);
+		}
+	}
+	
+	Action Void A_FireSmoke()
+	{
+		if(!MRIntW_Smoke)Return;
+		
+		if(Players[ConsolePlayer].Camera != Self){
+			int Col = CRandom(70, 80);
+			Float Alph = CFRandom(.4, .5);
+			A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE, 9, CFRandom(2, 3), 0, 20,6,Height*.65,
+				1,0,.5, CFRandom(-.02, .02),CFRandom(-.02, .02),CFRandom(-.02, 0), 
+				Alph, Alph/8, CFRandom(2, 3));
+		}
+		
+		else{
+			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
+			
+			Float Alph = CFRandom(.16, .2);
+			
+			int Col = CRandom(140, 150);
+			Part.SColor = Color(Col,Col,Col);
+			Part.Life = 15;
+			Part.Alpha = CFRandom(.3, .4);
+			Part.Fade = Part.Alpha/(Part.Life-1);
+			Part.StartGrow = CFRandom(1.4, 1.5);
+			Part.StartScale = CFRandom(.2, .3);
+
+			Part.Place = (AngleToVector(Angle, 5)*Cos(Abs(Pitch)), -5*Sin(Pitch));
+			Part.Place.Z += -1.5*Cos(Abs(Pitch));
+			Part.Place += AngleToVector(Angle, -1.5*2)*Sin(Pitch);
+			
+			Part.Move = (AngleToVector(Angle, .2)*Cos(Abs(Pitch)), -.2*Sin(Pitch));
+			Part.Move.Z += .005;
+			Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
+			
+			if(invoker.Smoker){
+				Part.ViewHeight = invoker.Smoker.ViewHeight;
+				Part.OldBob = invoker.Smoker.OldBob;
+				Part.Bob = invoker.Smoker.Bob;
+			}
+			
+			Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
+			Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
+			Part.Master = Self;
+		}
+	}
+	
+	States{
+		SmokeLay://From chamber
+			NSHS A 0{
+				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
+				A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
+				A_OverlayPivot(OverlayId(), .5, .5);
+			}
+			NSHS A 1{
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
+				A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
+			}
+			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
+				int Index = OverlayId()-PSP_FLASH-10;
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+				
+				Player.GetPSprite(OverlayId()).Alpha-=.01;
+				
+				Float Scale = -invoker.Smokes[Index].Vel.Y;
+				Scale *= .1;
+				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
+				
+				if(Player.GetPSprite(OverlayId()).Scale.Length()>15)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
+				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
+				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
+				
+				if(Player.GetPSprite(OverlayId()).Alpha<=0){
+					invoker.Smokes[OverlayId()-SmokeStart].Destroy();invoker.Smokes[OverlayId()-SmokeStart]=Null;
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+			}
+			TNT1 A 0 {invoker.Smokes[OverlayId()-SmokeStart].Destroy();invoker.Smokes[OverlayId()-SmokeStart]=Null;}
+			Stop;
+		
+		CasingLay:
+			SHTC A 0 {
+				A_OverlayFlags(Overlayid(), PSPF_ADDWEAPON, false);
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				A_OverlayRenderStyle(OverlayID(), STYLE_NORMAL);
+				Player.GetPSprite(OverlayId()).bInterpolate=false;
+				A_OverlayPivot(OverlayId(), .5, .5);
+				
+				A_OverlayOffset(OverlayId(), 105, 200+32);
+				A_OverlayRotate(OverlayId(), 160);
+				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
+			}
+			SHTC A 15 A_SetTics(CaseLife);
+			TNT1 A 0 {
+				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;
+			}
+			Stop;
+		
+		Particle:
+			NSHS B 1 BRIGHT {
+				A_OverlayTranslation(OverlayId(), "MrIntWParYellow");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+				if(!MRIntW_ShotgunSparks)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				Double Scal = FRandom(.02, .06);
+				A_OverlayScale(OverlayId(), Scal, Scal);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayAlpha(OverlayId(), .8);
+			}
+			NSHS # 1 BRIGHT{
+				Let Par = invoker.Particles[-OverlayId()+ParLay];
+				if(!Par){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+				
+				Par.Vel.Y += .7;
+				Par.Age--;
+				A_OverlayOffset(OverlayId(), Par.Vel.X, Par.Vel.Y, WOF_ADD);
+				Double DownS = FRandom(-.005, -.008);
+				A_OverlayScale(OverlayId(), DownS, DownS, WOF_ADD);
+				Player.GetPSprite(OverlayId()).Alpha -= .05;
+				
+				if(Par.Age<1 || Player.GetPSprite(OverlayId()).Scale.X<=0 || Player.GetPSprite(OverlayId()).Alpha<=0){
+					Par.Destroy();
+					invoker.Particles[-OverlayId()+ParLay] = Null;
+					A_ClearOverlays(OverlayId(), OverlayId());
+					A_OverlayAlpha(OverlayId(), 0);
+				}
+			}
+			Wait;
+	}
+	
+	MRIntWeaps_SmokeContainer Particles[30];
+	Const ParLay = LHand-2;
+	
+	Action Void A_FiringParticles()
+	{
+		//Buckshot sparks
+		if(Random(0, 20)<2)Return;
+		For(int i1=Random(0, 7);i1<10;i1++){
+		
+			int Par = -1;
+
+			For(int i=0;i<invoker.Particles.Size();i++){
+				if(!invoker.Particles[i]){
+					Par = i;
+					invoker.Particles[Par] = New("MRIntWeaps_SmokeContainer");
+					Break;
+				}
+			}
+			
+			if(Par<0)Return;
+			
+			invoker.Particles[Par].Age = 40;
+			invoker.Particles[Par].Vel.XY = (CFRandom(-2.5, 2.5), -CFRandom(4, 6));
+			
+			int Lay = ParLay-Par;
+			
+			A_Overlay(Lay, "Particle");
+			Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
+			Bob *= CVar.FindCVar("wbobfire").GetFloat();
+			A_OverlayOffset(Lay, 
+				Player.GetPSprite(PSP_WEAPON).X + Player.GetPSprite(Lay1).X + Bob.X + 130,
+				Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 85
+			);
+		}
+	}
+}
+
+//Check "SSG-Stuff.zsc" for Super Shotgun effects
+
+Extend Class MRIntWeaps_Chaingun
+{
+	Const CaseStart = PSP_FLASH+10;
+	Const CaseLife = 20;
+	Bool Casings[10];
+	Float CasingDir[10], CasingSpeed;
+	Void DoCasing(int index)
+	{
+		int Lay = index+PSP_FLASH+10;
+		Let PSP = Owner.Player.GetPSprite(Lay);
+		if(!PSP)Return;
+
+		int Age = PSP.Tics;
+		if(Age<2||Age>=CaseLife)Return;
+		
+		if(PSP.Y>280+32){
+			Owner.Player.SetPsprite(Lay, Null);
+			Casings[index] = false;
+			
+			SpawnRealCasing();
+			Return;
+		}
+		
+		//if(Age<CaseLife)PSP.bInterpolate = true;//interpolates casings rotation but causes wobble
+		Double VelZ = (Age-(CaseLife-4-Min(2, 1-CasingSpeed)))/2;
+		VelZ /= CaseLife/2;
+		if(VelZ==0)VelZ = -.01;
+		
+		Double VelMult = CFRandom(1, 2*CasingSpeed);
+		
+		if(Age<CaseLife-5)PSP.Y += Owner.Player.Cmd.Pitch*.005;
+		PSP.Y += Owner.Vel.Z;
+		PSP.Y -= VelZ*100*VelMult*Cos(Pitch)*PSP.Scale.X;
+		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.005;
+		PSP.X += 16*VelMult*PSP.Scale.X;
+		PSP.Scale *= 1+.05*CasingDir[index]*CasingSpeed;
+		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005*Cos(Owner.Pitch);
+		PSP.Y += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*Sin(Owner.Pitch);
+		PSP.Scale.X -= Sin(Owner.Pitch)*.1;
+		PSP.Scale.X = Max(0, PSP.Scale.X);
+		PSP.Scale.Y = PSP.Scale.X;
+		PSP.Rotation -= 30*VelMult;
+	}
+	
+	Void SpawnRealCasing()
+	{
+		if(MRIntW_Casings<2)Return;
+		
+		Vector3 Pos;
+		Pos.XY += AngleToVector(Owner.Angle-90, 5);
+		Pos.XY += AngleToVector(Owner.Angle, -5)*Sin(Owner.Pitch);
+		Pos.Z += -5*Cos(Owner.Pitch);
+		Pos += (Owner.Pos.XY, Owner.Player.ViewZ);
+		
+		Double VelZ = -CFRandom(2, 3);
+		Double VelX = CFRandom(3, 5);
+		Vector3 Vel = Owner.Vel;
+		Vel.XY += AngleToVector(Owner.Angle-90, VelX);
+		Vel.Z += VelX*Sin(Owner.Pitch);
+		Vel.Z += VelZ;
+		Vel.XY += AngleToVector(Owner.Angle, VelZ)*Sin(Owner.Pitch);
+		
+		Let a = MRIntWeaps_Casing.SpawnCasing(Pos, Vel);
+		
+		if(a){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.UpdateCasings(a);
+		}
+	}
+	
+	Action Void A_FireSmoke()
+	{
+		if(!MRIntW_Smoke)Return;
+					
+		if(Players[ConsolePlayer].Camera != Self){
+			int Col = CRandom(80, 90);
+			Float Alph = CFRandom(.4, .5);
+			A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE, 9, CFRandom(2, 3), 0, 20,6,Height*.65,
+				1,0,.5, CFRandom(-.02, .02),CFRandom(-.02, .02),CFRandom(-.02, 0), 
+				Alph, Alph/8, CFRandom(1, 2));
+		}
+		
+		else{
+			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
+									
+			Float Alph = CFRandom(.16, .2);
+			
+			int Col = CRandom(170, 180);
+			Part.SColor = Color(Col,Col,Col);
+			Part.Life = 14;
+			Part.Alpha = CFRandom(.4, .5);
+			Part.Fade = Part.Alpha/(Part.Life-1);
+			Part.StartGrow = CFRandom(1.5, 1.6);
+			Part.StartScale = CFRandom(.2, .3);
+
+			Part.Place = (AngleToVector(Angle, 5)*Cos(Abs(Pitch)), -5*Sin(Pitch));//Forward from player
+			Part.Place.Z += -1.6*Cos(Abs(Pitch));//Lower down to sprite
+			Part.Place += AngleToVector(Angle, -1.6*2)*Sin(Pitch);//Lower down to sprite
+			
+			Float Rot = (invoker.Rotation%120-60)*.02;
+			Part.Place += AngleToVector(Angle-90, Rot);
+			Part.Place.Z -= Abs(Rot)*.5*Cos(Abs(Pitch));
+			Part.Place -= AngleToVector(Angle, Abs(Rot))*Sin(Pitch);
+			
+			Part.Move = (AngleToVector(Angle, .2)*Cos(Abs(Pitch)), -.2*Sin(Pitch));
+			Part.Move.Z += .03;
+			Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
+			
+			if(invoker.Smoker){
+				Part.ViewHeight = invoker.Smoker.ViewHeight;
+				Part.OldBob = invoker.Smoker.OldBob;
+				Part.Bob = invoker.Smoker.Bob;
+			}
+			
+			Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
+			Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
+			Part.Master = Self;
+		}
+	}
+	
+	States{
+		CasingLay:
+			PISC A 0 {
+				A_OverlayFlags(Overlayid(), PSPF_ADDWEAPON, false);
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				A_OverlayRenderStyle(OverlayID(), STYLE_NORMAL);
+				Player.GetPSprite(OverlayId()).bInterpolate=false;
+				A_OverlayPivot(OverlayId(), .5, .5);
+				
+				A_OverlayOffset(OverlayId(), 195, 190+32);
+				A_OverlayScale(OverlayId(), .8, .8);
+				A_OverlayRotate(OverlayId(), 140);
+				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
+			}
+			PISC A 20 A_SetTics(CaseLife);
+			TNT1 A 0 {
+				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;
+				invoker.SpawnRealCasing();
+			}
+			Stop;
+	}
+}
+
+Extend Class MRIntWeaps_RocketLauncher
+{
+	Action Void A_FireSmoke()
+	{
+		if(!MRIntW_Smoke)Return;
+					
+		if(Players[ConsolePlayer].Camera != Self){
+			int Col = CRandom(30, 40);
+			Float Alph = CFRandom(.6, .7);
+			A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE, 12, CFRandom(2, 3), 0, 20,6,Height*.65,
+				1,0,.5, CFRandom(-.02, .02),CFRandom(-.02, .02),CFRandom(-.02, 0), 
+				Alph, Alph/11, CFRandom(3, 4));
+		}
+		
+		else{
+			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
+									
+			Float Alph = CFRandom(.16, .2);
+			
+			int Col = CRandom(40, 50);
+			Part.SColor = Color(Col,Col,Col);
+			Part.Life = 17;
+			Part.Alpha = CFRandom(.8, .9);
+			Part.Fade = Part.Alpha/(Part.Life-1);
+			Part.StartGrow = CFRandom(2.2, 2.3);
+			Part.StartScale = CFRandom(.9, 1);
+
+			Part.Place = (AngleToVector(Angle, 5)*Cos(Abs(Pitch)), -5*Sin(Pitch));//Forward from player
+			Part.Place.Z += (-1.6-Player.GetPSprite(Lay1).Y*.05)*Cos(Abs(Pitch));//Lower down to sprite
+			Part.Place += AngleToVector(Angle, (-1.6*2-Player.GetPSprite(Lay1).Y*.05))*Sin(Pitch);//Lower down to sprite
+			
+			Part.Move = (AngleToVector(Angle, .2)*Cos(Abs(Pitch)), -.2*Sin(Pitch));
+			Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
+			Part.Move.Z -= .05;
+			
+			if(invoker.Smoker){
+				Part.ViewHeight = invoker.Smoker.ViewHeight;
+				Part.OldBob = invoker.Smoker.OldBob;
+				Part.Bob = invoker.Smoker.Bob;
+			}
+			
+			Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
+			Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
+			Part.Master = Self;
+		}
+	}
+}
+
+Extend Class MRIntWeaps_PlasmaRifle
+{
+	MRIntWeaps_SmokeContainer Particles[30];
+	Const ParLay = -5;
+	
+	Action Void A_FiringParticles()
+	{
+		//Small plasma particles
+		if(Random(0, 20)>18)Return;
+				
+		int Par = -1;
+
+		For(int i=0;i<invoker.Particles.Size();i++){
+			if(!invoker.Particles[i]){
+				Par = i;
+				invoker.Particles[Par] = New("MRIntWeaps_SmokeContainer");
+				Break;
+			}
+		}
+		
+		if(Par<0)Return;
+		
+		invoker.Particles[Par].Age = 40;
+		invoker.Particles[Par].Vel.XY = (CFRandom(-.9, .9), CFRandom(-.75, .75));
+		invoker.Particles[Par].Vel.Z = FRandom(-.0025, -.005);
+		
+		int Lay = ParLay-Par;
+		
+		A_Overlay(Lay, "Particle");
+		Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
+		Bob *= CVar.FindCVar("wbobfire").GetFloat();
+		A_OverlayOffset(Lay, 
+			Player.GetPSprite(PSP_WEAPON).X + Player.GetPSprite(Lay1).X + Bob.X + 130 + invoker.Particles[Par].Vel.X*26,
+			Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 90 + invoker.Particles[Par].Vel.Y*35
+		);
+		
+		Double Scal = FRandom(.02, .08);
+		A_OverlayScale(Lay, Scal, Scal);
+	}
+	
+	int Shots;
+	
+	Action Void A_FallingParticles(Double Amount)
+	{
+		if(invoker.Shots<1)Return;
+		
+		if(Amount<=.2)Return;
+		
+		int Par = -1;
+
+		For(int i=0;i<invoker.Particles.Size();i++){
+			if(!invoker.Particles[i]){
+				Par = i;
+				invoker.Particles[Par] = New("MRIntWeaps_SmokeContainer");
+				Break;
+			}
+		}
+		
+		if(Par<0)Return;
+		
+		invoker.Particles[Par].Age = 60;
+		invoker.Particles[Par].Vel.XY = (CFRandom(4, 5), -CFRandom(2, 4));
+		invoker.Particles[Par].Gravity = 1;
+		invoker.Particles[Par].Vel.Z = -FRandom(.004, .007);
+		
+		int Lay = ParLay-Par;
+		
+		Double Ofst = CFRandom(-10, 10);
+		
+		A_Overlay(Lay, "Particle");
+		Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
+		Bob *= CVar.FindCVar("wbobfire").GetFloat();
+		A_OverlayOffset(Lay, 
+			Player.GetPSprite(PSP_WEAPON).X + Player.GetPSprite(Lay1).X + Bob.X + 80 + Ofst,
+			Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 45 + Ofst*.75
+		);
+		
+		Double Scal = FRandom(.06, .14);
+		A_OverlayScale(Lay, Scal, Scal);
+	}
+	
+	States{
+		Particle:
+			NSHS B 1 BRIGHT {
+				A_OverlayTranslation(OverlayId(), "MrIntWParIce");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+				if(MRIntW_PlasmaParticles<2)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				A_OverlayPivot(OverlayId(), .5, .5);
+			}
+			NSHS # 1 BRIGHT{
+				Let Par = invoker.Particles[-OverlayId()+ParLay];
+				if(!Par){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+				
+				Par.Age--;
+				Par.Vel.Y += Par.Gravity;
+				A_OverlayOffset(OverlayId(), Par.Vel.X, Par.Vel.Y, WOF_ADD);
+				Double DownS = Par.Vel.Z;
+				A_OverlayScale(OverlayId(), DownS, DownS, WOF_ADD);
+				Player.GetPSprite(OverlayId()).Alpha -= .05;
+				
+				if(Par.Age<1 || Player.GetPSprite(OverlayId()).Scale.X<=0 || Player.GetPSprite(OverlayId()).Alpha<=0){
+					Par.Destroy();
+					invoker.Particles[-OverlayId()+ParLay] = Null;
+					A_ClearOverlays(OverlayId(), OverlayId());
+					A_OverlayAlpha(OverlayId(), 0);
+				}
+			}
+			Wait;
+	}
+}
+
+Extend Class MRIntWeaps_BFG9000
+{
+	MRIntWeaps_SmokeContainer Particles[50];
+	Const ParLay = -4;
+	
+	Action Void A_FiringParticles(double Chance)
+	{
+		if(Chance>1.8)Return;
+		//Small green plasma particles going into the muzzle
+		For(int i1=Random(0, 4);i1<20*Chance;i1++){
+				
+			int Par = -1;
+
+			For(int i=0;i<invoker.Particles.Size();i++){
+				if(!invoker.Particles[i]){
+					Par = i;
+					invoker.Particles[Par] = New("MRIntWeaps_SmokeContainer");
+					Break;
+				}
+			}
+			
+			if(Par<0)Return;
+			
+			Double Angle = CRandom(-20, 200);
+			Double Vel = CFRandom(1.5, 4.5);
+			
+			invoker.Particles[Par].Age = Random(20, 30)/(Chance+1);
+			invoker.Particles[Par].Vel.XY = (Vel*Cos(Angle), Vel*Sin(Angle))*(Chance+.25);
+			
+			int Lay = ParLay-Par;
+			
+			A_Overlay(Lay, "Particle");
+			Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
+			Bob *= CVar.FindCVar("wbobfire").GetFloat();
+			A_OverlayOffset(Lay, 
+				130 - invoker.Particles[Par].Vel.X*invoker.Particles[Par].Age,
+				95 - invoker.Particles[Par].Vel.Y*invoker.Particles[Par].Age
+			);
+		}
+	}
+	
+	States{
+		Particle:
+			NSHS B 1 BRIGHT {
+				A_OverlayTranslation(OverlayId(), "MrIntWParGreen");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+				if(!MRIntW_BFGParticles)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				Double Scal = FRandom(.01, .04);
+				A_OverlayScale(OverlayId(), Scal, Scal);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayAlpha(OverlayId(), .4);
+			}
+			NSHS # 1 BRIGHT{
+				Let Par = invoker.Particles[-OverlayId()+ParLay];
+				if(!Par){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+				
+				Par.Age--;
+				A_OverlayOffset(OverlayId(), Par.Vel.X, Par.Vel.Y, WOF_ADD);
+				Double UpS = .001*Par.Vel.Length();
+				A_OverlayScale(OverlayId(), UpS, UpS, WOF_ADD);
+				Player.GetPSprite(OverlayId()).Alpha = CFRandom(.8, 1);
+				
+				if(Par.Age<1 || Player.GetPSprite(OverlayId()).Scale.X<=0 || Player.GetPSprite(OverlayId()).Alpha<=0){
+					Par.Destroy();
+					invoker.Particles[-OverlayId()+ParLay] = Null;
+					A_ClearOverlays(OverlayId(), OverlayId());
+					A_OverlayAlpha(OverlayId(), 0);
+				}
+			}
+			Wait;
+	}
+}
+
+Class MRIntW_SmokeParticle: VisualThinker
+{
+	int Life, Age;
+	Actor Master;
+	Double StartScale, StartGrow, Fade, Grow,
+		OldBob, ViewHeight, Bob;
+	Vector3 Place, Move;
+	Vector2 BaseOffset;
+	
+	Override Void PostBeginPlay()
+	{
+		if(!Master){Destroy();Return;}
+		//SetRenderStyle(STYLE_Add);
+		Texture = Texman.CheckForTexture("NSHSA0");
+		Scale = (.02,.02)*StartScale;
+		Grow = StartGrow*.1;
+		Grow /= 64;
+		BaseOffset = -(32,32);
+		Offset = BaseOffset*Scale.X;
+		Super.PostBeginPlay();
+	}
+	
+	Override Void Tick()
+	{
+		Super.Tick();
+		//MRGParts.SpawnParticle(Color(255,255,255), SPF_NOTIMEFREEZE, STYLE_ADD, 4, 3, 0, Pos, (0,0,1));
+				
+		if(Level.IsFrozen())Return;
+		
+		Alpha -= Fade;
+		Life--;
+		Age++;
+		Scale += (Grow,Grow);
+		StartScale + StartGrow;
+		Offset = BaseOffset*Scale.X;
+		if(Alpha<=0 || Life<=0){Destroy();Return;}
+		if(!Master)Return;
+		
+		ViewHeight = (PlayerPawn(Master).ViewHeight + Master.player.crouchviewdelta);
+		Bob = (Master.Player.ViewZ - Master.Pos.Z) - ViewHeight;
+
+		Pos = Master.Pos + (0,0,ViewHeight + Bob);
+		Vel = Master.Vel*2 + Move - (0,0,Bob - OldBob);
+		
+		Pos += Place;
+		
+		Place += -Master.Vel*.1 + Move;
+		
+		OldBob = Bob;
+	}
+}

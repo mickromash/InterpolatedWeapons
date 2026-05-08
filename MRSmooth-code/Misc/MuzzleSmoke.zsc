@@ -1,0 +1,492 @@
+/*
+	Bioshock ahh particle muzzle smoke
+*/
+
+
+Const MRIntW_MaxSmoke = 35*15;
+Const MRintW_FadeStart = 40;
+
+Class MRIntWeaps_Smoker: Object play
+{
+	Static Void MRSpawnParticle(Color Col=Color(0,0,0), int Flags=0, int Style=STYLE_None, int Life=1, double Size=1, double Angle=0, Vector3 Pos=(0,0,0), Vector3 Vel=(0,0,0), Vector3 Accel=(0,0,0), Double Alpha=.1, Double Fade=-1, Double SizeStep=0)
+	{
+		FSpawnParticleParams p;
+		p.Accel = Accel;
+		p.Vel = Vel;
+		p.Pos = Pos;
+		
+		p.Color1 = Col;
+		p.LifeTime = Life;
+		p.size = Size;
+		p.sizeStep = SizeStep;
+		p.startalpha = Alpha;
+		p.fadestep = Fade;
+		if(Fade==-1)p.FadeStep = Alpha/Max(1, Life);
+		
+		p.Flags = Flags;
+		p.Style = Style;
+		
+		Level.SpawnParticle(p);
+	}
+	
+	int Smokes, LastAge;
+	Actor Owner;
+	Vector2 WeapOfst[6];
+	Vector3 Prev[6];
+	Double OldBob, ViewHeight, Bob, Scale[6], Alpha, Speed[6];
+	Bool PassSpawn, ResetInterpolation, ForceConnect, Bright, Bright1;
+	Weapon LastWeapon;
+	Color Col, Col1;
+	Const Dist = 5.;
+	Const ZSpeed = .15;
+	Const Step = .19;
+	Const Brightness = 130;
+	
+	Virtual Void Tick()
+	{
+		if(!Owner){Destroy();Return;}
+		
+		ViewHeight = (PlayerPawn(Owner).ViewHeight + Owner.player.crouchviewdelta);
+		Bob = (Owner.Player.ViewZ - Owner.Pos.Z) - ViewHeight;
+		
+		if(MRIntW_FlowingSmoke)For(int i=0;i<Smokes;i++)SpawnSmoke(i);
+		
+		OldBob = Bob;
+		Smokes = 0;
+		LastAge = Owner.GetAge();
+		LastWeapon = Owner.Player.ReadyWeapon;
+		Alpha = MRIntW_FlowingSmokeAlpha;
+		Bright = Bright1 = ForceConnect = ResetInterpolation = false;
+		Col1 = Col = Color(Brightness,Brightness,Brightness);
+	}
+	
+	Void SpawnSmoke(int Num=0)
+	{
+		if(Scale[Num]==0)Return;
+		
+		if(Players[ConsolePlayer].Camera != Owner)Scale[Num] *= 2;
+		
+		Double Alpha = Alpha;
+		
+		if(Players[ConsolePlayer].Camera != Owner)Alpha *= 2;
+		
+		Double Step = Step/MRIntW_FlowingSmokePrecision*Scale[Num];
+		Double ZSpeed = ZSpeed*4*Speed[Num];
+		
+		Vector3 Pos = (Owner.Pos.XY, Owner.Pos.Z + ViewHeight + OldBob);
+		
+		if(Players[ConsolePlayer].Camera != Owner)Pos = Owner.Pos + (0,0,Owner.Height*.65);
+		
+		Pos.XY += Actor.AngleToVector(Owner.Angle, Dist)*Cos(abs(Owner.Pitch));
+		Pos.Z += -Sin(Owner.Pitch)*Dist;
+		
+		if(Players[ConsolePlayer].Camera != Owner){
+			Pos.XY -= Actor.AngleToVector(Owner.Angle+90, WeapOfst[Num].X*2);
+			Pos.XY += Actor.AngleToVector(Owner.Angle, WeapOfst[Num].Y*1.3*2)*Sin(-Owner.Pitch);
+			Pos.Z += -Cos(Owner.Pitch)*WeapOfst[Num].Y*2;
+			
+			Pos.XY += Actor.AngleToVector(Owner.Angle+90, 10);
+			Pos.XY += Actor.AngleToVector(Owner.Angle, 15);
+		}
+		else {
+			Pos.XY -= Actor.AngleToVector(Owner.Angle+90, WeapOfst[Num].X);
+			Pos.XY += Actor.AngleToVector(Owner.Angle, WeapOfst[Num].Y*1.3)*Sin(-Owner.Pitch);
+			Pos.Z += -Cos(Owner.Pitch)*WeapOfst[Num].Y;
+		}
+		
+		if(Owner.GetAge()-LastAge>2||Owner.Player.ReadyWeapon!=LastWeapon||Level.Vec2Diff(Pos.XY, Prev[Num].XY).Length()>100)For(int i=0;i<Prev.Size();i++)Prev[i] = Pos;
+		
+		if(ResetInterpolation){
+			For(int i=0;i<Prev.Size();i++)Prev[i] = Pos + Owner.Vel + (0,0,ZSpeed - (Owner.Pos.Z + ViewHeight + OldBob) + Owner.Player.ViewZ);
+		}
+		
+		
+		if(!PassSpawn){
+			PassSpawn = true;
+			For(int i=0;i<Prev.Size();i++)Prev[i] = Pos;
+		}
+		
+		Vector3 Diff = Level.Vec3Diff(Pos, Prev[Num]);
+		Double Connect = Diff.Length();
+		
+		if(Diff.Length()<=Step*1.5 && abs(Diff.Z)<1)Connect = Step;
+		Float Life = 25;
+		if(Owner.Pos == Owner.Prev)ZSpeed*=.25;
+		
+		//if(Owner.Vel.Length()<=.5){Alpha *= 2;}
+		int Flags = 0;
+		if(Bright)Flags = SPF_FULLBRIGHT;
+		For(Double i=0;i<Connect;i+=Step){
+			Vector3 PPos = Diff.Unit()*i;
+			Double Curve = i/(Connect+Step);
+			if(Pos.Z < Prev[Num].Z && i>0)Curve = 1.-(i/(Connect+Step))+1;
+			if(Owner.Pos == Owner.Prev)Curve = 1;
+			PPos.Z *= Curve;
+			if(PPos != PPos)PPos = (0,0,0);
+			MRSpawnParticle(Col, Flags, STYLE_None, Life/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength), .6*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
+		}
+		
+		if(Owner.Vel.XY.Length()>0 || ForceConnect){
+			Flags = SPF_NOTIMEFREEZE;
+			if(Bright1)Flags |= SPF_FULLBRIGHT;
+			Double Bobb = Bob-OldBob;
+			Double ZOfst = 0;
+			if(Owner.Vel.Z != 0){
+				ZOfst = -Owner.Vel.Z*1.5;
+				Bobb = Owner.Vel.Z*1.5;
+			}
+
+			For(Double i=0;i<Connect*.5;i+=Step){
+				Vector3 PPos = Diff.Unit()*i;
+				Double Curve = i/(Connect*.5+Step);
+				PPos.Z *= Curve;
+				PPos.XY *= Curve;
+				if(PPos!=PPos)PPos = (0,0,0);
+				MRSpawnParticle(Col1, Flags, STYLE_None, 1, .6*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MRIntW_FlowingSmokeLength));
+			}
+		}
+		
+		Prev[Num] = Pos + (0,0,ZSpeed);
+		
+		Speed[Num] = 1;
+	}
+}
+
+Extend Class MRIntWeaps_Pistol
+{
+	MRIntWeaps_Smoker Smoker;
+	Double Smoke;
+	
+	Void MuzzleSmoke()
+	{
+		if(!Smoker){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(!Handler)Return;
+			
+			Smoker = Handler.Smokers[Owner.PlayerNumber()];
+		
+			if(!Smoker)Return;
+		}
+		
+		if(Smoke<1){
+			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+			Smoker.Smokes = 0;
+			Smoker.ResetInterpolation = true;
+			Return;
+		}
+		Smoke -= .1;
+		
+		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+		
+		Double Scale = 1;
+		Vector2 Ofst;
+		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
+		
+		if(Owner.GetCVar("MRIntW_Rifle"))
+		{
+			Ofst.Y += 6;
+		}
+		else
+		{
+			Switch(Owner.Player.FindPSprite(Lay1).Frame){
+				Case 2:
+					Ofst.Y += 0;
+					Scale += .1;
+					Break;
+				Case 3:
+				Case 5:
+					Ofst.Y += -10;
+					Scale += .25;
+					Break;
+				Case 4:
+					Ofst.Y += -20;
+					Scale += .5;
+					Break;
+				
+				Default:
+					Ofst.Y += 5;
+			}
+		}
+		
+		
+		if(Owner.Player.WeaponState&WF_WEAPONBOBBING){
+			Vector2 Bob = PlayerPawn(Owner).BobWeapon(2);
+			Ofst += Bob;
+		}
+		
+		Double Angle = -Owner.Player.FindPSprite(Lay1).Rotation;
+		Ofst = (Ofst.X*Cos(Angle) + Ofst.Y*Sin(Angle),
+			Ofst.X*Cos(Angle+90) + Ofst.Y*Sin(Angle+90));
+		
+		Ofst *= .032;
+		
+		Smoker.Smokes = 1;
+		Smoker.WeapOfst[0] = Ofst;
+		Smoker.Scale[0] = Scale;
+		if(Smoke<MRintW_FadeStart){
+			Double Alpha = Smoke;
+			Smoker.Alpha *= Alpha/MRintW_FadeStart;
+		}
+		Smoker.Tick();
+	}
+	
+	Void IncreaseSmoke()
+	{
+		if(Smoke<MRIntW_MaxSmoke*MRIntW_FlowingSmokeMaxTime)Smoke += CRandom(1, 2);
+	}
+}
+
+Extend Class MRIntWeaps_Shotgun
+{
+	MRIntWeaps_Smoker Smoker;
+	Double Smoke;
+	
+	Void MuzzleSmoke()
+	{
+		if(!Smoker){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(!Handler)Return;
+			
+			Smoker = Handler.Smokers[Owner.PlayerNumber()];
+		
+			if(!Smoker)Return;
+		}
+		
+		if(Smoke<1){
+			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+			Smoker.Smokes = 0;
+			Smoker.ResetInterpolation = true;
+			Return;
+		}
+		Smoke -= .05;
+		
+		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+			
+		Vector2 Ofst;
+		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
+		
+		Double Scale = 1;
+		
+		Switch(Owner.Player.FindPSprite(Lay1).Frame){
+			Case 2:
+				Ofst += (-8, -7);
+				Scale += .5;
+				Break;
+			Case 3:
+				Ofst += (-14, -10);
+				Scale += .75;
+				Break;
+			Case 4:
+			Case 5:
+				Ofst += (-16, -15);
+				Scale += 1;
+				Break;
+			Case 6:
+				Ofst += (-17, -17);
+				Scale += 1;
+				Break;
+			Case 7:
+				Ofst += (-40, -20);
+				Scale += 1.25;
+				Break;
+			
+			Default:
+				Ofst.Y += 15;
+		}
+		
+		
+		if(Owner.Player.WeaponState&WF_WEAPONBOBBING){
+			Vector2 Bob = PlayerPawn(Owner).BobWeapon(2);
+			Ofst += Bob;
+		}
+		
+		Ofst *= .032;
+		
+		Smoker.Smokes = 1;
+		Smoker.WeapOfst[0] = Ofst;
+		Smoker.Scale[0] = Scale;
+		if(Smoke<MRintW_FadeStart){
+			Double Alpha = Smoke;
+			Smoker.Alpha *= Alpha/MRintW_FadeStart;
+		}
+		Smoker.Tick();
+	}
+	
+	Void IncreaseSmoke()
+	{
+		if(Smoke<MRIntW_MaxSmoke*.4*MRIntW_FlowingSmokeMaxTime)Smoke += CRandom(2, 3);
+	}
+}
+
+Extend Class MRIntWeaps_Chaingun
+{
+	MRIntWeaps_Smoker Smoker;
+	Double Smoke;
+	Array<int> LastShoted;
+	
+	Void MuzzleSmoke()
+	{
+		if(!Smoker){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(!Handler)Return;
+			
+			Smoker = Handler.Smokers[Owner.PlayerNumber()];
+		
+			if(!Smoker)Return;
+		}
+		
+		if(Smoke<1){
+			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+			LastShoted.Clear();
+			Smoker.Smokes = 0;
+			Smoker.ResetInterpolation = true;
+			Return;
+		}
+		Smoke -= .2;
+		
+		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+		
+		/*if(InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Fire"))){
+			Smoker.ResetInterpolation = true;
+			Return;
+		}*/
+		
+		Vector2 Ofst[6];
+		For(int i=0;i<LastShoted.Size();i++)
+		{
+			if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst[i] = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+			Ofst[i] += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
+			
+			if(InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready"))){
+				Vector2 Bob = PlayerPawn(Owner).BobWeapon(2);
+				Ofst[i] += Bob;
+			}
+			
+			Double CurRotation = Rotation+LastShoted[i]*60;
+			
+			Ofst[i] += (Cos(CurRotation)*30, Sin(CurRotation)*20+40);
+			
+			Ofst[i] *= .032;
+			
+			if(abs(Speed)>=1)Smoker.Speed[i] /= Speed;
+		}
+		
+		Smoker.Smokes = LastShoted.Size();
+		For(int i=0;i<LastShoted.Size();i++){
+			Smoker.WeapOfst[i] = Ofst[i];
+			Smoker.Scale[i] = 1;
+		}
+		
+		if(Smoke<MRintW_FadeStart*.3){
+			Double Alpha = Smoke;
+			Smoker.Alpha *= Alpha/MRintW_FadeStart;
+		}
+		Smoker.Tick();
+	}
+	
+	Void IncreaseSmoke()
+	{
+		For(int i=0;i<MRIntW_ChaingunMaxSmokes;i++){
+			if(i>=MRIntW_ChaingunMaxSmokes-1){
+				if(LastShoted.Size()<MRIntW_ChaingunMaxSmokes)LastShoted.Insert(0, Floor(Rotation/60));
+				else LastShoted[0] = Floor(Rotation/60);
+				Break;
+			}
+			if(i>=LastShoted.Size()){
+				LastShoted.Insert(i, Floor(Rotation/60));
+				Break;
+			}
+		}
+		
+		if(Smoke<MRIntW_MaxSmoke*MRIntW_FlowingSmokeMaxTime)Smoke += CFRandom(1, 1.1);
+	}
+}
+
+Extend Class MRIntWeaps_RocketLauncher
+{
+	MRIntWeaps_Smoker Smoker;
+	Double Smoke, Fire;
+	
+	Void MuzzleSmoke()
+	{
+		if(!Smoker){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(!Handler)Return;
+			
+			Smoker = Handler.Smokers[Owner.PlayerNumber()];
+		
+			if(!Smoker)Return;
+		}
+		
+		if(Fire>120)Fire = 120;
+		if(Fire>0)Fire--;
+		else Fire = 0;
+		
+		if(Smoke<1){
+			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+			Smoker.Smokes = 0;
+			Smoker.ResetInterpolation = true;
+			Return;
+		}
+		Smoke -= .2;
+		
+		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
+			
+		Vector2 Ofst;
+		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
+		
+		Double Scale = 5;
+		Scale += Owner.Player.FindPSprite(Lay1).Scale.Length()-1;
+		
+		Ofst.Y += 40;
+		
+		
+		if(Owner.Player.WeaponState&WF_WEAPONBOBBING){
+			Vector2 Bob = PlayerPawn(Owner).BobWeapon(2);
+			Ofst += Bob;
+		}
+		
+		Ofst *= .032;
+		
+		if(Fire>0){
+			int Col = Smoker.Brightness-Fire;
+			Smoker.Col = Color(Col,Col,Col);
+			
+			if(Fire>100){
+				Smoker.ForceConnect = true;
+				int Cols[3];
+				Cols[0] = 255;
+				Cols[1] = (Fire-100)*2;
+				Cols[2] = 0;
+				Smoker.Col1 = Color(Cols[0],Cols[1],Cols[2]);
+				Smoker.Bright1 = True;
+			}
+			else {
+				int Cols[3];
+				Cols[0] = Smoker.Brightness+Fire;
+				Cols[2] = Cols[1] = Smoker.Brightness-Fire;
+				Smoker.Col1 = Color(Cols[0],Cols[1],Cols[2]);
+				if(Fire>60){
+					Smoker.Bright1 = True;
+					Smoker.ForceConnect = true;
+				}
+			}
+		}
+		Smoker.Smokes = 1;
+		Smoker.WeapOfst[0] = Ofst;
+		Smoker.Scale[0] = Scale;
+		if(Smoke<MRintW_FadeStart*.75){
+			Double Alpha = Smoke;
+			Smoker.Alpha *= Alpha/(MRintW_FadeStart*.75);
+		}
+		Smoker.Tick();
+	}
+	
+	Void IncreaseSmoke()
+	{
+		if(Smoke<35*MRIntW_FlowingSmokeMaxTime)Smoke += CRandom(7, 9);
+	}
+}

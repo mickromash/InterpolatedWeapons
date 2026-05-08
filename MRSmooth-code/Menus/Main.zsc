@@ -1,0 +1,9 @@
+Class MRIntWeaps_AnimMenu: OptionMenu
+{
+	Override Bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		Bool Ret = Super.MenuEvent(mkey, fromcontroller);
+		if(MRIntW_VanillaFireBob)CVar.FindCVar("wbobfire").SetFloat(0);
+		Return Ret;
+	}
+}
