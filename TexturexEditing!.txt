@@ -6,10 +6,14 @@
 	}
 	With that, game palette will be applied to the graphics
 	
-	Adding anything besides NoTrim lines in Textures.txt is not recommended
+	Adding anything besides NoTrim lines in TEXTURES.txt is not recommended, otherwise all NoTrim lines will be ereased from it after saving
+	Instead, use other TEXTURES files (TEXTURES.Guns.txt, TEXTURES.Dying.txt) or create a new one
 	
 	Current list of NoTrim lines:
 */
+NoTrim "PUN1F0"
+NoTrim "PUN3F0"
+NoTrim "PUN3G0"
 NoTrim "SH1FA0"
 NoTrim "SH1FB0"
 NoTrim "SH12N0"
@@ -45,6 +49,11 @@ NoTrim "CH1MB0"
 NoTrim "CH1MC0"
 NoTrim "CH1MD0"
 NoTrim "CH1ME0"
+NoTrim "CH2MA0"
+NoTrim "CH2MB0"
+NoTrim "CH2MC0"
+NoTrim "CH2MD0"
+NoTrim "CH2ME0"
 NoTrim "CH1GA0"
 NoTrim "CH1GB0"
 NoTrim "CH1GC0"
