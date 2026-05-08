@@ -1,0 +1,203 @@
+Class MRIntWeaps_PressetsMenu: OptionMenu
+{
+	Static Const String CVarsId[] = {//"CVarname CVarIndex" (to prevent future updates from breaking pressets)
+		"MRIntW_Casings 0", "MRIntW_CasingsRandom 1", "MRIntW_CasingsAmount 2", "MRIntW_CasingsVolume 3", "MRIntW_CasingsLowRes 4",
+		"MRIntW_CasingsClusteringReduce 5", "MRIntW_Smoke 6", "MRIntW_FlowingSmoke 7", "MRIntW_FlowingSmokeLength 8", "MRIntW_FlowingSmokeAlpha 9",
+		"MRIntW_FlowingSmokeMaxTime 10", "MRIntW_FlowingSmokePrecision 11", "MRIntW_BobStyle 12", "MRIntW_BobRangeX 13", 
+		"MRIntW_BobRangeY 14", "MRIntW_BobRangeZ 15", "MRIntW_VanillaFireBob 16", "MRIntW_Bounce 17", "MRIntW_DamageShake 18", "MRIntW_IdleAnims 19", 
+		"MRIntW_Recoil 20", "MRIntW_RecoilAmount 21", "MRIntW_RecoilRecover 22", "MRIntW_Lighting 23", "MRIntW_InstantFire 24", "MRIntW_FastPistol 25", 
+		"MRIntW_BetterAlert 26", "MRIntW_GlovesColor 27", "MRIntW_GlovesColorShade 28", "MRIntW_GlovesColorLight 29", "MRIntW_GlovesColorTemp 30",
+		"MRIntW_Epilepsy 31", "MRIntW_NoMuzzleFlash 32", "MRIntW_FlashFlare 33", "MRIntW_ShotgunsRecoil 34", "MRIntW_BareHands 35",
+		"MRIntW_GloveStrip 36", "MRIntW_BersShake 37", "MRIntW_LowHealthShake 38", "MRIntW_RightPunch 39", "MRIntW_SecondFist 40", 
+		"MRIntW_FinishPunch 41", "MRIntW_FinishPunchChance 42", "MRIntW_SurfacePunchRecoil 43", "MRIntW_PunchingFist 44", "MRIntW_ChainsawStart 45", 
+		"MRIntW_ChainsawCutting 46", "MRIntW_ChainsawCuttingWall 47", "MRIntW_ChainsawSmoke 48", "MRIntW_LHand 49", "MRIntW_Rifle 50",
+		"MRIntW_ShotgunSmoke 51", "MRIntW_ShotgunSparks 52", "MRIntW_ShotgunPumpAngle 53", "MRIntW_ShotgunPumpRandom 54", "MRIntW_ShotgunPumpRandRotation 55",
+		"MRIntW_SSGSmoke 56", "MRIntW_SSGSparks 57", "MRIntW_ChaingunFixed 58", "MRIntW_ChaingunCounterClock 59", "MRIntW_ChaingunSpeed 60",
+		"MRIntW_ChaingunStopTime 61", "MRIntW_ChaingunMaxSmokes 62", "MRIntW_RocketSmoke 63", "MRIntW_PlasmaParticles 64", "MRIntW_BFGParticles 65",
+		"wbobspeed 66"
+	};
+	
+	Void WriteSettingsPresset()
+	{
+		Array<String> CVars;
+		
+		For(int i=0;i<CVarsId.Size();i++){
+			String CVa = CVarsId[i];
+			int Index = CVa.Mid(CVa.IndexOf(" ")+1).ToInt();
+			CVa = CVa.Left(CVa.IndexOf(" "));
+			
+			CVars.Insert(Index, CVa);
+		}
+		
+		String Presset;
+		
+		For(int i=0;i<CVars.Size();i++){
+			if(!CVar.FindCVar(CVars[i]))Continue;
+			String Write = "["..i.."] ";
+			String Value;
+			Switch(CVar.FindCVar(CVars[i]).GetRealType()){
+				Default:
+				Case CVar.CVAR_Bool:
+				Case CVar.CVAR_Int:
+					Value = ""..CVar.FindCVar(CVars[i]).GetInt();
+					Break;
+				Case CVar.CVar_Float:
+					Value = ""..CVar.FindCVar(CVars[i]).GetFloat();
+					Break;
+				Case CVar.CVar_Color:
+					Color Col = CVar.FindCVar(CVars[i]).GetInt();
+					Value = Col.R.." "..Col.G.." "..Col.B;
+					Break;
+			}
+			
+			Write = Write..Value..",";
+			
+			Presset = Presset..Write;
+		}
+		
+		if(CVar.FindCVar("MRIntW_PressetCust1"))CVar.FindCVar("MRIntW_PressetCust1").SetString(Presset);
+	}
+	
+	Void ApplySettingsPresset()
+	{
+		if(!CVar.FindCVar("MRIntW_PressetCust1") || CVar.FindCVar("MRIntW_PressetCust1").GetString()=="")Return;
+		
+		Array<String> CVars;
+		
+		For(int i=0;i<CVarsId.Size();i++){
+			String CVa = CVarsId[i];
+			int Index = CVa.Mid(CVa.IndexOf(" ")+1).ToInt();
+			CVa = CVa.Left(CVa.IndexOf(" "));
+			
+			CVars.Insert(Index, CVa);
+		}
+		
+		Array<String> PresCVars;
+		
+		String Presset = CVar.FindCVar("MRIntW_PressetCust1").GetString();
+		
+		While(Presset.IndexOf(",")>-1){
+			String CVa = Presset.Mid(Presset.IndexOf("[")+1);
+			CVa = CVa.Left(CVa.IndexOf(","));
+			int Index = CVa.Left(CVa.IndexOf("]")).ToInt();
+			String Value = CVa.Mid(CVa.IndexOf("] ")+2);
+			
+			PresCVars.Insert(Index, Value);
+			
+			Presset = Presset.Mid(Presset.IndexOf(",")+1);
+		}
+		
+		For(int i=0;i<PresCVars.Size();i++){
+			Let CVa = CVar.FindCVar(CVars[i]);
+			if(PresCVars[i]=="" || !CVa)Continue;
+			
+			String PresCVar = PresCVars[i];
+			
+			Switch(CVa.GetRealType()){
+				Default:
+				Case CVar.CVAR_Bool:
+				Case CVar.CVAR_Int:
+					CVa.SetInt(PresCVar.ToInt());
+					Break;
+				Case CVar.CVar_Float:
+					CVa.SetFloat(PresCVar.ToDouble());
+					Break;
+				Case CVar.CVar_Color:
+					int Cols[3];
+					String Colr = PresCVar.Left(PresCVar.IndexOf(" "));
+					Cols[0] = Colr.ToInt();
+					Colr = PresCVar.Mid(PresCVar.IndexOf(" ")+1);
+					Colr = Colr.Left(Colr.IndexOf(" "));
+					Cols[1] = Colr.ToInt();
+					Colr = PresCVar.Mid(PresCVar.IndexOf(" ", 1)+1);
+					Cols[2] = Colr.ToInt();
+					CVa.SetInt(Color(Cols[0],Cols[1],Cols[2]));
+					Break;
+			}
+		}
+	}
+	
+	Override Bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		Bool Ret = Super.MenuEvent(mkey, fromcontroller);
+		
+		AddApplyButton();
+		
+		Return Ret;
+	}
+	
+	Override Void Init(Menu parent, OptionMenuDescriptor desc)
+	{
+		Super.Init(Parent, Desc);
+		
+		AddApplyButton();
+	}
+	
+	Void AddApplyButton()
+	{
+		if(!(mDesc.mItems[mDesc.mItems.Size()-1] is 'OptionMenuItemMRIntWeaps_ReadPresset') && 
+			CVar.FindCVar("MRIntW_PressetCust1") && CVar.FindCVar("MRIntW_PressetCust1").GetString()!=""){
+			Let a = New('OptionMenuItemMRIntWeaps_ReadPresset');
+			a.mLabel = "$MRIntW_ApplyPresset";
+			a.mPrompt = "$MRIntW_ApplyPressetPrompt";
+			mDesc.mItems.Push(a);
+			if(OptionMenuItemMRIntWeaps_WritePresset(mDesc.mItems[mDesc.mItems.Size()-2])){
+				OptionMenuItemMRIntWeaps_WritePresset(mDesc.mItems[mDesc.mItems.Size()-2]).mPrompt = "$MRIntW_WritePressetPrompt2";
+			}
+		}
+		else if(OptionMenuItemMRIntWeaps_WritePresset(mDesc.mItems[mDesc.mItems.Size()-1])){
+			OptionMenuItemMRIntWeaps_WritePresset(mDesc.mItems[mDesc.mItems.Size()-1]).mPrompt = "$MRIntW_WritePressetPrompt";
+		}
+	}
+}
+
+Class OptionMenuItemMRIntWeaps_WritePresset: OptionMenuItemSubMenu
+{
+	String mPrompt;
+	
+	OptionMenuItemMRIntWeaps_WritePresset Init(String label, String prompt = "")
+	{
+		Super.Init(label, prompt);
+		mPrompt = prompt;
+		return self;
+	}
+
+	Override Bool Activate()
+	{
+		String msg = mPrompt.Length() > 0 ? mPrompt : "$SAFEMESSAGE";
+		msg = StringTable.Localize(msg);
+		String actionLabel = StringTable.localize(mLabel);
+
+		String FullString;
+		FullString = String.Format("%s%s%s\n\n%s", TEXTCOLOR_WHITE, actionLabel, TEXTCOLOR_NORMAL, msg);
+		Menu.StartMessage(FullString, 0);
+		return true;
+	}
+	
+	override bool MenuEvent (int mkey, bool fromcontroller)
+	{
+		if (mkey == Menu.MKEY_MBYes)
+		{
+			ActuallyActivate();
+			return true;
+		}
+		return Super.MenuEvent(mkey, fromcontroller);
+	}
+	
+	Virtual Void ActuallyActivate()
+	{
+		if(!MRIntWeaps_PressetsMenu(Menu.GetCurrentMenu().mParentMenu))Return;
+		
+		MRIntWeaps_PressetsMenu(Menu.GetCurrentMenu().mParentMenu).WriteSettingsPresset();
+	}
+}
+
+Class OptionMenuItemMRIntWeaps_ReadPresset: OptionMenuItemMRIntWeaps_WritePresset
+{
+	Override Void ActuallyActivate()
+	{
+		if(!MRIntWeaps_PressetsMenu(Menu.GetCurrentMenu().mParentMenu))Return;
+
+		MRIntWeaps_PressetsMenu(Menu.GetCurrentMenu().mParentMenu).ApplySettingsPresset();
+	}
+}
