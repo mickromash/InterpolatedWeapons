@@ -43,7 +43,7 @@ Script "MRIntWeaps_GlovesColorPresset" (int arg0, int arg1)
 {
 	Switch(arg0){
 		Case 0://Classic
-			CreateTranslation(arg1, 112:127=57:79);
+			CreateTranslation(arg1, 112:125=57:79, 126:127=1:1);
 			Break;
 		Case 1://Black
 			CreateTranslation(arg1, 112:127=[40,40,40]:[0,0,0]);
@@ -73,7 +73,7 @@ Script "MRIntWeaps_GlovesColorPressetRifle" (int arg0, int arg1)
 {
 	Switch(arg0){
 		Case 0://Classic
-			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127, 112:127=57:79);
+			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127,  112:125=57:79, 126:127=1:1);
 			Break;
 		Case 1://Black
 			CreateTranslation(arg1, 199:207=116:124, 241:245=123:127, 112:127=[40,40,40]:[0,0,0]);
@@ -103,7 +103,7 @@ Script "MRIntWeaps_GlovesColorPressetPistol" (int arg0, int arg1)
 {
 	Switch(arg0){
 		Case 0://Classic
-			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=57:79);
+			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159,  112:125=57:79, 126:127=1:1);
 			Break;
 		Case 1://Black
 			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=[40,40,40]:[0,0,0]);
