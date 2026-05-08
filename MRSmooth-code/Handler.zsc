@@ -137,6 +137,23 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 	}
 	
+	Override Void WorldThingDamaged(WorldEvent e)
+	{
+		if(!e.Thing || !e.Inflictor)Return;
+		
+		if(PlayerPawn(e.Thing) && e.Thing.FindInventory("MRIntWeaps_Fist") &&
+			MRIntWeaps_Fist(e.Thing.FindInventory("MRIntWeaps_Fist")).GlovesColor == 13
+		){
+			MRIntWeaps_Fist(e.Thing.FindInventory("MRIntWeaps_Fist")).LastActor = e.DamageSource;
+		}
+		else if(PlayerPawn(e.DamageSource) && e.DamageSource.FindInventory("MRIntWeaps_Fist") &&
+			(MRIntWeaps_Fist(e.DamageSource.FindInventory("MRIntWeaps_Fist")).GlovesColor == 14||
+			MRIntWeaps_Fist(e.DamageSource.FindInventory("MRIntWeaps_Fist")).GlovesColor == 16)
+		){
+			MRIntWeaps_Fist(e.DamageSource.FindInventory("MRIntWeaps_Fist")).LastActor = e.Thing;
+		}
+	}
+	
 	Override Void NetworkProcess(ConsoleEvent e)
 	{
 		if(e.name ~== "MRIntWeaps_Uninstall"){
@@ -171,28 +188,6 @@ Class MRIntWeaps_Handler: EventHandler
 			CVar.FindCVar("MRIntW_GlovesColorTemp").SetInt(Rand);
 			Return;
 		}
-		
-		if(e.name ~== "MRIntW_BobZLays"){
-			Lays.Clear();
-			
-			For(int i=0;i<e.Args.Size();i++){
-				if(e.args[i]!=0)Lays.Push(e.args[i]);
-			}
-		}
-		if(e.name ~== "MRIntW_UpdateBobZ"){
-			Double BobZ = e.args[0];
-			BobZ *= .001;
-			
-			if(!Players[e.Player].ReadyWeapon)Return;
-			
-			Let Weap = Players[e.Player].ReadyWeapon;
-			//if(!Actor.InStateSequence(Players[e.Player].FindPSprite(PSP_WEAPON).CurState, Weap.FindState("Ready")))Return;
-			
-			For(int i=0;i<Lays.Size();i++){
-				if(Players[e.Player].FindPSprite(Lays[i]))Players[e.Player].FindPSprite(Lays[i]).Scale = (1+BobZ,1+BobZ);
-			}
-			Return;
-		}
 	}
 	
 	Bool Uninstalled;
@@ -219,46 +214,5 @@ Class MRIntWeaps_Handler: EventHandler
 			}
 		}
 		//Console.Printf("World Loaded");
-	}
-	
-	Ui Bool DoBobZ;
-	Ui LinearValueInterpolator BobZ;
-	Ui Double BobZCenter;
-	Array<int>Lays;
-	Override Void InterfaceProcess(ConsoleEvent e)
-	{
-		if(e.name ~== "MRIntW_BobZ"){
-			if(MRIntW_BobRangeZ==0)Return;
-			if(BobZ)BobZ.Reset(0);
-			BobZCenter = e.args[1];
-			BobZCenter *= .1;
-			DoBobZ = e.args[0];
-			Return;
-		}
-	}
-	
-	Override Void RenderOverlay(RenderEvent e)
-	{
-		if(!Players[ConsolePlayer].ReadyWeapon)Return;
-		
-		if(!DoBobZ)Return;
-		
-		Double Bob = MRIntWeaps_Fist.GetBobZ(Players[ConsolePlayer].ReadyWeapon, BobZCenter)*1000;
-		
-		if(!BobZ)BobZ = LinearValueInterpolator.Create(Bob, 50);
-		BobZ.Update(Bob);
-		
-		SendNetworkEvent("MRIntW_UpdateBobZ", BobZ.GetValue());
-	}
-	
-	Override Void UiTick()
-	{
-		if(!Players[ConsolePlayer].ReadyWeapon)Return;
-		
-		if(!DoBobZ)Return;
-		
-		Double Bob = MRIntWeaps_Fist.GetBobZ(Players[ConsolePlayer].ReadyWeapon, BobZCenter)*1000;
-		if(!BobZ)BobZ = LinearValueInterpolator.Create(Bob, 50);
-		if(Bob-BobZ.GetValue()>100)BobZ.Reset(Bob);
 	}
 }
