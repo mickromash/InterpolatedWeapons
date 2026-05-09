@@ -94,6 +94,7 @@ OptionMenu "MRIntW_WeaponsMenu"
 	StaticText ""
 	StaticText "$TAG_PISTOL", "Fire"
 	Option "$MRIntW_LHand", "MRIntW_LHand", "YesNo"
+	Option "$MRIntW_PistolSHand", "MRIntW_PistolSHand", "MRIntW_PistolSHandValues"
 	Option "$MRIntW_Rifle", "MRIntW_Rifle", "YesNo"
 	StaticText ""
 	StaticText "$TAG_SHOTGUN", "Fire"
@@ -231,6 +232,13 @@ OptionValue "MRIntW_FinishPunchValues"
 	0, "$MRIntW_FinishPunch0"
 	1, "$MRIntW_FinishPunch1"
 	2, "$MRIntW_FinishPunch2"
+}
+
+OptionValue "MRIntW_PistolSHandValues"
+{
+	0, "$MRIntW_PistolSHand0"
+	1, "$MRIntW_PistolSHand1"
+	2, "$MRIntW_PistolSHand2"
 }
 
 OptionValue "MRIntW_PlasmaParticlesValues"

@@ -127,6 +127,10 @@ MRIntW_ChainsawCuttingWall = "Chainsaw surface cutting shaking";
 MRIntW_ChainsawSmoke = "Chainsaw smoke";
 
 MRIntW_LHand = "Hold the pistol in the left hand";
+MRIntW_PistolSHand = "Hold gun with two hands";
+MRIntW_PistolSHand0 = "No";
+MRIntW_PistolSHand1 = "If enemy is far";
+MRIntW_PistolSHand2 = "Always";
 MRIntW_Rifle = "Replace the pistol with the rifle";
 
 MRIntW_ShotgunSmoke = "Smoke from chamber";
@@ -304,6 +308,10 @@ MRIntW_ChainsawCuttingWall = "Тряска бензопилы при распи�
 MRIntW_ChainsawSmoke = "Дым от пилы";
 
 MRIntW_LHand = "Держать пистолет в левой руке";
+MRIntW_PistolSHand = "Деражть пистолет двумя руками";
+MRIntW_PistolSHand0 = "Нет";
+MRIntW_PistolSHand1 = "Если враг далеко";
+MRIntW_PistolSHand2 = "Всегда";
 MRIntW_Rifle = "Заменить пистолет на винтовку";
 
 MRIntW_ShotgunSmoke = "Дым из патронника";

@@ -62,6 +62,7 @@ nosave bool MRIntW_ChainsawSmoke = true;
 //Pistol
 user bool MRIntW_LHand = true;//Hold pistol in left hand
 user bool MRIntW_Rifle = false;//Replace pistol with the rifle
+user int MRIntW_PistolSHand = 1;//Hold pistol with two hands; 0 - No, 1 - If target is far, 2 - always
 //Shotgun
 nosave bool MRIntW_ShotgunSmoke = true;//Smoke from chamber
 nosave bool MRIntW_ShotgunSparks = false;

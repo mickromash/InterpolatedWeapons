@@ -29,6 +29,7 @@ Pistol
 {
 	P1SG A (textures) - Ready
 	P1SG HBCFGED (textures) - Firing animation
+	P2SG A (textures) - Second hand
 		
 	P1SF ABC (texture) - Flash animation
 }
@@ -76,6 +77,7 @@ Chaingun
 	CH2G ABCD (textures) - BOdy rotation firing
 	CH1S A - Barrel shadow
 	CH1B ABCDEFG (textures) - Barrel rotation
+	CH2B BCDEF (textures) - Barrel reflection rotation
 	CH1R ABCD (textures) - Closest disk rotation
 	CH1F ABC (textures) - Flash animation
 	
