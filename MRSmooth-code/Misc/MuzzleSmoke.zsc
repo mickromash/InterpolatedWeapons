@@ -45,10 +45,9 @@ Class MRIntWeaps_Smoker: Object play
 	Virtual Void Tick()
 	{
 		if(!Owner){Destroy();Return;}
-		
-		//ViewHeight = (PlayerPawn(Owner).ViewHeight + Owner.player.crouchviewdelta);
-		//Bob = (Owner.Player.ViewZ - Owner.Pos.Z) - ViewHeight;
-		
+		//Voodoo doll check (stolen from Hideous Destructor)
+		if(PlayerPawn(Owner)&& !!Owner.player && !!Owner.player.mo)Owner = Owner.Player.mo;
+				
 		if(MRIntW_FlowingSmoke)For(int i=0;i<Smokes;i++)SpawnSmoke(i);
 		
 		OldBob = Bob;
@@ -71,7 +70,7 @@ Class MRIntWeaps_Smoker: Object play
 	Void SpawnSmoke(int Num=0)
 	{
 		if(Scale[Num]==0)Return;
-		
+				
 		if(Players[ConsolePlayer].Camera != Owner)Scale[Num] *= 2;
 		
 		Double Alpha = Alpha;
@@ -263,7 +262,7 @@ Extend Class MRIntWeaps_Shotgun
 		
 			if(!Smoker)Return;
 		}
-		
+				
 		Smoker.Update();
 		
 		if(Smoke<1){
@@ -273,6 +272,7 @@ Extend Class MRIntWeaps_Shotgun
 			Smoker.Update(true);
 			Return;
 		}
+		
 		Smoke -= .05;
 		
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
