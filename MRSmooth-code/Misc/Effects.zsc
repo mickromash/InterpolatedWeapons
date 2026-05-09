@@ -365,8 +365,8 @@ Extend Class MRIntWeaps_Pistol
 				Part.Bob = invoker.Smoker.Bob;
 			}
 			
-			Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
 			Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
+			Part.Vel = Vel + Part.Move - (0,0,Part.Bob - Part.OldBob);
 			Part.Master = Self;
 		}
 	}
@@ -1148,7 +1148,6 @@ Class MRIntW_SmokeParticle: VisualThinker
 	Override Void PostBeginPlay()
 	{
 		if(!Master){Destroy();Return;}
-		//SetRenderStyle(STYLE_Add);
 		Texture = Texman.CheckForTexture("NSHSA0");
 		Scale = (.02,.02)*StartScale;
 		Grow = StartGrow*.1;
@@ -1161,7 +1160,6 @@ Class MRIntW_SmokeParticle: VisualThinker
 	Override Void Tick()
 	{
 		Super.Tick();
-		//MRGParts.SpawnParticle(Color(255,255,255), SPF_NOTIMEFREEZE, STYLE_ADD, 4, 3, 0, Pos, (0,0,1));
 				
 		if(Level.IsFrozen())Return;
 		
@@ -1176,13 +1174,15 @@ Class MRIntW_SmokeParticle: VisualThinker
 		
 		ViewHeight = (PlayerPawn(Master).ViewHeight + Master.player.crouchviewdelta);
 		Bob = (Master.Player.ViewZ - Master.Pos.Z) - ViewHeight;
-
+		
+		Place += Move;
+		
 		Pos = Master.Pos + (0,0,ViewHeight + Bob);
 		Vel = Master.Vel*2 + Move - (0,0,Bob - OldBob);
 		
 		Pos += Place;
 		
-		Place += -Master.Vel*.1 + Move;
+		Place += -Master.Vel*.1;
 		
 		OldBob = Bob;
 	}

@@ -46,8 +46,8 @@ Class MRIntWeaps_Smoker: Object play
 	{
 		if(!Owner){Destroy();Return;}
 		
-		ViewHeight = (PlayerPawn(Owner).ViewHeight + Owner.player.crouchviewdelta);
-		Bob = (Owner.Player.ViewZ - Owner.Pos.Z) - ViewHeight;
+		//ViewHeight = (PlayerPawn(Owner).ViewHeight + Owner.player.crouchviewdelta);
+		//Bob = (Owner.Player.ViewZ - Owner.Pos.Z) - ViewHeight;
 		
 		if(MRIntW_FlowingSmoke)For(int i=0;i<Smokes;i++)SpawnSmoke(i);
 		
@@ -58,6 +58,14 @@ Class MRIntWeaps_Smoker: Object play
 		Alpha = MRIntW_FlowingSmokeAlpha;
 		Bright = Bright1 = ForceConnect = ResetInterpolation = false;
 		Col1 = Col = Color(Brightness,Brightness,Brightness);
+	}
+	
+	Virtual Void Update(Bool OldB = false)
+	
+	{
+		ViewHeight = (PlayerPawn(Owner).ViewHeight + Owner.player.crouchviewdelta);
+		Bob = (Owner.Player.ViewZ - Owner.Pos.Z) - ViewHeight;
+		if(OldB)OldBob = Bob;
 	}
 	
 	Void SpawnSmoke(int Num=0)
@@ -168,10 +176,13 @@ Extend Class MRIntWeaps_Pistol
 			if(!Smoker)Return;
 		}
 		
+		Smoker.Update();
+		
 		if(Smoke<1){
 			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 			Smoker.Smokes = 0;
 			Smoker.ResetInterpolation = true;
+			Smoker.Update(true);
 			Return;
 		}
 		Smoke -= .1;
@@ -253,10 +264,13 @@ Extend Class MRIntWeaps_Shotgun
 			if(!Smoker)Return;
 		}
 		
+		Smoker.Update();
+		
 		if(Smoke<1){
 			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 			Smoker.Smokes = 0;
 			Smoker.ResetInterpolation = true;
+			Smoker.Update(true);
 			Return;
 		}
 		Smoke -= .05;
@@ -337,21 +351,19 @@ Extend Class MRIntWeaps_Chaingun
 			if(!Smoker)Return;
 		}
 		
+		Smoker.Update();
+		
 		if(Smoke<1){
 			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 			LastShoted.Clear();
 			Smoker.Smokes = 0;
 			Smoker.ResetInterpolation = true;
+			Smoker.Update(true);
 			Return;
 		}
 		Smoke -= .2;
 		
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
-		
-		/*if(InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Fire"))){
-			Smoker.ResetInterpolation = true;
-			Return;
-		}*/
 		
 		Vector2 Ofst[6];
 		For(int i=0;i<LastShoted.Size();i++)
@@ -420,6 +432,8 @@ Extend Class MRIntWeaps_RocketLauncher
 			if(!Smoker)Return;
 		}
 		
+		Smoker.Update();
+		
 		if(Fire>120)Fire = 120;
 		if(Fire>0)Fire--;
 		else Fire = 0;
@@ -428,6 +442,7 @@ Extend Class MRIntWeaps_RocketLauncher
 			if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 			Smoker.Smokes = 0;
 			Smoker.ResetInterpolation = true;
+			Smoker.Update(true);
 			Return;
 		}
 		Smoke -= .2;
