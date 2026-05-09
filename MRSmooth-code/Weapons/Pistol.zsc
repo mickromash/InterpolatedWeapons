@@ -55,8 +55,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 					Case -1:
 						Owner.Player.SetPsprite(SHand, FindState("SecondHandLower"));
 						Break;
+					Case 1:
 					Case 0:
-						if(HandTime<0){
+						if(HandTime<1){
+							SHandState = 0;
 							Owner.Player.SetPsprite(SHand, FindState("SecondHandLower"));
 						}
 						Break;
@@ -65,6 +67,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			else {
 				if(SHandState==1 && !Owner.Player.FindPSprite(SHand)){
 					Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
+					HandTime = 35*20;
 				}
 			}
 			
@@ -100,23 +103,25 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		{
 			accurate = true;
 		}
+		
+		if(invoker.EnableSecondHand==1){
+			
+			FLineTraceData data;
+			
+			LineTrace(Angle, 4000, Pitch, TRF_NOSKY, height*.5 - floorclip + player.mo.AttackZOffset*player.crouchFactor,0,0, data);
+			if(//data.HitType==TRACE_HitFloor||data.HitType==TRACE_HitCeiling||
+				//data.HitType==TRACE_HitWall||
+				data.HitType==TRACE_HitActor
+			){
+				Vector3 Dif = data.HitLocation - Pos;
+				if(Dif.Length()>500){invoker.SHandState = 1;invoker.HandTime = 35*10;}
+				else if(Dif.Length()<170)invoker.SHandState = -1;
+				else invoker.SHandState = 0;
+			}
+		}
 
 		A_StartSound(invoker.IsRifle?"MRIntW/RifleFire":"weapons/pistol", CHAN_WEAPON, pitch:i_timescale);
 		GunShot (accurate, "BulletPuff", BulletSlope ());
-		
-		if(invoker.EnableSecondHand!=1)Return;
-		
-		FLineTraceData data;
-		
-		LineTrace(Angle, 2000, Pitch, TRF_NOSKY, height*.5 - floorclip + player.mo.AttackZOffset*player.crouchFactor,0,0, data);
-		if(data.HitType==TRACE_HitFloor||data.HitType==TRACE_HitCeiling||
-			data.HitType==TRACE_HitWall||data.HitType==TRACE_HitActor
-		){
-			Vector3 Dif = data.HitLocation - Pos;
-			if(Dif.Length()>600){invoker.SHandState = 1;invoker.HandTime = 35*4;}
-			else if(Dif.Length()<200)invoker.SHandState = -1;
-			else invoker.SHandState = 0;
-		}
 	}
 	
 	Action Void A_GlovesColor(int Trans=0)
