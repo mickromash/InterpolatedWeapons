@@ -304,37 +304,35 @@ Extend Class MRIntWeaps_SuperShotgun//'Particles'
 	
 	Action Void A_FiringParticles()
 	{
-		/*if(MRIntW_Smoke){
-			Vector3 Pos = (0,0,Player.ViewZ-Pos.Z);
-			Pos.XY += AngleToVector(Angle, 5)*Abs(Cos(Pitch));//Moving forward
-			Pos.XY -= AngleToVector(Angle, 4.6)*Sin(Pitch);//Lowering to weapon sprite
-			Pos.Z -= 5*Sin(Pitch);//Moving forward
-			Pos.Z -= 4.6*Abs(Cos(Pitch));//Lowering to weapon sprite
-			Vector3 Vel = (AngleToVector(Angle, 3)*Abs(Cos(Pitch)), -3*Sin(Pitch));
-			For(int i=0;i<6;i++){
-				Vector3 CVel = Vel;
-				CVel.XY += AngleToVector(Angle+90, CFRandom(-.2, .2));
-				int Col = CRandom(40, 70);
-				
-				Float Alph = CFRandom(.15, .2);
-				
-				A_SpawnParticle(Color(Col,Col,Col), 0, 15, CFRandom(.5, 1), 0, Pos.X,Pos.Y,Pos.Z,
-					CVel.X+CFRandom(-.1, .1),CVel.Y+CFRandom(-.1, .1),CVel.Z+CFRandom(0, .25), CFRandom(-.02, .02),CFRandom(-.02, .02),0,//CFRandom(-.02, .02), 
-					Alph, Alph/14, CFRandom(1, 3));
-			}
-			Pos = -Pos;
-			For(int i=0;i<2;i++){
-				int Col = CRandom(40, 70);
-				
-				A_SpawnParticle(Color(Col,Col,Col), 0, 260, CFRandom(5, 7), 0, Pos.X,Pos.Y,Pos.Z,
-					0,0,CFRandom(2, 3), CFRandom(-.01, .01),CFRandom(-.01, .01),-CFRandom(.01, .02), 
-					CFRandom(.05, .07), .00015, CFRandom(5, 7));
-			}
-		}*/
-		
 		//Buckshot sparks
 		if(Random(0, 20)<2)Return;
+		
 		Double RandStart = Random(0, 10);
+		
+		if(Players[ConsolePlayer].Camera!=Self && MRIntW_SSGSparks)
+			For(int i1=RandStart;i1<20;i1++){
+				int Barrl = -1;
+				if(RandStart+(20-RandStart)*.5<i1)Barrl = 1;
+				
+				Vector3 Pos = (0,0,0);
+				Pos += AngleToVector(Angle, 17);
+				Pos += AngleToVector(Angle-90, 7+Barrl);
+				Pos.Z += Height*.56;
+				
+				Vector3 Vel = Vel;
+				Vel.XY += AngleToVector(Angle+CFRandom(-40, 40), CFRandom(1, 3));
+				Vel.Z += CFRandom(1, 2);
+				
+				int Col[3];
+				Col[0] = CRandom(200, 255);
+				Col[1] = Col[0]*CFRandom(.9, 1);
+				Col[2] = 0;
+				
+				Double Size = CFRandom(.3, 1);
+				
+				A_SpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT, 50, Size, 0, Pos.X,Pos.Y,Pos.Z,
+					Vel.X,Vel.Y,Vel.Z, 0,0,-.25, 1, 0, -Size/20.);
+		}
 		For(int i1=RandStart;i1<20;i1++){
 		
 			int Par = -1;
