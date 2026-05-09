@@ -242,7 +242,8 @@ Extend Class MRIntWeaps_Fist
 						}
 						Switch(LastName){
 							Case 'DoomPlayer':
-								TargetColor = LastActor.Player.GetColor();
+								if(LastActor.Player)TargetColor = LastActor.Player.GetColor();
+								else TargetColor = Color(80, 200, 70);
 								Break;
 							Case 'ZombieMan':
 								TargetColor = Color(130,134,106);
