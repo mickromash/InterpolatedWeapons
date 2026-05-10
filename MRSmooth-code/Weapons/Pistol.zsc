@@ -38,7 +38,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 		
 		if(HandTime>0)HandTime--;
-		if(Owner.Player.ReadyWeapon != Self || IsRifle)Return;
+		if(Owner.Player.ReadyWeapon != Self || IsRifle || Owner.Health<1)Return;
 		
 		EnableSecondHand = Owner.GetCVar("MRIntW_PistolSHand");
 		
@@ -525,7 +525,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			}
 			#### # 0 {
 				if(
-					Player.FindPSprite(PSP_WEAPON).Y<=36 &&
+					Player.FindPSprite(PSP_WEAPON) && Player.FindPSprite(PSP_WEAPON).Y<=36 &&
 					abs(Player.GetPSprite(Lay1).X+210 - Player.GetPSprite(SHand).X)<4 &&
 					abs(Player.GetPSprite(Lay1).Y+10 - Player.GetPSprite(SHand).Y)<2 &&
 					abs(Player.GetPSprite(Lay1).Rotation-30 - Player.GetPSprite(SHand).Rotation)<4
