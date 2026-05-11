@@ -11,10 +11,14 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Array<Actor> Berserks;
 	MRIntWeaps_Smoker Smokers[MAXPLAYERS];
+	MRIntWeaps_WeaponChecker WeaponChecker[MAXPLAYERS];
 	
 	Void GiveWeapons(Actor Plr)//Replace player's vanilla weapons with the mods'
 	{
 		if(!Plr)Return;
+		
+		if(!WeaponChecker[Plr.PlayerNumber()])WeaponChecker[Plr.PlayerNumber()] = New('MRIntWeaps_WeaponChecker');
+		WeaponChecker[Plr.PlayerNumber()].Master = Plr;
 		
 		String Select;
 		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
@@ -63,6 +67,8 @@ Class MRIntWeaps_Handler: EventHandler
 	Void TakeWeapons(Actor Plr)//Replace player's weapons from the mod with vanilla ones
 	{
 		if(!Plr)Return;
+		
+		if(WeaponChecker[Plr.PlayerNumber()])WeaponChecker[Plr.PlayerNumber()].Destroy();
 		
 		String Select;
 		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
@@ -214,5 +220,27 @@ Class MRIntWeaps_Handler: EventHandler
 			}
 		}
 		//Console.Printf("World Loaded");
+	}
+}
+
+Class MRIntWeaps_WeaponChecker: Thinker
+{
+	Actor Master;
+	
+	Override Void Tick()
+	{
+		if(!Master)Return;
+		Super.Tick();
+		
+		if(!Master.FindInventory("MRIntWeaps_Fist"))GiveWeapons();
+	}
+	
+	Void GiveWeapons()
+	{
+		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+		
+		if(!Handler)Return;
+		
+		Handler.GiveWeapons(Master);
 	}
 }
