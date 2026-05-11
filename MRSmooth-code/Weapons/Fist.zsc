@@ -31,7 +31,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		}
 		
 		if(!Owner.Player)Return;
-		
+
 		UpdateGloves();
 		
 		Let Weap = Owner.Player.ReadyWeapon;
@@ -697,24 +697,23 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			Stop;
 		LeftHandPunchThru://If killed an enemy
 			#### # 1 {
-				A_OverlayOffset(OverlayId(), 3, -10, WOF_ADD);
+				A_OverlayOffset(OverlayId(), -4, -10, WOF_ADD);
 				A_OverlayScale(OverlayId(), -.1, .05, WOF_ADD);
 				if((GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake"))) && !(GetCVar("MRIntW_PunchingFist")>0 && !invoker.SecondFist))invoker.LeftHand = (-30, 43);
 				else invoker.RightHand = (30, 43);
 				Player.GetPSprite(OverlayId()).Translation = invoker.GlovesTrans;
 			}
 			#### # 1 {
-				A_OverlayOffset(OverlayId(), 7, 0, WOF_ADD);
+				A_OverlayOffset(OverlayId(), -1, 0, WOF_ADD);
 			}
 			#### # 1 {
-				A_OverlayOffset(OverlayId(), 14, 5, WOF_ADD);
-				A_OverlayScale(OverlayId(), .05, -.025, WOF_ADD);
-				A_OverlayRotate(OverlayId(), -3, WOF_ADD);
+				A_OverlayOffset(OverlayId(), 14, 0, WOF_ADD);
+				A_OverlayScale(OverlayId(), .05, -.05, WOF_ADD);
 			}
 			#### #### 1 {
 				A_OverlayOffset(OverlayId(), 24, 24, WOF_ADD);
 				A_OverlayRotate(OverlayId(), -5, WOF_ADD);
-				A_OverlayScale(OverlayId(), +.01, -.05, WOF_ADD);
+				A_OverlayScale(OverlayId(), .05, -.05, WOF_ADD);
 				if((GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake"))) && !(GetCVar("MRIntW_PunchingFist")>0 && !invoker.SecondFist))invoker.LeftHand = (-30, 43);
 				else invoker.RightHand = (30, 43);
 			}
