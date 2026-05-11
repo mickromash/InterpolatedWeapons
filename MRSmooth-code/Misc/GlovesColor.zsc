@@ -496,7 +496,7 @@ Extend Class MRIntWeaps_Fist
 			GlovesColor = Owner.GetCVar("MRIntW_GlovesColor");
 		}
 		
-		else if(GetAge()%4==0){
+		else if(GetAge()%3==0){
 			if(GlovesLights != CVar.GetCVar("MRIntW_GlovesColorLight", Owner.Player).GetInt()||
 				GlovesShades != CVar.GetCVar("MRIntW_GlovesColorShade", Owner.Player).GetInt()||
 				Owner.GetCVar("MRIntW_GlovesColor") != GlovesColor||
