@@ -138,7 +138,6 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(OverlayId()).Translation = Feest.PistolGlovesTrans;
 				Break;
 		}
-		
 	}
 	
 	Double RecRot;
@@ -175,7 +174,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### # 0 {
 				invoker.IsRifle = GetCVar("MRIntW_Rifle");
 				invoker.LeftHanded = GetCVar("MRIntW_LHand");
-				if(invoker.IsRifle){A_ClearOverlays(SHand, SHand);A_ClearOverlays(SHand2, SHand2);invoker.SecondHand = false;}
+				A_ClearOverlays(SHand, SHand);
+				A_ClearOverlays(SHand2, SHand2);
+				invoker.SecondHand = false;
 			}
 			#### # 0 A_JumpIf(invoker.IsRifle, "RifleRaise");
 			TNT1 AAAA 1 {
@@ -542,10 +543,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayOffset(SHand2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				A_OverlayRotate(SHand2, Player.GetPSprite(Lay1).Rotation);
 				Player.GetPSprite(SHand2).Scale = Player.GetPSprite(Lay1).Scale;
-			}
-			P2SG A 1 {
 				if(invoker.LeftHanded)A_OverlayFlags(SHand2, PSPF_MIRROR|PSPF_FLIP, true);
 				else A_OverlayFlags(SHand2, PSPF_MIRROR|PSPF_FLIP, false);
+			}
+			P2SG A 1 {
 				Player.GetPSprite(SHand2).Pivot = Player.GetPSprite(Lay1).Pivot + (.6, -.1);
 				
 				Vector2 Offset = (0,0);
