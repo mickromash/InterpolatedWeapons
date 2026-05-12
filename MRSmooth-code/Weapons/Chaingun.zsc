@@ -398,7 +398,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 
 				if(abs(Diff)<3){invoker.Speed *= 0;Return;}
 				
-				else if(invoker.Speed<=ToDiff*StopPower)invoker.Speed = Max(Diff*StopPower, ToDiff*StopPower);//Clamp(12, Diff*(StopPower)/*invoker.Speed*/, Diff);
+				else if(invoker.Speed<=ToDiff*StopPower)invoker.Speed = Max(Diff*StopPower, ToDiff*StopPower);
 				invoker.DontStop = true;
 			}
 			#### # 0 {if(invoker.IdleDelay>35 && abs(invoker.BobState)<2)A_Overlay(Hand, "HandIdle1");}
@@ -409,7 +409,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Double Ofst = Player.GetPSprite(PSP_WEAPON).Y-Player.GetPSprite(Lay1).Y;
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayPivot(i, .5, 0);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_ADDWEAPON|PSPF_INTERPOLATE, false);
-				For(int i=Muzzle0;i<=Ring;i++){Player.GetPSprite(i).Y += Ofst;Player.GetPSprite(i).OldY = Player.GetPSprite(i).Y;}//A_OverlayOffset(i, 0, 32, WOF_ADD|WOF_INTERPOLATE);}
+				For(int i=Muzzle0;i<=Ring;i++){Player.GetPSprite(i).Y += Ofst;Player.GetPSprite(i).OldY = Player.GetPSprite(i).Y;}
 				Player.GetPSprite(Lay1).Frame = invoker.GunFrame;
 			}
 			CH1G ## 1 {
@@ -420,15 +420,23 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				}
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, -1.5, -1.5, WOF_ADD);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayRotate(i, 1, WOF_ADD);
+				
+				For(int i=Lay1;i<=Ring;i++){
+					A_OverlayFlags(i, PSPF_INTERPOLATE, False);
+				}
 			}
 			CH1G ############# 1 {
-				For(int i=Muzzle0;i<=Muzzle5;i++){
-					if(abs(invoker.Speed)>.1)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
-					else A_OverlayFlags(i, PSPF_INTERPOLATE, false);
-				}
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, 5, 7.5, WOF_ADD);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayRotate(i, -1, WOF_ADD);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayScale(i, .025, .025, WOF_ADD);
+				For(int i=Lay1;i<=Ring;i++){
+					if(abs(invoker.Speed)<4)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(i, PSPF_INTERPOLATE, False);
+				}
+				For(int i=Muzzle0;i<=Muzzle5;i++){
+					if(abs(invoker.Speed)<4)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(i, PSPF_INTERPOLATE, false);
+				}
 			}
 			Wait;
 		
