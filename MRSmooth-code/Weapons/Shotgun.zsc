@@ -200,13 +200,14 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			MRD1 G 1 {
 				A_GlovesColor();
 				A_OverlayFlags(LHand, PSPF_MIRROR, true);
+				A_OverlayFlags(LHand, PSPF_ADDWEAPON, false);
 				A_OverlayPivot(LHand, 1, 1);
-				A_OverlayOffset(LHand, 210, 10);
+				A_OverlayOffset(LHand, 210, 10+Player.GetPSprite(PSP_WEAPON).Y);
 				A_OverlayRotate(LHand, -30);
 				A_OverlayOffset(LHand, 5, -4, WOF_ADD);
 			}
 			#### GGGGGGGG 1{
-				A_OverlayOffset(LHand, 5, 0, WOF_ADD);
+				A_OverlayOffset(LHand, 5, 7, WOF_ADD);
 				A_OverlayRotate(LHand, 4, WOF_ADD);
 				A_OverlayScale(LHand, -.025, -.025, WOF_ADD);
 			}
