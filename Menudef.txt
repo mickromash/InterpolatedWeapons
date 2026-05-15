@@ -159,11 +159,7 @@ OptionMenu "MRIntWeaps_EasterMenu"
 	Command "", Pustota4
 	Option "$MRIntW_GlovesColor", "MRIntW_GlovesColor", "MRIntW_GlovesColorValuesSpecial"
 	StaticText ""
-	StaticText ""
-	StaticText ""
-	StaticText ""
-	StaticText ""
-	StaticText ""
+	Option "$MRIntW_GlovesColorSpecial", "MRIntW_GlovesColor", "MRIntW_GlovesColorValuesSpecial2"
 }
 
 
@@ -199,6 +195,16 @@ OptionValue "MRIntW_GlovesColorValuesSpecial"
 	16, "$MRIntW_GlovesColor16"//Enemy health
 	17, "$MRIntW_GlovesColor17"//Armor
 	18, "$MRIntW_GlovesColor18"//Ammo
+}
+
+OptionValue "MRIntW_GlovesColorValuesSpecial2"
+{
+	19, "$MRIntW_GlovesColor19"//LGBT
+	20, "$MRIntW_GlovesColor20"//Asexual
+	21, "$MRIntW_GlovesColor21"//Lesbian
+	22, "$MRIntW_GlovesColor22"//Bi
+	23, "$MRIntW_GlovesColor23"//Trans
+	24, "$MRIntW_GlovesColor24"//Muad Pie
 }
 
 OptionValue "MRIntW_BobStyleValues"
