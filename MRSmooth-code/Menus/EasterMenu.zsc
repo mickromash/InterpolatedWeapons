@@ -219,25 +219,30 @@ Class MRIntWeaps_EasterMenu: OptionMenu
 				DTA_Alpha, Alpha
 		);
 	}
-	
+	Const EpilepsyIndex = 5;
+
 	Override Bool MenuEvent(int mkey, bool fromcontroller)
 	{
 		Bool Ret = Super.MenuEvent(mkey, fromcontroller);
 		
-		Array<OptionMenuItemStaticText> Text;
-		For(int i=-4;i<0;i++){
-			if(OptionMenuItemStaticText(mDesc.mItems[mDesc.mItems.Size()-1]))Text.Push(OptionMenuItemStaticText(mDesc.mItems[mDesc.mItems.Size()+i]));
-		}
-		
 		int Var1 = CVar.FindCVar("MRIntW_GlovesColor").GetInt();
 		
 		if(Var1>9 && Var1<12){
-			For(int i=0;i<Text.Size();i++){
-				if(Text[i])Text[i].mLabel = "$MRIntW_EpilepsyDesc"..(i+1);
+			if(!OptionMenuItemStaticText(mDesc.mItems[EpilepsyIndex+1])){
+				For(int i=0;i<4;i++){
+					Let a = New('OptionMenuItemStaticText');
+					a.mLabel = "$MRIntW_EpilepsyDesc"..(i+1);
+					a.mCentered = true;
+					a.mColor = Color(255,255,0);
+					mDesc.mItems.Insert(EpilepsyIndex+i, a);
+				}
 			}
 		}
-		else For(int i=0;i<Text.Size();i++){
-				if(Text[i])Text[i].mLabel = "";
+		
+		else {
+			if(OptionMenuItemStaticText(mDesc.mItems[EpilepsyIndex+1])){
+				mDesc.mItems.Delete(EpilepsyIndex, 4);
+			}
 		}
 		Return Ret;
 	}
