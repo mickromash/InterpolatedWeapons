@@ -4,11 +4,13 @@
 
 Extend Class MRIntWeaps_Fist
 {
+	Color GlovesShades, GlovesLights,
+		GlovesFireShades, GlovesFireLights, TargetColor;
+	int GlovesTrans, RifleGlovesTrans, PistolGlovesTrans, GlovesColor,
+		 ColDir, ColDir2;
+	Bool ColIncrea;
 	Actor LastActor;
 	Name LastName;
-	Color GlovesShades, GlovesLights, GlovesFireShades, GlovesFireLights, TargetColor;
-	int GlovesTrans, RifleGlovesTrans, PistolGlovesTrans, GlovesColor, ColDir, ColDir2;
-	Bool ColIncrea;
 	
 	Static Const Name Monstry[] = {
 		'DoomPlayer', 'ZombieMan', 'ShotgunGuy', 'ChaingunGuy', 'WolfensteinSS',
@@ -500,123 +502,123 @@ Extend Class MRIntWeaps_Fist
 				Case 22://Bi
 				Case 23://Trans
 				Case 24://Maud Pie
+				{
+					int ColAmount;
+					Switch(GlovesColor)
 					{
-						int ColAmount;
-						Switch(GlovesColor)
-						{
-							Case 19://Gay
-								ColAmount = 5;
-								Switch(ColDir)
-								{
-									Case 0:
-										TargetColor = Color(230,0,0);
-										Break;
-									Case 1:
-										TargetColor = Color(255,142,0);
-										Break;
-									Case 2:
-										TargetColor = Color(255,239,0);
-										Break;
-									Case 3:
-										TargetColor = Color(0,130,27);
-										Break;
-									Case 4:
-										TargetColor = Color(0,75,255);
-										Break;
-									Case 5:
-										TargetColor = Color(120,0,137);
-										Break;
-								}
-								Break;
-							Case 20://Asexual
-								ColAmount = 4;
-								Switch(ColDir)
-								{
-									Case 0:
-										TargetColor = Color(0,0,0);
-										Break;
-									Case 1:
-										TargetColor = Color(164,164,164);
-										Break;
-									Case 2:
-										TargetColor = Color(255,255,255);
-										Break;
-									Case 3:
-										TargetColor = Color(129,0,129);
-										Break;
-								}
-								Break;
-							Case 21://Lesbian
-								ColAmount = 5;
-								Switch(ColDir)
-								{
-									Case 0:
-										TargetColor = Color(213,40,0);
-										Break;
-									Case 1:
-										TargetColor = Color(253,153,84);
-										Break;
-									Case 2:
-										TargetColor = Color(255,255,255);
-										Break;
-									Case 3:
-										TargetColor = Color(210,97,163);
-										Break;
-									Case 4:
-										TargetColor = Color(163,0,97);
-										Break;
-								}
-								Break;
-							Case 22://Bi
-								ColAmount = 3;
-								Switch(ColDir)
-								{
-									Case 0:
-										TargetColor = Color(215,0,113);
-										Break;
-									Case 1:
-										TargetColor = Color(156,78,151);
-										Break;
-									Case 2:
-										TargetColor = Color(0,53,170);
-										Break;
-								}
-								Break;
-							Case 23://Trans
-								ColAmount = 5;
-								Switch(ColDir)
-								{
-									Case 0:
-									Case 4:
-										TargetColor = Color(91,207,250);
-										Break;
-									Case 1:
-									Case 3:
-										TargetColor = Color(235,161,175);
-										Break;
-									Case 2:
-										TargetColor = Color(255,255,255);
-										Break;
-								}
-								Break;
-							Case 24://Maud Pie
-								ColAmount = 3;
-								Switch(ColDir)
-								{
-									Case 0:
-										TargetColor = Color(184,184,184);
-										Break;
-									Case 1:
-										TargetColor = Color(151,133,185);
-										Break;
-									Case 2:
-										TargetColor = Color(83,130,160);
-										Break;
-								}
-								Break;
-								
-						}
+						Case 19://Gay
+							ColAmount = 5;
+							Switch(ColDir)
+							{
+								Case 0:
+									TargetColor = Color(230,0,0);
+									Break;
+								Case 1:
+									TargetColor = Color(255,142,0);
+									Break;
+								Case 2:
+									TargetColor = Color(255,239,0);
+									Break;
+								Case 3:
+									TargetColor = Color(0,130,27);
+									Break;
+								Case 4:
+									TargetColor = Color(0,75,255);
+									Break;
+								Case 5:
+									TargetColor = Color(120,0,137);
+									Break;
+							}
+							Break;
+						Case 20://Asexual
+							ColAmount = 3;
+							Switch(ColDir)
+							{
+								Case 0:
+									TargetColor = Color(0,0,0);
+									Break;
+								Case 1:
+									TargetColor = Color(164,164,164);
+									Break;
+								Case 2:
+									TargetColor = Color(255,255,255);
+									Break;
+								Case 3:
+									TargetColor = Color(129,0,129);
+									Break;
+							}
+							Break;
+						Case 21://Lesbian
+							ColAmount = 4;
+							Switch(ColDir)
+							{
+								Case 0:
+									TargetColor = Color(213,40,0);
+									Break;
+								Case 1:
+									TargetColor = Color(253,153,84);
+									Break;
+								Case 2:
+									TargetColor = Color(255,255,255);
+									Break;
+								Case 3:
+									TargetColor = Color(210,97,163);
+									Break;
+								Case 4:
+									TargetColor = Color(163,0,97);
+									Break;
+							}
+							Break;
+						Case 22://Bi
+							ColAmount = 2;
+							Switch(ColDir)
+							{
+								Case 0:
+									TargetColor = Color(215,0,113);
+									Break;
+								Case 1:
+									TargetColor = Color(156,78,151);
+									Break;
+								Case 2:
+									TargetColor = Color(0,53,170);
+									Break;
+							}
+							Break;
+						Case 23://Trans
+							ColAmount = 4;
+							Switch(ColDir)
+							{
+								Case 0:
+								Case 4:
+									TargetColor = Color(91,207,250);
+									Break;
+								Case 1:
+								Case 3:
+									TargetColor = Color(235,161,175);
+									Break;
+								Case 2:
+									TargetColor = Color(255,255,255);
+									Break;
+							}
+							Break;
+						Case 24://Maud Pie
+							ColAmount = 2;
+							Switch(ColDir)
+							{
+								Case 0:
+									TargetColor = Color(150,150,150);
+									Break;
+								Case 1:
+									TargetColor = Color(151,133,185);
+									Break;
+								Case 2:
+									TargetColor = Color(83,130,160);
+									Break;
+							}
+							Break;		
 					}
+					
+					if(GlovesFireShades == TargetColor)GlovesFireShades = GlovesLights;
 					
 					Array<int> Cols;
 					Cols.Push(GlovesLights.R);
@@ -625,10 +627,13 @@ Extend Class MRIntWeaps_Fist
 					Cols.Push(TargetColor.R);
 					Cols.Push(TargetColor.G);
 					Cols.Push(TargetColor.B);
+					Cols.Push(GlovesFireShades.R);
+					Cols.Push(GlovesFireShades.G);
+					Cols.Push(GlovesFireShades.B);
 					
 					For(int i=0;i<3;i++){
-						if(Cols[i]<Cols[i+3])Cols[i] += Min(Cols[i+3]-Cols[i], 30);
-						else if(Cols[i]>Cols[i+3])Cols[i] -= Min(Cols[i]-Cols[i+3], 30);
+						if(Cols[i+6]<Cols[i+3])Cols[i] += Min(Cols[i+3]-Cols[i], Max(1, (Cols[i+3]-Cols[i+6])*.25));
+						else if(Cols[i+6]>Cols[i+3])Cols[i] -= Min(Cols[i]-Cols[i+3], Max(1, (Cols[i+6]-Cols[i+3])*.25));
 					}
 															
 					GlovesShades = Color(0,0,0);
@@ -636,10 +641,11 @@ Extend Class MRIntWeaps_Fist
 										
 					if(GlovesLights == TargetColor)ColDir2++;
 					
-					if(ColDir2>15){
+					if(ColDir2>13){
 						ColDir++;
-						if(ColDir>5)ColDir = 0;
+						if(ColDir>ColAmount)ColDir = 0;
 						ColDir2 = 0;
+						GlovesFireShades = TargetColor;
 					}
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
@@ -650,6 +656,7 @@ Extend Class MRIntWeaps_Fist
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
 					GlovesTrans = Translation;
+					}
 					Break;
 			}
 			
