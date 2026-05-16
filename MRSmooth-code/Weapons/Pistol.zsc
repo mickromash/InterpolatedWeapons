@@ -345,7 +345,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### A 1 A_OverlayOffset(Lay1, CRandom(-1, 1), 0, WOF_INTERPOLATE);
 			#### HB 1 A_OverlayOffset(Lay1, CFRandom(-.25, .25), Player.GetPSprite(Lay1).Y-1, WOF_INTERPOLATE);
 			#### B 1 A_OverlayOffset(Lay1, 0, -2, WOF_INTERPOLATE);//Shot
-			//#### # 0{if(MRIntW_ScreenShake && !invoker.SecondHand)A_QuakeEx(0,.05,.15, 5, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .1, rollwave: 1);}
+			#### # 0{if(MRIntW_ScreenShake && !invoker.SecondHand)A_QuakeEx(0,.05,.15, 5, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .1, rollwave: 1);}
 			#### BB 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
@@ -401,7 +401,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
 				}
 			}
-			#### FFG 1{
+			#### FJG 1{
 				Double Recover = .5;
 				if(invoker.SecondHand)Recover = .6;
 				Player.GetPSprite(Lay1).Scale.X -= Clamp(Player.GetPSprite(Lay1).Scale.X-1+invoker.RecMis, 0, invoker.SecondHand?.03:.04);
