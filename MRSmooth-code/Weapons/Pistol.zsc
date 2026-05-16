@@ -140,7 +140,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 	}
 	
-	Double RecRot;
+	Double RecRot, RecMis;
+	int SwitchAnim;
 	
 	States{
 		Select:
@@ -179,26 +180,26 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				invoker.SecondHand = false;
 			}
 			#### # 0 A_JumpIf(invoker.IsRifle, "RifleRaise");
+			TNT1 A 0 {invoker.SwitchAnim = CRandom(0, 1);}
 			TNT1 AAAA 1 {
 				A_GlovesColor();
 				if(invoker.Dropped)invoker.Dropped.Destroy();
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
-				if(invoker.LeftHanded)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);//Left handed
-				else A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, false);
+				A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, invoker.LeftHanded);//Left or right handed
 				A_OverlayPivot(Lay1, .5, 1);
-				A_OverlayOffset(Lay1, -28, 90);
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?28:-28, 90);
 				A_OverlayScale(Lay1, .8, .8);
 				A_OverlayRotate(Lay1, 10.5);
 			}
 			P1SG A 1 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### AAAAAAA 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, 6, -10, WOF_ADD);
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?-6:6, -10, WOF_ADD);
 				A_OverlayScale(Lay1, .02, .02, WOF_ADD);
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
 			}
 			#### AAAA 1 {
-				A_OverlayOffset(Lay1, -4, 3, WOF_ADD);
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?4:-4, 3, WOF_ADD);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, .8, WOF_ADD);
 			}
@@ -217,8 +218,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			P1SG A 1 {
 				A_GlovesColor();
 				A_IdleAnimation(Lay1);
-				if(invoker.LeftHanded)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
-				else A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, false);
+				A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, invoker.LeftHanded);//Left or right handed
 			}
 			#### # 0 {if(MRIntW_BobRangeZ==0)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 			#### # 0 A_JumpIf(invoker.LeftHanded!=GetCVar("MRIntW_LHand"), "GunLower");
@@ -227,9 +227,11 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Loop;
 		GunLower:
 			#### # 0 A_JumpIf(invoker.IsRifle, "RifleLower");
+			P1SG A 0 {invoker.SwitchAnim = Max(0, CRandom(-5, 1));}
 			P1SG A 1 {
+				if(!Weapon(Player.PendingWeapon))invoker.SwitchAnim = 0;
 				A_GlovesColor();
-				if(invoker.LeftHanded)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
+				A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, invoker.LeftHanded);//Left or right handed
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayOffset(Lay1, 0, Player.GetPSprite(PSP_WEAPON).Y);
 				A_OverlayRotate(Lay1, 0);
@@ -239,17 +241,17 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			}
 			#### ## 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -5, -5, WOF_ADD);
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?5:-5, -5, WOF_ADD);
 				A_OverlayRotate(Lay1, 2, WOF_ADD);
 				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
 			}
 			#### # 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -1, -1, WOF_ADD);
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?1:-1, -1, WOF_ADD);
 				A_OverlayScale(Lay1, -.015, -.015, WOF_ADD);
 			}
 			#### ########## 1 {
-				A_OverlayOffset(Lay1, 10, 7, WOF_ADD);
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?-10:10, 7, WOF_ADD);
 				A_OverlayRotate(Lay1, 3, WOF_ADD);
 			}
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);invoker.SecondHand = false;}
@@ -331,9 +333,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### # 0 A_JumpIf(invoker.IsRifle, "RifleFire");
 			P1SG A 0{
 				A_GlovesColor();
-				if(invoker.LeftHanded)A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, true);
-				if(invoker.SecondHand)A_OverlayPivot(Lay1, CFRandom(.35, .65), CFRandom(0, .3));
-				else A_OverlayPivot(Lay1, CFRandom(.3, .7), CFRandom(0, .4));
+				A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, invoker.LeftHanded);//Left or right handed
+				if(invoker.SecondHand)A_OverlayPivot(Lay1, CFRandom(.35, .5), CFRandom(0, .3));
+				else A_OverlayPivot(Lay1, CFRandom(0, .5), CFRandom(0, .4));
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
@@ -343,16 +345,19 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### A 1 A_OverlayOffset(Lay1, CRandom(-1, 1), 0, WOF_INTERPOLATE);
 			#### HB 1 A_OverlayOffset(Lay1, CFRandom(-.25, .25), Player.GetPSprite(Lay1).Y-1, WOF_INTERPOLATE);
 			#### B 1 A_OverlayOffset(Lay1, 0, -2, WOF_INTERPOLATE);//Shot
+			//#### # 0{if(MRIntW_ScreenShake && !invoker.SecondHand)A_QuakeEx(0,.05,.15, 5, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .1, rollwave: 1);}
 			#### BB 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
-				Float Scal = CFRandom(.03, .04);
-				Vector2 Ofst = (CFRandom(.1, 1), CFRandom(3, 5));
-				if(invoker.SecondHand)Ofst = (0,3);
+				Float Scal = CFRandom(.07, .1);
+				Vector2 Ofst = (CFRandom(.4, 1.7), CFRandom(3, 4));
+				if(invoker.SecondHand){Ofst = (0,2);Scal = CFRandom(.05, .06);}
 				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*CFRandom(0, 1);
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot, WOF_ADD);
+				
+				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
 
 				Player.GetPSprite(Lay2).Pivot = Player.GetPSprite(Lay1).Pivot;
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
@@ -365,11 +370,13 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### C 1{
 				Float Scal = CFRandom(.01, .02);
 				if(invoker.SecondHand)Scal = .008;
-				Vector2 Ofst = (CFRandom(.1, 1), 0);
+				Vector2 Ofst = (CFRandom(.2, .4), 0);
 				if(invoker.SecondHand)Ofst = (0,0);
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot, WOF_ADD);
+
+				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
 
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
@@ -377,6 +384,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
 				
 				A_FireSmoke(.2);
+				
+				invoker.RecMis = (Player.GetPSprite(Lay1).Scale.X-1.155)*.8;
 
 				if(!GetCVar("MRIntW_Casings"))Return;
 				int index;
@@ -392,14 +401,14 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
 				}
 			}
-			#### FGE 1{
-				Float Scal = CFRandom(.01, .02);
-				if(invoker.SecondHand)Scal = .008;
-				Vector2 Ofst = (CFRandom(.1, 1), 0);
-				if(invoker.SecondHand)Ofst = (0,0);
-				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
-				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
-				A_OverlayRotate(Lay1, invoker.RecRot, WOF_ADD);
+			#### FFG 1{
+				Double Recover = .5;
+				if(invoker.SecondHand)Recover = .6;
+				Player.GetPSprite(Lay1).Scale.X -= Clamp(Player.GetPSprite(Lay1).Scale.X-1+invoker.RecMis, 0, invoker.SecondHand?.03:.04);
+				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
+				Player.GetPSprite(Lay1).X *= Recover;
+				Player.GetPSprite(Lay1).Y = -invoker.RecMis*2+(Player.GetPSprite(Lay1).Y-invoker.RecMis*2)*Recover;
+				Player.GetPSprite(Lay1).Rotation *= Recover;
 
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
@@ -408,29 +417,26 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				
 				A_FireSmoke(.4);
 			}
-			#### DDB 1{
-				Double Recover = .4;
+			#### EDB 1{
+				Double Recover = .3;
 				if(invoker.SecondHand)Recover = .3;
-				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1));
+				Player.GetPSprite(Lay1).Scale.X = 1-invoker.RecMis+(Player.GetPSprite(Lay1).Scale.X-1+invoker.RecMis)*Recover;
 				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
 				Player.GetPSprite(Lay1).X *= Recover;
-				Player.GetPSprite(Lay1).Y *= Recover;
+				Player.GetPSprite(Lay1).Y = -invoker.RecMis*2+(Player.GetPSprite(Lay1).Y-invoker.RecMis*2)*Recover;
 				Player.GetPSprite(Lay1).Rotation *= Recover;
 			}
-			#### B 1{
-				Float Scal = CFRandom(.9, 1.05);
-				if(invoker.SecondHand)Scal = 1;
+			#### H 1{
+				Float Scal = 1-invoker.RecMis;
 				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
-				A_OverlayOffset(Lay1, CFRandom(-2, 2), CRandom(-1, 4));
+				A_OverlayOffset(Lay1, CFRandom(-1, 1), -invoker.RecMis*2);
 				A_OverlayRotate(Lay1, CFRandom(-.5, .5));
-				if(invoker.SecondHand)Player.GetPSprite(Lay1).Frame = 7;
 			}
-			#### BH 1{
+			#### HH 1{
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.4;
 				Player.GetPSprite(Lay1).X *= .4;
 				Player.GetPSprite(Lay1).Y *= .4;
 				Player.GetPSprite(Lay1).Rotation *= .4;
-				if(invoker.SecondHand)Player.GetPSprite(Lay1).Frame = 7;
 			}
 			#### A 2{
 				A_OverlayPivot(Lay1, .5, 0);
@@ -523,6 +529,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(SHand).Y = Player.GetPSprite(Lay1).Y+10+(Player.GetPSprite(SHand).Y-10-Player.GetPSprite(Lay1).Y)*.6;
 				Player.GetPSprite(SHand).Rotation = Player.GetPSprite(Lay1).Rotation-30+(Player.GetPSprite(SHand).Rotation+30-Player.GetPSprite(Lay1).Rotation)*.6;
 				Player.GetPSprite(SHand).Scale = Player.GetPSprite(Lay1).Scale-(.05, .05)+(Player.GetPSprite(SHand).Scale-(Player.GetPSprite(Lay1).Scale-(.05,.05)))*.6;
+				A_GlovesColor();
 			}
 			#### # 0 {
 				if(
@@ -543,8 +550,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayOffset(SHand2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				A_OverlayRotate(SHand2, Player.GetPSprite(Lay1).Rotation);
 				Player.GetPSprite(SHand2).Scale = Player.GetPSprite(Lay1).Scale;
-				if(invoker.LeftHanded)A_OverlayFlags(SHand2, PSPF_MIRROR|PSPF_FLIP, true);
-				else A_OverlayFlags(SHand2, PSPF_MIRROR|PSPF_FLIP, false);
+				A_OverlayFlags(SHand2, PSPF_MIRROR|PSPF_FLIP, invoker.LeftHanded);//Left or right handed
 			}
 			P2SG A 1 {
 				Player.GetPSprite(SHand2).Pivot = Player.GetPSprite(Lay1).Pivot + (.6, -.1);
@@ -559,29 +565,35 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 						Scal = (0,0);
 						Break;
 					Case 1:
-						Offset = (1, 0);
+						Offset = (0, 0);
 						Scal = (0, .05);
 						Break;
 					Case 2:
 						Offset = (-1, 3);
 						Scal = (0, .075);
 						Break;
+					Case 9:
 					Case 5:
-						Offset = (-1, 4);
+						Offset = (-2, 3);
 						Scal = (.05, .1);
 						Break;
 					Case 6:
-						Offset = (-3, 4);
+						Offset = (-1, 3);
 						Scal = (.1, .125);
 						Break;
 					Case 4:
-						Offset = (-2, 4);
-						Scal = (.1, .125);
+						Offset = (-.5, 2);
+						Scal = (.05, .125);
 						Break;
 					Case 3:
 						Offset = (0, 1);
 						Scal = (.015, .025);
 						Break;
+					Case 8:
+						Offset = (0, 0);
+						Scal = (.005, .075);
+						Break;
+						
 				}
 				
 				A_OverlayOffset(SHand2, Player.GetPSprite(Lay1).X+Offset.X, Player.GetPSprite(Lay1).Y+Offset.Y, WOF_INTERPOLATE);
