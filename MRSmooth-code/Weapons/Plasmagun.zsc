@@ -504,10 +504,13 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_FLASH).Sprite = GetSpriteIndex("PLSFA0");
 			}
 			Goto LightDone;
-			TNT1 B 4 {
+			TNT1 A 4 {
 				A_Light1();
 				
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_FLASH).Sprite = GetSpriteIndex("PLSFA0");
+				if(MRIntW_DisplayVanilla){
+					Player.GetPSprite(PSP_FLASH).Sprite = GetSpriteIndex("PLSFA0");
+					Player.GetPSprite(PSP_FLASH).Frame = 1;
+				}
 			}
 			Goto LightDone;
 	}

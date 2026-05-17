@@ -610,10 +610,13 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("CHGFA0");
 			}
 			Goto LightDone;
-			TNT1 B 5 {
+			TNT1 A 5 {
 				A_Light2();
 				
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("CHGFA0");
+				if(MRIntW_DisplayVanilla){
+					Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("CHGFA0");
+					Player.GetPSprite(OverlayId()).Frame = 1;
+				}
 			}
 			Goto LightDone;
 		
