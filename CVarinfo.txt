@@ -26,6 +26,9 @@ server bool MRIntW_Recoil = false;//Visual recoil and screen shaking
 server float MRIntW_RecoilAmount = 1;
 server float MRIntW_RecoilRecover = 1;
 
+nosave int MRIntW_ScreenShake = 1;//0 - None, 1 - Only on firing, 2 - Full
+nosave float MRIntW_ScreenShakeAmount = 1;
+
 server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting
 server bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
@@ -79,7 +82,7 @@ user float MRIntW_ChaingunSpeed = 1;
 user float MRIntW_ChaingunStopTime = .3;
 nosave int MRIntW_ChaingunMaxSmokes = 3;//Maximum smoking barrels
 //Rocket Launcher
-nosave bool MRIntW_RocketSmoke = true;//Smoke from muzzle
+nosave float MRIntW_RocketSmoke = 1;//Smoke from muzzle
 //Plasmagun
 nosave int MRIntW_PlasmaParticles = 1;//0 - None, 1 - Flare only, 2 - Flare and particles
 //BFG 9000
