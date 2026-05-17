@@ -109,7 +109,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayRotate(Lay2, -5, WOF_ADD);
 				A_OverlayScale(Lay2, 0, 1.5, WOF_ADD);
 				
-				//if(MRIntW_ScreenShake>1)A_QuakeEx(.3,.7,.3, 9, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 3,3,3, rollIntensity: .3, rollwave: 3);
+				if(MRIntW_ScreenShake>1)A_QuakeEx(.3,.7,.3, 9, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 3,3,3, rollIntensity: .3, rollwave: 3);
 			}
 			#### ## 1{//Hold
 				A_OverlayOffset(Lay3, CFRandom(-1, 1), CFRandom(-1, 0), WOF_ADD);
@@ -166,7 +166,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, .4, .4);
 				A_OverlayRotate(Lay1, 20);
 			}
-			SAW1 F 1;//{if(MRIntW_ScreenShake>1)A_QuakeEx(0,.09,.06, 4, 0, .5, "", QF_WAVE, 1,20,20, rollIntensity: .06, rollwave: 20);}
+			SAW1 F 1{if(MRIntW_ScreenShake>1)A_QuakeEx(0,.09,.06, 4, 0, .5, "", QF_WAVE, 1,20,20, rollIntensity: .06, rollwave: 20);}
 			#### #### 1 {
 				A_OverlayOffset(Lay1, 1, -6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
@@ -174,7 +174,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayRotate(Lay1, -3, WOF_ADD);
 			}
 			#### # 0 {
-				//if(MRIntW_ScreenShake>1)A_QuakeEx(0,.06,.04, 4, 0, .5, "", QF_WAVE, 1,17,17, rollIntensity: .04, rollwave: 17);
+				if(MRIntW_ScreenShake>1)A_QuakeEx(0,.06,.04, 4, 0, .5, "", QF_WAVE, 1,17,17, rollIntensity: .04, rollwave: 17);
 				A_OverlayScale(Lay1, Player.GetPSprite(Lay1).Scale.X, Player.GetPSprite(Lay1).Scale.X-.2);
 			}
 			#### CC 1 {
@@ -198,7 +198,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				invoker.SawFrame = 2;
-				//if(MRIntW_ScreenShake>1)A_QuakeEx(0,.04,.03, 4, 0, .5, "", QF_WAVE, 1,13,13, rollIntensity: .03, rollwave: 13);
+				if(MRIntW_ScreenShake>1)A_QuakeEx(0,.04,.03, 4, 0, .5, "", QF_WAVE, 1,13,13, rollIntensity: .03, rollwave: 13);
 			}
 			#### # 0 A_JumpIf(GetCVar("MRIntW_ChainsawStart"), 2);
 			#### E 1 {
@@ -300,7 +300,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 					if(Player.GetPSprite(PSP_WEAPON).Frame==0)Player.GetPSprite(PSP_WEAPON).Frame = 2;
 				}
 				
-				//if(MRIntW_ScreenShake>1)A_QuakeEx(0,.03,.02, 4, 0, .5, "", QF_WAVE, 1,10,10, rollIntensity: .02, rollwave: 10);
+				if(MRIntW_ScreenShake>1)A_QuakeEx(0,.03,.02, 4, 0, .5, "", QF_WAVE, 1,10,10, rollIntensity: .02, rollwave: 10);
 			}
 			#### # 0 {A_Overlay(Lay1, "SawReady", false);if(MRIntW_BetterAlert)A_AlertMonsters(1000);}
 			Loop;
@@ -508,6 +508,8 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 						A_SetPitch(Pitch-1*MRIntW_RecoilAmount);
 					}
 				}
+				if(MRIntW_ScreenShake<2)Return;
+				
 				Double Intensity = .05;
 				if(invoker.Cutting)Intensity = .15;
 				A_QuakeEx(0,Intensity*1.5,Intensity, 4, 0, .5, "", QF_WAVE, 1,15,15, rollIntensity: Intensity, rollwave: 15);
