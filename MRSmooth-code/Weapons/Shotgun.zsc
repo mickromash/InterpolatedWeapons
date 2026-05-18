@@ -383,14 +383,15 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### # 1;//Shot
 			#### # 1 {//Recoil
 				invoker.SpriteRecoil = MRIntW_ShotgunsRecoil;
-				Vector2 Pivot = (.5+CFRandom(-.2, .2)*invoker.SpriteRecoil, CFRandom(0, .5));
+				Vector2 Pivot = (.5+CFRandom(-.2, .2)*invoker.SpriteRecoil, CFRandom(.3, .6));
 				A_OverlayPivot(Lay1, Pivot.X, Pivot.Y);
 				A_OverlayPivot(Lay2, Pivot.X, Pivot.Y);
 				
-				Float Scal = CFRandom(.3, .4)*invoker.SpriteRecoil;
-				Vector2 Ofst = (-CFRandom(2, 3), CFRandom(7, 11))*invoker.SpriteRecoil;
-				Float Rotate = CRandomPick(0, CFRandom(.9, 1.5))*invoker.SpriteRecoil;
-				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
+				Vector2 Scal = (CFRandom(.3, .4)*invoker.SpriteRecoil, 0);
+				Scal.Y = Scal.X*1.5;
+				Vector2 Ofst = (-CFRandom(2, 3), CFRandom(14, 16))*invoker.SpriteRecoil;
+				Float Rotate = (Player.GetPSprite(Lay1).Pivot.X-.5)*-Ofst.X;
+				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
 				
@@ -402,19 +403,19 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80+(Player.GetPSprite(Lay1).Pivot.Y-.5)*(Player.GetPSprite(Lay1).Scale.Y*Player.GetPSprite(Lay1).Scale.Y);
 				A_FireSmoke();
 				
-				if(MRIntW_ScreenShake)A_QuakeEx(0,.7,.7, 10, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,11,2, rollIntensity: .1, rollwave: 8);
+				if(MRIntW_ScreenShake)A_Quake(0,.6,.4, 8, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,11,2, rollIntensity: .08, rollwave: 8);
 			}
 			#### # 1 A_FireSmoke();
 			#### ### 1{//Recover
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				Player.GetPSprite(Lay1).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay1).Scale.X-1))*invoker.SpriteRecoil;
-				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
+				Player.GetPSprite(Lay1).Scale.Y -= Min(.07, Max(0, Player.GetPSprite(Lay1).Scale.Y-1))*invoker.SpriteRecoil;
 				Player.GetPSprite(Lay1).X *= Min(1, .4/invoker.SpriteRecoil);
 				Player.GetPSprite(Lay1).Y *= Min(1, .4/invoker.SpriteRecoil);
 				Player.GetPSprite(Lay1).Rotation *= Min(1, .4/invoker.SpriteRecoil);
 				
 				Player.GetPSprite(Lay2).Scale.X -= Min(.05, Max(0, Player.GetPSprite(Lay2).Scale.X-1))*invoker.SpriteRecoil;
-				Player.GetPSprite(Lay2).Scale.Y = Player.GetPSprite(Lay2).Scale.X;
+				Player.GetPSprite(Lay2).Scale.Y -= Min(.07, Max(0, Player.GetPSprite(Lay2).Scale.Y-1))*invoker.SpriteRecoil;
 				Player.GetPSprite(Lay2).X *= Min(1, .4/invoker.SpriteRecoil);
 				Player.GetPSprite(Lay2).Y *= Min(1, .4/invoker.SpriteRecoil);
 				Player.GetPSprite(Lay2).Rotation *= Min(1, .4/invoker.SpriteRecoil);
@@ -490,7 +491,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayOffset(Lay1, 3, 8, WOF_ADD);
 				if(invoker.CustomSound)A_StartSound("MRIntW/ShotgunPumpDown", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale);
 				
-				if(MRIntW_ScreenShake>1)A_QuakeEx(0,.15,.075, 8, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,4,4, rollIntensity: .02, rollwave: 4);
+				if(MRIntW_ScreenShake>1)A_Quake(0,.15,.075, 8, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,4,4, rollIntensity: .02, rollwave: 4);
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### # 0 {
@@ -661,5 +662,22 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 	Action Void A_BersShake()
 	{
 		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
+	}
+	
+	Action Void A_Quake(Float X, Float Y, Float Z, int TermTicks=0, int DmgTicks=0, Double Dist=.25, String QuakeSound="", int Flags=0, Float XW=0, Float YW=0, Float ZW=0, Float rollintensity=0, int rollwave=0)
+	{
+		Vector3 IntenR, FreakR;
+		
+		IntenR = (AngleToVector(Angle, Y)*Cos(Pitch), Z*Cos(Pitch));
+		IntenR.XY += AngleToVector(Angle+90, X);
+		IntenR.XY += AngleToVector(Angle, Z*Sin(Pitch));
+		IntenR.Z += Y*Sin(Pitch);
+		
+		FreakR = (AngleToVector(Angle, YW)*Cos(Pitch), ZW*Cos(Pitch));
+		FreakR.XY += AngleToVector(Angle+90, XW);
+		FreakR.XY += AngleToVector(Angle, ZW*Sin(Pitch));
+		FreakR.Z += YW*Sin(Pitch);
+			
+		A_QuakeEx(Abs(IntenR.X), Abs(IntenR.Y), Abs(IntenR.Z), TermTicks, DmgTicks, Dist, QuakeSound, Flags, Abs(FreakR.X), Abs(FreakR.Y), Abs(FreakR.Z), rollIntensity: rollintensity, rollwave: rollwave);
 	}
 }

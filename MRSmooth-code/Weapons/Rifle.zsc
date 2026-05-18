@@ -108,20 +108,22 @@ Extend Class MRIntWeaps_Pistol
 			#### A 1 A_OverlayOffset(Lay1, 0, -1, WOF_ADD);
 			#### AA 1 A_OverlayOffset(Lay1, 0, 1, WOF_ADD);
 			#### A 1;//Shot
-			#### # 0{if(MRIntW_ScreenShake)A_QuakeEx(0,.05,.15, 5, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .1, rollwave: 1);}
+			#### # 0{
+				if(MRIntW_ScreenShake)A_Quake(0,.05,.15, 5, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .1, rollwave: 1);
+				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*CFRandom(0, 1);
+			}
 			#### AA 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				Vector2 Scal = (CFRandom(.05, .06), 0);
+				Vector2 Scal = (CFRandom(.075, .085), 0);
 				Scal.Y = Scal.X*1.5;
-				Vector2 Ofst = (CFRandom(-.5, .5), CFRandom(5, 7));
-				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
+				Vector2 Ofst = (0, CFRandom(5, 7));
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
-				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.RecRot, WOF_ADD);
 				
 				A_OverlayScale(Lay2, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay2, Ofst.X, Ofst.Y, WOF_ADD);
-				A_OverlayRotate(Lay2, Rotate, WOF_ADD);
+				A_OverlayRotate(Lay2, invoker.RecRot, WOF_ADD);
 				
 				Ofst *= .4;
 				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
@@ -131,18 +133,11 @@ Extend Class MRIntWeaps_Pistol
 			#### A 1{
 				Vector2 Scal = (CFRandom(.01, .03), 0);
 				Scal.Y = Scal.X*2;
-				Vector2 Ofst = (CFRandom(-.5, .5), 0);
-				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
-				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
-				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.RecRot*.5, WOF_ADD);
 				
 				A_OverlayScale(Lay2, Scal.X, Scal.Y, WOF_ADD);
-				A_OverlayOffset(Lay2, Ofst.X, Ofst.Y, WOF_ADD);
-				A_OverlayRotate(Lay2, Rotate, WOF_ADD);
-
-				Ofst *= .4;
-				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
+				A_OverlayRotate(Lay2, invoker.RecRot*.5, WOF_ADD);
 
 				if(!GetCVar("MRIntW_Casings"))Return;
 				int index;
@@ -160,20 +155,13 @@ Extend Class MRIntWeaps_Pistol
 				A_FireSmoke(-.3-Player.GetPSprite(Lay1).Y*.015, .8);
 			}
 			#### AA 1{
-				Vector2 Scal = (CFRandom(.01, .03), 0);
+				Vector2 Scal = (CFRandom(.001, .01), 0);
 				Scal.Y = Scal.X*2;
-				Vector2 Ofst = (CFRandom(-.5, .5), 0);
-				Float Rotate = -CRandomPick(0, CFRandom(0, 1));
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
-				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
-				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.RecRot*.5, WOF_ADD);
 				
 				A_OverlayScale(Lay2, Scal.X, Scal.Y, WOF_ADD);
-				A_OverlayOffset(Lay2, Ofst.X, Ofst.Y, WOF_ADD);
-				A_OverlayRotate(Lay2, Rotate, WOF_ADD);
-
-				Ofst *= .4;
-				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
+				A_OverlayRotate(Lay2, invoker.RecRot*.5, WOF_ADD);
 			}
 			#### # 0 {
 				invoker.RecOfst = (CFRandom(-4, 4), CFRandom(-2, 4));
