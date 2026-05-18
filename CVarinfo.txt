@@ -2,7 +2,7 @@ nosave int MRIntW_Casings = 1;//0 - none, 1 - only visual, 2 - visual + in-game 
 user float MRIntW_CasingsRandom = 1;//Maximum casings speed
 nosave int MRIntW_CasingsAmount = 300;
 nosave float MRIntW_CasingsVolume = 1;
-nosave bool MRIntW_CasingsLowRes = false;//Unused
+nosave bool MRIntW_CasingsLowRes = false;//HDest sprite for casings on the floor
 nosave bool MRIntW_CasingsClusteringReduce = true;//Casings optimization
 
 nosave bool MRIntW_Smoke = true;//Firing smoke

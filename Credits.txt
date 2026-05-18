@@ -21,6 +21,7 @@ BFG 9000 - id Software
 Rifle - id Software, DrPyspy
 
 Casings - id Software
+Lowres casings - taken from Hideous Destructor
 
 Smoke graphic was made by me, as well as guns sprites editing
 

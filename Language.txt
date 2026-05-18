@@ -18,6 +18,7 @@ MRIntW_CasingsRandom = "Max. casings speed";
 MRIntW_CasingsAmount = "Max. casings amount";
 MRIntW_CasingsVolume = "Casings bounce sound volume";
 MRIntW_CasingsClusteringReduce = "Reduce casings bunches";
+MRIntW_CasingsLowRes = "Lowres casings";
 
 MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
 MRIntW_Recoil = "\cv⊛\c- Visual recoil";
@@ -217,6 +218,7 @@ MRIntW_CasingsRandom = "Макс. скорость гильз";
 MRIntW_CasingsAmount = "Макс. количество гильз";
 MRIntW_CasingsVolume = "Громкость отскока гильз";
 MRIntW_CasingsClusteringReduce = "Оптимизировать скопления гильз";
+MRIntW_CasingsLowRes = "Минимальное разрешение гильз";
 
 MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
 MRIntW_Recoil = "\cv⊛\c- Визуальная отдача";
