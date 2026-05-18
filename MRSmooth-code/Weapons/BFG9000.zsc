@@ -361,6 +361,14 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X+CFRandom(-1, 1)*invoker.Power;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+CFRandom(0, 2)*invoker.Power;
 				invoker.Power+=.1;
+				if(int(invoker.Power*10)%3==0 && MRIntW_ScreenShake>1){
+					Double Pow = invoker.Power;
+					Pow /= 2.4;
+					A_Quake(0,.08*Pow,.08*Pow, 5, 0, .5, "", QF_WAVE, 0,20*Pow,15*Pow, rollIntensity: .3*Pow, rollwave: 1*Pow);
+				}
+			}
+			#### # 0{
+				if(MRIntW_ScreenShake)A_Quake(0,2,-.2, 15, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,4,7, rollIntensity: .05, rollwave: 20);
 			}
 			#### # 0 {A_Overlay(Lay4, "GunFlash");A_ClearOverlays(Lay3, LED1+invoker.LEDs.Size());}
 			#### # 1{
@@ -443,9 +451,25 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	}
 		
 	
-	
 	Action Void A_BersShake()
 	{
 		if(CountInv("PowerStrength"))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
+	}
+	
+	Action Void A_Quake(Float X, Float Y, Float Z, int TermTicks=0, int DmgTicks=0, Double Dist=.25, String QuakeSound="", int Flags=0, Float XW=0, Float YW=0, Float ZW=0, Float rollintensity=0, int rollwave=0)
+	{
+		Vector3 IntenR, FreakR;
+		
+		IntenR = (AngleToVector(Angle, Y)*Cos(Pitch), Z*Cos(Pitch));
+		IntenR.XY += AngleToVector(Angle+90, X);
+		IntenR.XY += AngleToVector(Angle, Z*Sin(Pitch));
+		IntenR.Z += Y*Sin(Pitch);
+		
+		FreakR = (AngleToVector(Angle, YW)*Cos(Pitch), ZW*Cos(Pitch));
+		FreakR.XY += AngleToVector(Angle+90, XW);
+		FreakR.XY += AngleToVector(Angle, ZW*Sin(Pitch));
+		FreakR.Z += YW*Sin(Pitch);
+			
+		A_QuakeEx(Abs(IntenR.X), Abs(IntenR.Y), Abs(IntenR.Z), TermTicks, DmgTicks, Dist, QuakeSound, Flags, Abs(FreakR.X), Abs(FreakR.Y), Abs(FreakR.Z), rollIntensity: rollintensity, rollwave: rollwave);
 	}
 }
