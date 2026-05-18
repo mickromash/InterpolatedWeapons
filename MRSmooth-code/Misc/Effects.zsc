@@ -167,9 +167,16 @@ Class MRIntWeaps_Casing: VisualThinker
 		Casing.Gravity = Gravity;
 		if(Bounce<0)Casing.Bounce = CRandom(4, 9);
 		else Casing.Bounce = Bounce;
-		if(ShotgunShell)Casing.Texture = Texman.CheckForTexture("SHTCB0");
-		else Casing.Texture = Texman.CheckForTexture("PISCB0");
-		Casing.Scale = Scale;
+		if(MRIntW_CasingsLowRes){
+			if(ShotgunShell)Casing.Texture = Texman.CheckForTexture("SHTCC0");
+			else Casing.Texture = Texman.CheckForTexture("PISCC0");
+			Casing.Scale = (Scale.X*12, Scale.Y*15);
+		}
+		else {
+			if(ShotgunShell)Casing.Texture = Texman.CheckForTexture("SHTCB0");
+			else Casing.Texture = Texman.CheckForTexture("PISCB0");
+			Casing.Scale = Scale;
+		}
 		Casing.Flags = SPF_ROLL|SPF_ROLLCENTER;
 		Casing.CurSector = LevelLocals.PointInSector(Pos.XY);
 		Casing.Translation = Translation;
