@@ -345,14 +345,16 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### A 1 A_OverlayOffset(Lay1, CRandom(-1, 1), 0, WOF_INTERPOLATE);
 			#### HB 1 A_OverlayOffset(Lay1, CFRandom(-.25, .25), Player.GetPSprite(Lay1).Y-1, WOF_INTERPOLATE);
 			#### B 1 A_OverlayOffset(Lay1, 0, -2, WOF_INTERPOLATE);//Shot
-			#### # 0{if(MRIntW_ScreenShake && !invoker.SecondHand)A_QuakeEx(0,.05,.15, 5, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .1, rollwave: 1);}
+			#### # 0{
+				if(MRIntW_ScreenShake && !invoker.SecondHand)A_Quake(0,.05,.15, 5, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .1, rollwave: 1);
+				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*CFRandom(0, 1);
+			}
 			#### BB 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
 				Float Scal = CFRandom(.07, .1);
 				Vector2 Ofst = (CFRandom(.4, 1.7), CFRandom(3, 4));
 				if(invoker.SecondHand){Ofst = (0,2);Scal = CFRandom(.05, .06);}
-				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*CFRandom(0, 1);
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot, WOF_ADD);
@@ -669,5 +671,22 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Action Void A_BersShake()
 	{
 		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
+	}
+	
+	Action Void A_Quake(Float X, Float Y, Float Z, int TermTicks=0, int DmgTicks=0, Double Dist=.25, String QuakeSound="", int Flags=0, Float XW=0, Float YW=0, Float ZW=0, Float rollintensity=0, int rollwave=0)
+	{
+		Vector3 IntenR, FreakR;
+		
+		IntenR = (AngleToVector(Angle, Y)*Cos(Pitch), Z*Cos(Pitch));
+		IntenR.XY += AngleToVector(Angle+90, X);
+		IntenR.XY += AngleToVector(Angle, Z*Sin(Pitch));
+		IntenR.Z += Y*Sin(Pitch);
+		
+		FreakR = (AngleToVector(Angle, YW)*Cos(Pitch), ZW*Cos(Pitch));
+		FreakR.XY += AngleToVector(Angle+90, XW);
+		FreakR.XY += AngleToVector(Angle, ZW*Sin(Pitch));
+		FreakR.Z += YW*Sin(Pitch);
+			
+		A_QuakeEx(Abs(IntenR.X), Abs(IntenR.Y), Abs(IntenR.Z), TermTicks, DmgTicks, Dist, QuakeSound, Flags, Abs(FreakR.X), Abs(FreakR.Y), Abs(FreakR.Z), rollIntensity: rollintensity, rollwave: rollwave);
 	}
 }
