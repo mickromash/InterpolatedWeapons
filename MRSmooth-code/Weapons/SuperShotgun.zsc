@@ -10,6 +10,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	Const LeftHand = PSP_FLASH+40;//Hand with shells
 	Const Lay3 = 1500;//Barrels layer over shell
 	Const Lay4 = -2;
+	Const LHand = -3;
 	
 	int BobState, IdleDelay, ShotPower;
 	Bool LowerOpen, //For switching mid reload
@@ -85,6 +86,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	}
 	
 	Double SpriteRecoil;
+	int SwitchAnim, SwitchState;
 	
 	States{
 		Select:
@@ -111,33 +113,65 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			Loop;
 		
 		GunRaise:
-			TNT1 AAAA 1 {
+			TNT1 A 1{
+				invoker.SwitchAnim = CRandom(0, 1);
+			}
+			TNT1 AAA 1 {
 				invoker.Reloading = false;
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
-				A_OverlayPivot(Lay1, .5, 0);
-				A_OverlayOffset(Lay1, 51, 89);
-				A_OverlayScale(Lay1, 1.2, 1.2);
-				A_OverlayRotate(Lay1, -10.5);
+				if(invoker.SwitchAnim){
+					A_OverlayPivot(Lay1, .5, 1);
+					A_OverlayScale(Lay1, 1, 1);
+					A_OverlayOffset(Lay1, 13 + 5*6, 23+11*7.7);
+					A_OverlayRotate(Lay1, .4 +4*6.8);
+				}
+				else {
+					A_OverlayPivot(Lay1, .5, 0);
+					A_OverlayOffset(Lay1, 51, 89);
+					A_OverlayScale(Lay1, 1.2, 1.2);
+					A_OverlayRotate(Lay1, -10.5);
+				}
 				A_GlovesColor();
+				invoker.SwitchState = 10;
 			}
-			SH12 A 1{invoker.LowerOpen = false;}
-			#### AAAAAAA 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -7, -9.5, WOF_ADD);
-				A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
-				A_OverlayRotate(Lay1, 1.2, WOF_ADD);
+			SH12 A 1{
+				invoker.LowerOpen = false;
+				if(invoker.SwitchAnim){
+					Player.GetPSprite(Lay1).Frame = 25;
+					A_Overlay(LHand, "LeftHandRaise");
+				}
 			}
-			#### AA 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -2, 4, WOF_ADD);
-				A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
-				A_OverlayRotate(Lay1, 1.4, WOF_ADD);
+			#### ####### 1 {
+				if(invoker.SwitchAnim){
+					A_OverlayOffset(Lay1, -5, -11, WOF_ADD);
+					A_OverlayRotate(Lay1, -4, WOF_ADD);
+				}
+				else {
+					A_OverlayOffset(Lay1, -7, -9.5, WOF_ADD);
+					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
+					A_OverlayRotate(Lay1, 1.2, WOF_ADD);
+				}
+				invoker.SwitchState--;
 			}
-			#### A 2{
+			#### ## 1 {
+				if(invoker.SwitchAnim){
+					A_OverlayOffset(Lay1, -5, -2, WOF_ADD);
+					A_OverlayRotate(Lay1, -.2, WOF_ADD);
+				}
+				else {
+					A_OverlayOffset(Lay1, -2, 4, WOF_ADD);
+					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
+					A_OverlayRotate(Lay1, 1.4, WOF_ADD);
+				}
+				invoker.SwitchState--;
+			}
+			#### # 1{
 				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+				invoker.SwitchState = 0;
 			}
+			#### A 1;
 			#### A 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , true);
 				A_OverlayOffset(Lay1, 0, 0);
@@ -157,33 +191,146 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		GunLower:
 			#### # 0 A_JumpIf(invoker.LowerOpen, "GunLowerOpen");
 			SH12 A 1 {
+				if(invoker.SwitchState<1)invoker.SwitchAnim = CRandom(0, 1);
 				A_GlovesColor();
 				invoker.Reloading = false;
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
-				A_OverlayOffset(Lay1, 0, Player.GetPSprite(PSP_WEAPON).Y);
-				A_OverlayRotate(Lay1, 0);
-				A_OverlayScale(Lay1, 1, 1);
-				A_OverlayPivot(Lay1, .5, 0);
+				
+				
+				if(invoker.SwitchAnim){
+					A_Overlay(LHand, "LeftHandLower");
+					Player.GetPSprite(Lay1).OldX = 0;
+					Player.GetPSprite(Lay1).OldY = 32;
+					Player.GetPSprite(Lay1).Y = 32-5;
+					Player.GetPSprite(Lay1).X = 0 + 3;
+					A_OverlayPivot(Lay1, .5, 1);
+					Player.GetPSprite(Lay1).Frame = 25;
+				}
+				else {
+					A_OverlayOffset(Lay1, 0, 32);
+					A_OverlayRotate(Lay1, 0);
+					A_OverlayScale(Lay1, 1, 1);
+					A_OverlayPivot(Lay1, .5, 0);
+				}
+				
+				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
 			}
 			#### ## 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -6, -6, WOF_ADD);
-				A_OverlayRotate(Lay1, 1, WOF_ADD);
+				if(invoker.SwitchAnim){
+					A_OverlayOffset(Lay1, 5, -2, WOF_ADD);
+					A_OverlayRotate(Lay1, .2, WOF_ADD);
+				}
+				else {
+					A_OverlayOffset(Lay1, -6, -6, WOF_ADD);
+					A_OverlayRotate(Lay1, 1, WOF_ADD);
+				}
+				
+				if(invoker.SwitchState>0){
+					invoker.SwitchState--;
+					A_SetTics(0);
+					if(Player.FindPSprite(LHand)){
+						Player.GetPSprite(LHand).Tics = 0;
+						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
+					}
+				}
 			}
 			#### # 1 {
-				A_OverlayOffset(Lay1, -3, -3, WOF_ADD);
-				A_OverlayRotate(Lay1, .5, WOF_ADD);
+				if(invoker.SwitchAnim){
+					A_OverlayOffset(Lay1, 5, 11, WOF_ADD);
+					A_OverlayRotate(Lay1, 4, WOF_ADD);
+				}
+				else {
+					A_OverlayOffset(Lay1, -3, -3, WOF_ADD);
+					A_OverlayRotate(Lay1, .5, WOF_ADD);
+				}
+				
+				if(invoker.SwitchState>0){
+					invoker.SwitchState--;
+					A_SetTics(0);
+					if(Player.FindPSprite(LHand)){
+						Player.GetPSprite(LHand).Tics = 0;
+						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
+					}
+				}
 			}
 			#### ## 1 {
-				A_OverlayOffset(Lay1, 10, 14, WOF_ADD);
-				A_OverlayRotate(Lay1, -1, WOF_ADD);
+				if(invoker.SwitchAnim){
+					A_OverlayOffset(Lay1, 5, 11, WOF_ADD);
+					A_OverlayRotate(Lay1, 4, WOF_ADD);
+				}
+				else {
+					A_OverlayOffset(Lay1, 10, 14, WOF_ADD);
+					A_OverlayRotate(Lay1, -1, WOF_ADD);
+				}
+				
+				if(invoker.SwitchState>0){
+					invoker.SwitchState--;
+					A_SetTics(0);
+					if(Player.FindPSprite(LHand)){
+						Player.GetPSprite(LHand).Tics = 0;
+						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
+					}
+				}
 			}
-			#### ####### 1 {
-				A_OverlayOffset(Lay1, 7, 10, WOF_ADD);
-				A_OverlayRotate(Lay1, -1, WOF_ADD);
-				A_OverlayScale(Lay1, .025, .025, WOF_ADD);
+			#### # 1 {
+				if(invoker.SwitchAnim){
+					A_OverlayOffset(Lay1, 5, 11, WOF_ADD);
+					A_OverlayRotate(Lay1, 4, WOF_ADD);
+				}
+				else {
+					A_OverlayOffset(Lay1, 7, 10, WOF_ADD);
+					A_OverlayRotate(Lay1, -1, WOF_ADD);
+					A_OverlayScale(Lay1, .025, .025, WOF_ADD);
+				}
+				
+				if(invoker.SwitchState>0){
+					invoker.SwitchState--;
+					A_SetTics(0);
+					if(Player.FindPSprite(LHand)){
+						Player.GetPSprite(LHand).Tics = 0;
+						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
+					}
+				}
+			}
+			Wait;
+		LeftHandRaise:
+			MRD1 G 1 {
+				A_GlovesColor();
+				A_OverlayFlags(LHand, PSPF_MIRROR, true);
+				A_OverlayFlags(LHand, PSPF_ADDWEAPON, false);
+				A_OverlayPivot(LHand, 1, 0);
+				A_OverlayOffset(LHand, 160, 130);
+				A_OverlayRotate(LHand, -20);
+				A_OverlayScale(LHand, 1, 1);
+			}
+			#### GGGGGGGGG 1{
+				A_OverlayOffset(LHand, -2, -5, WOF_ADD);
+				A_OverlayRotate(LHand, -2, WOF_ADD);
+				A_OverlayScale(LHand, -.04, -.04, WOF_ADD);
+			}
+			#### G 1{
+				A_OverlayOffset(LHand, -3, 2, WOF_ADD);
+				A_OverlayScale(LHand, .005, .005, WOF_ADD);
 			}
 			Stop;
+		LeftHandLower:
+			MRD1 G 1 {
+				A_GlovesColor();
+				A_OverlayFlags(LHand, PSPF_MIRROR, true);
+				A_OverlayFlags(LHand, PSPF_ADDWEAPON, false);
+				A_OverlayPivot(LHand, 1, 0);
+				A_OverlayOffset(LHand, 133, 30+32);
+				A_OverlayRotate(LHand, -23);
+				A_OverlayScale(LHand, .8, .8);
+				A_OverlayOffset(LHand, 2, -1, WOF_ADD);
+				if(invoker.SwitchState>0)A_SetTics(0);
+			}
+			#### G 1{
+				A_OverlayOffset(LHand, 3, 8, WOF_ADD);
+				A_OverlayRotate(LHand, 1, WOF_ADD);
+				A_OverlayScale(LHand, .02, .02, WOF_ADD);
+			}
+			Wait;
 		GunLowerOpen:
 			SH12 D 1 {
 				A_GlovesColor();
@@ -563,7 +710,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				invoker.MuzzleSmoke((60, 75), (62, 75), .6, .6);
 				A_GlovesColor();
 			}
-			#### Z 1 {invoker.MuzzleSmoke((60, 75), (62, 75), .56, .56);}
+			#### Y 1 {invoker.MuzzleSmoke((60, 75), (62, 75), .56, .56);}
 			#### K 1 {
 				A_OverlayRotate(Lay1, -50);
 				A_OverlayOffset(Lay1, 55, 45);
