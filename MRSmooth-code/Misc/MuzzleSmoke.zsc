@@ -195,9 +195,9 @@ Extend Class MRIntWeaps_Pistol
 		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
 		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
 		
-		if(Owner.GetCVar("MRIntW_Rifle"))
+		if(IsRifle)
 		{
-			Ofst.Y += 6;
+			Ofst.Y += 9;
 		}
 		else
 		{
