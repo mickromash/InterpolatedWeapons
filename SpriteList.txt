@@ -50,12 +50,12 @@ Shotgun
 	SH1G DEFGH - Pump animation
 	
 	SH1F AB - Flash animation
-	SH1G Z - Deselect handless sprite
+	SH1G Z - Switch handless sprite
 }
 
 Super Shotgun
 {
-	SH12 A - Ready
+	SH12 A (textures) - Ready
 	SH12 BCD (textures) - Opening animation
 	SH12 P (textures) - Opening animation (SH12 E with casings inside)
 	SH12 E - Opening animation
@@ -67,6 +67,7 @@ Super Shotgun
 	SH12 GH - Loading hand
 	
 	SH12 NO - Flash animation
+	SH12 Z - Switch handless sprite
 }
 
 Chaingun
