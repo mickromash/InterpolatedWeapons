@@ -213,6 +213,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		GunLower:
 			SH1G Z 1 {
 				if(invoker.SwitchState<1)invoker.SwitchAnim = CRandom(0, 1);
+				else if(Player.FindPSprite(LHand))invoker.SwitchAnim = 1;
 				A_GlovesColor();
 				
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
