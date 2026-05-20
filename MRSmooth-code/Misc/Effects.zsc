@@ -221,7 +221,7 @@ Extend Class MRIntWeaps_Chainsaw
 					Float Alph = CFRandom(.7, .8);
 					Double Resize = 0;
 					if(Player.Cmd.Buttons&BT_ATTACK)Resize = CFRandom(2, 3);
-					A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE, 13-Resize, 6, 0, 10,8,Height*.6,
+					A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE|SPF_NOTIMEFREEZE, 13-Resize, 6, 0, 10,8,Height*.6,
 						CFRandom(-.1, 0),.3+Resize*.5,.2, 0,0,0, 
 						Alph, Alph/12, CFRandom(1, 2)+Resize);
 				}
@@ -673,7 +673,7 @@ Extend Class MRIntWeaps_Shotgun
 				
 				Double Size = CFRandom(.3, 1);
 				
-				A_SpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT, 50, Size, 0, Pos.X,Pos.Y,Pos.Z,
+				A_SpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, 50, Size, 0, Pos.X,Pos.Y,Pos.Z,
 					Vel.X,Vel.Y,Vel.Z, 0,0,-.25, 1, 0, -Size/20.);
 		}
 		For(int i1=Random(0, 7);i1<10;i1++){
@@ -928,7 +928,7 @@ Extend Class MRIntWeaps_PlasmaRifle
 			Col[1] = Col[2]*CFRandom(.9, 1);
 			Col[0] = Col[1]*CFRandom(.9, 1);
 			
-			A_SpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT, 10, CFRandom(1.4, 1.7), 0, Pos.X,Pos.Y,Pos.Z,
+			A_SpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, 10, CFRandom(1.4, 1.7), 0, Pos.X,Pos.Y,Pos.Z,
 				Vel.X,Vel.Y,Vel.Z, 0,0,0, 1, -1);
 		}
 		
