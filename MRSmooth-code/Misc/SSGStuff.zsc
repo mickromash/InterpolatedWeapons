@@ -193,7 +193,10 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 	
 	Void MuzzleSmoke(Vector2 Ofst1=(0,0), Vector2 Ofst2=(0,0), Double Scale1=1, Double Scale2=1)
 	{
-		if(Reloading && Ofst1==(0,0))Return;
+		if(Reloading && Ofst1==(0,0)){
+			Smoker.Update(true);
+			Return;
+		}
 		
 		if(!Smoker){
 			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
@@ -214,7 +217,6 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 			Smoker.Update(true);
 			Return;
 		}
-		
 			
 		Vector2 Ofst[2];
 		For(int i=0;i<2;i++){
