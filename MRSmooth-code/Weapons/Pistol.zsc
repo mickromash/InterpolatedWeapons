@@ -354,7 +354,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### HB 1 A_OverlayOffset(Lay1, CFRandom(-.25, .25), Player.GetPSprite(Lay1).Y-1, WOF_INTERPOLATE);
 			#### B 1 A_OverlayOffset(Lay1, 0, -2, WOF_INTERPOLATE);//Shot
 			#### # 0{
-				if(MRIntW_ScreenShake && !invoker.SecondHand)A_Quake(0,.05,.15, 5, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .1, rollwave: 1);
+				if(MRIntW_ScreenShake && !invoker.SecondHand){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.05*Amnt,0,.15*Amnt, 5, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 15,0,10, rollIntensity: .1*Amnt, rollwave: 1);
+				}
 				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*CFRandom(0, 1);
 			}
 			#### BB 1 {
@@ -679,22 +682,5 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Action Void A_BersShake()
 	{
 		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
-	}
-	
-	Action Void A_Quake(Float X, Float Y, Float Z, int TermTicks=0, int DmgTicks=0, Double Dist=.25, String QuakeSound="", int Flags=0, Float XW=0, Float YW=0, Float ZW=0, Float rollintensity=0, int rollwave=0)
-	{
-		Vector3 IntenR, FreakR;
-		
-		IntenR = (AngleToVector(Angle, Y)*Cos(Pitch), Z*Cos(Pitch));
-		IntenR.XY += AngleToVector(Angle+90, X);
-		IntenR.XY += AngleToVector(Angle, Z*Sin(Pitch));
-		IntenR.Z += Y*Sin(Pitch);
-		
-		FreakR = (AngleToVector(Angle, YW)*Cos(Pitch), ZW*Cos(Pitch));
-		FreakR.XY += AngleToVector(Angle+90, XW);
-		FreakR.XY += AngleToVector(Angle, ZW*Sin(Pitch));
-		FreakR.Z += YW*Sin(Pitch);
-			
-		A_QuakeEx(Abs(IntenR.X), Abs(IntenR.Y), Abs(IntenR.Z), TermTicks, DmgTicks, Dist, QuakeSound, Flags, Abs(FreakR.X), Abs(FreakR.Y), Abs(FreakR.Z), rollIntensity: rollintensity, rollwave: rollwave);
 	}
 }

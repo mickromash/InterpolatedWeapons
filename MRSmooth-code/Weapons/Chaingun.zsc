@@ -508,7 +508,10 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayOffset(Lay2, Ofst.X, Ofst.Y, WOF_ADD);
 				
-				if(MRIntW_ScreenShake)A_Quake(0,.08,.15, 6, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .2, rollwave: 4);
+				if(MRIntW_ScreenShake){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.08*Amnt,0,.15*Amnt, 6, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 15,0,10, rollIntensity: .2*Amnt, rollwave: 4);
+				}
 			}
 			TNT1 A 1 {//Recover
 				if(invoker.Speed<MaxSpeed*invoker.MaxSpeedM)invoker.Speed+=8*invoker.MaxSpeedM;
@@ -804,22 +807,5 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Action Void A_BersShake()
 	{
 		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
-	}
-	
-	Action Void A_Quake(Float X, Float Y, Float Z, int TermTicks=0, int DmgTicks=0, Double Dist=.25, String QuakeSound="", int Flags=0, Float XW=0, Float YW=0, Float ZW=0, Float rollintensity=0, int rollwave=0)
-	{
-		Vector3 IntenR, FreakR;
-		
-		IntenR = (AngleToVector(Angle, Y)*Cos(Pitch), Z*Cos(Pitch));
-		IntenR.XY += AngleToVector(Angle+90, X);
-		IntenR.XY += AngleToVector(Angle, Z*Sin(Pitch));
-		IntenR.Z += Y*Sin(Pitch);
-		
-		FreakR = (AngleToVector(Angle, YW)*Cos(Pitch), ZW*Cos(Pitch));
-		FreakR.XY += AngleToVector(Angle+90, XW);
-		FreakR.XY += AngleToVector(Angle, ZW*Sin(Pitch));
-		FreakR.Z += YW*Sin(Pitch);
-			
-		A_QuakeEx(Abs(IntenR.X), Abs(IntenR.Y), Abs(IntenR.Z), TermTicks, DmgTicks, Dist, QuakeSound, Flags, Abs(FreakR.X), Abs(FreakR.Y), Abs(FreakR.Z), rollIntensity: rollintensity, rollwave: rollwave);
 	}
 }

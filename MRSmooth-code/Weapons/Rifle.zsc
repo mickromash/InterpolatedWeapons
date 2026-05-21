@@ -121,7 +121,10 @@ Extend Class MRIntWeaps_Pistol
 			#### AA 1 A_OverlayOffset(Lay1, 0, 1, WOF_ADD);
 			#### A 1;//Shot
 			#### # 0{
-				if(MRIntW_ScreenShake)A_Quake(0,.05,.15, 5, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 0,15,10, rollIntensity: .1, rollwave: 1);
+				if(MRIntW_ScreenShake){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.05*Amnt,0,.15*Amnt, 5, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 15,0,10, rollIntensity: .1*Amnt, rollwave: 1);
+				}
 				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*CFRandom(0, 1);
 			}
 			#### A 1 {

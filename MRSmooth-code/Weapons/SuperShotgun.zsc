@@ -466,7 +466,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				
 				A_FireSmoke();
 				
-				if(MRIntW_ScreenShake)A_Quake(0,1,1, 14, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 10,10,2, rollIntensity: .25, rollwave: 10);
+				if(MRIntW_ScreenShake){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(1*Amnt,0,1*Amnt, 14, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 10,0,2, rollIntensity: .25*Amnt, rollwave: 10);
+				}
 			}
 			#### # 1{
 				Float Scal = CFRandom(.07, .1)*invoker.SpriteRecoil;
@@ -569,7 +572,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				
 				invoker.MuzzleSmoke((40, 0), (50, -2), 1, 1);
 				
-				if(MRIntW_ScreenShake>1)A_Quake(0,.25,-.15, 4, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 1,5,5, rollIntensity: .05, rollwave: 5);
+				if(MRIntW_ScreenShake>1){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.25*Amnt,0,-.15*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 5,0,5, rollIntensity: .05*Amnt, rollwave: 5);
+				}
 			}
 			#### ## 1 {
 				A_OverlayRotate(Lay1, -43, WOF_ADD);
@@ -735,7 +741,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayRotate(Lay1, 13, WOF_ADD);
 				
 				invoker.MuzzleSmoke((45, 30), (55, 30), 1.1, 1.1);
-				if(MRIntW_ScreenShake>1)A_Quake(0,.25,-.15, 4, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 1,5,5, rollIntensity: .05, rollwave: 5);
+				if(MRIntW_ScreenShake>1){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.25*Amnt,0,-.15*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 5,0,5, rollIntensity: .05*Amnt, rollwave: 5);
+				}
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### Q 1 {A_OverlayRotate(Lay1, 0);A_OverlayOffset(Lay1, -5, -5);invoker.MuzzleSmoke((-17, 8), (-3, 3), 1.05, 1.05);}
@@ -775,7 +784,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayScale(LeftHand, -.025, -.025, WOF_ADD);
 			}
 			#### G 1 {
-				if(MRIntW_ScreenShake>1)A_Quake(.25,.15,-.1, 8, 0, .5, "", QF_SCALEDOWN|QF_WAVE, 13,13,13, rollIntensity: .04, rollwave: 13);
+				if(MRIntW_ScreenShake>1){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.15*Amnt,.25*Amnt,-.1*Amnt, 8, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 13,13,13, rollIntensity: .04*Amnt, rollwave: 13);
+				}
 				A_OverlayOffset(LeftHand, 5, 0, WOF_ADD);
 				A_OverlayRotate(LeftHand, -6, WOF_ADD);
 				A_OverlayScale(LeftHand, -.025, -.025, WOF_ADD);
@@ -870,22 +882,5 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	Action Void A_BersShake()
 	{
 		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
-	}
-	
-	Action Void A_Quake(Float X, Float Y, Float Z, int TermTicks=0, int DmgTicks=0, Double Dist=.25, String QuakeSound="", int Flags=0, Float XW=0, Float YW=0, Float ZW=0, Float rollintensity=0, int rollwave=0)
-	{
-		Vector3 IntenR, FreakR;
-		
-		IntenR = (AngleToVector(Angle, Y)*Cos(Pitch), Z*Cos(Pitch));
-		IntenR.XY += AngleToVector(Angle+90, X);
-		IntenR.XY += AngleToVector(Angle, Z*Sin(Pitch));
-		IntenR.Z += Y*Sin(Pitch);
-		
-		FreakR = (AngleToVector(Angle, YW)*Cos(Pitch), ZW*Cos(Pitch));
-		FreakR.XY += AngleToVector(Angle+90, XW);
-		FreakR.XY += AngleToVector(Angle, ZW*Sin(Pitch));
-		FreakR.Z += YW*Sin(Pitch);
-			
-		A_QuakeEx(Abs(IntenR.X), Abs(IntenR.Y), Abs(IntenR.Z), TermTicks, DmgTicks, Dist, QuakeSound, Flags, Abs(FreakR.X), Abs(FreakR.Y), Abs(FreakR.Z), rollIntensity: rollintensity, rollwave: rollwave);
 	}
 }
