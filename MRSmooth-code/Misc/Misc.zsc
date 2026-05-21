@@ -1,0 +1,75 @@
+Extend Class MRIntWeaps_Fist
+{
+	Void DoMisc()
+	{
+		Let Weap = Owner.Player.ReadyWeapon;
+		if(!Weap||!Owner.Player.FindPSprite(PSP_WEAPON))Return;
+		Let PSP = Owner.Player.GetPSprite(PSP_WEAPON);
+		Bool Allowed = (!InStateSequence(PSP.curState, Weap.GetDownState()) && !InStateSequence(PSP.CurState, Weap.FindState("Select")));
+		
+		Weap.BobStyle = MRIntW_BobStyle;
+		Weap.BobRangeX = MRIntW_BobRangeX;
+		Weap.BobRangeY = MRIntW_BobRangeY;
+		
+		if(MRIntW_VanillaFireBob){
+			if(InStateSequence(PSP.CurState, Weap.FindState("Fire"))){
+				PSP.X = FireBob.X;
+				PSP.Y = 32+FireBob.Y;
+			}
+			else FireBob = PlayerPawn(Owner).BobWeapon(2);
+		}
+		
+		if(MRIntW_DamageShake){
+		
+			if(DamageShake>0){
+				Double Shake = DamageShake;
+				Shake *= .1;
+				Owner.Player.GetPSprite(PSP_WEAPON).X = GetAge()%2==0?Shake:-Shake;
+				if(Allowed)Owner.Player.GetPSprite(PSP_WEAPON).Y = 32+Shake*CFRandom(0, 1);
+				DamageShake -= 4;
+				if(DamageShake<0)DamageShake = 0;
+			}
+			//else {Owner.Player.GetPSprite(PSP_WEAPON).X = 0;if(Allowed)Owner.Player.GetPSprite(PSP_WEAPON).Y = 32;}
+			
+			if(Owner.Health<PlrLastHealth){
+				DamageShake = PlrLastHealth - Owner.Health;
+			}
+			
+			PlrLastHealth = Owner.Health;
+		}
+		
+		if(!MRIntW_Bounce)Return;
+		
+		Bouncing = false;
+		
+		if(Owner.Pos.Z > Owner.FloorZ){
+			BounceStrength = Owner.Vel.Z;
+			CurBounce += (BounceStrength - CurBounce)*.5;
+			CurBounce = Clamp(CurBounce, -abs(Weap.MissileHeight), 20);
+			Bouncing = true;
+			Landed = true;
+		}
+		else if(abs(BounceStrength)>0){
+			if(CurBounce<-BounceStrength)CurBounce -= BounceStrength*.5;
+			
+			else {
+				BounceStrength *= .7;
+				if(abs(BounceStrength)<.05)BounceStrength = 0;
+				CurBounce = -BounceStrength;
+			}
+			
+			Bouncing = true;
+			
+			if(Landed){
+				Landed = false;
+				if(MRIntW_ScreenShake>1)Owner.A_QuakeEx(0,0,0, Max(1, abs(CurBounce)*2), 0, .5, "", QF_SCALEDOWN|QF_SCALEUP|QF_WAVE, 0,0,0, rollIntensity: .3*abs(CurBounce), rollwave: 1);
+			}
+		}
+		
+		if(Bouncing && Allowed){
+			Double Bounce = CurBounce*.5;
+			if(Bounce<0)Bounce /= Max(1, Weap.MissileHeight/32);
+			PSP.Y = 32 + CurBounce*.5;
+		}
+	}
+}
