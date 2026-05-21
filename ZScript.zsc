@@ -13,11 +13,12 @@ Version "4.0"
 #include "MRSmooth-code/Weapons/Plasmagun.zsc"
 #include "MRSmooth-code/Weapons/BFG9000.zsc"
 
-#include "MRSmooth-code/Misc/Effects.zsc"//Casings/smoke
-#include "MRSmooth-code/Misc/MuzzleSmoke.zsc"
-#include "MRSmooth-code/Misc/SSGStuff.zsc"
-#include "MRSmooth-code/Misc/Dying.zsc"
-#include "MRSmooth-code/Misc/GlovesColor.zsc"
+#include "MRSmooth-code/Misc/Misc.zsc"//Landing bounce, damage shake, vanilla firing bob
+#include "MRSmooth-code/Misc/Effects.zsc"//Casings/smoke/particles
+#include "MRSmooth-code/Misc/MuzzleSmoke.zsc"//Flowing smoke
+#include "MRSmooth-code/Misc/Dying.zsc"//First person death animations
+#include "MRSmooth-code/Misc/SSGStuff.zsc"//SSG code for effects.zsc, MuzzleSmoke.zsc and Dying.zsc
+#include "MRSmooth-code/Misc/GlovesColor.zsc"//Gloves color applying
 
 #include "MRSmooth-code/Menus/Main.zsc"
 #include "MRSmooth-code/Menus/Pressets.zsc"
