@@ -26,7 +26,7 @@ server bool MRIntW_Recoil = false;//Visual recoil and screen shaking
 server float MRIntW_RecoilAmount = 1;
 server float MRIntW_RecoilRecover = 1;
 
-nosave int MRIntW_ScreenShake = 1;//0 - None, 1 - Only on firing, 2 - Full
+nosave int MRIntW_ScreenShake = 1;//0 - None, 1 - Only on firing, 2 - No landing shake, 3 - Full
 nosave float MRIntW_ScreenShakeAmount = 1;
 
 server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting

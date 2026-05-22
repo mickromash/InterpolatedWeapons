@@ -177,7 +177,8 @@ OptionValue "MRIntW_ScreenShakeValues"
 {
 	0, "$MRIntW_ScreenShake0"//None
 	1, "$MRIntW_ScreenShake1"//Only firing
-	2, "$MRIntW_ScreenShake2"//Full
+	2, "$MRIntW_ScreenShake2"//No landing shake
+	3, "$MRIntW_ScreenShake3"//Full
 }
 
 OptionValue "MRIntW_GlovesColorValues"
