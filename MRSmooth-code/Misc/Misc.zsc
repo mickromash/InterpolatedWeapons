@@ -62,7 +62,7 @@ Extend Class MRIntWeaps_Fist
 			
 			if(Landed){
 				Landed = false;
-				if(MRIntW_ScreenShake>1)Owner.A_QuakeEx(0,0,0, Max(1, abs(CurBounce)*2), 0, .5, "", QF_SCALEDOWN|QF_SCALEUP|QF_WAVE, 0,0,0, rollIntensity: .3*abs(CurBounce), rollwave: 1);
+				if(abs(CurBounce)>4 && MRIntW_ScreenShake>2)Owner.A_QuakeEx(1*Min(20, abs(CurBounce)),0,0, Clamp(abs(CurBounce)*2, 1, 20), 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_SCALEUP|QF_WAVE, 2,0,0, rollIntensity: .1*Min(30, abs(CurBounce)), rollwave: 2);
 			}
 		}
 		
