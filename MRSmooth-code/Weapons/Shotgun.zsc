@@ -365,9 +365,10 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			SH1G Z 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				A_Overlay(LHand, "LHandIdle");
+				A_OverlayPivot(Lay1, .5, 1);
 			}
-			#### ### 1 {A_OverlayOffset(Lay1, .5, -1, WOF_ADD);A_OverlayRotate(Lay1, -.5, WOF_ADD);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
-			#### ### 1 {A_OverlayOffset(Lay1, 2, 2, WOF_ADD);A_OverlayRotate(Lay1, -1, WOF_ADD);}
+			#### ### 1 {A_OverlayOffset(Lay1, .5, -.5, WOF_ADD);A_OverlayRotate(Lay1, -.5, WOF_ADD);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
+			#### ### 1 {A_OverlayOffset(Lay1, 2, 1, WOF_ADD);A_OverlayRotate(Lay1, -1, WOF_ADD);}
 			#### # 1 {A_Overlayoffset(Lay1, .5, 1, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			#### ## 1 {A_Overlayoffset(Lay1, .5, .5, WOF_ADD);A_OverlayRotate(Lay1, .05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			#### ### 1 {A_Overlayoffset(Lay1, .25, .5, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
@@ -424,8 +425,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### # 1 {A_OverlayOffset(LHand, -.2, 1, WOF_ADD);A_OverlayRotate(LHand, -.15, WOF_ADD);A_OverlayScale(LHand, 0, .0001, WOF_ADD); A_SetTics(CRandom(1,2));}
 			#### ## 1 {A_OverlayOffset(LHand, -.4, .5, WOF_ADD);A_OverlayRotate(LHand, -.1, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			#### ### 1 {A_OverlayOffset(LHand, -1, -.5, WOF_ADD);A_OverlayRotate(LHand, -.1, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, -1, -.1, WOF_ADD);A_OverlayRotate(LHand, -.5, WOF_ADD);A_OverlayScale(LHand, 0, .001, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### # 1 {A_OverlayOffset(LHand, -2, .05, WOF_ADD);A_OverlayRotate(LHand, -.4, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### ## 1 {A_OverlayOffset(LHand, -2, -.1, WOF_ADD);A_OverlayRotate(LHand, -.5, WOF_ADD);A_OverlayScale(LHand, 0, .001, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### # 1 {A_OverlayOffset(LHand, -2.4, .05, WOF_ADD);A_OverlayRotate(LHand, -.4, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
 			Wait;
 		LHandIdleEnd:
 			MRD1 GGGGGG 1 {
