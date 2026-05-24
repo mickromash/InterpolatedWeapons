@@ -122,6 +122,7 @@ Class MRIntWeaps_Smoker: Object play
 		if(Owner.Pos == Owner.Prev)ZSpeed*=.25;
 		
 		Double MaxLength = MRIntW_FlowingSmokeLength;
+		If(MaxLength == 0)Return;
 		
 		//if(Owner.Vel.Length()<=.5){Alpha *= 2;}
 		int Flags = 0;
@@ -133,7 +134,7 @@ Class MRIntWeaps_Smoker: Object play
 			if(Owner.Pos == Owner.Prev)Curve = 1;
 			PPos.Z *= Curve;
 			if(PPos != PPos)PPos = (0,0,0);
-			MRSpawnParticle(Col, Flags, STYLE_None, Life/Max(1, Diff.Length()*.5/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MaxLength));
+			MRSpawnParticle(Col, Flags, STYLE_None, Life/Max(1, Diff.Length()*.5/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength));
 		}
 		
 		if(Owner.Vel.XY.Length()>0 || ForceConnect){
@@ -152,7 +153,7 @@ Class MRIntWeaps_Smoker: Object play
 				PPos.Z *= Curve;
 				PPos.XY *= Curve;
 				if(PPos!=PPos)PPos = (0,0,0);
-				MRSpawnParticle(Col1, Flags, STYLE_None, 1, BaseScale*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.5/MaxLength));
+				MRSpawnParticle(Col1, Flags, STYLE_None, 1, BaseScale*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength));
 			}
 		}
 		
