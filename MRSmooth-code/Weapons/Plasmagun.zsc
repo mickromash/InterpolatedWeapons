@@ -50,8 +50,13 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			
 		}
 		
-		Actor a = SpawnPlayerMissile("PlasmaBall");
-		if(a)a.A_StopSound();
+		Actor a = SpawnPlayerMissile("MRIntWeaps_PlasmaBall");
+		if(a){
+			a.A_StopSound();
+			//Let b = New('MRIntWeaps_ProjectileThinker');
+			//b.Master = a;
+			//b.Type = 1;
+		}
 		A_StartSound("MRIntW/PlasmaFire", CHAN_AUTO, pitch:i_timescale);
 		invoker.Shots++;
 	}
@@ -175,6 +180,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayScale(Lay1, 1.1, 1.1);
 				A_OverlayRotate(Lay1, 4);
 				A_GlovesColor();
+				invoker.FloatSpeed = 4;
 			}
 			PLSR C 1{invoker.Selecting = true;}
 			#### CCCCC 1 {
@@ -264,6 +270,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				Player.GetPSprite(Lay2).Y += 1;
 				A_OverlayPivot(Lay1, .5, .5);
 				A_OverlayPivot(Lay2, .5, .5);
+				invoker.FloatSpeed = 1;
 			}
 			#### # 1 {
 				A_OverlayOffset(Lay1, 6*invoker.LowerDir, -3, WOF_ADD);
@@ -350,6 +357,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				}
 				invoker.Muzzle = -1.5;
 				invoker.InterpolateMuzzle = false;
+				invoker.FloatSpeed = 4;
 			}
 			#### # 0{
 				Double Amnt = MRIntW_ScreenShakeAmount;
@@ -397,6 +405,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayPivot(Lay1, .5, 0);
 				A_OverlayOffset(Lay1, 30, 20);
 				A_GlovesColor();
+				invoker.FloatSpeed = 1;
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 			#### B 1{
@@ -489,6 +498,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayRotate(Lay2, 0);
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayPivot(Lay2, .5, 1);
+				invoker.FloatSpeed = 4;
 			}
 			PL1G A 1 {
 				A_OverlayOffset(Lay1, CFRandom(-3, 2), CFRandom(0, 3), WOF_INTERPOLATE);
@@ -586,5 +596,14 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	Action Void A_BersShake()
 	{
 		if(CountInv("PowerStrength"))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
+	}
+}
+
+Class MRIntWeaps_PlasmaBall: PlasmaBall
+{
+	Override int SpecialMissileHit(Actor Victim)
+	{
+		if(Victim && Victim!=Target)Master = Victim;
+		Return Super.SpecialMissileHit(Victim);
 	}
 }
