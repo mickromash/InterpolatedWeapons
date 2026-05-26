@@ -45,7 +45,7 @@ Extend Class MRIntWeaps_Fist
 		if(Owner.Pos.Z > Owner.FloorZ){
 			BounceStrength = Owner.Vel.Z;
 			CurBounce += (BounceStrength - CurBounce)*.5;
-			CurBounce = Clamp(CurBounce, -abs(Weap.MissileHeight), 20);
+			CurBounce = Clamp(CurBounce, -abs(Weap.FloatSpeed*8), 20);
 			Bouncing = true;
 			Landed = true;
 		}
@@ -68,7 +68,7 @@ Extend Class MRIntWeaps_Fist
 		
 		if(Bouncing && Allowed){
 			Double Bounce = CurBounce*.5;
-			if(Bounce<0)Bounce /= Max(1, Weap.MissileHeight/32);
+			if(Bounce<0)Bounce /= Max(1, Weap.FloatSpeed*8/32);
 			PSP.Y = 32 + CurBounce*.5;
 		}
 	}
