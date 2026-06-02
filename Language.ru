@@ -235,10 +235,29 @@ MRIntW_MonstParticles_RevenantTracerFlyFire = "Пламя";
 MRIntW_MonstParticles_RevenantTracerImpactSmoke = "Дым";
 MRIntW_MonstParticles_RevenantTracerImpactSplash = "Искры";
 
+MRIntW_MonstParticles_FatShotFlySmoke = "Дым";
+MRIntW_MonstParticles_FatShotFlyFire = "Пламя";
+MRIntW_MonstParticles_FatShotFlyDrops = "Капли";
+MRIntW_MonstParticles_FatShotImpactSmoke = "Дым";
+MRIntW_MonstParticles_FatShotImpactSplash = "Искры";
+MRIntW_MonstParticles_FatShotImpactFire = "Огонь";
+
+MRIntW_MonstParticles_ArachnoBallFlyTrail = "Хвост";
+MRIntW_MonstParticles_ArachnoBallFlySparks = "Искры";
+MRIntW_MonstParticles_ArachnoBallImpactSmoke = "Пар";
+MRIntW_MonstParticles_ArachnoBallImpactSplash = "Искры";
+MRIntW_MonstParticles_ArachnoBallImpactLightnings = "Молнии";
+
 MRIntW_MonstParticles_ArchFlameSmoke = "Дым";
 MRIntW_MonstParticles_ArchFlameSparks = "Частицы огня";
 MRIntW_MonstParticles_ArchFlameSplash = "Взрыв";
 MRIntW_MonstParticles_ArchFlameHide = "Скрыть спрайт";
+
+MRIntW_MonstParticles_BaronBallFlySmoke = "Дым";
+MRIntW_MonstParticles_BaronBallFlyFire = "Пламя";
+MRIntW_MonstParticles_BaronBallImpactSmoke = "Дым";
+MRIntW_MonstParticles_BaronBallImpactSplash = "Искры";
+MRIntW_MonstParticles_BaronBallImpactFire = "Огонь";
 
 MRIntW_DecorationParticles = "Эффекты декораций";
 MRIntW_DecorationParticlesAmount = "Множитель частиц декораций";

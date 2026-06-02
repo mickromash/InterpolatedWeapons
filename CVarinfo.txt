@@ -91,13 +91,16 @@ nosave bool MRIntW_BFGParticles = true;//Fancy ahh firing animation
 nosave bool MRIntW_PlayerParticles = false;
 nosave int MRIntW_PlayerWhichParticles = 16580507;
 nosave float MRIntW_PlayerParticlesAmount = 1;
+
 nosave bool MRIntW_MonsterParticles = false;
 nosave int MRIntW_MonsterWhichParticles = -33;
 nosave int MRIntW_MonsterWhichParticles2 = 3839;
 nosave float MRIntW_MonsterParticlesAmount = 1;
+
 nosave bool MRIntW_DecorationParticles = false;
 nosave int MRIntW_DecorationWhichParticles = 511;
 nosave float MRIntW_DecorationParticlesAmount = 1;
+
 nosave bool MRIntW_TeleportParticles = false;
 nosave int MRIntW_TeleportParticlesStyle = 6;
 nosave int MRIntW_TeleportParticlesStyleMonsters = 2;

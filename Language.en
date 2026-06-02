@@ -235,10 +235,29 @@ MRIntW_MonstParticles_RevenantTracerFlyFire = "Flame";
 MRIntW_MonstParticles_RevenantTracerImpactSmoke = "Smoke";
 MRIntW_MonstParticles_RevenantTracerImpactSplash = "Splash";
 
+MRIntW_MonstParticles_FatShotFlySmoke = "Smoke";
+MRIntW_MonstParticles_FatShotFlyFire = "Fire";
+MRIntW_MonstParticles_FatShotFlyDrops = "Drops";
+MRIntW_MonstParticles_FatShotImpactSmoke = "Smoke";
+MRIntW_MonstParticles_FatShotImpactSplash = "Splash";
+MRIntW_MonstParticles_FatShotImpactFire = "Fire";
+
+MRIntW_MonstParticles_ArachnoBallFlyTrail = "Trail";
+MRIntW_MonstParticles_ArachnoBallFlySparks = "Sparks";
+MRIntW_MonstParticles_ArachnoBallImpactSmoke = "Vapor";
+MRIntW_MonstParticles_ArachnoBallImpactSplash = "Sparks";
+MRIntW_MonstParticles_ArachnoBallImpactLightnings = "Lightnings";
+
 MRIntW_MonstParticles_ArchFlameSmoke = "Smoke";
 MRIntW_MonstParticles_ArchFlameSparks = "Fire";
 MRIntW_MonstParticles_ArchFlameSplash = "Explosion splash";
 MRIntW_MonstParticles_ArchFlameHide = "Hide the sprite";
+
+MRIntW_MonstParticles_BaronBallFlySmoke = "Smoke";
+MRIntW_MonstParticles_BaronBallFlyFire = "Fire";
+MRIntW_MonstParticles_BaronBallImpactSmoke = "Smoke";
+MRIntW_MonstParticles_BaronBallImpactSplash = "Splash";
+MRIntW_MonstParticles_BaronBallImpactFire = "Fire";
 
 MRIntW_DecorationParticles = "Decorations particles";
 MRIntW_DecorationParticlesAmount = "Decoration particles multiplier";
