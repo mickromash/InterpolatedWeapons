@@ -11,7 +11,8 @@ Extend Class MRIntWeaps_Handler
 		{
 			Double Dist = 1;
 			if(Players[ConsolePlayer].Camera)Dist = Max(1, 1+(Obj.Distance3D(Players[ConsolePlayer].Camera)-80)*.0016);
-			For(int i=0;i<12;i+=CRandom(1, 2))//Yellow Sparks
+			int Amount = 12*Max(MRIntW_MonsterParticlesAmount, MRIntW_PlayerParticlesAmount);
+			For(int i=0;i<Amount;i+=CRandom(1, 2))//Yellow Sparks
 			{
 				int Rand[3];
 				Rand[0] = CRandom(200, 255);
