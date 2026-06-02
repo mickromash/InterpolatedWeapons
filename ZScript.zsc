@@ -17,6 +17,9 @@ Version "4.0"
 #include "MRSmooth-code/Misc/Effects.zsc"//Casings/smoke/particles
 #include "MRSmooth-code/Misc/MuzzleSmoke.zsc"//Flowing smoke
 #include "MRSmooth-code/Misc/Dying.zsc"//First person death animations
+#include "MRSmooth-code/Particles/Player.zsc"
+#include "MRSmooth-code/Particles/Monsters.zsc"
+#include "MRSmooth-code/Particles/Misc.zsc"
 #include "MRSmooth-code/Misc/SSGStuff.zsc"//SSG code for effects.zsc, MuzzleSmoke.zsc and Dying.zsc
 #include "MRSmooth-code/Misc/GlovesColor.zsc"//Gloves color applying
 

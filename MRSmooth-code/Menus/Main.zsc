@@ -7,3 +7,47 @@ Class MRIntWeaps_AnimMenu: OptionMenu
 		Return Ret;
 	}
 }
+
+Class OptionMenuItemMRIntWeaps_StaticText: OptionMenuItemStaticText
+{
+	OptionMenuItemMRIntWeaps_StaticText Init(String label, int cr = -1)
+	{
+		IniLabel = Label;
+		Label = MRLocalize(Label);
+
+		Super.Init(label, 0);
+		mColor = OptionMenuSettings.mFontColor;
+		if ((cr & 0xffff0000) == 0x12340000) mColor = cr & 0xffff;
+		else if (cr > 0) mColor = OptionMenuSettings.mFontColorHeader;
+		return self;
+	}
+	
+	override bool Selectable()
+	{
+		mLabel = MRLocalize(IniLabel);
+		return false;
+	}
+	
+	
+	String IniLabel;
+	String MRLocalize(String Str)
+	{
+		String Temp = Str;
+
+		While(Temp.Indexof("$")>-1){
+			Str = Str.Left(Str.IndexOf("$"));
+			String Localize = Temp.Mid(Temp.IndexOf("$"));
+			if(Localize.IndexOf(" ")>-1)Localize = Localize.Left(Localize.IndexOf(" "));
+			
+			Str = Str..StringTable.Localize(Localize);
+			
+			Temp = Temp.Mid(Temp.IndexOf("$"));
+			if(Temp.IndexOf(" ")>-1)Temp = Temp.Mid(Temp.IndexOf(" "));
+			else Temp = "";
+			
+			Str = Str..Temp;
+		}
+			
+		Return Str;
+	}
+}

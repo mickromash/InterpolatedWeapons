@@ -135,12 +135,30 @@ Class MRIntWeaps_Handler: EventHandler
 	Override Void WorldThingSpawned(WorldEvent e)
 	{
 		if(!e.Thing)Return;
-				
+		
+		if((e.Thing is "BulletPuff" || Actor.GetReplacee(e.Thing.GetClass()) == "BulletPuff") &&
+			MRIntW_PlayerWhichParticles&MRIWPP_Puff)
+		{
+			SpawnPuffParticles(e.Thing);
+			Return;
+		}
+		
+		if(e.Thing is 'TeleportFog' && MRIntW_TeleportParticles){
+			Let a = New('MRIntWeaps_TeleportThinker');
+			a.Master = e.Thing;
+		}
+		
+		if(MRIntW_MonsterParticles)SpawnProjectileParticleEffects(e.Thing);
+		
 		if(e.Thing is 'Berserk' || Actor.GetReplacee('Berserk') == e.Thing.GetClass()){
 			Let a = e.Thing.Spawn("MRIntWeaps_FistSelector", e.Thing.Pos);
 			a.Master = e.Thing;
 			Berserks.Push(a);
+			
+			Return;
 		}
+		
+		if(Level.Time<2 && MRIntW_DecorationParticles)SpawnActorParticleEffects(e.Thing);
 	}
 	
 	Override Void WorldThingDamaged(WorldEvent e)

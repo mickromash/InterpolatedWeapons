@@ -1,0 +1,651 @@
+/*
+	Monsters projectiles particle effects
+*/
+
+enum MRIntWeaps_MonsterParticlesFlags{
+
+	MRIWMP_CyberRocketFlare = 32,
+	MRIWMP_CyberRocketSmoke = 64,
+	MRIWMP_CyberRocketTrail = 8192,
+	MRIWMP_CyberRocketSparks = 16384,
+	MRIWMP_CyberRocketImpactSmoke = 128,
+	MRIWMP_CyberRocketImpactSparks = 256,
+	
+	MRIWMP_ImpBallSmoke = 8,
+	MRIWMP_ImpBallDrops = 16,
+	MRIWMP_ImpBallImpactSmoke = 512,
+	MRIWMP_ImpBallImpactSplash = 1024,
+	MRIWMP_ImpBallImpactFire = 2048,
+	
+	MRIWMP_CacoBallSmoke = 4096,
+	MRIWMP_CacoBallDrops = 32768,
+	MRIWMP_CacoBallLightnings = 65536,
+	MRIWMP_CacoBallImpactSmoke = 131072,
+	MRIWMP_CacoBallImpactSplash = 262144,
+	MRIWMP_CacoBallImpactLightnings = 524288,
+	
+	MRIWMP_RevenantTracerSmoke = 1048576,
+	MRIWMP_RevenantTracerFire = 2097152,
+	MRIWMP_RevenantImpactTracerSmoke = 4194304,
+	MRIWMP_RevenantImpactTracerSplash = 8388608,
+	
+	MRIWMP_FatShotSmoke = 1,
+	MRIWMP_FatShotFire = 2,
+	MRIWMP_FatShotDrops = 16777216,
+	MRIWMP_FatShotImpactSmoke = 33554432,
+	MRIWMP_FatShotImpactSplash = 67108864,
+	MRIWMP_FatShotImpactFire = 134217728,
+	
+	MRIWMP_ArachnoBallTrail = 268435456,
+	MRIWMP_ArachnoBallSparks = 536870912,
+	MRIWMP_ArachnoBallImpactSmoke = 1073741824,
+	MRIWMP_ArachnoBallImpactSplash = 2147483648,
+	MRIWMP_ArachnoBallImpactLightnings = 4,
+	//Second CVar
+	MRIWMP_BaronBallSmoke = 1,
+	MRIWMP_BaronBallFire = 2,
+	MRIWMP_BaronBallImpactSmoke = 4,
+	MRIWMP_BaronBallImpactSplash = 8,
+	MRIWMP_BaronBallImpactFire = 16,
+	
+	MRIWMP_ArchFlameSmoke = 32,
+	MRIWMP_ArchFlameSparks = 64,
+	MRIWMP_ArchFlameSplash = 128,
+	MRIWMP_ArchFlameHide = 256,
+	
+	MRIWMP_SoulSmoke = 512,
+	MRIWMP_SoulFire = 1024,
+	MRIWMP_SoulSplash = 2048,
+}
+
+Extend Class MRIntWeaps_Handler
+{
+	Void SpawnProjectileParticleEffects(Actor Thing)
+	{
+		if(Thing is 'DoomImpBall' || Thing is 'CacodemonBall' || Thing is 'RevenantTracer' || Thing is 'FatShot' ||
+			Thing is 'ArachnotronPlasma' || Thing is 'BaronBall' || Thing is 'ArchvileFire' || Thing is 'LostSoul' || (Thing is 'Rocket' && Thing.Target && !PlayerPawn(Thing.Target)))
+		{
+			if(Thing is 'Rocket'){
+				Let a = New('MRIntWeaps_ProjectileThinker');
+				a.Master = Thing;
+				a.Type = 0;
+				a.Monster = true;
+				Return;
+			}
+			
+			int Type, Setting, Setting2;
+			Setting = MRIntW_MonsterWhichParticles;
+			Setting2 = MRIntW_MonsterWhichParticles2;
+			
+			Switch(Thing.GetClassName()){
+				Case 'DoomImpBall':
+					if(!(Setting&MRIWMP_ImpBallSmoke||
+						Setting&MRIWMP_ImpBallDrops||
+						Setting&MRIWMP_ImpBallImpactSmoke||
+						Setting&MRIWMP_ImpBallImpactSplash||
+						Setting&MRIWMP_ImpBallImpactFire)
+					)Return;
+					Type = 0;
+					Break;
+				Case 'CacodemonBall':
+					if(!(Setting&MRIWMP_CacoBallSmoke||
+						Setting&MRIWMP_CacoBallDrops||
+						Setting&MRIWMP_CacoBallLightnings||
+						Setting&MRIWMP_CacoBallImpactSmoke||
+						Setting&MRIWMP_CacoBallImpactSplash||
+						Setting&MRIWMP_CacoBallImpactLightnings)
+					)Return;
+					Type = 1;
+					Break;
+				Case 'RevenantTracer':
+					if(!(Setting&MRIWMP_RevenantTracerSmoke||
+						Setting&MRIWMP_RevenantTracerFire||
+						Setting&MRIWMP_RevenantImpactTracerSmoke||
+						Setting&MRIWMP_RevenantImpactTracerSplash)
+					)Return;
+					Type = 2;
+					Break;
+				Case 'FatShot'://Mancubus
+					if(!(Setting&MRIWMP_FatShotSmoke||
+						Setting&MRIWMP_FatShotFire||
+						Setting&MRIWMP_FatShotDrops||
+						Setting&MRIWMP_FatShotImpactSmoke||
+						Setting&MRIWMP_FatShotImpactSplash||
+						Setting&MRIWMP_FatShotImpactFire)
+					)Return;
+					Type = 3;
+					Break;
+				Case 'ArachnotronPlasma':
+					if(!(Setting&MRIWMP_ArachnoBallTrail||
+						Setting&MRIWMP_ArachnoBallSparks||
+						Setting&MRIWMP_ArachnoBallImpactSmoke||
+						Setting&MRIWMP_ArachnoBallImpactSplash||
+						Setting&MRIWMP_ArachnoBallImpactLightnings)
+					)Return;
+					Type = 4;
+					Break;
+				Case 'BaronBall':
+					if(!(Setting2&MRIWMP_BaronBallSmoke||
+						Setting2&MRIWMP_BaronBallFire||
+						Setting2&MRIWMP_BaronBallImpactSmoke||
+						Setting2&MRIWMP_BaronBallImpactSplash||
+						Setting2&MRIWMP_BaronBallImpactFire)
+					)Return;
+					Type = 5;
+					Break;
+				Case 'ArchvileFire':
+					if(!(Setting2&MRIWMP_ArchFlameSmoke||
+						Setting2&MRIWMP_ArchFlameSparks||
+						Setting2&MRIWMP_ArchFlameSplash||
+						Setting2&MRIWMP_ArchFlameHide)
+					)Return;
+					Type = 6;
+					Break;
+				Case 'LostSoul':
+					if(!(Setting2&MRIWMP_SoulSmoke||
+						Setting2&MRIWMP_SoulFire||
+						Setting2&MRIWMP_SoulSplash)
+					)Return;
+					Type = 7;
+					Break;
+			}
+			
+			Let a = New('MRIntWeaps_MonsterProjectileThinker');
+			a.Master = Thing;
+			a.Type = Type;
+			
+			Return;
+		}
+		
+		if(Thing is 'RevenantTracerSmoke'){
+			if(MRIntW_MonsterWhichParticles&MRIWMP_RevenantTracerSmoke){
+				Thing.A_SpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, 12, CRandom(33, 37), zoff:3, SizeStep:1.2);
+				Thing.A_SpawnParticle(Color(255,CRandom(140, 255),40), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, 4, CRandom(13, 16), zoff:3, StartAlphaf:.7, SizeStep:30);
+				Thing.A_SetRenderStyle(Thing.Alpha, STYLE_None);
+			}
+		}
+	}
+}
+
+Class MRIntWeaps_MonsterProjectileThinker: MRIntWeaps_ActorEffects
+{
+	int Type;
+	int DeathTick, Setting, Setting2;
+	Vector3 LastVel, HitPlace;
+	Actor GotHit, Monster;
+	Float PAmnt;
+	
+	Override Void PostBeginPlay()
+	{
+		if(!MRIntW_MonsterParticles){Destroy();Return;}
+		Setting = MRIntW_MonsterWhichParticles;
+		Setting2 = MRIntW_MonsterWhichParticles2;
+		
+		HitPlace = (Double.Nan, Double.Nan, Double.Nan);
+		
+		if(Type==6 && Setting2&MRIWMP_ArchFlameHide && Master)Master.A_SetRenderStyle(Master.Alpha, STYLE_None);
+	}
+	
+	Override Void Tick()
+	{
+		Super.Tick();
+		PAmnt = MRIntW_MonsterParticlesAmount;
+		
+		if(Type==6){
+			if(!Master){
+				MasterDeath();
+			}
+			else MasterTick();
+			Return;
+		}
+		
+		if(!Master){Destroy();Return;}
+		
+		if(Type==7){
+			if(Master.Health>0)MasterTick();
+			else MasterDeath();
+			Return;
+		}
+		
+		if(Master.Vel.Length()<=0)MasterDeath();
+		else {
+			MasterTick();
+			LastVel = Master.Vel;
+		}
+	}
+	
+	Void MasterDeath()
+	{
+		DeathTick++;
+		
+		if(Type!=6 && !MRGPartsCheckDraw())Return;
+		
+		if(!GotHit && Master){
+			if(Type==7)GotHit = Master.Target;
+			else {
+				if(Master.Target)GotHit = Master.Target.Target;
+				if(GotHit && Master.Distance2D(GotHit)>GotHit.Radius*2)GotHit = Null;
+				if(GotHit){
+					HitPlace = Master.Pos - GotHit.Pos;
+				}
+			}
+		}
+				
+		Switch(Type)
+		{
+			Case 0://DoomImpBall
+				if(Setting&MRIWMP_ImpBallImpactSmoke && DeathTick<7){
+					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 2), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .7), SizeStep: CFRandom(2, 3));
+				}
+				if(Setting&MRIWMP_ImpBallImpactSplash && DeathTick<3){
+					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
+					Float Pit = VectorAngle(-LastVel.XY.Length(), -LastVel.Z);
+					For(int i=CRandom(0, 4)*PAmnt;i<8*PAmnt;i++){
+						Float An = Ang + CRandom(-70, 70);
+						Float Pi = Pit - CRandom(0, 90);
+						Float Pow = CFRandom(1, 3);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
+						Float Size = CFRandom(1,5);
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+					}
+					For(int i=CRandom(0, 5)*PAmnt;i<12*PAmnt;i++){
+						Float An = Ang+90*CRandomPick(-1, 1);
+						Float Pi = CRandom(20, 90);
+						Float Pow = CFRandom(1, 4);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Float Size = CFRandom(1,4);
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 60, Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
+					}
+				}
+				if(Setting&MRIWMP_ImpBallImpactFire && GotHit){
+					For(int i=CRandom(0, 3)*PAmnt;i<(7-DeathTick*.5)*PAmnt;i++){
+						Float Size = CFRandom(2,4);
+						int Green = CRandom(70, 240);
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + HitPlace + (CFRandom(-4, 4),CFRandom(-4, 4),CRandom(-6, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+					}
+				}
+				Return;
+			Case 1://CacodemonBall
+				if(Setting&MRIWMP_CacoBallImpactSmoke && DeathTick<7){
+					MRSpawnParticle(Color(255,255,255), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(32, 35), GotHit?GotHit.Pos+HitPlace:Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 2), CFRandom(-.5, 2)), Alpha: CFRandom(.2, .3), SizeStep: CFRandom(2, 3));
+				}
+				if(Setting&MRIWMP_CacoBallImpactSplash && DeathTick<3){
+					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
+					Float Pit = VectorAngle(-LastVel.XY.Length(), -LastVel.Z);
+					For(int i=CRandom(0, 4)*PAmnt;i<8*PAmnt;i++){
+						Float An = Ang + CRandom(-70, 70);
+						Float Pi = Pit - CRandom(0, 90);
+						Float Pow = CFRandom(1, 3);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
+						Float Size = CFRandom(1,5);
+						MRSpawnParticle(Color(250,CRandom(140, 220),255), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+					}
+				}
+				if(Setting&MRIWMP_CacoBallImpactLightnings && DeathTick%2==0){
+					Vector3 Pos = Master.Pos;
+					if(GotHit)Pos = GotHit.Pos+HitPlace;
+					int Leng = 30*PAmnt;
+					Double Ang = CFRandom(0, 359);
+					Double Pit = CFRandom(-90, 90);
+					
+					For(double i=0;i<Leng;i+=Max(.5, 1/PAmnt)){
+						int Col = 25*CRandom(5, 10);
+						Vector3 PPos = (Cos(Ang), Sin(Ang), Sin(Pit));
+						
+						MRSpawnParticle(Color(Col,Col,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(6, 7), 2.5/Min(1.4, PAmnt), Pos+PPos, Alpha: .9);
+						
+						Ang += CRandom(-2, 2)*(20);
+						Pit += CRandom(-2, 2)*(10);
+						
+						Pos = Pos+PPos;
+					}
+				}
+				Return;
+			Case 2://RevenantTracer
+				if(Setting&MRIWMP_RevenantImpactTracerSmoke && DeathTick<7){
+					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, CRandom(10, 16)*Min(1, PAmnt), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-50,50), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.8, 1), SizeStep: CFRandom(2, 3));
+				}
+				if(Setting&MRIWMP_RevenantImpactTracerSplash && DeathTick<3){
+					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
+					Float Pit = VectorAngle(-LastVel.XY.Length(), -LastVel.Z);
+					For(int i=CRandom(0, 4)*PAmnt;i<8*PAmnt;i++){
+						Float An = Ang + CRandom(-70, 70);
+						Float Pi = Pit - CRandom(0, 90);
+						Float Pow = CFRandom(1, 3);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
+						Float Size = CFRandom(1,5);
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+					}
+				}
+				Return;
+			Case 3://FatShot (Mancubus)
+				if(Setting&MRIWMP_FatShotImpactSmoke && DeathTick<7){
+					MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(39, 42), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
+				}
+				if(Setting&MRIWMP_FatShotImpactSplash && DeathTick<3){
+					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
+					Float Pit = VectorAngle(-LastVel.XY.Length(), -LastVel.Z);
+					For(int i=CRandom(0, 4)*PAmnt;i<12*PAmnt;i++){
+						Float An = Ang + CRandom(-70, 70);
+						Float Pi = Pit - CRandom(0, 90);
+						Float Pow = CFRandom(2, 4);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
+						Float Size = CFRandom(2,7);
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+					}
+					For(int i=CRandom(0, 5)*PAmnt;i<12*PAmnt;i++){
+						Float An = Ang+90*CRandomPick(-1, 1);
+						Float Pi = CRandom(20, 90);
+						Float Pow = CFRandom(2, 5);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Float Size = CFRandom(2,5);
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 60, Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
+					}
+				}
+				if(Setting&MRIWMP_FatShotImpactFire && GotHit){
+					For(int i=CRandom(0, 3)*PAmnt;i<(13-DeathTick*.5)*PAmnt;i++){
+						Float Size = CFRandom(3,6);
+						int Green = CRandom(70, 240);
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + HitPlace + (CFRandom(-8, 8),CFRandom(-8, 8),CRandom(-13, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+					}
+				}
+				Return;
+			Case 4://ArachnotronPlasma
+				if(Setting&MRIWMP_ArachnoBallImpactSmoke && DeathTick<7){
+					MRSpawnParticle(Color(255,255,255), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(32, 35), GotHit?GotHit.Pos+HitPlace:Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 2), CFRandom(-.5, 2)), Alpha: CFRandom(.2, .3), SizeStep: CFRandom(2, 3));
+				}
+				if(Setting&MRIWMP_ArachnoBallImpactSplash && DeathTick<3){
+					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
+					Float Pit = VectorAngle(-LastVel.XY.Length(), -LastVel.Z);
+					For(int i=CRandom(0, 4)*PAmnt;i<6*PAmnt;i++){
+						Float An = Ang + CRandom(-70, 70);
+						Float Pi = Pit - CRandom(0, 90);
+						Float Pow = CFRandom(1, 2);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
+						Float Size = CFRandom(1,4);
+						int Col = CRandom(140, 220);
+						MRSpawnParticle(Color(Col,255,Col), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.1), SizeStep:-(Size/40.));
+					}
+				}
+				if(Setting&MRIWMP_ArachnoBallImpactLightnings && DeathTick%2==0){
+					Vector3 Pos = Master.Pos;
+					if(GotHit)Pos = GotHit.Pos+HitPlace;
+					int Leng = 20*PAmnt;
+					Double Ang = CFRandom(0, 359);
+					Double Pit = CFRandom(-90, 90);
+					
+					For(double i=0;i<Leng;i+=Max(.5, 1/PAmnt)){
+						int Col = 25*CRandom(5, 10);
+						Vector3 PPos = (Cos(Ang), Sin(Ang), Sin(Pit));
+						
+						MRSpawnParticle(Color(255,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(6, 7), 2.5/Min(1.4, PAmnt), Pos+PPos, Alpha: .9);
+						
+						Ang += CRandom(-2, 2)*(20);
+						Pit += CRandom(-2, 2)*(10);
+						
+						Pos = Pos+PPos;
+					}
+				}
+				Return;
+			Case 5://BaronBall
+				if(Setting&MRIWMP_BaronBallImpactSmoke && DeathTick<7){
+					int Green = CRandom(50, 160);
+					MRSpawnParticle(Color(Min(Green, 80),Green,Min(Green, 80)), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(39, 42), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .8), SizeStep: CFRandom(3, 4));
+				}
+				if(Setting&MRIWMP_BaronBallImpactSplash && DeathTick<3){
+					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
+					Float Pit = VectorAngle(-LastVel.XY.Length(), -LastVel.Z);
+					For(int i=CRandom(0, 4)*PAmnt;i<12*PAmnt;i++){
+						Float An = Ang + CRandom(-70, 70);
+						Float Pi = Pit - CRandom(0, 90);
+						Float Pow = CFRandom(2, 4);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
+						Float Size = CFRandom(2,7);
+						MRSpawnParticle(Color(CRandom(30, 80),255,CRandom(30, 80)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+					}
+					For(int i=CRandom(0, 5)*PAmnt;i<12*PAmnt;i++){
+						Float An = Ang+90*CRandomPick(-1, 1);
+						Float Pi = CRandom(20, 90);
+						Float Pow = CFRandom(2, 5);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Float Size = CFRandom(2,5);
+						MRSpawnParticle(Color(CRandom(30, 80),255,CRandom(30, 80)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 60, Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
+					}
+				}
+				if(Setting&MRIWMP_BaronBallImpactFire && GotHit){
+					For(int i=CRandom(0, 3)*PAmnt;i<(13-DeathTick*.5)*PAmnt;i++){
+						Float Size = CFRandom(3,6);
+						int Red = CRandom(30, 160);
+						MRSpawnParticle(Color(Red,255,CRandom(10, Red*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + HitPlace + (CFRandom(-8, 8),CFRandom(-8, 8),CRandom(-13, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+					}
+				}
+				Return;
+			Case 6://ArchvileFire
+				if(Setting2&MRIWMP_ArchFlameSplash){
+					if(DeathTick>2){Destroy();Return;}
+					if(!Monster || !Monster.Target){Destroy();Return;}
+					if(!Monster.CheckSight(Monster.Target, 0)){Destroy();Return;}
+					For(int i=CRandom(0, 6)*PAmnt;i<30*PAmnt;i++){
+						Float An = CFRandom(0, 359);
+						Float Pi = CFRandom(0, 60);
+						Float Pow = CFRandom(8, 13);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Cos(Pi), Sin(Pi)*Pow);
+						Float Size = CFRandom(3,11);
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 20, Size, Monster.Target.Pos, Vel, Vel*.2 + (0,0,-1), SizeStep:-(Size/20.));
+					}
+					For(int i=CRandom(0, 6)*PAmnt;i<25*PAmnt;i++){
+						Float Size = CFRandom(3,6);
+						int Green = CRandom(70, 240);
+						Float Ang = CFRandom(0, 359);
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, Monster.Target.Pos + (Actor.AngleToVector(Ang, CFRandom(4, 10)),CRandom(0, 10)), Monster.Target.Vel*.75 + (Actor.AngleToVector(Ang, CFRandom(0, 4)),3), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.2), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+					}
+					if(Setting2&MRIWMP_ArchFlameSmoke){
+						For(int i=CRandom(0, 2)*PAmnt;i<10*PAmnt;i++)
+							MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, 20, CRandom(39, 42), Monster.Target.Pos, (Actor.AngleToVector(CRandom(0, 359), CFRandom(1.8, 3)), CFRandom(.4, 1.7)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
+					}
+				}
+				else Destroy();
+				Return;
+			Case 7://LostSoul
+				if(Setting2&MRIWMP_SoulSplash && DeathTick<4){
+					For(int i=CRandom(0, 4)*PAmnt;i<12*PAmnt;i++){
+						Float An = CFRandom(0, 359);
+						Float Pi = CRandom(0, 90);
+						Float Pow = CFRandom(2, 4);
+						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
+						Float Size = CFRandom(2,7);
+						MRSpawnParticle(Color(255,CRandom(60, 180),CRandom(0, 20)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos + (0,0,17), Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+					}
+				}
+				if(Setting&MRIWMP_SoulSmoke && DeathTick<7){
+					MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(39, 42), Master.Pos + (0,0,17), (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
+				}
+				Return;
+		}
+	}
+	
+	Void MasterTick(){
+		if(Type!=6 && !MRGPartsCheckDraw())Return;
+		
+		Switch(Type)
+		{
+			Case 0://DoomImpBall
+				if(Setting&MRIWMP_ImpBallSmoke){
+					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
+					Float Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z)+CRandom(-40, 40);
+					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-3, 3)), Sin(Pit)*2);
+					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit)*2);
+					//Console.Printf("Pit "..Pit.." Vel "..Vel.." MVel "..Master.Vel);
+					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, 10, CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, SizeStep:.5);
+				}
+				if(Setting&MRIWMP_ImpBallDrops && CRandom(0,3/PAmnt)==1){
+					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
+					Float Size = CRandom(1,14);
+					MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 50, Size, Master.Prev+Master.Vel.Unit()*2+(Actor.AngleToVector(Ang+90, CFRandom(-3, 3)),-1), Master.Vel*.25+(CFRandom(-1, 1),CFRandom(-1, 1),0), Accel:(0,0,-.2), SizeStep:-(Size/50.));
+				}
+				Return;
+			Case 1://CacodemonBall
+				if(Setting&MRIWMP_CacoBallSmoke){
+					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
+					Float Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z)+CRandom(-40, 40);
+					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-3, 3)), Sin(Pit)*2);
+					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit)*2);
+					
+					MRSpawnParticle(Color(255,255,255), SPF_NOTIMEFREEZE, STYLE_None, 10, CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:.2, SizeStep:.5);
+				}
+				if(Setting&MRIWMP_CacoBallDrops){
+					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
+					Float Size = CFRandom(2, 5);
+					int Col = CRandom(140, 220);
+					
+					Double Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z);
+					Vector3 Pos = Master.Prev + (Actor.AngleToVector(Ang+90, CRandom(-4, 4)), CRandom(-3, 3));
+					Double Pow = CRandom(2, 3);
+					Double RandPit = CRandom(-70, 70);
+					Vector3 Vel = Master.Vel*.8 + (Actor.AngleToVector(Ang+90*CRandomPick(-1, 1), Pow), Pow*Sin(RandPit)*Cos(Pit));
+					Vel.XY += Actor.AngleToVector(Ang+RandPit*4, Pow)*Sin(Pit);
+					
+					MRSpawnParticle(Color(250,Col,255), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Pos, Vel, SizeStep:-(Size/10.));
+				}
+				if(Setting&MRIWMP_CacoBallLightnings && Master.GetAge()%5==0){
+					Vector3 Pos = Master.Prev + Master.Vel*.5;
+					int Leng = 20*PAmnt;
+					Double Ang = CFRandom(0, 359);
+					Double Pit = CFRandom(-90, 90);
+					
+					For(double i=0;i<Leng;i+=Max(.5, 1/PAmnt)){
+						int Col = 25*CRandom(5, 10);
+						Vector3 PPos = (Cos(Ang), Sin(Ang), Sin(Pit))*(1-i*.025);
+						
+						MRSpawnParticle(Color(Col,Col,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(8, 9), (2-i*.025)/Min(1.4, PAmnt), Pos+PPos, Master.Vel, Alpha: .9);
+						
+						Ang += CRandom(-2, 2)*(20);
+						Pit += CRandom(-2, 2)*(10);
+						
+						Pos = Pos+PPos;
+					}
+				}
+				Return;
+			Case 2://RevenantTracer
+				if(Setting&MRIWMP_RevenantTracerSmoke){
+					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
+					Float Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z)+CRandom(-20, 20);
+					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-2, 2)), Sin(Pit)*2);
+					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit)*2);
+
+					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, 10, CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2 + (0,0,3), Vel, SizeStep:.5);
+				}
+				if(Setting&MRIWMP_RevenantTracerFire){
+					For(int i=0;i<Max(1, 2*PAmnt);i++){
+						Float Size = CFRandom(2, 6);
+						MRSpawnParticle(Color(255,CRandom(100, 200),0), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Master.Pos-(Master.Pos-Master.Prev)*1.5 + (CFRandom(-2, 2),CFRandom(-2, 2),CFRandom(2, 4)), (CFRandom(-.5, .5), CFRandom(-.5, .5), CFRandom(-.5, .5)), SizeStep:-(Size/10.));
+					}
+				}
+				Return;
+			Case 3://FatShot (Mancubus)
+				if(Setting&MRIWMP_FatShotSmoke){
+					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
+					Float Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z)+CRandom(-40, 40);
+					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-1, 1)), Sin(Pit));
+					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit));
+
+					MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, 16, CRandom(44, 46), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, SizeStep:2);
+				}
+				if(Setting&MRIWMP_FatShotFire){
+					Vector3 Diff = Master.Pos-Master.Prev;
+					For(double i=0;i<Diff.Length();i+=3/PAmnt){
+						Float Size = CFRandom(2, 6);
+						MRSpawnParticle(Color(255,CRandom(100, 200),0), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Master.Pos-Diff.Unit()*i + (CFRandom(-10, 10),CFRandom(-10, 10),CFRandom(-4, 12)), (CFRandom(-.5, .5), CFRandom(-.5, .5), CFRandom(-.5, .5)), SizeStep:-(Size/10.));
+					}
+				}
+				if(Setting&MRIWMP_FatShotDrops && CRandom(0,4/PAmnt)==1){
+					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
+					Float Size = CRandom(6,20);
+					MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 50, Size, Master.Prev+Master.Vel.Unit()*2+(Actor.AngleToVector(Ang+90, CFRandom(-10, 10)),0), Master.Vel*.25+(CFRandom(-1, 1),CFRandom(-1, 1),0), Accel:(0,0,-.2), SizeStep:-(Size/50.));
+				}
+				Return;
+			Case 4://ArachnotronPlasma
+				if(Setting&MRIWMP_ArachnoBallTrail){
+					int Col = 25*CRandom(1, 6);
+					
+					For(float i=0;i<1;i+=.1)
+						MRSpawnParticle(Color(Col,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, 3, 24-i*10, Master.Prev-Master.Vel*i+(0,0,2), Master.Vel, Alpha: .4, SizeStep:-8);
+				}
+				if(Setting&MRIWMP_ArachnoBallSparks){
+					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
+					Float Size = CFRandom(2, 5);
+					int Col = CRandom(140, 220);
+					
+					Double Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z);
+					Vector3 Pos = Master.Prev + (Actor.AngleToVector(Ang+90, CRandom(-4, 4)), CRandom(-3, 3));
+					Double Pow = CRandom(2, 3);
+					Double RandPit = CRandom(-70, 70);
+					Vector3 Vel = Master.Vel*.8 + (Actor.AngleToVector(Ang+90*CRandomPick(-1, 1), Pow), Pow*Sin(RandPit)*Cos(Pit));
+					Vel.XY += Actor.AngleToVector(Ang+RandPit*4, Pow)*Sin(Pit);
+					
+					MRSpawnParticle(Color(Col,255,Col), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Pos, Vel, SizeStep:-(Size/10.));
+				}
+				Return;
+			Case 5://BaronBall
+				if(Setting2&MRIWMP_BaronBallSmoke){
+					For(Float i=1.5;i<2.5;i+=.5){
+						Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
+						Float Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z)+CRandom(-40, 40);
+						Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-1, 1)), Sin(Pit));
+						Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit));
+						int S = i-1;
+						int Green = CRandom(50, 160);
+						MRSpawnParticle(Color(Min(Green, 90),Green,Min(Green, 90)), SPF_NOTIMEFREEZE, STYLE_None, 13, CRandom(14, 16), Master.Pos-(Master.Pos-Master.Prev)*i + Vel.Unit()*2, Vel, Alpha: .6, SizeStep:3);
+					}
+				}
+				if(Setting2&MRIWMP_BaronBallFire){
+					Vector3 Diff = Master.Pos-Master.Prev;
+					For(double i=0;i<Diff.Length();i+=6/PAmnt){
+						Float Size = CFRandom(2, 6);
+						int Col = CRandom(40, 80);
+						MRSpawnParticle(Color(Col,255,Col), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Master.Pos-Diff.Unit()*i + (CFRandom(-5, 5),CFRandom(-5, 5),CFRandom(-2, 5)), (CFRandom(-.5, .5), CFRandom(-.5, .5), CFRandom(-.5, .5)), SizeStep:-(Size/10.));
+					}
+				}
+				Return;
+			Case 6://ArchFire
+				if(!Master.Target){Destroy();Return;}
+				if(!Monster)Monster = Master.Target;
+				if(!Monster || !Monster.Target){Destroy();Return;}
+				
+				if(Monster.CheckSight(Monster.Target)){HitPlace = Monster.Target.Pos;LastVel = Monster.Target.Vel;}
+				else LastVel = (0,0,0);
+				
+				if(Players[ConsolePlayer].Camera!=Monster.Target && !MRGPartsCheckDraw())Return;
+				
+				if(Setting2&MRIWMP_ArchFlameSmoke){
+					MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, 20*Min(1, PAmnt), CRandom(39, 42), HitPlace + (0,0,CRandom(0, 20)), LastVel*.75 + (Actor.AngleToVector(CRandom(0, 359), CFRandom(.1, 1)), CFRandom(1, 3))/PAmnt, Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
+				}
+				if(Setting2&MRIWMP_ArchFlameSparks){
+					For(int i=CRandom(0, 1)*PAmnt;i<3*PAmnt;i++){
+						Float Size = CFRandom(3,6);
+						int Green = CRandom(70, 240);
+						Float Ang = CFRandom(0, 359);
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, HitPlace + (Actor.AngleToVector(Ang, CFRandom(10, 24)),CRandom(0, 30)), LastVel*.75 + (Actor.AngleToVector(Ang, CFRandom(0, 4)),2), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.2), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+					}
+				}
+				Return;
+			Case 7://LostSoul
+				if(Setting2&MRIWMP_SoulFire){
+					Float Size = CFRandom(2,7);
+					Float Ang = Master.Angle+CRandom(100, 260);
+					MRSpawnParticle(Color(255,CRandom(40, 140),CRandom(0, 10)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Prev + (Actor.AngleToVector(Ang, CFRandom(3, 10)), CFRandom(15, 25)), (Actor.AngleToVector(Ang, CFRandom(.1, 1)), 0), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.15), SizeStep:-(Size/40.));
+				}
+				if(Setting&MRIWMP_SoulSmoke && Master.GetAge()%6==0){
+					Float Ang = Master.Angle+CRandom(100, 260);
+					MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, 30, CRandom(39, 42), Master.Prev + (Actor.AngleToVector(Ang, CFRandom(4, 10)), CFRandom(16, 25)), (Actor.AngleToVector(Ang, CFRandom(.1, .3)), 0), Accel:(CFRandom(-.01, .01), CFRandom(-.01, .01), .05), Alpha: CFRandom(.4, .5), SizeStep: CFRandom(1, 2));
+				}
+				Return;
+		}
+	}
+}
