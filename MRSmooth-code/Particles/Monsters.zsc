@@ -484,7 +484,7 @@ Class MRIntWeaps_MonsterProjectileThinker: MRIntWeaps_ActorEffects
 					//Console.Printf("Pit "..Pit.." Vel "..Vel.." MVel "..Master.Vel);
 					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, 10, CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, SizeStep:.5);
 				}
-				if(Setting&MRIWMP_ImpBallDrops && CRandom(0,3/PAmnt)==1){
+				if(Setting&MRIWMP_ImpBallDrops && CRandom(0,3)==1){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
 					Float Size = CRandom(1,14);
 					MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 50, Size, Master.Prev+Master.Vel.Unit()*2+(Actor.AngleToVector(Ang+90, CFRandom(-3, 3)),-1), Master.Vel*.25+(CFRandom(-1, 1),CFRandom(-1, 1),0), Accel:(0,0,-.2), SizeStep:-(Size/50.));
@@ -564,7 +564,7 @@ Class MRIntWeaps_MonsterProjectileThinker: MRIntWeaps_ActorEffects
 						MRSpawnParticle(Color(255,CRandom(100, 200),0), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Master.Pos-Diff.Unit()*i + (CFRandom(-10, 10),CFRandom(-10, 10),CFRandom(-4, 12)), (CFRandom(-.5, .5), CFRandom(-.5, .5), CFRandom(-.5, .5)), SizeStep:-(Size/10.));
 					}
 				}
-				if(Setting&MRIWMP_FatShotDrops && CRandom(0,4/PAmnt)==1){
+				if(Setting&MRIWMP_FatShotDrops && CRandom(0,4)==1){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
 					Float Size = CRandom(6,20);
 					MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 50, Size, Master.Prev+Master.Vel.Unit()*2+(Actor.AngleToVector(Ang+90, CFRandom(-10, 10)),0), Master.Vel*.25+(CFRandom(-1, 1),CFRandom(-1, 1),0), Accel:(0,0,-.2), SizeStep:-(Size/50.));
