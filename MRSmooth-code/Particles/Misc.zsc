@@ -59,21 +59,31 @@ Extend Class MRIntWeaps_Handler
 		}
 		
 		if((Setting&MRIWDP_TorchFire || Setting&MRIWDP_TorchSmoke) && (Thing is 'BlueTorch' || Thing is 'GreenTorch' || Thing is 'RedTorch' ||
-			Thing is 'ShortBlueTorch' || Thing is 'ShortGreenTorch' || Thing is 'ShortRedTorch')){
+			Thing is 'ShortBlueTorch' || Thing is 'ShortGreenTorch' || Thing is 'ShortRedTorch'))
+		{
 			Let a = New('MRIntWeaps_TorchThinker');
 			a.Master = Thing;
 			Switch(Thing.GetClassName()){
 				Case 'ShortBlueTorch':
 				Case 'BlueTorch':
 					a.Col = 2;
+					a.RCols[0] = (-30, 30);
+					a.RCols[1] = (-30, 30);
+					a.RCols[2] = (255, 255);
 					Break;
 				Case 'ShortGreenTorch':
 				Case 'GreenTorch':
 					a.Col = 1;
+					a.RCols[0] = (0, 70);
+					a.RCols[1] = (255, 255);
+					a.RCols[2] = (0, 60);
 					Break;
 				Case 'ShortRedTorch':
 				Case 'RedTorch':
 					a.Col = 0;
+					a.RCols[0] = (255, 255);
+					a.RCols[1] = (-30, 80);
+					a.RCols[2] = (0, 0);
 					Break;
 			}
 			
@@ -290,6 +300,7 @@ Class MRIntWeaps_TorchThinker: MRIntWeaps_ActorEffects
 {
 	int Setting, TickOffset, Col, Height;
 	Float PAmnt;
+	Vector2 RCols[3];
 	
 	Override Void PostBeginPlay()
 	{
@@ -318,29 +329,16 @@ Class MRIntWeaps_TorchThinker: MRIntWeaps_ActorEffects
 		Double Ang = FaceCam(Sprite:1);
 		
 		if(Setting&MRIWDP_Bloom){
-			int Cols[3];
-			int RCol = 25*CRandom(2, 4);
-			For(int i=0;i<3;i++){
-				if(i==Col)Cols[i] = 255;
-				else Cols[i] = RCol;
-			}
-			MRSpawnParticle(Color(Cols[0],Cols[1],Cols[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, 1, CFRandom(53, 54), Master.Pos + (Actor.AngleToVector(Ang, 1), Height-36), Alpha: .2, Fade:0);
+			MRSpawnParticle(Color(CRandom(RCols[0].X, RCols[0].Y),CRandom(RCols[1].X, RCols[1].Y),CRandom(RCols[2].X, RCols[2].Y)), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, 1, CFRandom(53, 54), Master.Pos + (Actor.AngleToVector(Ang, 1), Height-36), Alpha: .2, Fade:0);
 		}
 		
 		if(Setting&MRIWDP_TorchFire && CRandom(0, 5/PAmnt)==0){
-			int Cols[3];
-			int RCol = 25*CRandom(1, 4);
-			For(int i=0;i<3;i++){
-				if(i==Col)Cols[i] = 255;
-				else Cols[i] = RCol;
-			}
-					
-			Float Size = CFRandom(1, 4);
+			Float Size = CFRandom(2, 6);
 			
 			Vector3 Pos = Master.Pos + (Actor.AngleToVector(Ang, -2), Height-41);
-			Pos += Actor.AngleToVector(Ang+90, CRandom(-3, 3));
+			Pos += Actor.AngleToVector(Ang+90, CRandom(-8, 6));
 			
-			MRSpawnParticle(Color(Cols[0],Cols[1],Cols[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, 10*Size, Size, Pos, (0, 0, CFRandom(.8, 1.6)), (CFRandom(-.02, .02), CFRandom(-.02, .02), CFRandom(-.01, .01)), Fade:0, SizeStep:-(Size/(Size*10)));
+			MRSpawnParticle(Color(CRandom(RCols[0].X, RCols[0].Y),CRandom(RCols[1].X, RCols[1].Y),CRandom(RCols[2].X, RCols[2].Y)), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, 10*Size, Size, Pos, (0, 0, CFRandom(.8, 1.6)), (CFRandom(-.01, .01), CFRandom(-.01, .01), CFRandom(-.01, .01)), Fade:0, SizeStep:-(Size/(Size*10)));
 		}
 		if(Setting&MRIWDP_TorchSmoke && CRandom(0, 3/PAmnt)==1){
 			int Cols[3];
