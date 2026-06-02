@@ -47,7 +47,6 @@ Extend Class MRIntWeaps_Handler
 			For(int i1=0;i1<Casing.NearCasings.Size();i1++){
 				if(!Casing.NearCasings[i1])Continue;
 				
-				//MRIntWeaps_Smoker.MRSpawnParticle(Color(255,255,255), SPF_FULLBRIGHT, STYLE_None, 35, 4, 0, Casing.NearCasings[i1].Pos, (0,0,3));
 				Casing.NearCasings[i1].Fade();
 				Casing.NearCasings.Delete(i1);
 				For(int i2=0;i2<Casing.NearCasings.Size();i2++){
@@ -217,6 +216,8 @@ Extend Class MRIntWeaps_Chainsaw
 				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
 				
 				if(Players[ConsolePlayer].Camera!=Self && MRIntW_ChainsawSmoke){
+					Let Cam = Players[ConsolePlayer].Camera;
+					if(Cam && !(abs(DeltaAngle(Cam.Angle, Cam.AngleTo(Self)))<CVar.FindCVar("FOV").GetFloat()||Distance2D(Cam)<Cam.Radius*2) && CheckSight(Cam, SF_IGNOREWATERBOUNDARY|SF_SEEPASTBLOCKEVERYTHING|SF_IGNOREVISIBILITY))Return;
 					int Col = CRandom(60, 80);
 					Float Alph = CFRandom(.7, .8);
 					Double Resize = 0;
@@ -263,9 +264,6 @@ Extend Class MRIntWeaps_Chainsaw
 
 Extend Class MRIntWeaps_Pistol
 {
-	MRIntWeaps_SmokeContainer Smokes[20];
-	Const SmokeStart = -10;
-	
 	Const CaseLife = 20;
 	Bool Casings[4];
 	Float CasingDir[4], CasingSpeed;
@@ -347,11 +345,9 @@ Extend Class MRIntWeaps_Pistol
 		
 		else{
 			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
-									
-			Float Alph = CFRandom(.16, .2);
 			
 			int Col = CRandom(170, 180);
-			Part.SColor = Color(Col,Col,Col);
+			Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));
 			Part.Life = 14;
 			Part.Alpha = CFRandom(.3, .4);
 			Part.Fade = Part.Alpha/(Part.Life-1);
@@ -379,46 +375,6 @@ Extend Class MRIntWeaps_Pistol
 	}
 	
 	States{
-		SmokeLay:
-			NSHS A 0{
-				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
-				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
-				A_OverlayPivot(OverlayId(), .5, .5);
-				Player.GetPSprite(OverlayId()).Alpha=CFRandom(.3, .5);
-			}
-			NSHS A 1{
-				A_OverlayPivot(OverlayId(), .5, .5);
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
-				A_OverlayRenderStyle(OverlayId(), MRIntW_Smoke?STYLE_TRANSLUCENT:STYLE_NONE);
-			}
-			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
-				int Index = abs(OverlayId())+SmokeStart;
-				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
-				
-				Player.GetPSprite(OverlayId()).Alpha-=.01;
-				
-				Float Scale = (CFRandom(.09, .13) + (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.5);
-				Scale -= (invoker.Smokes[Index].Vel.Y);
-				Scale *= .1;
-				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
-				
-				if(Player.GetPSprite(OverlayId()).Scale.Length()>7)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
-				Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02 + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1) + Vel.Z;
-				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
-				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
-				Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02 + (Vel.X*Cos(Angle+90)*5 + Vel.Y*Sin(Angle+90)*5);
-				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
-				
-				if(Player.GetPSprite(OverlayId()).Alpha<=0){
-					invoker.Smokes[abs(OverlayId())+SmokeStart].Destroy();invoker.Smokes[abs(OverlayId())+SmokeStart]=Null;
-					A_ClearOverlays(OverlayId(), OverlayId());
-					Return;
-				}
-			}
-			TNT1 A 0 {invoker.Smokes[abs(OverlayId())+SmokeStart].Destroy();invoker.Smokes[abs(OverlayId())+SmokeStart]=Null;}
-			Stop;
-			
 		CasingLay:
 			PISC A 0 {
 				A_OverlayFlags(Overlayid(), PSPF_ADDWEAPON, false);
@@ -528,10 +484,8 @@ Extend Class MRIntWeaps_Shotgun
 		else{
 			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
 			
-			Float Alph = CFRandom(.16, .2);
-			
 			int Col = CRandom(140, 150);
-			Part.SColor = Color(Col,Col,Col);
+			Part.SColor = Color(Col,Col,int(Col*CFRandom(1.1, 1.4)));
 			Part.Life = 15;
 			Part.Alpha = CFRandom(.3, .4);
 			Part.Fade = Part.Alpha/(Part.Life-1);
@@ -792,11 +746,9 @@ Extend Class MRIntWeaps_Chaingun
 		
 		else{
 			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
-									
-			Float Alph = CFRandom(.16, .2);
 			
 			int Col = CRandom(170, 180);
-			Part.SColor = Color(Col,Col,Col);
+			Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));
 			Part.Life = 14;
 			Part.Alpha = CFRandom(.4, .5);
 			Part.Fade = Part.Alpha/(Part.Life-1);
@@ -909,29 +861,6 @@ Extend Class MRIntWeaps_PlasmaRifle
 		//Small plasma particles
 		if(Random(0, 20)>18)Return;
 		
-		if(Players[ConsolePlayer].Camera!=Self && MRIntW_PlasmaParticles>1){
-			Vector2 Offset = AngleToVector(CRandom(0, 360), 1);
-			
-			Vector3 Pos = (0,0,0);
-			Pos += AngleToVector(Angle, 17);
-			Pos += AngleToVector(Angle-90, 7+Offset.X*2);
-			Pos.Z += Height*.6+Offset.Y;
-			
-			Vector3 Vel = (0,0,0);
-			Vel += AngleToVector(Angle-Offset.X*15, 2);
-			Vel.Z += Offset.Y*.25;
-			Vel *= CFRandom(.6, 1.1);
-			Vel += Self.Vel;
-			
-			int Col[3];
-			Col[2] = 255;
-			Col[1] = Col[2]*CFRandom(.9, 1);
-			Col[0] = Col[1]*CFRandom(.9, 1);
-			
-			A_SpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, 10, CFRandom(1.4, 1.7), 0, Pos.X,Pos.Y,Pos.Z,
-				Vel.X,Vel.Y,Vel.Z, 0,0,0, 1, -1);
-		}
-		
 		int Par = -1;
 
 		For(int i=0;i<invoker.Particles.Size();i++){
@@ -960,6 +889,32 @@ Extend Class MRIntWeaps_PlasmaRifle
 		
 		Double Scal = FRandom(.02, .08);
 		A_OverlayScale(Lay, Scal, Scal);
+		
+		if(Players[ConsolePlayer].Camera!=Self && MRIntW_PlasmaParticles>1){
+			Let Cam = Players[ConsolePlayer].Camera;
+			if(Cam && !(abs(DeltaAngle(Cam.Angle, Cam.AngleTo(Self)))<CVar.FindCVar("FOV").GetFloat()||Distance2D(Cam)<Cam.Radius*2) && CheckSight(Cam, SF_IGNOREWATERBOUNDARY|SF_SEEPASTBLOCKEVERYTHING|SF_IGNOREVISIBILITY))Return;
+			
+			Vector2 Offset = AngleToVector(CRandom(0, 360), 1);
+			
+			Vector3 Pos = (0,0,0);
+			Pos += AngleToVector(Angle, 17);
+			Pos += AngleToVector(Angle-90, 7+Offset.X*2);
+			Pos.Z += Height*.6+Offset.Y;
+			
+			Vector3 Vel = (0,0,0);
+			Vel += AngleToVector(Angle-Offset.X*15, 2);
+			Vel.Z += Offset.Y*.25;
+			Vel *= CFRandom(.6, 1.1);
+			Vel += Self.Vel;
+			
+			int Col[3];
+			Col[2] = 255;
+			Col[1] = Col[2]*CFRandom(.9, 1);
+			Col[0] = Col[1]*CFRandom(.9, 1);
+			
+			A_SpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, 10, CFRandom(1.4, 1.7), 0, Pos.X,Pos.Y,Pos.Z,
+				Vel.X,Vel.Y,Vel.Z, 0,0,0, 1, -1);
+		}
 	}
 	
 	int Shots;
@@ -1046,32 +1001,34 @@ Extend Class MRIntWeaps_BFG9000
 	Action Void A_FiringParticles(double Chance)
 	{
 		if(Players[ConsolePlayer].Camera!=Self && MRIntW_BFGParticles){
-			
-			Vector3 BPos;
-			BPos += AngleToVector(Angle, 17);
-			BPos += AngleToVector(Angle-90, 7);
-			BPos.Z += Height*.56;
-			
-			Vector3 BVel = Vel*.5;
-			BVel += (CFRandom(-1, 1), CFRandom(-1, 1), CFRandom(-1, 1))*Min(1, Chance);
-			
-			int BCol[3];
-			BCol[1] = 255;
-			BCol[2] = BCol[0] = BCol[1]*CFRandom(.3, .7);
-			
-			Double Resize = 0;
-			if(Chance>=2.4)Resize = 1;
-			
-			BVel.XY += AngleToVector(Angle, Resize*3);
-			BVel.Z += Resize;
-			
-			A_SpawnParticle(Color(BCol[0],BCol[1],BCol[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, 2+Chance*3, Min(1.8, Chance)*14, 0, Bpos.X,BPos.Y,BPos.Z,
-				BVel.X,BVel.Y,BVel.Z, 0,0,0, Min(1, Chance*3), -1, Clamp(1.8-Chance, 0, .1)+Resize*9);
-			
-			BPos += AngleToVector(AngleTo(Players[ConsolePlayer].Camera), .2);
-			
-			A_SpawnParticle(Color(255,255,255), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, 2+Chance*3, Min(1.8, Chance)*8, 0, Bpos.X,BPos.Y,BPos.Z,
-				BVel.X,BVel.Y,BVel.Z, 0,0,0, Min(1, Chance*3), -1, Clamp(1.8-Chance, 0, .1)+Resize*7);
+			Let Cam = Players[ConsolePlayer].Camera;
+			if(Cam && (abs(DeltaAngle(Cam.Angle, Cam.AngleTo(Self)))<CVar.FindCVar("FOV").GetFloat()||Distance2D(Cam)<Cam.Radius*2) && CheckSight(Cam, SF_IGNOREWATERBOUNDARY|SF_SEEPASTBLOCKEVERYTHING|SF_IGNOREVISIBILITY)){
+				Vector3 BPos;
+				BPos += AngleToVector(Angle, 17);
+				BPos += AngleToVector(Angle-90, 7);
+				BPos.Z += Height*.56;
+				
+				Vector3 BVel = Vel*.5;
+				BVel += (CFRandom(-1, 1), CFRandom(-1, 1), CFRandom(-1, 1))*Min(1, Chance);
+				
+				int BCol[3];
+				BCol[1] = 255;
+				BCol[2] = BCol[0] = BCol[1]*CFRandom(.3, .7);
+				
+				Double Resize = 0;
+				if(Chance>=2.4)Resize = 1;
+				
+				BVel.XY += AngleToVector(Angle, Resize*3);
+				BVel.Z += Resize;
+				
+				A_SpawnParticle(Color(BCol[0],BCol[1],BCol[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, 2+Chance*3, Min(1.8, Chance)*14, 0, Bpos.X,BPos.Y,BPos.Z,
+					BVel.X,BVel.Y,BVel.Z, 0,0,0, Min(1, Chance*3), -1, Clamp(1.8-Chance, 0, .1)+Resize*9);
+				
+				BPos += AngleToVector(AngleTo(Players[ConsolePlayer].Camera), .2);
+				
+				A_SpawnParticle(Color(255,255,255), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, 2+Chance*3, Min(1.8, Chance)*8, 0, Bpos.X,BPos.Y,BPos.Z,
+					BVel.X,BVel.Y,BVel.Z, 0,0,0, Min(1, Chance*3), -1, Clamp(1.8-Chance, 0, .1)+Resize*7);
+			}
 		}
 		if(Chance>1.8)Return;
 		//Small green plasma particles going into the muzzle

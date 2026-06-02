@@ -82,9 +82,13 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 	{
 		if(!MRIntW_Smoke)Return;
 		
+		//Smoke alpha from last shot damage (min dmg 145, max dmg 255)
+		Double Alpha = invoker.ShotPower-145.;
+		Alpha /= 255;
+		
 		if(Players[ConsolePlayer].Camera != Self){
 			int Col = CRandom(70, 80);
-			Float Alph = CFRandom(.4, .5);
+			Float Alph = .4+Alpha*.15;
 			A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE, 9, CFRandom(2, 3), 0, 20,6,Height*.65,
 				1,0,.5, CFRandom(-.02, .02),CFRandom(-.02, .02),CFRandom(-.02, 0), 
 				Alph, Alph/8, CFRandom(2, 3));
@@ -94,15 +98,13 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 			For(Float i=-.25;i<.5;i+=.5){
 				Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
 				
-				Float Alph = CFRandom(.16, .2);
-				
 				int Col = CRandom(140, 150);
-				Part.SColor = Color(Col,Col,Col);
+				Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));
 				Part.Life = 15;
-				Part.Alpha = CFRandom(.3, .4);
+				Part.Alpha = .2+Alpha*.2;
 				Part.Fade = Part.Alpha/(Part.Life-1);
-				Part.StartGrow = CFRandom(1.4, 1.5);
-				Part.StartScale = CFRandom(.2, .3);
+				Part.StartGrow = 1.4+Alpha*.1;
+				Part.StartScale = .2+Alpha*.1;
 
 				Part.Place = (AngleToVector(Angle, 5)*Cos(Abs(Pitch)), -5*Sin(Pitch));
 				Part.Place.Z += -1.5*Cos(Abs(Pitch));
