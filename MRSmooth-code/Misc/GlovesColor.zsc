@@ -360,7 +360,7 @@ Extend Class MRIntWeaps_Fist
 						int Blue = (Aktor.Health-MaxH)*2;
 						if(Aktor!=Owner)Blue = 0;
 						Double Red = (MaxH-Min(MaxH, Aktor.Health));
-						Red = Red/MaxH*200;
+						Red = Red/MaxH*400;
 						TargetColor = Color(int(Red), int(Green), Blue);
 					}
 					
