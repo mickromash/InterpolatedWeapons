@@ -510,7 +510,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				
 				if(MRIntW_ScreenShake){
 					Double Amnt = MRIntW_ScreenShakeAmount;
-					A_QuakeEx(.6*Amnt,0,.4*Amnt, 8, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 11,0,2, rollIntensity: .08*Amnt, rollwave: 8);
+					A_QuakeEx(.6*Amnt,0,.3*Amnt, 8, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 11,0,2, rollIntensity: .08*Amnt, rollwave: 8);
 				}
 			}
 			#### # 1 A_FireSmoke();

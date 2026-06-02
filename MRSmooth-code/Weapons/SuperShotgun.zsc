@@ -468,7 +468,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				
 				if(MRIntW_ScreenShake){
 					Double Amnt = MRIntW_ScreenShakeAmount;
-					A_QuakeEx(1*Amnt,0,1*Amnt, 14, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 10,0,2, rollIntensity: .25*Amnt, rollwave: 10);
+					A_QuakeEx(1*Amnt,0,.6*Amnt, 14, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 10,0,2, rollIntensity: .25*Amnt, rollwave: 10);
 				}
 			}
 			#### # 1{
