@@ -19,7 +19,7 @@ MRIntW_CasingsRandom = "Макс. скорость гильз";
 MRIntW_CasingsAmount = "Макс. количество гильз";
 MRIntW_CasingsVolume = "Громкость отскока гильз";
 MRIntW_CasingsClusteringReduce = "Оптимизировать скопления гильз";
-MRIntW_CasingsLowRes = "Минимальное разрешение гильз";
+MRIntW_CasingsLowRes = "Низкая детализация гильз";
 
 MRIntW_Lighting = "\cv⊛\c- Исправить освещение оружия";
 MRIntW_Recoil = "\cv⊛\c- Визуальная отдача";
