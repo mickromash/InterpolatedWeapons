@@ -1,3 +1,7 @@
+/*
+	Misc. weapons and player every-tic actions
+*/
+
 Extend Class MRIntWeaps_Fist
 {
 	Void DoMisc()
