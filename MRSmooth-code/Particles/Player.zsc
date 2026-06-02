@@ -189,7 +189,7 @@ Class MRIntWeaps_ProjectileThinker: MRIntWeaps_ActorEffects
 			Case 0://Rocket
 				if(DeathTick<2 && MRIntW_ScreenShake>1){
 					Double Intens = MRIntW_ScreenShakeAmount*2;
-					Master.A_QuakeEx(Intens, Intens, Intens, 13, 0, 300, "", QF_SCALEDOWN, RollIntensity: Intens*.5);
+					Master.A_QuakeEx(Intens, Intens, Intens, 13, 0, 200, "", QF_SCALEDOWN, RollIntensity: Intens*.5);
 				}
 				if(Setting&MRIWPP_RocketImpactSmoke && DeathTick<7*PAmnt){
 					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30)*2, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .7), SizeStep: CFRandom(4.4, 5));
