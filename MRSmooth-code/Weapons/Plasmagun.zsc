@@ -14,7 +14,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			BodyScal,//Rifle body sqiush during firing
 			IdleDur;
 	Bool MuzzleCycle,//Firing frame
-		Selecting;
+		Selecting, IdleEnd;
 	
 	Float Recoil;
 	Override Void DoEffect()
@@ -53,9 +53,9 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		Actor a = SpawnPlayerMissile("MRIntWeaps_PlasmaBall");
 		if(a){
 			a.A_StopSound();
-			//Let b = New('MRIntWeaps_ProjectileThinker');
-			//b.Master = a;
-			//b.Type = 1;
+			Let b = New('MRIntWeaps_ProjectileThinker');
+			b.Master = a;
+			b.Type = 1;
 		}
 		A_StartSound("MRIntW/PlasmaFire", CHAN_AUTO, pitch:i_timescale);
 		invoker.Shots++;
@@ -181,6 +181,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayRotate(Lay1, 4);
 				A_GlovesColor();
 				invoker.FloatSpeed = 4;
+				invoker.IdleEnd = false;
 			}
 			PLSR C 1{invoker.Selecting = true;}
 			#### CCCCC 1 {
@@ -252,14 +253,15 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		GunWait:
 			PL1G A 1 {
 				A_IdleAnimation(Lay1);
-				if(invoker.Muzzle>.1)invoker.Muzzle *= .5;
-				else invoker.Muzzle = 0;
+				if(invoker.Muzzle>.05)invoker.Muzzle *= invoker.IdleEnd?.9:.5;
+				else invoker.IdleEnd = invoker.Muzzle = 0;
 			}
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);}
 			Loop;
 		GunLower:
 			#### # 0 A_JumpIf(!Player.FindPSprite(Lay2), "GunLowerAlt");
 			PL1G A 1 {
+				invoker.IdleEnd = false;
 				invoker.LowerDir = CRandomPick(-1, 1);
 				invoker.InterpolateMuzzle = 2;
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
@@ -311,6 +313,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Stop;
 		GunLowerAlt:
 			PLSR C 1 {
+				invoker.IdleEnd = false;
 				A_GlovesColor();
 				A_OverlayPivot(Lay1, .5, 0);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
@@ -340,6 +343,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Goto Ready;
 		GunFire:
 			#### # 0 {
+				invoker.IdleEnd = false;
 				invoker.Idle = Min(0, invoker.Idle);
 				A_Overlay(Lay2, "GunMuzzle", true);
 				A_Overlay(Lay3, "GunMuzzleFlash", true);
@@ -591,6 +595,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		invoker.Idle = 0-CRandom(2, 6)*35*5;
 		invoker.Animation = CRandom(0, 2);
 		invoker.IdleDur = CFRandom(.7, 1.1);
+		invoker.IdleEnd = true;
 	}
 	
 	Action Void A_BersShake()
@@ -603,7 +608,7 @@ Class MRIntWeaps_PlasmaBall: PlasmaBall
 {
 	Override int SpecialMissileHit(Actor Victim)
 	{
-		if(Victim && Victim!=Target)Master = Victim;
+		if(Victim && Victim!=Target && Victim.bShootable)Master = Victim;
 		Return Super.SpecialMissileHit(Victim);
 	}
 }

@@ -3,7 +3,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	Default{
 		Weapon.SlotNumber 1;
 		Decal "BulletChip";
-		FloatSpeed 1;
+		MissileHeight 10;
 	}
 	
 	Const Lay1 = 2;
