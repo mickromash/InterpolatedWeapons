@@ -621,7 +621,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					if(CountInv("PowerStrength"))Intens = 2;
 					Intens *= MRIntW_ScreenShakeAmount;
 					
-					A_QuakeEx(.1*Intens,0,.2*Intens, 6+Intens*2, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 10,0,10, rollIntensity: .1*Intens, rollwave: 10);
+					A_QuakeEx(.1*Intens,0,.2*Intens, 6+Intens/MRIntW_ScreenShakeAmount*2, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 10,0,10, rollIntensity: .1*Intens, rollwave: 10);
 				}
 			}
 			#### ## 1 {
@@ -776,7 +776,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					if(CountInv("PowerStrength"))Intens = 2;
 					Intens *= MRIntW_ScreenShakeAmount;
 					
-					A_QuakeEx(.1*Intens,0,.2*Intens, 6+Intens*2, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 10,0,10, rollIntensity: .1*Intens, rollwave: 10);
+					A_QuakeEx(.1*Intens,0,.2*Intens, 6+Intens/MRIntW_ScreenShakeAmount*2, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 10,0,10, rollIntensity: .1*Intens, rollwave: 10);
 				}
 			}
 			#### ## 1 {
@@ -1012,7 +1012,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 						if(CountInv("PowerStrength"))Intens = 2;
 						Intens *= MRIntW_ScreenShakeAmount;
 						
-						A_QuakeEx(.2*Intens,0,.3*Intens, 4+Intens*2, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 14,0,14, rollIntensity: .15*Intens, rollwave: 14);
+						A_QuakeEx(.2*Intens,0,.3*Intens, 4+Intens/MRIntW_ScreenShakeAmount*2, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 14,0,14, rollIntensity: .15*Intens, rollwave: 14);
 					}
 					Return;
 				}
