@@ -53,7 +53,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		Actor a = SpawnPlayerMissile("MRIntWeaps_PlasmaBall");
 		if(a){
 			a.A_StopSound();
-			Let b = New('MRIntWeaps_ProjectileThinker');
+			Let b = New('MRIntWeaps_PlayerProjectileParticles');
 			b.Master = a;
 			b.Type = 1;
 		}

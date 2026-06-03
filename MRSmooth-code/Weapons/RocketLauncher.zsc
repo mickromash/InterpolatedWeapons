@@ -217,7 +217,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				Actor a = A_FireProjectile("Rocket");
 				if(a){
 					a.A_StopSound();
-					Let b = New('MRIntWeaps_ProjectileThinker');
+					Let b = New('MRIntWeaps_PlayerProjectileParticles');
 					b.Master = a;
 					b.Type = 0;
 				}

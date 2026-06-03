@@ -60,13 +60,13 @@ enum MRIntWeaps_MonsterParticlesFlags{
 
 Extend Class MRIntWeaps_Handler
 {
-	Void SpawnProjectileParticleEffects(Actor Thing)
+	Void SpawnMonsterParticleEffects(Actor Thing)
 	{
 		if(Thing is 'DoomImpBall' || Thing is 'CacodemonBall' || Thing is 'RevenantTracer' || Thing is 'FatShot' ||
 			Thing is 'ArachnotronPlasma' || Thing is 'BaronBall' || Thing is 'ArchvileFire' || Thing is 'LostSoul' || (Thing is 'Rocket' && Thing.Target && !PlayerPawn(Thing.Target)))
 		{
 			if(Thing is 'Rocket'){
-				Let a = New('MRIntWeaps_ProjectileThinker');
+				Let a = New('MRIntWeaps_PlayerProjectileParticles');
 				a.Master = Thing;
 				a.Type = 0;
 				a.Monster = true;
@@ -150,7 +150,7 @@ Extend Class MRIntWeaps_Handler
 					Break;
 			}
 			
-			Let a = New('MRIntWeaps_MonsterProjectileThinker');
+			Let a = New('MRIntWeaps_MonsterProjectileParticles');
 			a.Master = Thing;
 			a.Type = Type;
 			
@@ -167,7 +167,7 @@ Extend Class MRIntWeaps_Handler
 	}
 }
 
-Class MRIntWeaps_MonsterProjectileThinker: MRIntWeaps_ActorEffects
+Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 {
 	int Type;
 	int DeathTick, Setting, Setting2;

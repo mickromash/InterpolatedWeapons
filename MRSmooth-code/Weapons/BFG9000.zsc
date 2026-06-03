@@ -59,7 +59,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 
 		Actor a = SpawnPlayerMissile("MRIntWeaps_BFGBall", angle, nofreeaim:sv_nobfgaim);
 		if(a){
-			Let b = New('MRIntWeaps_ProjectileThinker');
+			Let b = New('MRIntWeaps_PlayerProjectileParticles');
 			b.Master = a;
 			b.Type = 2;
 		}
