@@ -158,8 +158,7 @@ Class MRIntWeaps_Handler: EventHandler
 			Return;
 		}
 		
-		//if(Level.Time<2 && MRIntW_DecorationParticles)
-		SpawnDecorationParticleEffects(e.Thing);
+		if(Level.Time<2 && MRIntW_DecorationParticles)SpawnDecorationParticleEffects(e.Thing);
 	}
 	
 	Override Void WorldThingDamaged(WorldEvent e)
