@@ -178,8 +178,8 @@ MRIntW_Particles_Tick = "Во время полёта";
 MRIntW_Particles_Impact = "При столкновении";
 
 MRIntW_PlayerParticles = "Эффекты оружия игрока";
-MRIntW_PlayerParticlesAmount = "Множитель частиц оружия игрока";
-MRIntWeaps_PlayerParticlesMenu = "Настроить эффекты оружия игрока";
+MRIntW_PlayerParticlesAmount = "Качество эффектов оружия игрока";
+MRIntWeaps_PlayerParticlesMenu = "Выбрать эффекты оружия игрока";
 
 MRIntW_PlrParticles_Puff = "Искры от пуль";
 
@@ -210,8 +210,8 @@ MRIntW_PlrParticles_BFGHit4 = "Пар от трасеров";
 MRIntW_PlrParticles_BFGHit5 = "Испарения от трасеров";
 
 MRIntW_MonsterParticles = "Эффекты монстров";
-MRIntW_MonsterParticlesAmount = "Множитель частиц монстров";
-MRIntWeaps_MonsterParticlesMenu = "Настроить эффекты монстров";
+MRIntW_MonsterParticlesAmount = "Качество эффектов монстров";
+MRIntWeaps_MonsterParticlesMenu = "Выбрать эффекты монстров";
 
 MRIntW_MonstParticles_ImpBallFlySmoke = "Дым";
 MRIntW_MonstParticles_ImpBallFlyDrops = "Капли";
@@ -260,8 +260,8 @@ MRIntW_MonstParticles_BaronBallImpactSplash = "Искры";
 MRIntW_MonstParticles_BaronBallImpactFire = "Огонь";
 
 MRIntW_DecorationParticles = "Эффекты декораций";
-MRIntW_DecorationParticlesAmount = "Множитель частиц декораций";
-MRIntWeaps_DecorationParticlesMenu = "Настроить эффекты декораций";
+MRIntW_DecorationParticlesAmount = "Качество эффектов декораций";
+MRIntWeaps_DecorationParticlesMenu = "Выбрать эффекты декораций";
 
 MRIntW_DecorParticles_Bloom = "Эмуляция свечения";
 

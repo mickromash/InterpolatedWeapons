@@ -178,7 +178,7 @@ MRIntW_Particles_Tick = "During flight";
 MRIntW_Particles_Impact = "On impact";
 
 MRIntW_PlayerParticles = "Player's weapon particles";
-MRIntW_PlayerParticlesAmount = "Player weapon particles multiplier";
+MRIntW_PlayerParticlesAmount = "Player weapon effects quality";
 MRIntWeaps_PlayerParticlesMenu = "Set up player weapon effects";
 
 MRIntW_PlrParticles_Puff = "Puff sparks";
@@ -210,7 +210,7 @@ MRIntW_PlrParticles_BFGHit4 = "Tracer steam";
 MRIntW_PlrParticles_BFGHit5 = "Tracer vapor";
 
 MRIntW_MonsterParticles = "Monsters particles";
-MRIntW_MonsterParticlesAmount = "Monster particles multiplier";
+MRIntW_MonsterParticlesAmount = "Monster effects quality";
 MRIntWeaps_MonsterParticlesMenu = "Set up monster effects";
 
 MRIntW_MonstParticles_ImpBallFlySmoke = "Smoke";
@@ -260,7 +260,7 @@ MRIntW_MonstParticles_BaronBallImpactSplash = "Splash";
 MRIntW_MonstParticles_BaronBallImpactFire = "Fire";
 
 MRIntW_DecorationParticles = "Decorations particles";
-MRIntW_DecorationParticlesAmount = "Decoration particles multiplier";
+MRIntW_DecorationParticlesAmount = "Decoration effects quality";
 MRIntWeaps_DecorationParticlesMenu = "Set up decoration effects";
 
 MRIntW_DecorParticles_Bloom = "Bloom emulation";
