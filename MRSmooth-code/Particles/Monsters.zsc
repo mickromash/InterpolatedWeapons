@@ -218,7 +218,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 	{
 		DeathTick++;
 		
-		if(Type!=6 && !MRGPartsCheckDraw())Return;
+		if(Type!=6 && (!MRGPartsCheckDraw() && Master && Master.Target && Master.Target.Target!=Players[ConsolePlayer].Camera))Return;
 		
 		if(!GotHit && Master){
 			if(Type==7)GotHit = Master.Target;
@@ -471,7 +471,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 	}
 	
 	Void MasterTick(){
-		if(Type!=6 && !MRGPartsCheckDraw())Return;
+		if(Type!=6 && (!MRGPartsCheckDraw() && Master && Master.Target && Master.Target.Target!=Players[ConsolePlayer].Camera))Return;
 		
 		Switch(Type)
 		{
