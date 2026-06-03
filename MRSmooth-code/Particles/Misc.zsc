@@ -32,19 +32,19 @@ Extend Class MRIntWeaps_Handler
 		Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
 	}
 	
-	Void SpawnActorParticleEffects(Actor Thing)
+	Void SpawnDecorationParticleEffects(Actor Thing)
 	{
 		int Setting = MRIntW_DecorationWhichParticles;
 		
 		if(Thing is 'ExplosiveBarrel'){
-			Let a = New('MRIntWeaps_BarrelThinker');
+			Let a = New('MRIntWeaps_BarrelParticles');
 			a.Master = Thing;
 			
 			Return;
 		}
 		
 		if(Thing is 'BurningBarrel'){
-			Let a = New('MRIntWeaps_BarrelThinker');
+			Let a = New('MRIntWeaps_BarrelParticles');
 			a.Master = Thing;
 			a.Burning = true;
 			
@@ -52,7 +52,7 @@ Extend Class MRIntWeaps_Handler
 		}
 		
 		if(Setting&MRIWDP_BleedingColumn && Thing is 'HeartColumn'){
-			Let a = New('MRIntWeaps_HeartColumnThinker');
+			Let a = New('MRIntWeaps_HeartColumnParticles');
 			a.Master = Thing;
 			
 			Return;
@@ -61,7 +61,7 @@ Extend Class MRIntWeaps_Handler
 		if((Setting&MRIWDP_TorchFire || Setting&MRIWDP_TorchSmoke) && (Thing is 'BlueTorch' || Thing is 'GreenTorch' || Thing is 'RedTorch' ||
 			Thing is 'ShortBlueTorch' || Thing is 'ShortGreenTorch' || Thing is 'ShortRedTorch'))
 		{
-			Let a = New('MRIntWeaps_TorchThinker');
+			Let a = New('MRIntWeaps_TorchParticles');
 			a.Master = Thing;
 			Switch(Thing.GetClassName()){
 				Case 'ShortBlueTorch':
@@ -126,7 +126,7 @@ Extend Class MRIntWeaps_Handler
 			
 			if((Thing is 'BloodyTwitch' || Thing is 'LiveStick') || CRandom(0, 10)>3)
 			{
-				Let a = New('MRIntWeaps_DeadBodyThinker');
+				Let a = New('MRIntWeaps_DeadBodyParticles');
 				a.Master = Thing;
 				Switch(Thing.GetClassName()){
 					Case 'BloodyTwitch':
@@ -174,7 +174,7 @@ enum MRIntWeaps_MiscParticlesFlags{
 	MRIWDP_BleedingBodies = 256,
 }
 
-Class MRIntWeaps_BarrelThinker: MRIntWeaps_ActorEffects
+Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 {
 	Bool Burning, InSight;
 	int DeathTick, Setting, TickOffset;
@@ -296,7 +296,7 @@ Class MRIntWeaps_BarrelThinker: MRIntWeaps_ActorEffects
 	}
 }
 
-Class MRIntWeaps_TorchThinker: MRIntWeaps_ActorEffects
+Class MRIntWeaps_TorchParticles: MRIntWeaps_ActorEffects
 {
 	int Setting, TickOffset, Col, Height;
 	Float PAmnt;
@@ -340,25 +340,25 @@ Class MRIntWeaps_TorchThinker: MRIntWeaps_ActorEffects
 			
 			MRSpawnParticle(Color(CRandom(RCols[0].X, RCols[0].Y),CRandom(RCols[1].X, RCols[1].Y),CRandom(RCols[2].X, RCols[2].Y)), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, 10*Size, Size, Pos, (0, 0, CFRandom(.8, 1.6)), (CFRandom(-.01, .01), CFRandom(-.01, .01), CFRandom(-.01, .01)), Fade:0, SizeStep:-(Size/(Size*10)));
 		}
-		if(Setting&MRIWDP_TorchSmoke && CRandom(0, 3/PAmnt)==1){
+		if(Setting&MRIWDP_TorchSmoke && Master.GetAge()%3==0){
 			int Cols[3];
-			int RCol = CRandom(20, 40);
+			int RCol = CRandom(0, 25);
 			For(int i=0;i<3;i++){
-				if(i==Col)Cols[i] = 40;
+				if(i==Col)Cols[i] = 30;
 				else Cols[i] = RCol;
 			}
 					
-			int Size = CFRandom(7, 9);
+			int Size = CFRandom(21, 23);
 			
-			Vector3 Pos = Master.Pos + (Actor.AngleToVector(Ang, -2), Height-41);
-			Pos += Actor.AngleToVector(Ang+90, CRandom(-3, 3));
+			Vector3 Pos = Master.Pos + (Actor.AngleToVector(Ang, -2), Height-CFRandom(37, 40));
+			Pos += Actor.AngleToVector(Ang+90, -1.5);
 			
-			MRSpawnParticle(Color(Cols[0],Cols[1],Cols[2]), SPF_NOTIMEFREEZE, STYLE_Add, 30, Size, Pos, (0, 0, CFRandom(.4, 1.3)), (CFRandom(-.02, .02), CFRandom(-.02, .02), CFRandom(-.01, .01)), Alpha: .6, SizeStep:.5);
+			MRSpawnParticle(Color(Cols[0],Cols[1],Cols[2]), SPF_NOTIMEFREEZE, STYLE_Add, 50, Size, Pos, (0, 0, CFRandom(.4, .8)), (CFRandom(-.01, .01), CFRandom(-.01, .01), CFRandom(-.01, .01)), Alpha: 1, SizeStep:.3);
 		}
 	}
 }
 
-Class MRIntWeaps_HeartColumnThinker: MRIntWeaps_ActorEffects
+Class MRIntWeaps_HeartColumnParticles: MRIntWeaps_ActorEffects
 {
 	int TickOffset;
 	
@@ -495,7 +495,7 @@ Class MRIntWeaps_ParticleBloom: MRIntWeaps_ActorEffects
 	}
 }
 
-Class MRIntWeaps_DeadBodyThinker: MRIntWeaps_ActorEffects
+Class MRIntWeaps_DeadBodyParticles: MRIntWeaps_ActorEffects
 {
 	int Type;
 	Vector2 PPos, Rand;
@@ -562,7 +562,7 @@ Class MRIntWeaps_DeadBodyThinker: MRIntWeaps_ActorEffects
 	}
 }
 
-Class MRIntWeaps_TeleportThinker: MRIntWeaps_ActorEffects
+Class MRIntWeaps_TeleportParticles: MRIntWeaps_ActorEffects
 {
 	int Setting, Age;
 	
