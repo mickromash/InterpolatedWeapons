@@ -209,7 +209,7 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 			if(!Smoker)Return;
 		}
 		
-		if(Smoke>=1)Smoke-=.028;
+		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self)?.028:.014;
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 		
 		Smoker.Update();

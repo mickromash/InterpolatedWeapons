@@ -178,7 +178,7 @@ Extend Class MRIntWeaps_Pistol
 			if(!Smoker)Return;
 		}
 		
-		if(Smoke>=1)Smoke -= .1;
+		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self)?.1:.05;
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 		
 		Smoker.Update();
@@ -265,7 +265,7 @@ Extend Class MRIntWeaps_Shotgun
 			if(!Smoker)Return;
 		}
 		
-		if(Smoke>=1)Smoke -= .05;
+		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self)?.05:.025;
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 				
 		Smoker.Update();
@@ -351,7 +351,7 @@ Extend Class MRIntWeaps_Chaingun
 			if(!Smoker)Return;
 		}
 		
-		if(Smoke>=1)Smoke -= .2;
+		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self)?.15:.075;
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 		
 		Smoker.Update();
@@ -440,7 +440,7 @@ Extend Class MRIntWeaps_RocketLauncher
 		if(Fire>0)Fire--;
 		else Fire = 0;
 		
-		if(Smoke>=1)Smoke -= .2*MRIntW_RocketSmoke;
+		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self?.2:.1)*MRIntW_RocketSmoke;
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 		
 		if(Smoke<1){
