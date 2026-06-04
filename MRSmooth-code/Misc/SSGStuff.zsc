@@ -241,8 +241,6 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 		}
 		
 		
-		
-		
 		/*Double Angle = Owner.Player.FindPSprite(Lay1).Rotation;
 		For(int i=0;i<2;i++){
 			Ofst[i].X *= 2-Owner.Player.FindPSprite(Lay1).Scale.X;
@@ -297,6 +295,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 		GunDie:
 			TNT1 A 0 {
 				A_DropWeapon();
+				A_ClearOverlays(LHand, LHand);
 				A_GiveInventory("MRIntWeaps_DyingAnimation");
 			}
 			Stop;
