@@ -435,7 +435,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				}
 			}
 			CH1G # 1 {
-				if(!Player.FindPSprite(PSP_WEAPON)||Player.FindPSprite(PSP_WEAPON).Y+5>=WEAPONBOTTOM){
+				if(!Player.FindPSprite(PSP_WEAPON)||Player.FindPSprite(PSP_WEAPON).Y+30>=WEAPONBOTTOM){
 					For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, false);
 					A_ClearOverlays(Barrel0, Barrel5);
 				}
