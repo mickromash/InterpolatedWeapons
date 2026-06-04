@@ -105,20 +105,6 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 			Setting = MRIntW_PlayerWhichParticles;
 		}
 		
-		if(Type>1 && Setting&MRIWPP_BFGOrbital){
-			For(int i=0;i<5*PAmnt;i++){
-				Let a = MRIntWeaps_BFGParticle(Level.SpawnVisualThinker('MRIntWeaps_BFGParticle'));
-				a.Master = Master;
-				a.Angle = CRandom(0, 36)*10;
-				a.Pitch = CRandom(0, 36)*10;
-				a.Radius = CFRandom(28, 32);
-				a.AngChange = CFRandom(.5, 1.5);
-				a.PitChange = CRandom(9, 20);
-				a.StartScale = CFRandom(2, 4);
-			}
-			Return;
-		}
-		
 		Switch(Type){
 			Case 0://Rocket
 				if(Monster &&
@@ -128,14 +114,14 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					Setting&MRIWMP_CyberRocketSparks||
 					Setting&MRIWMP_CyberRocketImpactSmoke||
 					Setting&MRIWMP_CyberRocketImpactSparks)
-				)Destroy();
+				){Destroy();Return;}
 				else if(!(Setting&MRIWPP_RocketFlare||
 					Setting&MRIWPP_RocketSmoke||
 					Setting&MRIWPP_RocketTrail||
 					Setting&MRIWPP_RocketSparks||
 					Setting&MRIWPP_RocketImpactSmoke||
 					Setting&MRIWPP_RocketImpactSparks)
-				)Destroy();
+				){Destroy();Return;}
 				Return;
 			Case 1://Plasma
 				if(!(Setting&MRIWPP_PlasmaFly||
@@ -144,7 +130,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					Setting&MRIWPP_PlasmaRaisingSparks||
 					Setting&MRIWPP_PlasmaDroppingSparks||
 					Setting&MRIWPP_PlasmaSmoke)
-				)Destroy();
+				){Destroy();Return;}
 				Return;
 			Case 2://BFG
 				if(!(Setting&MRIWPP_BFGOrbital||
@@ -158,15 +144,29 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					Setting&MRIWPP_BFGImpactLightning||
 					Setting&MRIWPP_BFGImpactSteam||
 					Setting&MRIWPP_BFGImpactSparks)
-				)Destroy();
-				Return;
+				){Destroy();Return;}
+		}
+		
+		PAmnt = MRIntW_PlayerParticlesAmount;
+		
+		if(Type>1 && Setting&MRIWPP_BFGOrbital){
+			For(int i=0;i<5*PAmnt;i++){
+				Let a = MRIntWeaps_BFGParticle(Level.SpawnVisualThinker('MRIntWeaps_BFGParticle'));
+				a.Master = Master;
+				a.Angle = CRandom(0, 36)*10;
+				a.Pitch = CRandom(0, 36)*10;
+				a.Radius = CFRandom(28, 32);
+				a.AngChange = CFRandom(.5, 1.5);
+				a.PitChange = CRandom(9, 20);
+				a.StartScale = CFRandom(2, 4);
+			}
 		}
 	}
 	
 	Override Void Tick()
 	{
 		Super.Tick();
-		
+
 		if(!Master){Destroy();Return;}
 		
 		if(Monster)PAmnt = MRIntW_MonsterParticlesAmount;
