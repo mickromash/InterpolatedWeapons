@@ -176,17 +176,17 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				invoker.Idle = Min(0, invoker.Idle);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 				A_OverlayPivot(Lay1, .5, 0);
-				A_OverlayOffset(Lay1, -20, 145);
-				A_OverlayScale(Lay1, 1.1, 1.1);
-				A_OverlayRotate(Lay1, 4);
+				A_OverlayOffset(Lay1, -20+6, 145-8);
+				A_OverlayScale(Lay1, 1.1-.02, 1.1-.02);
+				A_OverlayRotate(Lay1, 4-.6);
 				A_GlovesColor();
 				invoker.FloatSpeed = 4;
 				invoker.IdleEnd = false;
 			}
 			PLSR C 1{invoker.Selecting = true;}
-			#### CCCCC 1 {
+			#### CCC 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, 6, -12, WOF_ADD);
+				A_OverlayOffset(Lay1, 6, -8, WOF_ADD);
 				A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 				A_OverlayRotate(Lay1, -.6, WOF_ADD);
 				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
@@ -195,7 +195,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### C 1 {
-				A_OverlayOffset(Lay1, 6, -14, WOF_ADD);
+				A_OverlayOffset(Lay1, 8, -14, WOF_ADD);
 				A_OverlayScale(Lay1, 0, 0, WOF_ADD);
 				A_OverlayRotate(Lay1, -.6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
@@ -204,9 +204,9 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
-			#### CC 1 {
-				A_OverlayOffset(Lay1, 6, -12, WOF_ADD);
-				A_OverlayScale(Lay1, 0, 0, WOF_ADD);
+			#### CCC 1 {
+				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
+				A_OverlayOffset(Lay1, 7, -9, WOF_ADD);
 				A_OverlayRotate(Lay1, -.6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
@@ -215,15 +215,27 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### C 1 {
-				A_OverlayOffset(Lay1, 2, -4, WOF_ADD);
+				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
+				A_OverlayOffset(Lay1, 7, -6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
 				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
-			#### BA 1 {
-				A_OverlayOffset(Lay1, 2, -4, WOF_ADD);
+			#### B 1 {
+				A_OverlayScale(Lay1, .11, .15, WOF_ADD);
+				A_OverlayRotate(Lay1, 3);
+				A_OverlayOffset(Lay1, -10, -19, WOF_ADD);
+				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
+				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
+				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			}
+			#### A 1 {
+				A_OverlayOffset(Lay1, 2, -11, WOF_ADD);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
 				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
@@ -232,9 +244,9 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			#### A 0 {
 				invoker.InterpolateMuzzle = false;
 				A_Overlay(Lay2, "GunMuzzle");
-				A_OverlayScale(Lay2, 1.05, 1.05);
+				A_OverlayScale(Lay2, 1, 1);
+				A_OverlayOffset(Lay2, 0, 0);
 				A_OverlayRotate(Lay2, 0);
-				A_OverlayOffset(Lay2, 0, 7);
 				A_OverlayOffset(Lay1, 0, 32);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			}
@@ -273,6 +285,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayPivot(Lay1, .5, .5);
 				A_OverlayPivot(Lay2, .5, .5);
 				invoker.FloatSpeed = 1;
+				A_ClearOverlays(Lay4, Lay4);
 			}
 			#### # 1 {
 				A_OverlayOffset(Lay1, 6*invoker.LowerDir, -3, WOF_ADD);
@@ -406,52 +419,62 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayScale(Lay3, .3, .3, WOF_INTERPOLATE);
 			}
 			PLSR A 1 {
-				A_OverlayPivot(Lay1, .5, 0);
-				A_OverlayOffset(Lay1, 30, 20);
+				A_OverlayPivot(Lay1, .5, 1);
+				A_OverlayOffset(Lay1, 34, 20);
 				A_GlovesColor();
 				invoker.FloatSpeed = 1;
+				A_OverlayScale(Lay1, 1, 1.2);
 			}
-			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 			#### B 1{
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -7, 0, WOF_ADD);
+				A_OverlayOffset(Lay1, -9, 0, WOF_ADD);
 				
 				For(int i = ParLay-29;i<=ParLay;i++){
 					if(Player.FindPSprite(i))Player.GetPSprite(i).Alpha *= 0;
 				}
+				A_OverlayScale(Lay1, .02, 0, WOF_ADD);
+				A_OverlayRotate(Lay1, 2, WOF_ADD);
+			}
+			#### B 1{
+				A_OverlayOffset(Lay1, -15, 2, WOF_ADD);
+				
+				For(int i = ParLay-29;i<=ParLay;i++){
+					if(Player.FindPSprite(i))Player.GetPSprite(i).Alpha *= 0;
+				}
+				A_OverlayScale(Lay1, .04, .06, WOF_ADD);
+				A_OverlayRotate(Lay1, 4, WOF_ADD);
 			}
 			PLSR D 1 {
 				invoker.BodyScal = 0;
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				if(invoker.Muzzle<1)invoker.Muzzle = 1;
 				A_OverlayPivot(Lay1, 1, 1);
-				A_OverlayScale(Lay1, .9, .9);
-				A_OverlayOffset(Lay1, 30, 20);
+				A_OverlayScale(Lay1, .95, .95);
+				A_OverlayOffset(Lay1, 10, 10);
 				A_OverlayRotate(Lay1, 1);
 				A_Overlay(Lay2, "GunMuzzleReload");
 				A_OverlayPivot(Lay2, 1, 1);
-				A_OverlayOffset(Lay2, 30, 20+invoker.Muzzle*8);
-				A_OverlayScale(Lay2, .9, .9);
+				A_OverlayOffset(Lay2, 10, 13+invoker.Muzzle*8);
+				A_OverlayScale(Lay2, .95, .95);
 				A_OverlayRotate(Lay2, 1);
 				Player.GetPSprite(Lay2).bFlip = false;
 				A_ClearOverlays(Lay4, Lay3);
 				A_GlovesColor(0, Lay2);
 			}
-			#### # 1{
+			/*#### # 1{
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				//A_OverlayRotate(Lay1, 1, WOF_ADD);
 				A_OverlayOffset(Lay1, -20, -10, WOF_ADD);
 				A_OverlayScale(Lay1, .05, .05, WOF_ADD);
 				
-				//A_OverlayRotate(Lay2, 1, WOF_ADD);
 				A_OverlayOffset(Lay2, -20, -10, WOF_ADD);
 				A_OverlayScale(Lay2, .05, .05, WOF_ADD);
 				A_OverlayOffset(Lay2, 0, -7, WOF_ADD);
 				
 				if(invoker.Muzzle>.1)invoker.Muzzle *= .3;
 				else invoker.Muzzle = 0;
-			}
+			}*/
 			#### ## 1{
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay2, 0, WOF_INTERPOLATE);
 				if(invoker.Muzzle>.1)invoker.Muzzle *= .3;

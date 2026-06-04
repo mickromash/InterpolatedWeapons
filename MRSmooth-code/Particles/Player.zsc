@@ -53,7 +53,6 @@ Class MRIntWeaps_ActorEffects: Thinker
 		
 		if(!mo)Return true;
 		
-		
 		Return (abs(Actor.DeltaAngle(Plr.Angle, Plr.AngleTo(mo)))<CVar.FindCVar("FOV").GetFloat()||Plr.Distance2D(mo)<Plr.Radius*2) && Plr.CheckSight(mo, SF_IGNOREWATERBOUNDARY|SF_SEEPASTBLOCKEVERYTHING|SF_IGNOREVISIBILITY);
 	}
 }
