@@ -97,10 +97,10 @@ Rocket Launcher
 
 Plasma Rifle
 {
-	PL1G A - Body ready
-	PLSO A - Muzzle ready
-	PL1G BCDEFGH - Body firing
-	PLSO BCDEFGH - Muzzle firing
+	PL1G A (textures) - Body ready
+	PLSO A (textures) - Muzzle ready
+	PL1G BCDEFGH (textures) - Body firing
+	PLSO BCDEFGH (textures) - Muzzle firing
 	PLSF BCDEFGH - Flash animation
 	
 	PLSR ABC (textures) - "Recoil" animation
