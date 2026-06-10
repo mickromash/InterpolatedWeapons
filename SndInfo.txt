@@ -9,6 +9,7 @@ MRIntW/FistPunchWallKnuckles ""
 MRIntW/FistPunchWall ""
 
 MRIntW/PistolSelect ""
+MRIntW/PistolReload "Sounds/dsrifclk.wav"
 MRIntW/PistolDeselect ""
 
 MRIntW/RifleSelect ""
@@ -40,9 +41,10 @@ MRIntW/RLFire dsrlaunc
 
 MRIntW/PlasmaSelect ""
 MRIntW/PlasmaDeselect ""
-MRIntW/PlasmaReload ""
+MRIntW/PlasmaReload dspstart
 MRIntW/PlasmaFire dsplasma
 
+MRIntW/BFGReload DSITMBK
 MRIntW/BFGFireStart dsbfg
 MRIntW/BFGFireLoop ""
 MRIntW/BFGFire ""

@@ -2,16 +2,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 {
 	Default{
 		Weapon.SlotNumber 1;
-		+Weapon.NOALERT
+		+Weapon.NOALERT//Monsters alerting is performed manually from firing state if MRIntW_BetterAlert is off
 	}
 	
 	Const SecndLay = 2;//Second hand
 	Const MainLay = 3;//Main hand
-	
-	Double CurBounce, BounceStrength;
-	Bool Bouncing, Landed;
-	int DamageShake, PlrLastHealth;
-	Vector2 FireBob;
 	
 	Override Void DoEffect()
 	{
@@ -330,8 +325,8 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			}
 			#### ## 1;
 			#### ### 1{
-				A_OverlayRotate(OverlayId(), 4, WOF_ADD);//5
-				A_OverlayOffset(OverlayId(), -5.25, .7, WOF_ADD);//-7 1
+				A_OverlayRotate(OverlayId(), 4, WOF_ADD);
+				A_OverlayOffset(OverlayId(), -5.25, .7, WOF_ADD);
 			}
 			#### ## 1{
 				A_OverlayRotate(OverlayId(), 8, WOF_ADD);
@@ -548,8 +543,8 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayOffset(MainLay, 2, 5, WOF_INTERPOLATE);
 				A_OverlayScale(MainLay, 1, 1, WOF_INTERPOLATE);
 			}
-			#### C 1;
-			#### C 1 A_Overlayoffset(MainLay, 0, 0, WOF_INTERPOLATE);
+			#### C 1 A_OverlayFlags(MainLay, PSPF_INTERPOLATE, false);
+			#### C 1 {A_Overlayoffset(MainLay, 0, 0, WOF_INTERPOLATE);A_OverlayFlags(MainLay, PSPF_INTERPOLATE, true);}
 		MainHandWait://Second fist ready animation
 			#### # 0 {if(health<1)A_ClearOverlays(MainLay, MainLay);}
 			#### C 1 {
@@ -1099,63 +1094,6 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				Player.GetPSprite(Lay).Rotation = CFRandom(-.1, .1);
 			}
 		}
-	}
-	
-	Clearscope Static Double GetBobZ(Weapon Weap, Double Center = .5)
-	{
-		PlayerPawn Plr = PlayerPawn(Weap.Owner);
-		
-		Double Range = MRIntW_BobRangeZ;
-		int bobstyle = Weap.BobStyle;
-		double angle = (Weap.BobSpeed*128 * Plr.player.GetWBobSpeed() * 35 /	TICRATE*(Level.maptime)) * (360. / 8192.);
-
-		// [RH] Smooth transitions between bobbing and not-bobbing frames.
-		// This also fixes the bug where you can "stick" a weapon off-center by
-		// shooting it when it's at the peak of its swing.
-		Double R;
-
-		// The weapon bobbing intensity while firing can be adjusted by the player.
-		double BobIntensity = ((Plr.player.WeaponState & WF_WEAPONBOBBING) ? 1. : Plr.player.GetWBobFire())*.01;
-
-		if (Plr.curbob != 0)
-		{
-			double bobVal = Plr.player.bob;
-			
-			bobVal = Plr.prevBob;
-			//[SP] Added in decorate player.viewbob checks
-			double bob = (bobVal * BobIntensity * Range * Plr.ViewBob);
-			switch (bobstyle)
-			{
-			case Bob_Normal:
-				R = Bob * (Center - abs(Sin(angle)));
-				break;
-
-			case Bob_Inverse:
-				R = bob * (Center - abs(sin(angle)));
-				break;
-
-			case Bob_Alpha:
-				R = bob * (Center - abs(sin(angle)));
-				break;
-
-			case Bob_InverseAlpha:
-				R = bob * (Center - abs(sin(angle)));
-				break;
-
-			case Bob_Smooth:
-				R = 0.5f * (bob * (Center - (cos(angle * 2))));
-				break;
-
-			case Bob_InverseSmooth:
-				R = 0.5f * (bob * (Center + (cos(angle * 2))));
-			}
-		}
-		else
-		{
-			r = 0;
-		}
-		
-		Return R;
 	}
 	
 	Action Void A_BersShake()

@@ -1,5 +1,6 @@
 Extend Class MRIntWeaps_Pistol
 {
+	//Recoil animation parameters
 	Vector2 RecOfst, LastPos;
 	Double RecScal, LastScal;
 	
@@ -25,6 +26,8 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayScale(Lay1, .06, .06, WOF_ADD);
 				A_OverlayRotate(Lay1, 1, WOF_ADD);
 				invoker.SwitchState--;
+				
+				if(invoker.ReloadR && invoker.SwitchState>9)A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.95, 1.05));
 			}
 			#### AA 1{
 				A_OverlayOffset(Lay1, invoker.SwitchAnim?5:-5, 5, WOF_ADD);
@@ -43,6 +46,7 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayRotate(Lay1, -.25, WOF_ADD);
 				invoker.SwitchState--;
 			}
+			#### A 0 {if(invoker.ReloadR)A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(1.16, 1.2));invoker.ReloadR = false;}
 			#### A 1 {
 				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 0, .025, WOF_ADD);

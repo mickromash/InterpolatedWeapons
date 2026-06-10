@@ -59,6 +59,8 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		}
 		A_StartSound("MRIntW/PlasmaFire", CHAN_AUTO, pitch:i_timescale);
 		invoker.Shots++;
+		
+		if(CountInv(invoker.AmmoType1)<1 && MRIntW_ReloadAnims%2==1)invoker.Reload = true;
 	}
 	
 	Action Void A_GlovesColor(bool Clear = false, int Lay = 0)
@@ -83,37 +85,15 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	Double SelRot;
 	Double SelScale;
 	int SelFrame;
+	Bool Reload;
+	
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		if(MRIntW_ReloadAnims>1)Reload = true;
+	}
+	
 	States{
-		Select:
-			TNT1 A 0 {
-				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
-				if(invoker.Dropped)invoker.Dropped.Destroy();
-				A_Overlay(Lay1, "GunRaise");
-				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
-				
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
-			}
-		Raise:
-			#### A 1 A_Raise();
-			Wait;
-		Deselect:
-			TNT1 A 0 {
-				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				A_Overlay(Lay1, "GunLower");
-				Player.GetPSprite(PSP_WEAPON).Y = 32;
-				
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
-			}
-		Lower:
-			#### A 1 A_Lower();
-			Wait;
-		Ready:
-			TNT1 A 0{
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
-			}
-			#### A 1 A_WeaponReady();
-			Wait;
-			
 		GunMuzzle:
 			PLSO # 1{
 				if(invoker.InterpolateMuzzle==1){
@@ -193,6 +173,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
 				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
+				
+				if(invoker.Reload){
+					A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.97, 1.02));
+				}
 			}
 			#### C 1 {
 				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
@@ -212,6 +196,9 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
 				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
+				
+				if(invoker.Reload)A_StartSound("MRIntW/PlasmaReload", CHAN_AUTO, pitch:i_timescale*CFRandom(2.9, 3.1));
+				invoker.Reload = false;
 			}
 			#### B 1 {
 				A_OverlayScale(Lay1, 1.2, 1.25);
@@ -366,25 +353,13 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayScale(Lay1, invoker.SelScale, invoker.SelScale);
 				Player.GetPSprite(Lay1).Frame = invoker.SelFrame;
 			}
-			#### ########## 1 {
+			#### # 1 {
 				A_OverlayOffset(Lay1, -4, 10, WOF_ADD);
 				A_OverlayRotate(Lay1, 1, WOF_ADD);
 				A_OverlayScale(Lay1, .01, .01, WOF_ADD);
 			}
 			Stop;
 		
-		Fire:
-			TNT1 A 0 {
-				Player.SetPsprite(Lay1, invoker.FindState("GunFire"));
-				
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
-			}
-			#### A 3 {
-				A_FirePlasma();
-				if(MRIntW_Recoil){invoker.Recoil+=1;A_SetPitch(Pitch-.5*MRIntW_RecoilAmount);}//Recoil
-			}
-			#### B 20 A_ReFire();
-			Goto Ready;
 		GunFire:
 			#### # 0 {
 				invoker.IdleEnd = false;
@@ -492,18 +467,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_ClearOverlays(Lay4, Lay3);
 				A_GlovesColor(0, Lay2);
 			}
-			/*#### # 1{
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, -20, -10, WOF_ADD);
-				A_OverlayScale(Lay1, .05, .05, WOF_ADD);
-				
-				A_OverlayOffset(Lay2, -20, -10, WOF_ADD);
-				A_OverlayScale(Lay2, .05, .05, WOF_ADD);
-				A_OverlayOffset(Lay2, 0, -7, WOF_ADD);
-				
-				if(invoker.Muzzle>.1)invoker.Muzzle *= .3;
-				else invoker.Muzzle = 0;
-			}*/
 			#### ## 1{
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
@@ -568,7 +531,50 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 			}
 			Goto GunWait;
+		
+		//Default states
 			
+		Select:
+			TNT1 A 0 {
+				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
+				if(invoker.Dropped)invoker.Dropped.Destroy();
+				A_Overlay(Lay1, "GunRaise");
+				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
+				
+				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
+			}
+		Raise:
+			#### A 1 A_Raise();
+			Wait;
+		Deselect:
+			TNT1 A 0 {
+				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
+				A_Overlay(Lay1, "GunLower");
+				Player.GetPSprite(PSP_WEAPON).Y = 32;
+				
+				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
+			}
+		Lower:
+			#### A 1 A_Lower();
+			Wait;
+		Ready:
+			TNT1 A 0{
+				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
+			}
+			#### A 1 A_WeaponReady();
+			Wait;
+		Fire:
+			TNT1 A 0 {
+				Player.SetPsprite(Lay1, invoker.FindState("GunFire"));
+				
+				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
+			}
+			#### A 3 {
+				A_FirePlasma();
+				if(MRIntW_Recoil){invoker.Recoil+=1;A_SetPitch(Pitch-.5*MRIntW_RecoilAmount);}//Recoil
+			}
+			#### B 20 A_ReFire();
+			Goto Ready;
 		Flash:
 			TNT1 A 4 {
 				A_Light1();

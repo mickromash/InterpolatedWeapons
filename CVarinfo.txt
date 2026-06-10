@@ -21,6 +21,7 @@ nosave bool MRIntW_Bounce = true;//Bounce weapon on landing
 nosave bool MRIntW_DamageShake = true;//Shake weapon on receiving damage
 
 user bool MRIntW_IdleAnims = true;//Idle animations
+nosave int MRIntW_ReloadAnims = 1;//Alternative select animations after wasting all ammo or on first pickup; 0 - None, 1 - Reload only, 2 - First only, 3 - Both
 
 server bool MRIntW_Recoil = false;//Visual recoil and screen shaking
 server float MRIntW_RecoilAmount = 1;

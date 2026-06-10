@@ -5,15 +5,19 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		Decal "BulletChip";
 	}
 
-	Const Lay1 = 2;
-	Const Lay2 = PSP_FLASH+1;
-	Const DieLay = 3;
-	Const Lay3 = -PSP_FLASH;
-	Const SHand = -2;
-	Const SHand2 = 4;
+	Const Lay1 = 2;//Main animations layer
+	Const Lay2 = PSP_FLASH+1;//Flash animation
+	Const DieLay = 3;//Second hand in dead animation
+	Const Lay3 = -PSP_FLASH;//Flash flayer
+	Const SHand = -2;//Second hand raising/lower
+	Const SHand2 = 4;//Second hand holding
 	
-	int BobState, IdleDelay, SHandState, HandTime, EnableSecondHand;
-	Bool IsRifle, LeftHanded, SecondHand;
+	int BobState, IdleDelay, 
+		SHandState,//SHandState: -1 - Must go off screen, 0 - Must go off screen if cooldown is 0, 1 - Must be on screen, if cooldown is 0 must go off screen
+		HandTime, EnableSecondHand,//HandTime - second hand cooldown
+		ShotPower;
+	Bool IsRifle, LeftHanded, 
+		SecondHand;
 
 	Float Recoil;
 	Override Void DoEffect()
@@ -43,13 +47,13 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		EnableSecondHand = Owner.GetCVar("MRIntW_PistolSHand");
 		
 		if(EnableSecondHand<1){
-			if(SecondHand)Owner.Player.SetPsprite(SHand, FindState("SecondHandLower"));
+			if(SecondHand)Owner.Player.SetPsprite(SHand, FindState("SecondHandLower"));//If disabled, get second hand off the screen
 			Return;
 		}
 		
-		if(EnableSecondHand==1){
-		
-			if(SecondHand){
+		if(EnableSecondHand==1)
+		{
+			if(SecondHand){//If second hand is holding the main
 				Switch(SHandState)
 				{
 					Case -1:
@@ -64,7 +68,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 						Break;
 				}
 			}
-			else {
+			else {//If second hand is off screen
 				if(SHandState==1 && !Owner.Player.FindPSprite(SHand)){
 					Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
 					HandTime = 35*20;
@@ -85,10 +89,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	{
 		bool accurate;
 
-		if (player != null)
+		if (player)
 		{
 			Weapon weap = player.ReadyWeapon;
-			if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
+			if (weap && invoker == weap && stateinfo && stateinfo.mStateType == STATE_Psprite)
 			{
 				if (!weap.DepleteAmmo (weap.bAltFire, true))
 					return;
@@ -104,27 +108,48 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			accurate = true;
 		}
 		
-		if(invoker.EnableSecondHand==1){
-			
+		if(invoker.EnableSecondHand==1)
+		{
 			FLineTraceData data;
 			
 			LineTrace(Angle, 4000, Pitch, TRF_NOSKY, height*.5 - floorclip + player.mo.AttackZOffset*player.crouchFactor,0,0, data);
-			if(//data.HitType==TRACE_HitFloor||data.HitType==TRACE_HitCeiling||
-				//data.HitType==TRACE_HitWall||
-				data.HitType==TRACE_HitActor
-			){
+			if(data.HitType==TRACE_HitActor){
 				Vector3 Dif = data.HitLocation - Pos;
-				if(Dif.Length()>500){invoker.SHandState = 1;invoker.HandTime = 35*10;}
-				else if(Dif.Length()<170)invoker.SHandState = -1;
-				else invoker.SHandState = 0;
+				if(Dif.Length()>500){invoker.SHandState = 1;invoker.HandTime = 35*10;}//Target is far enough, second hand must be on screen
+				else if(Dif.Length()<170)invoker.SHandState = -1;//Target is too close, second hand must be off screen
+				else invoker.SHandState = 0;//Target isn't far enough for second hand, but isn't close enough for it to lower
 			}
 		}
 
 		A_StartSound(invoker.IsRifle?"MRIntW/RifleFire":"weapons/pistol", CHAN_WEAPON, pitch:i_timescale);
-		GunShot (accurate, "BulletPuff", BulletSlope ());
+		invoker.ShotPower = GunShot(accurate, "BulletPuff", BulletSlope ());
+		
+		if(CountInv(invoker.AmmoType1)<1 && MRIntW_ReloadAnims%2==1){
+			if(invoker.IsRifle)invoker.ReloadR = true;
+			else invoker.Reload = true;
+		}
+	}
+	action int GunShot(bool accurate, Class<Actor> pufftype, double pitch)
+	{
+		int damage = 5 * random[GunShot](1, 3);
+		double ang = angle;
+
+		if (!accurate)
+		{
+			ang += Random2[GunShot]() * (5.625 / 256);
+
+			if (GetCVar ("vertspread") && !sv_novertspread)
+			{
+				pitch += Random2[GunShot]() * (3.549 / 256);
+			}
+		}
+
+		LineAttack(ang, PLAYERMISSILERANGE, pitch, damage, 'Hitscan', pufftype);
+		
+		Return Damage;
 	}
 	
-	Action Void A_GlovesColor(int Trans=0)
+	Action Void A_GlovesColor(int Trans=0)//Applying custom gloves color
 	{
 		Let Feest = MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist"));
 		if(!Feest)Return;
@@ -140,37 +165,17 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 	}
 	
-	Double RecRot, RecMis;
-	int SwitchAnim, SwitchState;
+	Double RecRot, RecMis;//Recoil animation parameters
+	int SwitchAnim, SwitchState, SwitchFrame;
+	
+	Override Void BeginPlay()
+	{
+		Super.BeginPlay();
+		if(MRIntW_ReloadAnims>1)ReloadR = Reload = true;
+	}
+	Bool Reload, ReloadR;
 	
 	States{
-		Select:
-			TNT1 A 0 {
-				if(invoker.IsRifle)invoker.SetTag("$TAG_RIFLE");
-				else invoker.SetTag("$TAG_PISTOL");
-				if(invoker.Dropped)invoker.Dropped.Destroy();
-				A_Overlay(Lay1, "GunRaise");
-				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
-				
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PISGA0");
-			}
-		Raise:
-			#### A 1 A_Raise();
-			Loop;
-		Deselect:
-			TNT1 A 0 {
-				if(invoker.IsRifle)invoker.SetTag("$TAG_RIFLE");
-				else invoker.SetTag("$TAG_PISTOL");
-				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				A_Overlay(Lay1, "GunLower");
-				Player.GetPSprite(PSP_WEAPON).Y = 32;
-				
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PISGA0");
-			}
-		Lower:
-			#### A 1 A_Lower();
-			Loop;
-
 		GunRaise:
 			#### # 0 {
 				invoker.IsRifle = GetCVar("MRIntW_Rifle");
@@ -180,6 +185,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				invoker.SecondHand = false;
 			}
 			#### # 0 A_JumpIf(invoker.IsRifle, "RifleRaise");
+			#### # 0 A_JumpIf(invoker.Reload, "GunRaiseReload");
 			TNT1 A 0 {invoker.SwitchAnim = CRandom(0, 1);}
 			TNT1 AAAA 1 {
 				A_GlovesColor();
@@ -191,6 +197,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayScale(Lay1, .8, .8);
 				A_OverlayRotate(Lay1, 10.5);
 				invoker.SwitchState = 11;
+				invoker.SwitchFrame = 0;
 			}
 			P1SG A 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
@@ -244,20 +251,21 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayScale(Lay1, 1, 1);
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayFlags(SHand2, PSPF_INTERPOLATE, false);
+				Player.GetPSprite(Lay1).Frame = invoker.SwitchFrame;
 			}
-			#### ## 1 {
+			#### AA 1 {
 				//A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayOffset(Lay1, invoker.SwitchAnim?5:-5, -5, WOF_ADD);
 				A_OverlayRotate(Lay1, 2, WOF_ADD);
 				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
 			}
-			#### # 1 {
+			#### A 1 {
 				A_OverlayOffset(Lay1, invoker.SwitchAnim?1:-1, -1, WOF_ADD);
 				A_OverlayScale(Lay1, -.015, -.015, WOF_ADD);
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
 			}
-			#### ########## 1 {
+			#### AAAAAAAAAA 1 {
 				A_OverlayOffset(Lay1, invoker.SwitchAnim?-10:10, 7, WOF_ADD);
 				A_OverlayRotate(Lay1, 3, WOF_ADD);
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
@@ -265,6 +273,52 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);invoker.SecondHand = false;}
 			#### # 0 A_JumpIf(Player.GetPSprite(PSP_WEAPON).Y<=40, "GunRaise");
 			Stop;
+		GunRaiseReload:
+			TNT1 A 0 {invoker.SwitchAnim = 1;}
+			TNT1 AAAA 1 {
+				A_GlovesColor();
+				if(invoker.Dropped)invoker.Dropped.Destroy();
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
+				A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, invoker.LeftHanded);//Left or right handed
+				A_OverlayPivot(Lay1, .5, 1);
+				A_OverlayOffset(Lay1, 28, 90);
+				A_OverlayScale(Lay1, .8, .8);
+				A_OverlayRotate(Lay1, 10.5);
+				invoker.SwitchState = 11;
+			}
+			P1SG C 1 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+				invoker.SwitchFrame = Player.GetPSprite(Lay1).Frame;
+			}
+			#### CCCFJJG 1 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayOffset(Lay1, -6, -4, WOF_ADD);
+				A_OverlayScale(Lay1, .02, .02, WOF_ADD);
+				A_OverlayRotate(Lay1, -2, WOF_ADD);
+				invoker.SwitchState--;
+				invoker.SwitchFrame = Player.GetPSprite(Lay1).Frame;
+				invoker.Reload = false;
+			}
+			#### # 0 A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.95, 1.05));
+			#### EDDIB 1 {
+				A_OverlayOffset(Lay1, 3, -6, WOF_ADD);
+				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, .8, WOF_ADD);
+				invoker.SwitchState--;
+				invoker.SwitchFrame = Player.GetPSprite(Lay1).Frame;
+			}
+			#### A 1 {
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , true);
+				A_OverlayFlags(SHand2, PSPF_INTERPOLATE, false);
+				A_OverlayOffset(Lay1, 0, 0);
+				A_OverlayScale(Lay1, 1, 1);
+				A_OverlayRotate(Lay1, 0);
+				invoker.SwitchState = 0;
+				invoker.SwitchFrame = Player.GetPSprite(Lay1).Frame;
+			}
+			Goto GunWait;
+			
+		
 		GunIdle1:
 			#### # 0 {
 				if(invoker.IsRifle)A_GlovesColor(1);
@@ -421,8 +475,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
 				Player.GetPSprite(Lay1).X *= Recover;
 				Player.GetPSprite(Lay1).Y = -invoker.RecMis*2+(Player.GetPSprite(Lay1).Y-invoker.RecMis*2)*Recover;
-				Player.GetPSprite(Lay1).Rotation *= Recover;
-
+				if(invoker.SecondHand)Player.GetPSprite(Lay1).Rotation *= Recover;
+				else A_OverlayRotate(Lay1, -invoker.RecRot*CFRandom(1.4, 1.5), WOF_ADD);
+				
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
@@ -437,7 +492,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay1).Scale.Y = Player.GetPSprite(Lay1).Scale.X;
 				Player.GetPSprite(Lay1).X *= Recover;
 				Player.GetPSprite(Lay1).Y = -invoker.RecMis*2+(Player.GetPSprite(Lay1).Y-invoker.RecMis*2)*Recover;
-				Player.GetPSprite(Lay1).Rotation *= Recover;
+				if(invoker.SecondHand)Player.GetPSprite(Lay1).Rotation *= Recover;
+				else A_OverlayRotate(Lay1, invoker.RecRot*CFRandom(.8, 1), WOF_ADD);
 			}
 			#### H 1{
 				Float Scal = 1-invoker.RecMis;
@@ -644,12 +700,40 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayScale(SHand, -.025, -.025, WOF_ADD);
 			}
 			Stop;
-
+		
+		//Default states
 		Spawn:
 			PIST A 0;
 			#### # -1 {if(CVar.FindCVar("MRIntW_Rifle").GetBool())Sprite = GetSpriteIndex("RIFAA0");}
 			Stop;
-
+		Select:
+			TNT1 A 0 {
+				if(invoker.IsRifle)invoker.SetTag("$TAG_RIFLE");
+				else invoker.SetTag("$TAG_PISTOL");
+				if(invoker.Dropped)invoker.Dropped.Destroy();
+				A_Overlay(Lay1, "GunRaise");
+				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
+				
+				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PISGA0");
+			}
+		Raise:
+			#### A 1 A_Raise();
+			Loop;
+		Deselect:
+			TNT1 A 0 {
+				if(invoker.IsRifle)invoker.SetTag("$TAG_RIFLE");
+				else invoker.SetTag("$TAG_PISTOL");
+				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
+				A_Overlay(Lay1, "GunLower");
+				Player.GetPSprite(PSP_WEAPON).Y = 32;
+				
+				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PISGA0");
+			}
+		Lower:
+			#### A 1 A_Lower();
+			Loop;
+			
+		//Caching sprites
 		Sprites:
 			RIFA A 0;
 			Stop;
@@ -681,6 +765,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 
 	Action Void A_BersShake()
 	{
-		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
+		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))
+			A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
 	}
 }

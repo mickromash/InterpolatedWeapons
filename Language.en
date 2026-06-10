@@ -101,6 +101,12 @@ MRIntW_VanillaFireBob = "Original (DOS) DOOM firing bob";
 
 MRIntW_IdleAnims = "Idle animations";
 
+MRIntW_ReloadAnims = "Pickup and reload anmations";
+MRIntW_ReloadAnims0 = "No";
+MRIntW_ReloadAnims1 = "Reload only";
+MRIntW_ReloadAnims2 = "Pickup only";
+MRIntW_ReloadAnims3 = "Yes";
+
 MRIntW_WeaponsMenu = "Weapons settings";
 
 MRIntW_BersShake = "Hands shaking on berserk";
