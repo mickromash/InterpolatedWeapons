@@ -358,7 +358,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayRotate(Lay1, 1, WOF_ADD);
 				A_OverlayScale(Lay1, .01, .01, WOF_ADD);
 			}
-			Stop;
+			Wait;
 		
 		GunFire:
 			#### # 0 {
