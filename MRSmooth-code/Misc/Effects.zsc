@@ -334,10 +334,13 @@ Extend Class MRIntWeaps_Pistol
 	Action Void A_FireSmoke(Double Offset = 0, Double Scale = 1)
 	{
 		if(!MRIntW_Smoke)Return;
-					
+		
+		Double Alpha = invoker.ShotPower-5;
+		Alpha /= 15;
+		
 		if(Players[ConsolePlayer].Camera != Self){
 			int Col = CRandom(100, 120);
-			Float Alph = CFRandom(.4, .5);
+			Float Alph = .4+Alpha*.1;
 			A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE, 9, CFRandom(2, 3), 0, 20,6,Height*.65,
 				1,0,.5, CFRandom(-.02, .02),CFRandom(-.02, .02),CFRandom(-.02, 0), 
 				Alph, Alph/8, CFRandom(2, 3));
@@ -349,7 +352,7 @@ Extend Class MRIntWeaps_Pistol
 			int Col = CRandom(170, 180);
 			Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));
 			Part.Life = 14;
-			Part.Alpha = CFRandom(.3, .4);
+			Part.Alpha = .3+Alpha*.1;
 			Part.Fade = Part.Alpha/(Part.Life-1);
 			Part.StartGrow = CFRandom(.7, .9)*(Scale*Scale);
 			Part.StartScale = CFRandom(.2, .3)*Scale;
@@ -473,9 +476,12 @@ Extend Class MRIntWeaps_Shotgun
 	{
 		if(!MRIntW_Smoke)Return;
 		
+		Double Alpha = invoker.ShotPower-35;
+		Alpha /= 100;
+		
 		if(Players[ConsolePlayer].Camera != Self){
 			int Col = CRandom(70, 80);
-			Float Alph = CFRandom(.4, .5);
+			Float Alph = .4+Alpha*.1;
 			A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE, 9, CFRandom(2, 3), 0, 20,6,Height*.65,
 				1,0,.5, CFRandom(-.02, .02),CFRandom(-.02, .02),CFRandom(-.02, 0), 
 				Alph, Alph/8, CFRandom(2, 3));
@@ -487,7 +493,7 @@ Extend Class MRIntWeaps_Shotgun
 			int Col = CRandom(140, 150);
 			Part.SColor = Color(Col,Col,int(Col*CFRandom(1.1, 1.4)));
 			Part.Life = 15;
-			Part.Alpha = CFRandom(.3, .4);
+			Part.Alpha = .3+Alpha*.1;
 			Part.Fade = Part.Alpha/(Part.Life-1);
 			Part.StartGrow = CFRandom(1.4, 1.5);
 			Part.StartScale = CFRandom(.2, .3);
@@ -735,10 +741,13 @@ Extend Class MRIntWeaps_Chaingun
 	Action Void A_FireSmoke()
 	{
 		if(!MRIntW_Smoke)Return;
-					
+		
+		Double Alpha = invoker.ShotPower-5;
+		Alpha /= 15;
+		
 		if(Players[ConsolePlayer].Camera != Self){
 			int Col = CRandom(80, 90);
-			Float Alph = CFRandom(.4, .5);
+			Float Alph = .4+Alpha*.1;
 			A_SpawnParticle(Color(Col,Col,Col), SPF_RELATIVE, 9, CFRandom(2, 3), 0, 20,6,Height*.65,
 				1,0,.5, CFRandom(-.02, .02),CFRandom(-.02, .02),CFRandom(-.02, 0), 
 				Alph, Alph/8, CFRandom(1, 2));
@@ -750,7 +759,7 @@ Extend Class MRIntWeaps_Chaingun
 			int Col = CRandom(170, 180);
 			Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));
 			Part.Life = 14;
-			Part.Alpha = CFRandom(.4, .5);
+			Part.Alpha = .4+Alpha*.1;
 			Part.Fade = Part.Alpha/(Part.Life-1);
 			Part.StartGrow = CFRandom(1.5, 1.6);
 			Part.StartScale = CFRandom(.2, .3);
