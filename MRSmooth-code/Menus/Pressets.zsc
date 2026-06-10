@@ -1,11 +1,15 @@
+/*
+	Settings pressets menu
+*/
+
 Class MRIntWeaps_PressetsMenu: OptionMenu
 {
-	Static Const String CVarsId[] = {//"CVarname CVarIndex" (to prevent future updates from breaking pressets)
+	Static Const String CVarsId[] = {//Syntax: "CVarname CVarIndex" (to prevent future updates from breaking pressets)
 		"MRIntW_Casings 0", "MRIntW_CasingsRandom 1", "MRIntW_CasingsAmount 2", "MRIntW_CasingsVolume 3", "MRIntW_CasingsLowRes 4",
 		"MRIntW_CasingsClusteringReduce 5", "MRIntW_Smoke 6", "MRIntW_FlowingSmoke 7", "MRIntW_FlowingSmokeLength 8", "MRIntW_FlowingSmokeAlpha 9",
 		"MRIntW_FlowingSmokeMaxTime 10", "MRIntW_FlowingSmokePrecision 11", "MRIntW_BobStyle 12", "MRIntW_BobRangeX 13", 
 		"MRIntW_BobRangeY 14", "MRIntW_BobRangeZ 15", "MRIntW_VanillaFireBob 16", "MRIntW_Bounce 17", "MRIntW_DamageShake 18", "MRIntW_IdleAnims 19", 
-		"MRIntW_Recoil 20", "MRIntW_RecoilAmount 21", "MRIntW_RecoilRecover 22", "MRIntW_ScreenShake 68", "MRIntW_ScreenShakeAmount 69",
+		"MRIntW_ReloadAnims 82", "MRIntW_Recoil 20", "MRIntW_RecoilAmount 21", "MRIntW_RecoilRecover 22", "MRIntW_ScreenShake 68", "MRIntW_ScreenShakeAmount 69",
 		"MRIntW_Lighting 23", "MRIntW_InstantFire 24", "MRIntW_FastPistol 25", "MRIntW_BetterAlert 26", "MRIntW_GlovesColor 27", 
 		"MRIntW_GlovesColorShade 28", "MRIntW_GlovesColorLight 29", "MRIntW_GlovesColorTemp 30", "MRIntW_Epilepsy 31", 
 		"MRIntW_NoMuzzleFlash 32", "MRIntW_FlashFlare 33", "MRIntW_ShotgunsRecoil 34", "MRIntW_BareHands 35", "MRIntW_GloveStrip 36", 
@@ -19,6 +23,8 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		"MRIntW_MonsterWhichParticles2 74", "MRIntW_MonsterParticlesAmount 75", "MRIntW_DecorationParticles 76", "MRIntW_DecorationWhichParticles 77",
 		"MRIntW_DecorationParticlesAmount 78", "MRIntW_TeleportParticles 79", "MRIntW_TeleportParticlesStyle 80", "MRIntW_TeleportParticlesStyleMonsters 81"
 	};
+	
+	//Presset CVar syntax: "[Index] Value,[Index] Value,"
 	
 	Void WriteSettingsPresset()
 	{

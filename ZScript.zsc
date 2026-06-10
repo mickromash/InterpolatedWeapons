@@ -2,6 +2,7 @@ Version "4.0"
 
 #include "MRSmooth-code/Handler.zsc"//Weapon sapwning/replacing/removing functions and other global events
 
+//Weapons
 #include "MRSmooth-code/Weapons/Fist.zsc"
 #include "MRSmooth-code/Weapons/Chainsaw.zsc"
 #include "MRSmooth-code/Weapons/Pistol.zsc"
@@ -17,12 +18,12 @@ Version "4.0"
 #include "MRSmooth-code/Misc/Effects.zsc"//Casings/smoke/particles
 #include "MRSmooth-code/Misc/MuzzleSmoke.zsc"//Flowing smoke
 #include "MRSmooth-code/Misc/Dying.zsc"//First person death animations
-#include "MRSmooth-code/Particles/Player.zsc"
-#include "MRSmooth-code/Particles/Monsters.zsc"
-#include "MRSmooth-code/Particles/Misc.zsc"
+#include "MRSmooth-code/Particles/Player.zsc"//Player projectile and puff particle effects
+#include "MRSmooth-code/Particles/Monsters.zsc"//Monster particle effects
+#include "MRSmooth-code/Particles/Misc.zsc"//Decoration and other particle effects
 #include "MRSmooth-code/Misc/SSGStuff.zsc"//SSG code for effects.zsc, MuzzleSmoke.zsc and Dying.zsc
 #include "MRSmooth-code/Misc/GlovesColor.zsc"//Gloves color applying
 
-#include "MRSmooth-code/Menus/Main.zsc"
-#include "MRSmooth-code/Menus/Pressets.zsc"
-#include "MRSmooth-code/Menus/EasterMenu.zsc"
+#include "MRSmooth-code/Menus/Main.zsc"//Some little tricks for mods menu
+#include "MRSmooth-code/Menus/Pressets.zsc"//Settings pressets menu
+#include "MRSmooth-code/Menus/EasterMenu.zsc"//Secret glove colors menu

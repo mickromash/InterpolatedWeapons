@@ -17,7 +17,7 @@ Class MRIntWeaps_EasterMenu: OptionMenu
 	Double Alpha;
 	Bool Flip;
 	
-	Override Void Drawer()
+	Override Void Drawer()//At Fist's Gate intro
 	{
 		Super.Drawer();
 		
@@ -220,7 +220,7 @@ Class MRIntWeaps_EasterMenu: OptionMenu
 		);
 	}
 	Const EpilepsyIndex = 5;
-
+	//Show epilepsy message if gloves color is set to "Fast Rainbow" or "Epilepsy"
 	Override Bool MenuEvent(int mkey, bool fromcontroller)
 	{
 		Bool Ret = Super.MenuEvent(mkey, fromcontroller);

@@ -3,10 +3,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	Default{
 		Weapon.SlotNumber 1;
 		Decal "BulletChip";
-		MissileHeight 10;
+		FloatSpeed .8;//Sprite movement cap on landing/mid air
 	}
 	
-	Const Lay1 = 2;
+	Const Lay1 = 2;//Main animation layer
 	Const Lay2 = 3;//Starting rope
 	Const Lay3 = 4;//Starting hand
 	
@@ -35,7 +35,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		}
 	}
 	
-	Action Void A_GlovesColor(int Trans=0)
+	Action Void A_GlovesColor(int Trans=0)//Applying custom gloves color
 	{
 		Let Feest = MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist"));
 		if(!Feest)Return;
@@ -51,32 +51,9 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		}
 	}
 	
-	int SwitchState;
+	int SwitchState;//Used to smooth select to deselect transition
 	
 	States{
-		Select:
-			TNT1 A 0 {
-				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
-				if(invoker.Dropped)invoker.Dropped.Destroy();
-				A_Overlay(Lay1, "SawRaise");
-				
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SAWGA0");
-			}
-		Raise:
-			#### C 1 A_Raise();
-			Loop;
-		Deselect:
-			TNT1 A 0 {
-				Player.GetPSprite(PSP_WEAPON).Y = 32;
-				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				A_Overlay(Lay1, "SawLower");
-				
-				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SAWGA0");
-			}
-		Lower:
-			#### C 1 A_Lower();
-			Loop;
-		
 		SawStartHand:
 			SAW1 Y 1 {
 				A_GlovesColor();
@@ -236,6 +213,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 		SawReady:
 			SAW1 # 1 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_GlovesColor(1);
 				A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(-.5, .5), WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-.25, .25), WOF_INTERPOLATE);
@@ -255,7 +233,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 						invoker.Smokes[index] = a;
 						
 						Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
-						Bob.Y = 0;//Clamp(Bob.Y, 0, 50);
+						Bob.Y = 0;
 						
 						A_Overlay(SmokeStart+index, "SmokeLay");
 						A_OverlayOffset(SmokeStart+index, 190+Bob.X, 180+Bob.Y);
@@ -274,7 +252,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
 				if(invoker.SawSpeed>0)invoker.SawSpeed-=Min(invoker.SawSpeed, .5);
 			}
-			#### # 0{A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);A_OverlayPivot(Lay1, .5, 1);}
+			#### # 0{
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayPivot(Lay1, .5, 1);
+			}
 			Loop;
 		SawLower:
 			SAW1 # 1 {
@@ -327,22 +308,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 			Wait;
 		
-		Ready:
-			TNT1 AD 4 {
-				A_WeaponReady();
-				
-				if(MRIntW_DisplayVanilla){
-					Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SAWGA0");
-					if(Player.GetPSprite(PSP_WEAPON).Frame==0)Player.GetPSprite(PSP_WEAPON).Frame = 2;
-				}
-				
-				Double Amnt = MRIntW_ScreenShakeAmount;
-				if(MRIntW_ScreenShake>1)A_QuakeEx(.03*Amnt,0,.02*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_WAVE, 10,0,10, rollIntensity: .02*Amnt, rollwave: 10);
-			}
-			#### # 0 {A_Overlay(Lay1, "SawReady", false);if(MRIntW_BetterAlert)A_AlertMonsters(1000);}
-			Loop;
-		
-		SawStartCut:
+		SawStartCut://Transition from ready to fire state
 			SAW1 # 1{
 				A_GlovesColor(1);
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
@@ -353,7 +319,6 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay1, 6, -2, WOF_ADD);
 				A_OverlayRotate(Lay1, -3.5, WOF_ADD);
 			}
-			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### G 1 {
 				invoker.Cutting = Null;
 				invoker.CuttingWay = 0;
@@ -478,7 +443,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				}
 				
 				int Frame = Player.GetPSprite(Lay1).Frame-6;
-				int ChainSpeed = Clamp(Min(2, invoker.SawSpeed)+GetAge()%2+CRandomPick(0,0,0,0,0,0,0,0,0,0,0, 1), 0, 2);
+				int ChainSpeed = Clamp(Min(2, invoker.SawSpeed)+GetAge()%2+int(CFRandomPick(0,.01,.02,.03,.04, 1)), 0, 2);
 				Frame += ChainSpeed;
 				
 				if(Frame>3)Frame = Frame%3;
@@ -488,7 +453,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 			}
 			Loop;
-		SawStopCut:
+		SawStopCut://Transition back to ready
 			#### G 1 {
 				A_GlovesColor(1);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
@@ -531,6 +496,47 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 			Goto SawReady;
 		
+		//Default states
+		
+		Select:
+			TNT1 A 0 {
+				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
+				if(invoker.Dropped)invoker.Dropped.Destroy();
+				A_Overlay(Lay1, "SawRaise");
+				
+				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SAWGA0");
+			}
+		Raise:
+			#### C 1 A_Raise();
+			Loop;
+		Deselect:
+			TNT1 A 0 {
+				Player.GetPSprite(PSP_WEAPON).Y = 32;
+				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
+				A_Overlay(Lay1, "SawLower");
+				
+				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SAWGA0");
+			}
+		Lower:
+			#### C 1 A_Lower();
+			Loop;
+		Ready:
+			TNT1 AD 4 {
+				A_WeaponReady();
+				
+				if(MRIntW_DisplayVanilla){
+					Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SAWGA0");
+					if(Player.GetPSprite(PSP_WEAPON).Frame==0)Player.GetPSprite(PSP_WEAPON).Frame = 2;
+				}
+				
+				Double Amnt = MRIntW_ScreenShakeAmount;
+				if(MRIntW_ScreenShake>1)A_QuakeEx(.03*Amnt,0,.02*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_WAVE, 10,0,10, rollIntensity: .02*Amnt, rollwave: 10);
+			}
+			#### # 0 {
+				//A_Overlay(Lay1, "SawReady", true);
+				if(MRIntW_BetterAlert)A_AlertMonsters(1000);
+			}
+			Loop;
 		Fire:
 			TNT1 A 0 A_Overlay(Lay1, "SawStartCut");
 		FireLoop:

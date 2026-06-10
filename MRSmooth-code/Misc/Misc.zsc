@@ -4,6 +4,11 @@
 
 Extend Class MRIntWeaps_Fist
 {
+	Double CurBounce, BounceStrength;
+	Bool Bouncing, Landed;
+	int DamageShake, PlrLastHealth;
+	Vector2 FireBob;
+	
 	Void DoMisc()
 	{
 		Let Weap = Owner.Player.ReadyWeapon;
@@ -33,7 +38,6 @@ Extend Class MRIntWeaps_Fist
 				DamageShake -= 4;
 				if(DamageShake<0)DamageShake = 0;
 			}
-			//else {Owner.Player.GetPSprite(PSP_WEAPON).X = 0;if(Allowed)Owner.Player.GetPSprite(PSP_WEAPON).Y = 32;}
 			
 			if(Owner.Health<PlrLastHealth){
 				DamageShake = PlrLastHealth - Owner.Health;
@@ -41,7 +45,7 @@ Extend Class MRIntWeaps_Fist
 			
 			PlrLastHealth = Owner.Health;
 		}
-		
+		//Weapon movement mid air/on landing
 		if(!MRIntW_Bounce)Return;
 		
 		Bouncing = false;
@@ -64,7 +68,7 @@ Extend Class MRIntWeaps_Fist
 			
 			Bouncing = true;
 			
-			if(Landed){
+			if(Landed){//Camera shake on landing
 				Landed = false;
 				if(abs(CurBounce)>4 && MRIntW_ScreenShake>2)Owner.A_QuakeEx(1*Min(20, abs(CurBounce)),0,0, Clamp(abs(CurBounce)*2, 1, 20), 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_SCALEUP|QF_WAVE, 2,0,0, rollIntensity: .1*Min(30, abs(CurBounce)), rollwave: 2);
 			}
@@ -75,5 +79,62 @@ Extend Class MRIntWeaps_Fist
 			if(Bounce<0)Bounce /= Max(1, Weap.FloatSpeed*8/32);
 			PSP.Y = 32 + CurBounce*.5;
 		}
+	}
+	
+	Clearscope Static Double GetBobZ(Weapon Weap, Double Center = .5)
+	{
+		PlayerPawn Plr = PlayerPawn(Weap.Owner);
+		
+		Double Range = MRIntW_BobRangeZ;
+		int bobstyle = Weap.BobStyle;
+		double angle = (Weap.BobSpeed*128 * Plr.player.GetWBobSpeed() * 35 /	TICRATE*(Level.maptime)) * (360. / 8192.);
+
+		// [RH] Smooth transitions between bobbing and not-bobbing frames.
+		// This also fixes the bug where you can "stick" a weapon off-center by
+		// shooting it when it's at the peak of its swing.
+		Double R;
+
+		// The weapon bobbing intensity while firing can be adjusted by the player.
+		double BobIntensity = ((Plr.player.WeaponState & WF_WEAPONBOBBING) ? 1. : Plr.player.GetWBobFire())*.01;
+
+		if (Plr.curbob != 0)
+		{
+			double bobVal = Plr.player.bob;
+			
+			bobVal = Plr.prevBob;
+			//[SP] Added in decorate player.viewbob checks
+			double bob = (bobVal * BobIntensity * Range * Plr.ViewBob);
+			switch (bobstyle)
+			{
+			case Bob_Normal:
+				R = Bob * (Center - abs(Sin(angle)));
+				break;
+
+			case Bob_Inverse:
+				R = bob * (Center - abs(sin(angle)));
+				break;
+
+			case Bob_Alpha:
+				R = bob * (Center - abs(sin(angle)));
+				break;
+
+			case Bob_InverseAlpha:
+				R = bob * (Center - abs(sin(angle)));
+				break;
+
+			case Bob_Smooth:
+				R = 0.5f * (bob * (Center - (cos(angle * 2))));
+				break;
+
+			case Bob_InverseSmooth:
+				R = 0.5f * (bob * (Center + (cos(angle * 2))));
+			}
+		}
+		else
+		{
+			r = 0;
+		}
+		
+		Return R;
 	}
 }

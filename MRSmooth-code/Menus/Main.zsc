@@ -1,5 +1,6 @@
 Class MRIntWeaps_AnimMenu: OptionMenu
 {
+	//if vanilla firing bob is turned on, set ZDoom firing bob setting to 0
 	Override Bool MenuEvent(int mkey, bool fromcontroller)
 	{
 		Bool Ret = Super.MenuEvent(mkey, fromcontroller);
@@ -10,6 +11,7 @@ Class MRIntWeaps_AnimMenu: OptionMenu
 
 Class OptionMenuItemMRIntWeaps_StaticText: OptionMenuItemStaticText
 {
+	//StaticText mod that can localize multiple tags
 	OptionMenuItemMRIntWeaps_StaticText Init(String label, int cr = -1)
 	{
 		IniLabel = Label;
