@@ -189,6 +189,7 @@ MRIntWeaps_PlayerParticlesMenu = "Выбрать эффекты оружия и�
 
 MRIntW_PlrParticles_Puff = "Искры от пуль";
 
+MRIntW_PlrParticles_RocketFly0 = "(Не рекомендуется)";
 MRIntW_PlrParticles_RocketFly1 = "Сильный дым";
 MRIntW_PlrParticles_RocketFly2 = "Вспышка";
 MRIntW_PlrParticles_RocketFly3 = "Пламя";

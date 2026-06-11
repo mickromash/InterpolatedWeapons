@@ -189,6 +189,7 @@ MRIntWeaps_PlayerParticlesMenu = "Set up player weapon effects";
 
 MRIntW_PlrParticles_Puff = "Puff sparks";
 
+MRIntW_PlrParticles_RocketFly0 = "(Not recommended)";
 MRIntW_PlrParticles_RocketFly1 = "Strong smoke";
 MRIntW_PlrParticles_RocketFly2 = "Flare";
 MRIntW_PlrParticles_RocketFly3 = "Flame";
