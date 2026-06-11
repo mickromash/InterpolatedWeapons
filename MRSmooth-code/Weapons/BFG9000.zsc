@@ -152,8 +152,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 							A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.97, 1.02));
 							Break;
 						Case 6:
-							A_StartSound("MRIntW/BFGReload", CHAN_AUTO, pitch:i_timescale*1.5);
-							A_StartSound("MRIntW/PlasmaReload", CHAN_AUTO, pitch:i_timescale*.8);
+							A_StartSound("MRIntW/BFGReload", CHAN_AUTO, pitch:i_timescale*CFRandom(1.47, 1.53));
+							A_StartSound("MRIntW/PlasmaReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.76, .83));
 							invoker.Reload = false;
 							Break;
 					}
