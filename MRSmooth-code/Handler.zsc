@@ -7,6 +7,7 @@ Class MRIntWeaps_Handler: EventHandler
 	Static Const String Weapons[] = {//Weapons to replace
 		"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun",
 		"Chaingun", "RocketLauncher", "PlasmaRifle", "BFG9000"
+		//,"ID24Incinerator", "ID24CalamityBlade"
 	};
 	
 	Array<Actor> Berserks;
@@ -38,7 +39,10 @@ Class MRIntWeaps_Handler: EventHandler
 			}
 		}
 		
-		For(int i=0;i<Weapons.Size();i++){
+		int Weaps = Weapons.Size();
+		//if(MRIntW_LoRWeaps)Weaps = Weapons.Size()-2;
+		
+		For(int i=0;i<Weaps;i++){
 			if(!GotWeapon[i])Continue;
 			
 			if(!Plr.FindInventory("MRIntWeaps_"..Weapons[i])){

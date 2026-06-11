@@ -1,0 +1,65 @@
+Class MRIntW_ID24Incinerator: ID24Incinerator Replaces ID24Incinerator
+{
+	Default{
+		Weapon.SlotNumber 6;
+	}
+	
+	Const Lay1 = 2;//Main layer
+	
+	int BobState, IdleDelay;
+	
+	Float Recoil;
+	Override Void DoEffect()
+	{
+		if(Recoil>0){
+			Double Recover = .125*MRIntW_RecoilRecover;
+			Recoil -= Recover;
+			Owner.A_SetPitch(Owner.Pitch+Recover*MRIntW_RecoilAmount);
+		}
+		
+		MuzzleSmoke();
+		
+		//Disabling weapon interpolation while game is loading
+		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
+			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
+			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
+		}
+	}
+		
+	int SwitchAnim, SwitchState;
+	
+	States{
+	
+	//Default states
+	
+	Ready:
+		FLMG A 1 A_WeaponReady();
+		Loop;
+	Deselect:
+		FLMG A 1 A_Lower();
+		Loop;
+	Select:
+		FLMG A 1 A_Raise();
+		Loop;
+	Fire:
+		FLMF A 0 BRIGHT A_Jump(128, "FireAltSound");
+		FLMF A 0 BRIGHT A_StartSound("weapons/incinerator/fire1", CHAN_WEAPON);
+		Goto DoFire;
+	FireAltSound:
+		FLMF A 0 BRIGHT A_StartSound("weapons/incinerator/fire2", CHAN_WEAPON);
+		Goto DoFire;
+	DoFire:
+		FLMF A 0 BRIGHT A_GunFlash();
+		FLMF A 0 BRIGHT MBF21_ConsumeAmmo(1);
+		FLMF A 1 BRIGHT MBF21_WeaponProjectile("ID24IncineratorFlame", 0, 0, 0, 0);
+		FLMF B 1 BRIGHT;
+		FLMG A 1;
+		FLMG A 0 A_ReFire();
+		Goto Ready;
+	Flash:
+		TNT1 A 2 A_Light2();
+		TNT1 A 1 A_Light1();
+		Goto LightDone;
+	}
+}

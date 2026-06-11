@@ -34,6 +34,7 @@ server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting
 server bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
+server bool MRIntW_LoRWeaps = true;
 
 user int MRIntW_GlovesColor = 0;//0 - Tan (Classic), 1 - Black, 2 - Brown, 3 - Green, 4 - Red, 5 - Grey, 6 - Blue, 7 - Custom, 8 - Subtle glow, 9 - Slow rainbow, 10 - Fast rainbow, 11 - Epilepsy, 12 - Light to dark, 13 - Last damaged by, 14 - Last damaged, 15 - Health, 16 - Enemy health, 17 - Armor, 18 - Ammo
 user color MRIntW_GlovesColorShade = "2 2 2";//Shades color
