@@ -336,7 +336,7 @@ Extend Class MRIntWeaps_Pistol
 		if(!MRIntW_Smoke)Return;
 		
 		Double Alpha = invoker.ShotPower-5;
-		Alpha /= 15;
+		Alpha /= 15-5;
 		
 		if(Players[ConsolePlayer].Camera != Self){
 			int Col = CRandom(100, 120);
@@ -477,7 +477,7 @@ Extend Class MRIntWeaps_Shotgun
 		if(!MRIntW_Smoke)Return;
 		
 		Double Alpha = invoker.ShotPower-35;
-		Alpha /= 100;
+		Alpha /= 100-35;
 		
 		if(Players[ConsolePlayer].Camera != Self){
 			int Col = CRandom(70, 80);
@@ -743,7 +743,7 @@ Extend Class MRIntWeaps_Chaingun
 		if(!MRIntW_Smoke)Return;
 		
 		Double Alpha = invoker.ShotPower-5;
-		Alpha /= 15;
+		Alpha /= 15-5;
 		
 		if(Players[ConsolePlayer].Camera != Self){
 			int Col = CRandom(80, 90);
