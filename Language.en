@@ -299,6 +299,8 @@ MRIntW_TeleportParticlesStyle5 = "Weird cloud";
 MRIntW_TeleportParticlesStyle6 = "Wave";
 MRIntW_TeleportParticlesStyleMonsters = "Monster teleport style";
 
+MRIntW_ApplyParticles = "Apply particles settings";
+
 
 MRIntWeaps_SoundMenu = "Sounds settings (add-on required)";
 

@@ -299,6 +299,8 @@ MRIntW_TeleportParticlesStyle5 = "Странное облако";
 MRIntW_TeleportParticlesStyle6 = "Волна";
 MRIntW_TeleportParticlesStyleMonsters = "Стиль телепортации монстра";
 
+MRIntW_ApplyParticles = "Применить настройки частиц";
+
 
 MRIntWeaps_SoundMenu = "Настройки звуков (требуется аддон)";
 

@@ -151,6 +151,8 @@ OptionMenu "MRIntWeaps_ParticlesMenu"
 	Option "$MRIntW_TeleportParticles", "MRIntW_TeleportParticles", "YesNo"
 	Option "$MRIntW_TeleportParticlesStyle", "MRIntW_TeleportParticlesStyle", "MRIntW_TeleportParticlesStyleValues", "MRIntW_TeleportParticles"
 	Option "$MRIntW_TeleportParticlesStyleMonsters", "MRIntW_TeleportParticlesStyleMonsters", "MRIntW_TeleportParticlesStyleValues", "MRIntW_TeleportParticles"
+	StaticText ""
+	Command "$MRIntW_ApplyParticles", "MRIntW_ApplyParticles"
 }
 OptionMenu "MRIntWeaps_PlayerParticlesMenu"
 {

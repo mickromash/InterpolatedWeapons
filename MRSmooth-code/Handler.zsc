@@ -216,6 +216,46 @@ Class MRIntWeaps_Handler: EventHandler
 			CVar.FindCVar("MRIntW_GlovesColorTemp").SetInt(Rand);
 			Return;
 		}
+		if(e.name ~== "MRIntWeaps_ApplyParticles"){
+			UpdateOnStartupParticles();
+			Return;
+		}
+	}
+	
+	Void UpdateOnStartupParticles()
+	{
+		For(int i=0;i<PartThinkers.Size();i++){
+			if(PartThinkers[i])PartThinkers[i].Destroy();
+		}
+		PartThinkers.Clear();
+		
+		ThinkerIterator it = ThinkerIterator.Create();
+		Actor mo;
+		
+		Bool Decorations, Monsters;
+		Decorations = MRIntW_DecorationParticles;
+		Monsters = MRIntW_MonsterParticles;
+		
+		int MonstSet = MRIntW_MonsterWhichParticles2;
+		
+		While(mo = Actor(it.Next()))
+		{
+			if(Monsters && mo is 'LostSoul')
+			{
+				if(!(MonstSet&MRIWMP_SoulSmoke||
+					MonstSet&MRIWMP_SoulFire||
+					MonstSet&MRIWMP_SoulSplash)
+				)Continue;
+				
+				Let a = New('MRIntWeaps_MonsterProjectileParticles');
+				a.Master = mo;
+				a.Type = 7;
+				PartThinkers.Push(a);
+				Continue;
+			}
+			
+			if(Decorations)SpawnDecorationParticleEffects(mo);
+		}
 	}
 	
 	Bool Uninstalled;

@@ -39,6 +39,7 @@ Extend Class MRIntWeaps_Handler
 		if(Thing is 'ExplosiveBarrel'){
 			Let a = New('MRIntWeaps_BarrelParticles');
 			a.Master = Thing;
+			PartThinkers.Push(a);
 			
 			Return;
 		}
@@ -47,6 +48,7 @@ Extend Class MRIntWeaps_Handler
 			Let a = New('MRIntWeaps_BarrelParticles');
 			a.Master = Thing;
 			a.Burning = true;
+			PartThinkers.Push(a);
 			
 			Return;
 		}
@@ -54,6 +56,7 @@ Extend Class MRIntWeaps_Handler
 		if(Setting&MRIWDP_BleedingColumn && Thing is 'HeartColumn'){
 			Let a = New('MRIntWeaps_HeartColumnParticles');
 			a.Master = Thing;
+			PartThinkers.Push(a);
 			
 			Return;
 		}
@@ -86,6 +89,7 @@ Extend Class MRIntWeaps_Handler
 					a.RCols[2] = (0, 0);
 					Break;
 			}
+			PartThinkers.Push(a);
 			
 			Return;
 		}
@@ -117,6 +121,7 @@ Extend Class MRIntWeaps_Handler
 					a.Type = 6;
 					Break;
 			}
+			PartThinkers.Push(a);
 			
 			Return;
 		}
@@ -148,6 +153,8 @@ Extend Class MRIntWeaps_Handler
 						a.Type = 5;
 						Break;
 				}
+				
+				PartThinkers.Push(a);
 			}
 			
 			Return;

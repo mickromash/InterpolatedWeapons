@@ -60,6 +60,8 @@ enum MRIntWeaps_MonsterParticlesFlags{
 
 Extend Class MRIntWeaps_Handler
 {
+	Array<Object> PartThinkers;
+	
 	Void SpawnMonsterParticleEffects(Actor Thing)
 	{
 		if(Thing is 'DoomImpBall' || Thing is 'CacodemonBall' || Thing is 'RevenantTracer' || Thing is 'FatShot' ||
@@ -153,6 +155,7 @@ Extend Class MRIntWeaps_Handler
 			Let a = New('MRIntWeaps_MonsterProjectileParticles');
 			a.Master = Thing;
 			a.Type = Type;
+			if(a.Type==7)PartThinkers.Push(a);
 			
 			Return;
 		}
