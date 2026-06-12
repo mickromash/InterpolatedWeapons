@@ -351,7 +351,7 @@ Extend Class MRIntWeaps_Chaingun
 			if(!Smoker)Return;
 		}
 		
-		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self)?.15:.075;
+		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self)?.17:.085;
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 		
 		Smoker.Update();
