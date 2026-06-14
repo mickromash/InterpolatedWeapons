@@ -240,18 +240,57 @@ Class MRIntWeaps_Handler: EventHandler
 		
 		While(mo = Actor(it.Next()))
 		{
-			if(Monsters && mo is 'LostSoul')
-			{
-				if(!(MonstSet&MRIWMP_SoulSmoke||
-					MonstSet&MRIWMP_SoulFire||
-					MonstSet&MRIWMP_SoulSplash)
-				)Continue;
-				
-				Let a = New('MRIntWeaps_MonsterProjectileParticles');
-				a.Master = mo;
-				a.Type = 7;
-				PartThinkers.Push(a);
-				Continue;
+			if(Monsters){
+				if(mo.Health<1)Continue;
+				if(mo is 'LostSoul')
+				{
+					if(!(MonstSet&MRIWMP_SoulSmoke||
+						MonstSet&MRIWMP_SoulFire||
+						MonstSet&MRIWMP_SoulSplash)
+					)Continue;
+					
+					Let a = New('MRIntWeaps_MonsterProjectileParticles');
+					a.Master = mo;
+					a.Type = 7;
+					PartThinkers.Push(a);
+					Continue;
+				}
+				if(mo is 'PainElemental')
+				{
+					if(!(MonstSet&MRIWMP_PainSplash))Continue;
+					
+					Let a = New('MRIntWeaps_MonsterProjectileParticles');
+					a.Master = mo;
+					a.Type = 8;
+					PartThinkers.Push(a);
+					Continue;
+				}
+				if(mo is 'Cyberdemon')
+				{
+					if(!(MonstSet&MRIWMP_CyberSmoke||
+						MonstSet&MRIWMP_CyberBlood||
+						MonstSet&MRIWMP_CyberSplash)
+					)Continue;
+					
+					Let a = New('MRIntWeaps_MonsterProjectileParticles');
+					a.Master = mo;
+					a.Type = 9;
+					PartThinkers.Push(a);
+					Continue;
+				}
+				if(mo is 'SpiderMastermind')
+				{
+					if(!(MonstSet&MRIWMP_SpiderSmoke||
+						MonstSet&MRIWMP_SpiderBlood||
+						MonstSet&MRIWMP_SpiderSplash)
+					)Continue;
+					
+					Let a = New('MRIntWeaps_MonsterProjectileParticles');
+					a.Master = mo;
+					a.Type = 10;
+					PartThinkers.Push(a);
+					Continue;
+				}
 			}
 			
 			if(Decorations)SpawnDecorationParticleEffects(mo);

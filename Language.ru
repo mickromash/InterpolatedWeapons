@@ -255,6 +255,8 @@ MRIntW_MonstParticles_ArachnoBallImpactSmoke = "Пар";
 MRIntW_MonstParticles_ArachnoBallImpactSplash = "Искры";
 MRIntW_MonstParticles_ArachnoBallImpactLightnings = "Молнии";
 
+MRIntW_MonstParticles_PainSplash = "Взрыв";
+
 MRIntW_MonstParticles_ArchFlameSmoke = "Дым";
 MRIntW_MonstParticles_ArchFlameSparks = "Частицы огня";
 MRIntW_MonstParticles_ArchFlameSplash = "Взрыв";
@@ -265,6 +267,14 @@ MRIntW_MonstParticles_BaronBallFlyFire = "Пламя";
 MRIntW_MonstParticles_BaronBallImpactSmoke = "Дым";
 MRIntW_MonstParticles_BaronBallImpactSplash = "Искры";
 MRIntW_MonstParticles_BaronBallImpactFire = "Огонь";
+
+MRIntW_MonstParticles_CyberSplash = "Взрыв";
+MRIntW_MonstParticles_CyberSmoke = "Дым";
+MRIntW_MonstParticles_CyberBlood = "Кровь";
+
+MRIntW_MonstParticles_SpiderSplash = "Взрыв";
+MRIntW_MonstParticles_SpiderSmoke = "Дым";
+MRIntW_MonstParticles_SpiderBlood = "Кровь";
 
 MRIntW_DecorationParticles = "Эффекты декораций";
 MRIntW_DecorationParticlesAmount = "Качество эффектов декораций";

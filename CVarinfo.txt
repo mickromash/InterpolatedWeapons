@@ -96,7 +96,7 @@ nosave float MRIntW_PlayerParticlesAmount = 1;
 
 nosave bool MRIntW_MonsterParticles = false;
 nosave int MRIntW_MonsterWhichParticles = -33;
-nosave int MRIntW_MonsterWhichParticles2 = 3839;
+nosave int MRIntW_MonsterWhichParticles2 = 524031;
 nosave float MRIntW_MonsterParticlesAmount = 1;
 
 nosave bool MRIntW_DecorationParticles = false;

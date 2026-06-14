@@ -255,6 +255,8 @@ MRIntW_MonstParticles_ArachnoBallImpactSmoke = "Vapor";
 MRIntW_MonstParticles_ArachnoBallImpactSplash = "Sparks";
 MRIntW_MonstParticles_ArachnoBallImpactLightnings = "Lightnings";
 
+MRIntW_MonstParticles_PainSplash = "Explosion splash";
+
 MRIntW_MonstParticles_ArchFlameSmoke = "Smoke";
 MRIntW_MonstParticles_ArchFlameSparks = "Fire";
 MRIntW_MonstParticles_ArchFlameSplash = "Explosion splash";
@@ -265,6 +267,14 @@ MRIntW_MonstParticles_BaronBallFlyFire = "Fire";
 MRIntW_MonstParticles_BaronBallImpactSmoke = "Smoke";
 MRIntW_MonstParticles_BaronBallImpactSplash = "Splash";
 MRIntW_MonstParticles_BaronBallImpactFire = "Fire";
+
+MRIntW_MonstParticles_CyberSplash = "Explosion splash";
+MRIntW_MonstParticles_CyberSmoke = "Explosion smoke";
+MRIntW_MonstParticles_CyberBlood = "Explosion blood";
+
+MRIntW_MonstParticles_SpiderSplash = "Explosion splash";
+MRIntW_MonstParticles_SpiderSmoke = "Explosion smoke";
+MRIntW_MonstParticles_SpiderBlood = "Explosion blood";
 
 MRIntW_DecorationParticles = "Decorations particles";
 MRIntW_DecorationParticlesAmount = "Decoration effects quality";
