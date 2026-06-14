@@ -88,6 +88,9 @@ Extend Class MRIntWeaps_Handler
 					a.RCols[1] = (-30, 80);
 					a.RCols[2] = (0, 0);
 					Break;
+				Default:
+					a.Destroy();
+					Return;
 			}
 			PartThinkers.Push(a);
 			

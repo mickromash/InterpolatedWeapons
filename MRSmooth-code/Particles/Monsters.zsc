@@ -178,6 +178,8 @@ Extend Class MRIntWeaps_Handler
 					)Return;
 					Type = 10;
 					Break;
+					
+				Default: Return;
 			}
 			
 			Let a = New('MRIntWeaps_MonsterProjectileParticles');
