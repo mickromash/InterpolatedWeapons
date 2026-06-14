@@ -482,23 +482,23 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			}
 			#### ### 1 {A_OverlayOffset(Lay1, .5, -.5, WOF_ADD);A_OverlayRotate(Lay1, -.5, WOF_ADD);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);}
 			#### ### 1 {A_OverlayOffset(Lay1, 2, 1, WOF_ADD);A_OverlayRotate(Lay1, -1, WOF_ADD);}
-			#### # 1 {A_Overlayoffset(Lay1, .5, 1, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_Overlayoffset(Lay1, .5, .5, WOF_ADD);A_OverlayRotate(Lay1, .05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_Overlayoffset(Lay1, .25, .5, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_Overlayoffset(Lay1, -.1, .025, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### # 1 {A_Overlayoffset(Lay1, -.1, .0, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_Overlayoffset(Lay1, -.15, -.025, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_Overlayoffset(Lay1, -.15, -.1, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_Overlayoffset(Lay1, .1, .05, WOF_ADD);A_OverlayRotate(Lay1, .1, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### # 1 {A_Overlayoffset(Lay1, .5, .5, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_Overlayoffset(Lay1, .5, .5, WOF_ADD);A_OverlayRotate(Lay1, .05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_Overlayoffset(Lay1, .25, .5, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_Overlayoffset(Lay1, -.1, .025, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### # 1 {A_Overlayoffset(Lay1, -.1, .0, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_Overlayoffset(Lay1, -.15, -.025, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_Overlayoffset(Lay1, -.15, -.1, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_Overlayoffset(Lay1, .1, .05, WOF_ADD);A_OverlayRotate(Lay1, .1, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### #### 1 {A_Overlayoffset(Lay1, .15, .05, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### ## 1 {A_Overlayoffset(Lay1, .5, 1, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_Overlayoffset(Lay1, .5, .5, WOF_ADD);A_OverlayRotate(Lay1, .05, WOF_ADD);A_BersShake();}
+			#### #### 1 {A_Overlayoffset(Lay1, .25, .5, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_Overlayoffset(Lay1, -.1, .025, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake();}
+			#### ## 1 {A_Overlayoffset(Lay1, -.1, .0, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_Overlayoffset(Lay1, -.15, -.025, WOF_ADD);A_BersShake();}
+			#### #### 1 {A_Overlayoffset(Lay1, -.15, -.1, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_Overlayoffset(Lay1, .1, .05, WOF_ADD);A_OverlayRotate(Lay1, .1, WOF_ADD);A_BersShake();}
+			#### ## 1 {A_Overlayoffset(Lay1, .5, .5, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake();}
+			#### ## 1 {A_Overlayoffset(Lay1, .5, .5, WOF_ADD);A_OverlayRotate(Lay1, .05, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_Overlayoffset(Lay1, .25, .5, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_Overlayoffset(Lay1, -.1, .025, WOF_ADD);A_OverlayRotate(Lay1, -.05, WOF_ADD);A_BersShake();}
+			#### ## 1 {A_Overlayoffset(Lay1, -.1, .0, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_Overlayoffset(Lay1, -.15, -.025, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_Overlayoffset(Lay1, -.15, -.1, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_Overlayoffset(Lay1, .1, .05, WOF_ADD);A_OverlayRotate(Lay1, .1, WOF_ADD);A_BersShake();}
+			#### #### 1 {A_Overlayoffset(Lay1, .15, .05, WOF_ADD);A_BersShake();}
 			#### # 0 {Player.SetPsprite(LHand, invoker.FindState("LHandIdleEnd"));}
 			#### ###### 1 {
 				Player.GetPSprite(Lay1).X *= .6;
@@ -524,22 +524,22 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			}
 			#### #### 1 {A_OverlayOffset(LHand, .75, -1, WOF_ADD);A_OverlayRotate(LHand, 1, WOF_ADD);A_OverlayFlags(LHand, PSPF_INTERPOLATE, true);}
 			#### ##### 1 {A_Overlayoffset(LHand, .25, -1, WOF_ADD);A_OverlayRotate(LHand, .5, WOF_ADD);A_BersShake();}
-			#### ## 1 {A_OverlayOffset(LHand, .5, -1, WOF_ADD);A_OverlayRotate(LHand, .4, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_OverlayOffset(LHand, .5, -.1, WOF_ADD);A_OverlayRotate(LHand, .6, WOF_ADD);A_OverlayScale(LHand, 0, -.001, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, .15, -.025, WOF_ADD);A_OverlayRotate(LHand, .25, WOF_ADD);A_OverlayScale(LHand, 0, -.00075, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### # 1 {A_OverlayOffset(LHand, .15, .0, WOF_ADD);A_OverlayScale(LHand, 0, -.005, WOF_ADD); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, .11, 1, WOF_ADD);A_OverlayRotate(LHand, .25, WOF_ADD);A_OverlayScale(LHand, 0, -.00025, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_OverlayOffset(LHand, .05, .5, WOF_ADD);A_OverlayRotate(LHand, .5, WOF_ADD);A_OverlayScale(LHand, 0, -.0001, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, .025, .1, WOF_ADD);A_OverlayRotate(LHand, .25, WOF_ADD);A_OverlayScale(LHand, 0, -.0001, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### # 1 {A_OverlayOffset(LHand, .0, .05, WOF_ADD);A_BersShake();A_OverlayScale(LHand, 0, .0001, WOF_ADD); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, -.025, 2, WOF_ADD);A_OverlayRotate(LHand, -.01, WOF_ADD);A_OverlayScale(LHand, 0, .00025, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_OverlayOffset(LHand, -.05, .1, WOF_ADD);A_OverlayRotate(LHand, -.05, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, -.1, .025, WOF_ADD);A_OverlayRotate(LHand, -.05, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### # 1 {A_OverlayOffset(LHand, -.2, 1, WOF_ADD);A_OverlayRotate(LHand, -.15, WOF_ADD);A_OverlayScale(LHand, 0, .0001, WOF_ADD); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, -.4, .5, WOF_ADD);A_OverlayRotate(LHand, -.1, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ### 1 {A_OverlayOffset(LHand, -1, -.5, WOF_ADD);A_OverlayRotate(LHand, -.1, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### ## 1 {A_OverlayOffset(LHand, -2, -.1, WOF_ADD);A_OverlayRotate(LHand, -.5, WOF_ADD);A_OverlayScale(LHand, 0, .001, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
-			#### # 1 {A_OverlayOffset(LHand, -2.4, .05, WOF_ADD);A_OverlayRotate(LHand, -.4, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake(); A_SetTics(CRandom(1,2));}
+			#### ### 1 {A_OverlayOffset(LHand, .5, -1, WOF_ADD);A_OverlayRotate(LHand, .4, WOF_ADD);A_BersShake();}
+			#### #### 1 {A_OverlayOffset(LHand, .5, -.1, WOF_ADD);A_OverlayRotate(LHand, .6, WOF_ADD);A_OverlayScale(LHand, 0, -.001, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_OverlayOffset(LHand, .15, -.025, WOF_ADD);A_OverlayRotate(LHand, .25, WOF_ADD);A_OverlayScale(LHand, 0, -.00075, WOF_ADD);A_BersShake();}
+			#### ## 1 {A_OverlayOffset(LHand, .15, .0, WOF_ADD);A_OverlayScale(LHand, 0, -.005, WOF_ADD);}
+			#### ### 1 {A_OverlayOffset(LHand, .11, 1, WOF_ADD);A_OverlayRotate(LHand, .25, WOF_ADD);A_OverlayScale(LHand, 0, -.00025, WOF_ADD);A_BersShake();}
+			#### #### 1 {A_OverlayOffset(LHand, .05, .5, WOF_ADD);A_OverlayRotate(LHand, .5, WOF_ADD);A_OverlayScale(LHand, 0, -.0001, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_OverlayOffset(LHand, .025, .1, WOF_ADD);A_OverlayRotate(LHand, .25, WOF_ADD);A_OverlayScale(LHand, 0, -.0001, WOF_ADD);A_BersShake();}
+			#### ## 1 {A_OverlayOffset(LHand, .0, .05, WOF_ADD);A_BersShake();A_OverlayScale(LHand, 0, .0001, WOF_ADD);}
+			#### ### 1 {A_OverlayOffset(LHand, -.025, 2, WOF_ADD);A_OverlayRotate(LHand, -.01, WOF_ADD);A_OverlayScale(LHand, 0, .00025, WOF_ADD);A_BersShake();}
+			#### #### 1 {A_OverlayOffset(LHand, -.05, .1, WOF_ADD);A_OverlayRotate(LHand, -.05, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_OverlayOffset(LHand, -.1, .025, WOF_ADD);A_OverlayRotate(LHand, -.05, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake();}
+			#### ## 1 {A_OverlayOffset(LHand, -.2, 1, WOF_ADD);A_OverlayRotate(LHand, -.15, WOF_ADD);A_OverlayScale(LHand, 0, .0001, WOF_ADD);}
+			#### ### 1 {A_OverlayOffset(LHand, -.4, .5, WOF_ADD);A_OverlayRotate(LHand, -.1, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake();}
+			#### #### 1 {A_OverlayOffset(LHand, -1, -.5, WOF_ADD);A_OverlayRotate(LHand, -.1, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake();}
+			#### ### 1 {A_OverlayOffset(LHand, -2, -.1, WOF_ADD);A_OverlayRotate(LHand, -.5, WOF_ADD);A_OverlayScale(LHand, 0, .001, WOF_ADD);A_BersShake();}
+			#### ## 1 {A_OverlayOffset(LHand, -2.4, .05, WOF_ADD);A_OverlayRotate(LHand, -.4, WOF_ADD);A_OverlayScale(LHand, 0, .0005, WOF_ADD);A_BersShake();}
 			Wait;
 		LHandIdleEnd:
 			MRD1 GGGGGG 1 {
