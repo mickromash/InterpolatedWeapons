@@ -139,6 +139,7 @@ MRIntW_FinishPunch1 = "Only berserk";
 MRIntW_FinishPunch2 = "Yes";
 
 MRIntW_FinishPunchChance = "Finish punch chance";
+MRIntW_MissPunch = "Miss animation";
 MRIntW_SurfacePunchRecoil = "\cv⊛\c- Kick back from punching surface with berserk";
 
 MRIntW_ChainsawStart = "Starting animation";

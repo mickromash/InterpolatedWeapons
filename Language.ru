@@ -139,6 +139,7 @@ MRIntW_FinishPunch1 = "Только с берсерком";
 MRIntW_FinishPunch2 = "Да";
 
 MRIntW_FinishPunchChance = "Шанс добивающего удара";
+MRIntW_MissPunch = "Анимация промаха";
 MRIntW_SurfacePunchRecoil = "\cv⊛\c- Отдача при ударе стены с берсерком";
 
 MRIntW_ChainsawStart = "Анимация включения";

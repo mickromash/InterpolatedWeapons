@@ -34,7 +34,7 @@ server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting
 server bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
-server bool MRIntW_LoRWeaps = true;
+server noarchive bool MRIntW_LoRWeaps = false;
 
 user int MRIntW_GlovesColor = 0;//0 - Tan (Classic), 1 - Black, 2 - Brown, 3 - Green, 4 - Red, 5 - Grey, 6 - Blue, 7 - Custom, 8 - Subtle glow, 9 - Slow rainbow, 10 - Fast rainbow, 11 - Epilepsy, 12 - Light to dark, 13 - Last damaged by, 14 - Last damaged, 15 - Health, 16 - Enemy health, 17 - Armor, 18 - Ammo
 user color MRIntW_GlovesColorShade = "2 2 2";//Shades color
@@ -55,6 +55,7 @@ user bool MRIntW_LowHealthShake = false;
 user bool MRIntW_RightPunch = false;//Mirror fist sprites
 user bool MRIntW_SecondFist = false;//Second fist always on screen
 user int MRIntW_FinishPunch = 1;//Different punch animation for killing enemies; 0 - None, 1 - Only with berserk, 2 - Always
+user bool MRIntW_MissPunch = false;//Play finish punch animation if nothing got hit
 user float MRIntW_FinishPunchChance = .7;
 user bool MRIntW_SurfacePunchRecoil = false;//Kick player back if he punches a wall with berserk
 user int MRIntW_PunchingFist = 0;//0 - punch with only main fist,
