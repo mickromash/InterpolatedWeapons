@@ -295,7 +295,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					For(int i=CRandom(0, 3)*PAmnt;i<(7-DeathTick*.5)*PAmnt;i++){
 						Float Size = CFRandom(2,4);
 						int Green = CRandom(70, 240);
-						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + HitPlace + (CFRandom(-4, 4),CFRandom(-4, 4),CRandom(-6, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + (HitPlace.XY*CFRandom(0, 1), HitPlace.Z) + (CFRandom(-4, 4),CFRandom(-4, 4),CRandom(-6, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
 					}
 				}
 				Return;
@@ -383,7 +383,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					For(int i=CRandom(0, 3)*PAmnt;i<(13-DeathTick*.5)*PAmnt;i++){
 						Float Size = CFRandom(3,6);
 						int Green = CRandom(70, 240);
-						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + HitPlace + (CFRandom(-8, 8),CFRandom(-8, 8),CRandom(-13, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + (HitPlace.XY*CFRandom(0, 1), HitPlace.Z) + (CFRandom(-8, 8),CFRandom(-8, 8),CRandom(-13, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
 					}
 				}
 				Return;
@@ -455,7 +455,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					For(int i=CRandom(0, 3)*PAmnt;i<(13-DeathTick*.5)*PAmnt;i++){
 						Float Size = CFRandom(3,6);
 						int Red = CRandom(30, 160);
-						MRSpawnParticle(Color(Red,255,CRandom(10, Red*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + HitPlace + (CFRandom(-8, 8),CFRandom(-8, 8),CRandom(-13, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(Red,255,CRandom(10, Red*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + (HitPlace.XY*CFRandom(0, 1), HitPlace.Z) + (CFRandom(-8, 8),CFRandom(-8, 8),CRandom(-13, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
 					}
 				}
 				Return;
