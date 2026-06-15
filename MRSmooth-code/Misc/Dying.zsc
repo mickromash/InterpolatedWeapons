@@ -493,6 +493,36 @@ Extend Class MRIntWeaps_BFG9000
 	}
 }
 
+Extend Class MRIntWeaps_ID24Incinerator
+{
+	MRIntWeaps_FlyingWeapon Dropped;
+	Action Void A_DropWeapon()
+	{
+		if(invoker.Dropped)invoker.Dropped.Destroy();
+		
+		Vector3 Pos = (Self.Pos.XY, Player.ViewZ);
+		Pos.XY += AngleToVector(Angle, 5*Cos(abs(Pitch)));
+		Pos.Z -= 5*Sin(Pitch);
+		
+		Double Strn = 8;
+		Vector3 Vel = Self.Vel;
+		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
+		Vel.Z -= Strn*Sin(Pitch);
+
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("INCNA0", "MRIntW/RocketLauncherBounce", Pos, Vel, Caller:Self);
+	}
+	
+	States
+	{
+		GunDie:
+			TNT1 A 0 {
+				A_DropWeapon();
+				A_GiveInventory("MRIntWeaps_DyingAnimation");
+			}
+			Stop;
+	}
+}
+
 Class MRIntWeaps_DyingAnimation: CustomInventory
 {
 	Default

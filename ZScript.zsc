@@ -13,7 +13,7 @@ Version "4.0"
 #include "MRSmooth-code/Weapons/RocketLauncher.zsc"
 #include "MRSmooth-code/Weapons/Plasmagun.zsc"
 #include "MRSmooth-code/Weapons/BFG9000.zsc"
-//#include "MRSmooth-code/Weapons/Id24incinerator.zsc"
+#include "MRSmooth-code/Weapons/Id24incinerator.zsc"
 //#include "MRSmooth-code/Weapons/id24calamityblade.zsc"
 
 #include "MRSmooth-code/Misc/Misc.zsc"//Landing bounce, damage shake, vanilla firing bob

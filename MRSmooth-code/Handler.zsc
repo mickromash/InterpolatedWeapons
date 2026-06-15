@@ -7,12 +7,25 @@ Class MRIntWeaps_Handler: EventHandler
 	Static Const String Weapons[] = {//Weapons to replace
 		"Fist", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun",
 		"Chaingun", "RocketLauncher", "PlasmaRifle", "BFG9000"
-		//,"ID24Incinerator", "ID24CalamityBlade"
+		,"ID24Incinerator", "ID24CalamityBlade"
 	};
 	
 	Array<Actor> Berserks;
 	MRIntWeaps_Smoker Smokers[MAXPLAYERS];
 	MRIntWeaps_WeaponChecker WeaponChecker[MAXPLAYERS];
+		
+	Override Void CheckReplacement(ReplaceEvent e)
+	{
+		if(!(e.Replacee is 'DoomWeapon'))Return;
+		
+		String ActName = e.Replacee.GetClassName();
+		
+		if(!((Class<Weapon>)("MRIntWeaps_"..ActName)))Return;
+		
+		if(ActName.IndexOf("ID24")>-1 && !MRIntW_LORWeaps)Return;
+		
+		e.Replacement = "MRIntWeaps_"..ActName;
+	}
 	
 	Void GiveWeapons(Actor Plr)//Replace player's vanilla weapons with the mods'
 	{
@@ -25,22 +38,22 @@ Class MRIntWeaps_Handler: EventHandler
 		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
 		else if(Plr.Player.PendingWeapon is 'Weapon')Select = Plr.Player.PendingWeapon.GetClassName();
 		
-		Bool GotWeapon[9];
+		Bool GotWeapon[11];
+		
+		int Weaps = Weapons.Size()-2;
+		if(MRIntW_LoRWeaps)Weaps = Weapons.Size();
 		
 		Inventory Item = Plr.Inv;
 		while(Item != Null){
 			Let CurItem = Item;
 			Item = Item.Inv;
 			if(Weapon(CurItem)){
-				For(int i=0;i<Weapons.Size();i++){
+				For(int i=0;i<Weaps;i++){//Change Weaps to Weapons.Size()
 					if(CurItem is Weapons[i])GotWeapon[i] = true;
 				}
 				Plr.RemoveInventory(CurItem);
 			}
 		}
-		
-		int Weaps = Weapons.Size();
-		//if(MRIntW_LoRWeaps)Weaps = Weapons.Size()-2;
 		
 		For(int i=0;i<Weaps;i++){
 			if(!GotWeapon[i])Continue;
@@ -103,7 +116,7 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Void RemoveWeapons()//Replace mods weapons on the level with vanilla ones
 	{
-		Let iter = ThinkerIterator.Create("Weapon");
+		Let iter = ThinkerIterator.Create("DoomWeapon");
 		Actor Weap;
 		
 		int Akhtung;
@@ -125,7 +138,7 @@ Class MRIntWeaps_Handler: EventHandler
 		For(int i=0;i<Berserks.Size();i++){if(Berserks[i])Berserks[i].Destroy();}
 		Berserks.Clear();
 	}
-	
+		
 	Override Void PlayerSpawned(PlayerEvent e)
 	{
 		GiveWeapons(Players[e.PlayerNumber].mo);
