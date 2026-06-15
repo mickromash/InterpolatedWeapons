@@ -333,7 +333,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						int Col = 25*CFRandom(3, 7);
 						
 						Double Size = CFRandom(8, 10)-DeathTick*.8;
-						MRSpawnParticle(Color(Col,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, (DeathTick-2)*5, Size, Master.Pos+(0,0,5)+Dir*CFRandom(0, 3), Dir*Pow);
+						MRSpawnParticle(Color(Col,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, (DeathTick-2)*6, Size, Master.Pos+(0,0,5)+Dir*CFRandom(0, 3), Dir*Pow);
 					}
 				}
 				
