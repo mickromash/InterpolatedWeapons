@@ -162,6 +162,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_GlovesColor();
 				invoker.FloatSpeed = 4;
 				invoker.IdleEnd = false;
+				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
+				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
+				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			PLSR C 1{invoker.Selecting = true;}
 			#### CC 1 {
