@@ -1165,16 +1165,16 @@ Sprite "BF1FC0", 143, 114
 	}
 }
 
-Sprite "FLMLA0", 125, 102
+Sprite "FL1LA0", 125, 102
 {
 	Offset -100, -96
-	Patch "FLMLA", 38, 29
+	Patch "FL1LA", 38, 29
 }
 
-Sprite "FLMLB0", 125, 102
+Sprite "FL1LB0", 125, 102
 {
 	Offset -100, -96
-	Patch "FLMLB", 45, 16
+	Patch "FL1LB", 45, 16
 }
 
 // End of texture definitions
