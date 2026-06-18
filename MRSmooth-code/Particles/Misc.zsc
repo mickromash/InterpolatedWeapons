@@ -701,16 +701,16 @@ Class MRIntWeaps_TeleportParticles: MRIntWeaps_ActorEffects
 						int Bright = CRandom(40, 255);
 						float Life = Master.Target.Height/6+2;
 						
-						Master.A_SpawnParticle(Color(Bright,255,Bright), SPF_RELVEL|SPF_RELPOS|SPF_FULLBRIGHT, Life, CFRandom(2, 3), i, Master.Target.Radius-y/6,0,Master.Target.Height+Y,
-							.3,0,-6);
+						Master.Target.A_SpawnParticle(Color(Bright,255,Bright), SPF_RELVEL|SPF_RELPOS|SPF_FULLBRIGHT, Life, CFRandom(2, 3), i, Master.Target.Radius-y/6,0,-(Master.Target.Pos.Z-Master.Target.FloorZ)+Master.Target.Height+Y,
+							.3,0,-6, FadeStepF:0);
 					}
 				}
-				else if(Age>=Master.Target.Height/6){
+				else if(Age+1>=Master.Target.Height/6){
 					For(float i=0;i<360;i++)//Wave
 					{
 						int Bright = CRandom(40, 255);
 						
-						Master.A_SpawnParticle(Color(Bright,255,Bright), SPF_RELPOS|SPF_FULLBRIGHT|SPF_RELVEL, 35, CFRandom(2, 3), i, Master.Target.Radius,0,5,
+						Master.Target.A_SpawnParticle(Color(Bright,255,Bright), SPF_RELPOS|SPF_FULLBRIGHT|SPF_RELVEL, 35, CFRandom(2, 3), i, Master.Target.Radius,0,-(Master.Target.Pos.Z-Master.Target.FloorZ)+5,
 							1,0,-.1);
 					}
 					
@@ -719,7 +719,7 @@ Class MRIntWeaps_TeleportParticles: MRIntWeaps_ActorEffects
 						int Bright = CRandom(40, 255);
 						float Ang = i+CFRandom(-15, 15);
 						
-						Master.A_SpawnParticle(Color(Bright,255,Bright), SPF_RELPOS|SPF_RELVEL|SPF_FULLBRIGHT, 35, CFRandom(1, 3), i, Master.Target.Radius*.25,0,1,
+						Master.Target.A_SpawnParticle(Color(Bright,255,Bright), SPF_RELPOS|SPF_RELVEL|SPF_FULLBRIGHT, 35, CFRandom(1, 3), i, Master.Target.Radius*.25,0,-(Master.Target.Pos.Z-Master.Target.FloorZ)+1,
 							CFRandom(2, 3),0,CRandom(2, 5), 0,0,-.3);
 					}
 					Destroy();
@@ -728,6 +728,6 @@ Class MRIntWeaps_TeleportParticles: MRIntWeaps_ActorEffects
 				Break;
 		}
 		
-		Age++;
+		if(!Level.IsFrozen())Age++;
 	}
 }
