@@ -19,7 +19,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.25*MRIntW_RecoilAmount);}
+		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.25*Owner.GetCVar("MRIntW_RecoilAmount"));}
 		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
@@ -575,7 +575,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			}
 			#### A 3 {
 				A_FirePlasma();
-				if(MRIntW_Recoil){invoker.Recoil+=1;A_SetPitch(Pitch-.5*MRIntW_RecoilAmount);}//Recoil
+				if(GetCVar("MRIntW_Recoil")){invoker.Recoil+=1;A_SetPitch(Pitch-.5*GetCVar("MRIntW_RecoilAmount"));}//Recoil
 			}
 			#### B 20 A_ReFire();
 			Goto Ready;

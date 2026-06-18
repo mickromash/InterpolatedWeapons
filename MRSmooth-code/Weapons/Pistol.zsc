@@ -23,9 +23,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Override Void DoEffect()
 	{
 		if(Recoil>0){
-			Double Recover = .25*MRIntW_RecoilRecover;
+			Double Recover = .25*Owner.GetCVar("MRIntW_RecoilRecover");
 			Recoil -= Recover;
-			Owner.A_SetPitch(Owner.Pitch+Recover*MRIntW_RecoilAmount);
+			Owner.A_SetPitch(Owner.Pitch+Recover*GetCVar("MRIntW_RecoilAmount"));
 		}
 
 		For(int i=0;i<Casings.Size();i++){
@@ -285,6 +285,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayScale(Lay1, .8, .8);
 				A_OverlayRotate(Lay1, 10.5);
 				invoker.SwitchState = 11;
+				invoker.SwitchFrame = 25;
 			}
 			P1SG C 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
@@ -376,7 +377,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		Fire:
 			TNT1 A 4 {
 				A_Overlay(Lay1, "GunFire");
-				if(MRIntW_InstantFire||MRIntW_FastPistol)A_SetTics(0);
+				if(GetCVar("MRIntW_InstantFire")||MRIntW_FastPistol)A_SetTics(0);
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PISGA0");
 			}
@@ -384,10 +385,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_FirePistol();
 				A_Overlay(Lay2, "GunFlash");
 				A_Overlay(Lay3, "GunMuzzleFlashFlare");
-				if(MRIntW_Recoil){invoker.Recoil=2;A_SetPitch(Pitch-2*MRIntW_RecoilAmount, MRIntW_RecoilRecover?0:SPF_INTERPOLATE);}//Recoil
+				if(GetCVar("MRIntW_Recoil")){invoker.Recoil=2;A_SetPitch(Pitch-2*GetCVar("MRIntW_RecoilAmount"), GetCVar("MRIntW_RecoilRecover")?0:SPF_INTERPOLATE);}//Recoil
 			}
 			#### C 4 {invoker.IncreaseSmoke();}
-			#### B 4 {if(!MRIntW_InstantFire||MRIntW_FastPistol)A_SetTics(0);else if(Player.GetPSprite(Lay1).Tics<4)A_WeaponReady(WRF_NOFIRE);}
+			#### B 4 {if(!GetCVar("MRIntW_InstantFire")||MRIntW_FastPistol)A_SetTics(0);else if(Player.GetPSprite(Lay1).Tics<4)A_WeaponReady(WRF_NOFIRE);}
 			#### B 5 A_ReFire();
 			Goto Ready;
 
@@ -402,7 +403,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 			}
-			#### # 0 A_JumpIf(MRIntW_InstantFire||MRIntW_FastPistol, 5);
+			#### # 0 A_JumpIf(GetCVar("MRIntW_InstantFire")||MRIntW_FastPistol, 5);
 			#### A 1;
 			#### A 1 A_OverlayOffset(Lay1, CRandom(-1, 1), 0, WOF_INTERPOLATE);
 			#### HB 1 A_OverlayOffset(Lay1, CFRandom(-.25, .25), Player.GetPSprite(Lay1).Y-1, WOF_INTERPOLATE);

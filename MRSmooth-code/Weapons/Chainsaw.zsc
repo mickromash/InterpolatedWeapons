@@ -25,7 +25,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		
 	Override Void DoEffect()
 	{
-		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*MRIntW_RecoilAmount);}
+		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*Owner.GetCVar("MRIntW_RecoilAmount"));}
 		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
@@ -545,10 +545,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 			#### AB 4 {
 				A_Saw();
-				if(MRIntW_Recoil && Player.GetPSprite(Overlayid()).Tics%2==0){//Screen shake
+				if(GetCVar("MRIntW_Recoil") && Player.GetPSprite(Overlayid()).Tics%2==0){//Screen shake
 					If(!invoker.Cutting){
 						invoker.Recoil+=1;
-						A_SetPitch(Pitch-1*MRIntW_RecoilAmount);
+						A_SetPitch(Pitch-1*GetCVar("MRIntW_RecoilAmount"));
 					}
 				}
 				if(MRIntW_ScreenShake<2)Return;

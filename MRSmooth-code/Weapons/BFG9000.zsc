@@ -20,9 +20,9 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	Override Void DoEffect()
 	{
 		if(Recoil>0){
-			Double Recover = .125*MRIntW_RecoilRecover;
+			Double Recover = .125*Owner.GetCVar("MRIntW_RecoilRecover");
 			Recoil -= Recover;
-			Owner.A_SetPitch(Owner.Pitch+Recover*MRIntW_RecoilAmount);
+			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
 		}
 		
 		//Disabling weapon interpolation while game is loading
@@ -478,7 +478,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			#### B 10 {if(!MRIntW_Lighting)A_GunFlash();}
 			#### B 10 {
 				A_FireBFG();
-				if(MRIntW_Recoil){invoker.Recoil=3;A_SetPitch(Pitch-3*MRIntW_RecoilAmount, MRIntW_RecoilRecover?0:SPF_INTERPOLATE);}//Recoil
+				if(GetCVar("MRIntW_Recoil")){invoker.Recoil=3;A_SetPitch(Pitch-3*GetCVar("MRIntW_RecoilAmount"), GetCVar("MRIntW_RecoilRecover")?0:SPF_INTERPOLATE);}//Recoil
 			}
 			#### B 20 A_ReFire();
 			Goto Ready;
