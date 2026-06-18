@@ -23,20 +23,47 @@ Rifle - id Software, DrPyspy
 Casings - id Software
 Lowres casings - taken from Hideous Destructor
 
-Smoke graphic was made by me, as well as guns sprites editing
+Smoke graphics was made by me, as well as guns sprites editing
 
 
 ==== SOUNDS ====
 
 Fist whoosh sound - id Software
+Gloves takin on/off sounds taken from The Soldier Z mod
+Weapon dropping sounds taken from The Soldier Z mod
+
+
+==== INSPIRATION ====
+
+Smooth Doom mod
+Beautiful Doom mod
+Hideous destructor mod
+Doom Delta mod
+Doom Deluxe mod
+
+Bioshock
+Bioshock Infinite
+Doom 2016
+Half Life 1-2
+Power Slave
+Quake 1, 2, 4
+Doom 3
+
+Black Lagoon anime series
+
+C&Rsenal youtube channel (and C&Rsenal rus)
+Импакт шутера - Kefir succerland на youtube
 
 
 ==== SPECIAL THANKS ====
 
 Patis
 RastamanGames
+JSO_X
+NomakhThunder and his community
+Hideous Destructor community
+Russian Doom Community on discord
 
-Спасибо людям из этих тг чатов, за критику и идеи для мода
-
+Спасибо людям из этих тг чатов за критику и идеи для мода (Thanks to the people from these telegram chats for criticism and ideas for the mod):
 Delta touch 2.0
 ENDOOM Community
