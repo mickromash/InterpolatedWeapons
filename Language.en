@@ -9,6 +9,7 @@ MRIntW_FlowingSmokeLength = "Flowing smoke length";
 MRIntW_FlowingSmokeAlpha = "Flowing smoke opacity";
 MRIntW_FlowingSmokeMaxTime = "Max. smoke time";
 MRIntW_FlowingSmokePrecision = "Flowing smoke particles amount";
+MRIntW_LongTermSmoke = "Long term smoke";
 
 MRIntW_Casings = "Casings";
 MRIntW_Casings0 = "No";
@@ -22,20 +23,21 @@ MRIntW_CasingsClusteringReduce = "Reduce casings bunches";
 MRIntW_CasingsLowRes = "Lowres casings";
 
 MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
-MRIntW_Recoil = "\cv⊛\c- Visual recoil";
-MRIntW_RecoilAmount = "\cv⊛\c- Recoil amount";
+MRIntW_Recoil = "Visual recoil";
+MRIntW_RecoilAmount = "Recoil amount";
+MRIntW_RecoilRecover = "Recoil compensation";
 MRIntW_ScreenShake = "Screen shake";
 MRIntW_ScreenShake0 = "No";
 MRIntW_ScreenShake1 = "Only on firing";
 MRIntW_ScreenShake2 = "No landing shake";
 MRIntW_ScreenShake3 = "Full";
 MRIntW_ScreenShakeAmount = "Screen shake amount";
-MRIntW_RecoilRecover = "\cv⊛\c- Recoil compensation";
-MRIntW_InstantFire = "\cv⊛\c- Instant firing";
+MRIntW_InstantFire = "Instant firing";
 MRIntW_FastPistol = "\cv⊛\c- Faster pistol";
 MRIntW_BetterAlert = "\cv⊛\c- Better monster alerting";
 
 
+MRIntWeaps_GiveTip = "If there's anything wrong with the weapon, press this";
 MRIntWeaps_Give = "Make animations smooth";
 
 MRIntWeaps_Uninstall = "Uninstall mod";
@@ -337,3 +339,7 @@ MRIntW_ApplyPressetPrompt = "Load previously saved settings?\nThis presset won't
 
 
 TAG_RIFLE = "Rifle";
+
+MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- This game was saved with a different version of the mod\n"
+						"if you'll encounter any issues,"
+						"prossed to the mod's settings menu and press \"Make animations smooth\" button.";

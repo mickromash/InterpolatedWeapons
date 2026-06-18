@@ -138,7 +138,7 @@ Class MRIntWeaps_Handler: EventHandler
 		For(int i=0;i<Berserks.Size();i++){if(Berserks[i])Berserks[i].Destroy();}
 		Berserks.Clear();
 	}
-		
+			
 	Override Void PlayerSpawned(PlayerEvent e)
 	{
 		GiveWeapons(Players[e.PlayerNumber].mo);
@@ -316,10 +316,13 @@ Class MRIntWeaps_Handler: EventHandler
 		if(Uninstalled)Console.Printf(StringTable.Localize("$MRIntWeaps_Uninstalled"));
 	}
 	
+	Bool DifVersion;
 	int LoadingDelay;//Disabling weapon interpolation while game is loading, otherwise weapon sprite will appear in the middle of the screen
 	Override Void OnRegister()
 	{
 		LoadingDelay = 3;
+		
+		if((MRIntW_Version!=CVar.GetCVar("MRIntW_Version").GetDefaultInt()))New('MRIntW_DifVersionMessage');
 		//Console.Printf("Register");
 	}
 	
@@ -356,5 +359,51 @@ Class MRIntWeaps_WeaponChecker: Thinker
 		if(!Handler)Return;
 		
 		Handler.GiveWeapons(Master);
+	}
+}
+
+Class MRIntW_DifVersionMessage: Thinker
+{
+	Const Start = 6;
+	Const Chan = 221;
+	int Time;
+	Float Pitch;
+	Override Void Tick()
+	{
+		Super.Tick();
+		
+		Let Plr = Players[ConsolePlayer].Camera;
+		
+		if(!Plr)Return;
+		
+		Time++;
+		Switch(Time)
+		{
+			Case Start:
+				Console.Printf(StringTable.Localize("$MRIntW_VersionMessage"));
+				Plr.A_StartSound("MRIntW/Message1", Chan, CHANF_LOOP, .05, pitch:Pitch = CFRandom(4, 9));
+				Break;
+				
+			Default:
+				Float Vol = Time-Start;
+				if(Vol<8){
+					Plr.A_SoundVolume(Chan, Vol/7.);
+				}
+				else if(Vol>26){
+					Plr.A_SoundVolume(Chan, 1.-((Vol-26)/9.));
+				}
+				else Plr.A_SoundVolume(Chan, CFRandom(.8, 1));
+				
+				if(Pitch>=9)Pitch -= CFRandom(0, 2);
+				else if(Pitch<=4)Pitch += CFRandom(0, 2);
+				else Pitch += CFRandom(-1, 1);
+				Plr.A_SoundPitch(Chan, Pitch);
+				Break;
+				
+			Case Start+35:
+				Plr.A_StopSound(Chan);
+				Destroy();
+				Break;
+		}
 	}
 }
