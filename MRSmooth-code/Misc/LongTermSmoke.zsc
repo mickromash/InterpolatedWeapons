@@ -1,0 +1,97 @@
+/*
+	
+*/
+
+Extend Class MRIntWeaps_Handler
+{
+	Array<MRIntWeaps_LongTermSmoke> LTSmokes;
+	
+	Const LTSmokeDist = 60;
+	Void AddLTSmoke(Vector3 Pos, Double Amount)
+	{
+		Let Sect = Level.PointInSector(Pos.XY);
+		
+		if(!Sect)Return;
+						
+		//Check if indoors
+		String PicName = Texman.GetName(Sect.GetTexture(1));
+		if(PicName ~== "F_SKY1"||
+			PicName ~== "F_SKY"||
+			PicName ~== "F_SKY001"
+		){
+			Return;
+		}
+		
+		Pos.Z = Min(Sect.CenterCeiling()-30, Pos.Z+100);
+		
+		int GotSmoke = -30;
+		Float ClosestSmokAlph;
+		
+		For(int i=0;i<LTSmokes.Size();i++)
+		{
+			if(LTSmokes[i]){
+				if(LTSmokes[i].bDestroyed || LTSmokes[i].Amount<=0){
+					LTSmokes.Delete(i);
+					i--;
+					Continue;
+				}
+			}
+			else {
+				LTSmokes.Delete(i);
+				i--;
+				Continue;
+			}
+			
+			Vector2 Diff = LTSmokes[i].Pos.XY - Pos.XY;
+			
+			if(Diff.Length()>LTSmokeDist)Continue;
+			
+			LTSmokes[i].Amount += Amount;
+			if(LTSmokes[i].Amount>25)LTSmokes[i].Amount = 25;
+			
+			if(Diff.Length()-LTSmokeDist<GotSmoke){
+				GotSmoke = Diff.Length()-LTSmokeDist;
+				ClosestSmokAlph = LTSmokes[i].Amount-Diff.Length()/LTSmokeDist;
+			}
+		}
+		
+		if(GotSmoke<-30)Return;
+		
+		Let a = MRIntWeaps_LongTermSmoke(Level.SpawnVisualThinker('MRIntWeaps_LongTermSmoke'));
+		
+		a.Pos = Pos;
+		a.Amount = Max(3, ClosestSmokAlph);
+		
+		LTSmokes.Push(a);
+	}
+}
+
+Class MRIntWeaps_LongTermSmoke: VisualThinker
+{
+	Double Amount;
+	
+	Override Void PostBeginPlay()
+	{
+		Texture = Texman.CheckForTexture("NSHSA0");
+		SColor = Color(130,130,int(130*CFRandom(1.1, 1.2)));
+		Scale = (4, 2);
+		Offset = -(32*4, 32*2);
+		Alpha = Amount*.01;
+		Super.PostBeginPlay();
+	}
+	
+	Override Void Tick()
+	{
+		Super.Tick();
+		if(!CurSector)Return;
+				
+		Amount -= .015;
+		if(Amount<=0){Destroy();Return;}
+		
+		Double Room = (CurSector.CenterCeiling()-CurSector.CenterFloor())*.7;
+		
+		Alpha = Amount*.01;
+		
+		Pos.Z = Min(CurSector.CenterCeiling()-Min(Room, 30), Pos.Z);
+	}
+}

@@ -333,6 +333,11 @@ Extend Class MRIntWeaps_Pistol
 	
 	Action Void A_FireSmoke(Double Offset = 0, Double Scale = 1)
 	{
+		if(MRIntW_LongTermSmoke){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.AddLTSmoke(Pos, .05);
+		}
+		
 		if(!MRIntW_Smoke)Return;
 		
 		Double Alpha = invoker.ShotPower-5;
@@ -347,7 +352,7 @@ Extend Class MRIntWeaps_Pistol
 		}
 		
 		else{
-			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
+			Let Part = MRIntWeaps_SmokeParticle(Level.SpawnVisualThinker('MRIntWeaps_SmokeParticle'));
 			
 			int Col = CRandom(170, 180);
 			Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));
@@ -474,6 +479,11 @@ Extend Class MRIntWeaps_Shotgun
 	
 	Action Void A_FireSmoke()
 	{
+		if(MRIntW_LongTermSmoke){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.AddLTSmoke(Pos, .5);
+		}
+		
 		if(!MRIntW_Smoke)Return;
 		
 		Double Alpha = invoker.ShotPower-35;
@@ -488,7 +498,7 @@ Extend Class MRIntWeaps_Shotgun
 		}
 		
 		else{
-			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
+			Let Part = MRIntWeaps_SmokeParticle(Level.SpawnVisualThinker('MRIntWeaps_SmokeParticle'));
 			
 			int Col = CRandom(140, 150);
 			Part.SColor = Color(Col,Col,int(Col*CFRandom(1.1, 1.4)));
@@ -740,6 +750,11 @@ Extend Class MRIntWeaps_Chaingun
 	
 	Action Void A_FireSmoke()
 	{
+		if(MRIntW_LongTermSmoke){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.AddLTSmoke(Pos, .045);
+		}
+		
 		if(!MRIntW_Smoke)Return;
 		
 		Double Alpha = invoker.ShotPower-5;
@@ -754,7 +769,7 @@ Extend Class MRIntWeaps_Chaingun
 		}
 		
 		else{
-			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
+			Let Part = MRIntWeaps_SmokeParticle(Level.SpawnVisualThinker('MRIntWeaps_SmokeParticle'));
 			
 			int Col = CRandom(170, 180);
 			Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));
@@ -816,6 +831,11 @@ Extend Class MRIntWeaps_RocketLauncher
 {
 	Action Void A_FireSmoke()
 	{
+		if(MRIntW_LongTermSmoke){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.AddLTSmoke(Pos, .75);
+		}
+		
 		if(!MRIntW_Smoke)Return;
 					
 		if(Players[ConsolePlayer].Camera != Self){
@@ -827,7 +847,7 @@ Extend Class MRIntWeaps_RocketLauncher
 		}
 		
 		else{
-			Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
+			Let Part = MRIntWeaps_SmokeParticle(Level.SpawnVisualThinker('MRIntWeaps_SmokeParticle'));
 									
 			Float Alph = CFRandom(.16, .2);
 			
@@ -1109,7 +1129,7 @@ Extend Class MRIntWeaps_BFG9000
 	}
 }
 
-Class MRIntW_SmokeParticle: VisualThinker
+Class MRIntWeaps_SmokeParticle: VisualThinker
 {
 	int Life, Age;
 	Actor Master;

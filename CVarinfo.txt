@@ -6,6 +6,7 @@ nosave bool MRIntW_CasingsLowRes = false;//HDest sprite for casings on the floor
 nosave bool MRIntW_CasingsClusteringReduce = true;//Casings optimization
 
 nosave bool MRIntW_Smoke = true;//Firing smoke
+nosave bool MRIntW_LongTermSmoke = false;//Long term firing smoke
 nosave bool MRIntW_FlowingSmoke = false;//Smoke from barrels after firing
 nosave float MRIntW_FlowingSmokeLength = 1;
 nosave float MRIntW_FlowingSmokeAlpha = .1;
@@ -23,15 +24,15 @@ nosave bool MRIntW_DamageShake = true;//Shake weapon on receiving damage
 user bool MRIntW_IdleAnims = true;//Idle animations
 nosave int MRIntW_ReloadAnims = 1;//Alternative select animations after wasting all ammo or on first pickup; 0 - None, 1 - Reload only, 2 - First only, 3 - Both
 
-server bool MRIntW_Recoil = false;//Visual recoil and screen shaking
-server float MRIntW_RecoilAmount = 1;
-server float MRIntW_RecoilRecover = 1;
+user bool MRIntW_Recoil = false;//Visual recoil and screen shaking
+user float MRIntW_RecoilAmount = 1;
+user float MRIntW_RecoilRecover = 1;
 
 nosave int MRIntW_ScreenShake = 1;//0 - None, 1 - Only on firing, 2 - No landing shake, 3 - Full
 nosave float MRIntW_ScreenShakeAmount = 1;
 
 server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting
-server bool MRIntW_InstantFire = true;//Remove firing delay
+user bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
 server noarchive bool MRIntW_LoRWeaps = false;
@@ -111,3 +112,4 @@ nosave int MRIntW_TeleportParticlesStyleMonsters = 2;
 nosave string MRIntW_PressetCust1 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
+server noarchive int MRIntW_Version = 1706261;

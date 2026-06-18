@@ -80,6 +80,11 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 	
 	Action Void A_FireSmoke()
 	{
+		if(MRIntW_LongTermSmoke){
+			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
+			if(Handler)Handler.AddLTSmoke(Pos, .75);
+		}
+		
 		if(!MRIntW_Smoke)Return;
 		
 		//Smoke alpha from last shot damage (min dmg 145, max dmg 255)
@@ -96,7 +101,7 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 		
 		else{
 			For(Float i=-.25;i<.5;i+=.5){
-				Let Part = MRIntW_SmokeParticle(Level.SpawnVisualThinker('MRIntW_SmokeParticle'));
+				Let Part = MRIntWeaps_SmokeParticle(Level.SpawnVisualThinker('MRIntWeaps_SmokeParticle'));
 				
 				int Col = CRandom(140, 150);
 				Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));

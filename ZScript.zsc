@@ -19,6 +19,7 @@ Version "4.0"
 #include "MRSmooth-code/Misc/Misc.zsc"//Landing bounce, damage shake, vanilla firing bob
 #include "MRSmooth-code/Misc/Effects.zsc"//Casings/smoke/particles
 #include "MRSmooth-code/Misc/MuzzleSmoke.zsc"//Flowing smoke
+#include "MRSmooth-Code/Misc/LongTermSmoke.zsc"//Long term firing smoke
 #include "MRSmooth-code/Misc/Dying.zsc"//First person death animations
 #include "MRSmooth-code/Particles/Player.zsc"//Player projectile and puff particle effects
 #include "MRSmooth-code/Particles/Monsters.zsc"//Monster particle effects
