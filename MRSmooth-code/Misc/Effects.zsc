@@ -626,7 +626,7 @@ Extend Class MRIntWeaps_Shotgun
 		//Buckshot sparks
 		if(Random(0, 20)<2)Return;
 		if(Players[ConsolePlayer].Camera!=Self && MRIntW_ShotgunSparks)
-			For(int i1=Random(0, 7);i1<10;i1++){
+			For(int i1=CRandom(0, 7);i1<10;i1++){
 				Vector3 Pos = (0,0,0);
 				Pos += AngleToVector(Angle, 17);
 				Pos += AngleToVector(Angle-90, 7);
