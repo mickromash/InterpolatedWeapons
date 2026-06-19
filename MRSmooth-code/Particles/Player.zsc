@@ -420,7 +420,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 	}
 }
 
-Class MRIntWeaps_BFGParticle: VisualThinker
+Class MRIntWeaps_BFGParticle: VisualThinker//Particles spinning around the ball
 {
 	Actor Master;
 	Double Angle, Pitch, AngChange, PitChange, Radius;
@@ -449,6 +449,11 @@ Class MRIntWeaps_BFGParticle: VisualThinker
 	{
 		Super.Tick();
 		
+		if(Scale.X<=0||Alpha<=0){
+			Destroy();
+			Return;
+		}
+		
 		if(!Master||Master.Vel.Length()<=0){
 			if(!FlyAway){
 				FlyAway = True;
@@ -456,9 +461,7 @@ Class MRIntWeaps_BFGParticle: VisualThinker
 				Return;
 			}
 			
-			if(Scale.X<=0)Return;
 			Scale-=(.005, .005);
-			
 			Return;
 		}
 		
