@@ -52,7 +52,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	
 	int BobState, IdleDelay, ShotPower;
 	Float Rotation, Speed, MaxSpeedM, GunFrame, HandPos;
-	Bool CustomSound, ConterClock, DontStop;
+	Bool CustomSound, ConterClock, DontStop, InterpolateBarrels;
 	
 	Vector2 HandVector;
 		
@@ -176,7 +176,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		A_OverlayOffset(Lay, 
 			Player.GetPSprite(Lay1).X+Cos(CurRotation)*30-2, 
 			Player.GetPSprite(Lay1).Y+Sin(CurRotation)*20+20, 
-			WOF_INTERPOLATE);
+			invoker.InterpolateBarrels?WOF_INTERPOLATE:0);
 		
 		if(!DrawFuzz){
 			A_OverlayFlags(Lay, PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
@@ -302,11 +302,15 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Player.GetPSprite(OverlayId()).Frame = Player.GetPSprite(Lay1).Frame;
 				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(OverlayId()).Y = Player.GetPSprite(Lay1).Y;
+				Player.GetPSprite(OverlayId()).OldX = Player.GetPSprite(Lay1).OldX;
+				Player.GetPSprite(OverlayId()).OldY = Player.GetPSprite(Lay1).OldY;
+				Player.GetPSprite(OverlayId()).bInterpolate = Player.GetPSprite(Lay1).bInterpolate;
 			}
 			Wait;
 			
 		GunRaise:
-			TNT1 A 4 {
+			TNT1 A 3 {
+				invoker.InterpolateBarrels = true;
 				invoker.HandPos = 1;
 				A_Overlay(Muzzle0, "Muzzle");
 				A_Overlay(Muzzle1, "Muzzle");
@@ -359,24 +363,26 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				invoker.ConterClock = GetCVar("MRIntW_ChaingunCounterClock");
 				if(!invoker.Reload && CRandom(0, 1)>0)invoker.Speed = 205.6*GetCVar("MRIntW_ChaingunStopTime");
 			}
-			CH1G ########### 1 {
-				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?4:-4, -.5, WOF_ADD);
+			CH1G ######### 1 {
+				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?4:-4, -3, WOF_ADD);
 				For(int i=Muzzle0;i<=Muzzle5;i++){
-					if(abs(invoker.Speed)>.1)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
-					else A_OverlayFlags(i, PSPF_INTERPOLATE, false);
+					A_OverlayFlags(i, PSPF_INTERPOLATE, true);
 				}
 				invoker.SwitchState--;
 				
-				if(invoker.Reload){
-					Switch(invoker.SwitchState){
-						Case 8:
-							A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.85, .93));
-							Break;
-						Case 1:
-							invoker.Speed = 70*GetCVar("MRIntW_ChaingunStopTime");
-							invoker.Reload = false;
-							Break;
-					}
+				if(invoker.Reload && invoker.SwitchState==8)A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.85, .93));
+			}
+			
+			CH1G ### 1 {
+				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?4:-4, 6, WOF_ADD);
+				For(int i=Muzzle0;i<=Muzzle5;i++){
+					A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+				}
+				invoker.SwitchState--;
+				
+				if(invoker.Reload && invoker.SwitchState==1){
+					invoker.Speed = 70*GetCVar("MRIntW_ChaingunStopTime");
+					invoker.Reload = false;
 				}
 			}
 			CH1G # 1 {
@@ -388,6 +394,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		GunWait:
 			#### # 1 {if(!(Player.Cmd.Buttons&BT_ATTACK))A_IdleAnimation(Lay1);}
 			#### # 0 {
+				invoker.InterpolateBarrels = true;
 				For(int i=Muzzle0;i<=Ring;i++){
 					if(i<=Muzzle5 && (abs(invoker.Speed)>.1||Player.FindPSprite(Lay2)))Continue;
 					A_OverlayFlags(i, PSPF_INTERPOLATE, false);
@@ -434,27 +441,54 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				else {invoker.SwitchState--;A_SetTics(0);}
 			}
 			CH1G ## 1 {
-				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?1.5:-1.5, -1.5, WOF_ADD);
+				if(invoker.SwitchState<0){
+					For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+					invoker.InterpolateBarrels = true;
+				}
+				
+				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?1:-1, -1.5, WOF_ADD);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayRotate(i, invoker.SwitchAnim?-1:1, WOF_ADD);
 				
 				if(invoker.SwitchState>0){
-					For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?-5.5:5.5, 0, WOF_ADD);
+					For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?-3:3, -4.5, WOF_ADD);
 					invoker.SwitchState--;
 					A_SetTics(0);
+					For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, false);
+				}
+				else if(invoker.SwitchState==0){
+					For(int i=Muzzle0;i<=Ring;i++){
+						A_OverlayFlags(i, PSPF_INTERPOLATE, false);
+						invoker.InterpolateBarrels = false;
+					}
+					invoker.SwitchState--;
 				}
 			}
 			CH1G # 1 {
+				if(invoker.SwitchState<0){
+					For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+					invoker.InterpolateBarrels = true;
+				}
+				
 				if(!Player.FindPSprite(PSP_WEAPON)||Player.FindPSprite(PSP_WEAPON).Y+30>=WEAPONBOTTOM){
 					For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, false);
 					A_ClearOverlays(Barrel0, Barrel5);
+					A_ClearOverlays(Muzzle0, Muzzle5);
+					invoker.InterpolateBarrels = false;
 				}
-				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?-5:5, 7.5, WOF_ADD);
+				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?-4:4, 7.6, WOF_ADD);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayRotate(i, invoker.SwitchAnim?1:-1, WOF_ADD);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayScale(i, .025, .025, WOF_ADD);
 				For(int i=BarrReflct0;i<=Ring;i++){
 					if(abs(invoker.Speed)>3)A_OverlayFlags(i, PSPF_INTERPOLATE, False);
 				}
-				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
+				if(invoker.SwitchState>0){invoker.SwitchState--;For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, false);A_SetTics(0);}
+				else if(invoker.SwitchState==0){
+					For(int i=Muzzle0;i<=Ring;i++){
+						A_OverlayFlags(i, PSPF_INTERPOLATE, false);
+						invoker.InterpolateBarrels = false;
+					}
+					invoker.SwitchState--;
+				}
 			}
 			Wait;
 			
