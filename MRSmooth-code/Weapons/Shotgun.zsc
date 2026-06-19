@@ -122,6 +122,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			TNT1 A 0 A_JumpIf(invoker.Reload, "GunRaiseReload");
 			TNT1 A 1{
 				invoker.SwitchAnim = CRandom(0, 1);
+				invoker.SwitchState = 10;
 			}
 			TNT1 AAA 1 {
 				A_GlovesColor();
@@ -138,8 +139,6 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					A_OverlayScale(Lay1, 1.2, 1.2);
 					A_OverlayRotate(Lay1, -10.5);
 				}
-				
-				invoker.SwitchState = 10;
 			}
 			SH1G A 1{
 				if(invoker.SwitchAnim){

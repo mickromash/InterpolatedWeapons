@@ -47,10 +47,10 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	
 	States{
 		GunRaise:
-			TNT1 A 1{
+			TNT1 A 0{
 				invoker.SwitchAnim = CRandom(0, 1);
 			}
-			TNT1 AAAA 1 {
+			TNT1 AAAAA 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
 				A_OverlayPivot(Lay1, .5, .5);
 				A_OverlayOffset(Lay1, invoker.SwitchAnim?-61:61, 80);
