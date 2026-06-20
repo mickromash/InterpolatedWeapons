@@ -137,6 +137,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				invoker.LEDsScale[0] = invoker.LEDsScale[1] = (.22, .04);
 				invoker.LEDsScale[2] = invoker.LEDsScale[3] = (.25, .05);
 				invoker.LEDsScale[4] = invoker.LEDsScale[5] = (.25, .05);
+				if(invoker.Reload)Player.GetPSprite(Lay1).Frame = 0;
+				else invoker.Muzzle = 0;
 			}
 			BFG1 ######## 1{
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
@@ -155,6 +157,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 							A_StartSound("MRIntW/BFGReload", CHAN_AUTO, pitch:i_timescale*CFRandom(1.47, 1.53));
 							A_StartSound("MRIntW/PlasmaReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.76, .83));
 							invoker.Reload = false;
+							invoker.Muzzle = 5;
 							Break;
 					}
 				}
@@ -172,10 +175,9 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			}
 			BFG1 A 1 {
 				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
-				invoker.Muzzle = 0;
 				invoker.InterpolateMuzzle = false;
 				A_Overlay(Lay2, "GunMuzzle");
-				A_OverlayOffset(Lay2, 0, Player.GetPSprite(Lay1).OldY-34);
+				A_OverlayOffset(Lay2, 0, Player.GetPSprite(Lay1).OldY-34+invoker.Muzzle*3);
 				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);
 				invoker.SwitchState = 0;
 			}
@@ -186,14 +188,16 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 		GunWait:
 			BFG1 A 1 {
 				A_IdleAnimation(Lay1);
-				if(invoker.Muzzle>.1)invoker.Muzzle *= .5;
-				else invoker.Muzzle = 0;
+				if(invoker.Reload||!invoker.InterpolateMuzzle)Return;
+				if(invoker.Muzzle>.1){invoker.Muzzle *= .5;A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);}
+				else {invoker.Muzzle = 0;A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);}
 			}
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);invoker.InterpolateMuzzle = true;}
 			Loop;
 		GunLower:
 			#### # 0 A_ClearOverlays(Lay2, Lay2);
 			BFG1 C 1 {
+				if(invoker.Reload)Player.GetPSprite(Lay1).Frame = 0;
 				A_OverlayPivot(Lay1, .5, 0);
 				A_OverlayScale(Lay1, 1, 1);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
@@ -250,13 +254,13 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
 			}
-			#### #### 1 {
+			#### # 1 {
 				A_OverlayOffset(Lay1, -invoker.DeselDir*1.5, 9, WOF_ADD);
 				A_OverlayScale(Lay1, -.015, -.015, WOF_ADD);
 				
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
 			}
-			Stop;
+			Wait;
 			
 		GunLEDs:
 			BFGO A 1 BRIGHT {
@@ -418,7 +422,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+invoker.Muzzle*3;
 			}
 			BFG1 AAAAA 1{
-				invoker.Muzzle-=.8;
+				if(!invoker.Reload)invoker.Muzzle-=.8;
 				Player.GetPSprite(Lay1).X *= .6;
 				Player.GetPSprite(Lay1).Y *= .6;
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.6;
@@ -430,7 +434,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			BFG1 A 1{
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
-				invoker.Muzzle-=1;
+				if(!invoker.Reload)invoker.Muzzle-=1;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+invoker.Muzzle*3;
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
