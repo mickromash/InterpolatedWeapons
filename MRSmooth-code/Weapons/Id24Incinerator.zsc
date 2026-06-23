@@ -29,6 +29,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 	
 	Override Void PostBeginPlay()
 	{
+		If(Wads.CheckNumForName("FLMGA0",wads.ns_sprites,-1,false)<0){Destroy();Return;}
 		Super.PostBeginPlay();
 		if(Owner && Owner.CountInv("ID24Incinerator"))Destroy();
 	}
