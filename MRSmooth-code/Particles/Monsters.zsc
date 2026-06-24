@@ -257,7 +257,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 			if(Type>6)GotHit = Master.Target;
 			else {
 				if(Master.Target)GotHit = Master.Target.Target;
-				if(GotHit && Master.Distance2D(GotHit)>GotHit.Radius*2)GotHit = Null;
+				if(GotHit && Master.Distance2D(GotHit)>GotHit.Radius*2+Master.Radius)GotHit = Null;
 				if(GotHit){
 					HitPlace = Master.Pos - GotHit.Pos;
 				}
@@ -322,12 +322,13 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					int Leng = 30*Min(2, PAmnt);
 					Double Ang = CFRandom(0, 359);
 					Double Pit = CFRandom(-90, 90);
+					Double Size = 2.5/Clamp(PAmnt, 1, 1.4);
 					
 					For(double i=0;i<Leng;i+=Max(.5, 1/PAmnt)){
 						int Col = 25*CRandom(5, 10);
 						Vector3 PPos = (Cos(Ang), Sin(Ang), Sin(Pit))/Min(2, PAmnt);
 						
-						MRSpawnParticle(Color(Col,Col,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(6, 7), 2.5/Min(1.4, PAmnt), Pos+PPos, Alpha: .9);
+						MRSpawnParticle(Color(Col,Col,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(6, 7), Size, Pos+PPos, Alpha: .9);
 						
 						Ang += CRandom(-2, 2)*(20);
 						Pit += CRandom(-2, 2)*(10);
@@ -411,12 +412,13 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					int Leng = 20*Min(2, PAmnt);
 					Double Ang = CFRandom(0, 359);
 					Double Pit = CFRandom(-90, 90);
+					Double Size = 2.5/Clamp(PAmnt, 1, 1.4);
 					
 					For(double i=0;i<Leng;i+=Max(.5, 1/PAmnt)){
 						int Col = 25*CRandom(5, 10);
 						Vector3 PPos = (Cos(Ang), Sin(Ang), Sin(Pit))/Min(2, PAmnt);
 						
-						MRSpawnParticle(Color(255,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(6, 7), 2.5/Min(1.4, PAmnt), Pos+PPos, Alpha: .9);
+						MRSpawnParticle(Color(255,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(6, 7), Size, Pos+PPos, Alpha: .9);
 						
 						Ang += CRandom(-2, 2)*(20);
 						Pit += CRandom(-2, 2)*(10);
@@ -599,7 +601,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-3, 3)), Sin(Pit)*2);
 					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit)*2);
 					
-					MRSpawnParticle(Color(255,255,255), SPF_NOTIMEFREEZE, STYLE_None, 10, CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:.2, SizeStep:.5);
+					MRSpawnParticle(Color(255,255,255), SPF_NOTIMEFREEZE, STYLE_None, 10*Clamp(PAmnt, .4, 1), CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:.2*Clamp(PAmnt, .4, 1), SizeStep:.5);
 				}
 				if(Setting&MRIWMP_CacoBallDrops){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
