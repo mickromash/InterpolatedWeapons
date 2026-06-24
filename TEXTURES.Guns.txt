@@ -5,26 +5,14 @@ Sprite "PUN1D0", 164, 108
 {
 	Offset 77, -149
 	Patch "PUN1E0", 0, 0
-	{
-		Translation "1:1=1:1"
-	}
 	Patch "NUKBLK", 155, 9
-	{
-		Translation "1:1=1:1"
-	}
 }
 
 Sprite "PUN3D0", 164, 108
 {
 	Offset 77, -149
 	Patch "PUN3E0", 0, 0
-	{
-		Translation "1:1=1:1"
-	}
 	Patch "NUKBAR", 153, 0
-	{
-		Translation "1:1=1:1"
-	}
 }
 
 Sprite "PUN1F0", 90, 67
@@ -1169,12 +1157,18 @@ Sprite "FL1LA0", 125, 102
 {
 	Offset -100, -96
 	Patch "FL1LA", 38, 29
+	{
+		Translation "1:1=1:1"
+	}
 }
 
 Sprite "FL1LB0", 125, 102
 {
 	Offset -100, -96
 	Patch "FL1LB", 45, 16
+	{
+		Translation "1:1=1:1"
+	}
 }
 
 // End of texture definitions
