@@ -74,6 +74,7 @@ MRIntW_GlovesColor21 = "\cgТеб\ckя\cc из\ca России\ct выгонят
 MRIntW_GlovesColor22 = "\caТебя\ct из Росс\chии выгонят";
 MRIntW_GlovesColor23 = "\cvТеб\caя\cc из\ca России\cv выгонят";
 MRIntW_GlovesColor24 = "\ctМ\cuод \czПай";
+MRIntW_GlovesColor25 = "Пауер-апы";
 MRIntW_GlovesColorShade = "Тёмные участки";
 MRIntW_GlovesColorLight = "Светлые участки";
 MRIntW_RandomGlovesColor2 = "Случайные тёмные участки";
@@ -138,7 +139,8 @@ MRIntW_PunchingFist3 = "В зависимости от движения";
 MRIntW_FinishPunch = "Добивающий удар";
 MRIntW_FinishPunch0 = "Нет";
 MRIntW_FinishPunch1 = "Только с берсерком";
-MRIntW_FinishPunch2 = "Да";
+MRIntW_FinishPunch2 = "Только при джибах";
+MRIntW_FinishPunch3 = "Да";
 
 MRIntW_FinishPunchChance = "Шанс добивающего удара";
 MRIntW_MissPunch = "Анимация промаха";

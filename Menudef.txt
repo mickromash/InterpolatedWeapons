@@ -445,6 +445,7 @@ OptionValue "MRIntW_FinishPunchValues"
 	0, "$MRIntW_FinishPunch0"
 	1, "$MRIntW_FinishPunch1"
 	2, "$MRIntW_FinishPunch2"
+	3, "$MRIntW_FinishPunch3"
 }
 
 OptionValue "MRIntW_PistolSHandValues"

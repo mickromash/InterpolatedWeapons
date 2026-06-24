@@ -1012,9 +1012,19 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_Punch();
 				if(Punch.HitActor){
 					invoker.HitActor = true;
-					if(GetCVar("MRIntW_FinishPunch") && (FindInventory("PowerStrength")||GetCVar("MRIntW_FinishPunch")>1) &&
-						Punch.HitActor.Health<1 && CFRandom(.1, 1)<=GetCVar("MRIntW_FinishPunchChance")
-					)
+					bool FinishP = GetCVar("MRIntW_FinishPunch");
+					if(FinishP){
+						Switch(GetCVar("MRIntW_FinishPunch"))
+						{
+							Case 1:
+								FinishP = FindInventory("PowerStrength") && Punch.HitActor.Health<1 && CFRandom(.1, 1)<=GetCVar("MRIntW_FinishPunchChance");
+								Break;
+							Case 2:
+								FinishP = Punch.HitActor.Health<=-GetDefaultByType(Punch.HitActor.GetClass()).Health;
+								Break;
+						}
+					}
+					if(FinishP)
 						Player.SetPsprite((GetCVar("MRIntW_PunchingFist")>0 && !invoker.SecondFist)?SecndLay:MainLay, invoker.FindState("MainHandPunchThru"));
 						
 					if(MRIntW_ScreenShake>1){

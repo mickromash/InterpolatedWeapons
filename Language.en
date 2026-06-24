@@ -74,6 +74,7 @@ MRIntW_GlovesColor21 = "\cgL\cke\ccs\cabi\ctan";
 MRIntW_GlovesColor22 = "\caBis\cte\chxual";
 MRIntW_GlovesColor23 = "\cvT\car\cca\can\cvs";
 MRIntW_GlovesColor24 = "\ctMa\cuud \czPie";
+MRIntW_GlovesColor25 = "Power ups";
 MRIntW_GlovesColorShade = "Custom color shades";
 MRIntW_GlovesColorLight = "Custom color lights";
 MRIntW_RandomGlovesColor2 = "Set random color shades";
@@ -138,7 +139,8 @@ MRIntW_PunchingFist3 = "Based on player and camera movement";
 MRIntW_FinishPunch = "Finish punch";
 MRIntW_FinishPunch0 = "No";
 MRIntW_FinishPunch1 = "Only berserk";
-MRIntW_FinishPunch2 = "Yes";
+MRIntW_FinishPunch2 = "Only gib";
+MRIntW_FinishPunch3 = "Yes";
 
 MRIntW_FinishPunchChance = "Finish punch chance";
 MRIntW_MissPunch = "Miss animation";
