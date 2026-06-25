@@ -394,6 +394,7 @@ OptionValue "MRIntW_GlovesColorValuesSpecial"
 	16, "$MRIntW_GlovesColor16"//Enemy health
 	17, "$MRIntW_GlovesColor17"//Armor
 	18, "$MRIntW_GlovesColor18"//Ammo
+	25, "$MRIntW_GlovesColor25"//Ammo
 }
 
 OptionValue "MRIntW_GlovesColorValuesSpecial2"

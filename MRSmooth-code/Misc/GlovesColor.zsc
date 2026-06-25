@@ -493,6 +493,71 @@ Extend Class MRIntWeaps_Fist
 					GlovesTrans = Translation;
 					}
 					Break;
+				Case 25://Powerups
+					{
+					array<int> Powers;
+					if(Owner.CountInv("PowerStrength"))Powers.Push(0);//Berserk
+					if(Owner.CountInv("PowerInvulnerable"))Powers.Push(1);//Invul
+					if(Owner.CountInv("PowerInvisibility"))Powers.Push(2);//Invis
+					if(Owner.CountInv("PowerIronFeet"))Powers.Push(3);//Radsuit
+					
+					if(Powers.Size()>0){
+						if(ColDir>=Powers.Size())ColDir = 0;
+						
+						Switch(Powers[ColDir]){
+							Case 0:
+								TargetColor = Color(130,0,0);
+								Break;
+							Case 1:
+								TargetColor = Color(50,110,40);
+								Break;
+							Case 2:
+								TargetColor = Color(120,0,140);
+								Break;
+							Case 3:
+								TargetColor = Color(130,130,130);
+								Break;
+						}
+					}
+					else TargetColor = Color(30,30,30);
+					
+					if(GlovesFireShades == TargetColor)GlovesFireShades = GlovesLights;
+					
+					Array<int> Cols;
+					Cols.Push(GlovesLights.R);
+					Cols.Push(GlovesLights.G);
+					Cols.Push(GlovesLights.B);
+					Cols.Push(TargetColor.R);
+					Cols.Push(TargetColor.G);
+					Cols.Push(TargetColor.B);
+					Cols.Push(GlovesFireShades.R);
+					Cols.Push(GlovesFireShades.G);
+					Cols.Push(GlovesFireShades.B);
+					
+					For(int i=0;i<3;i++){
+						if(Cols[i+6]<Cols[i+3])Cols[i] += Min(Cols[i+3]-Cols[i], Max(1, (Cols[i+3]-Cols[i+6])*.1));
+						else if(Cols[i+6]>Cols[i+3])Cols[i] -= Min(Cols[i]-Cols[i+3], Max(1, (Cols[i+6]-Cols[i+3])*.1));
+					}
+															
+					GlovesShades = Color(0,0,0);
+					GlovesLights = Color(int(Cols[0]),int(Cols[1]),int(Cols[2]));
+										
+					if(GlovesLights == TargetColor){
+						ColDir++;
+						if(ColDir>=Powers.Size())ColDir = 0;
+						GlovesFireShades = TargetColor;
+					}
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
+					
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+					RifleGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
+					PistolGlovesTrans = Translation;
+					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
+					GlovesTrans = Translation;
+					}
+					Break;
 				
 				//I can really call myself a progressive person (I live in russia and use IG daily)
 				//but I thought it would be funny and also wanted to make a small tribute to people from HDest community
@@ -615,7 +680,7 @@ Extend Class MRIntWeaps_Fist
 									TargetColor = Color(83,130,160);
 									Break;
 							}
-							Break;		
+							Break;
 					}
 					
 					if(GlovesFireShades == TargetColor)GlovesFireShades = GlovesLights;
