@@ -9,6 +9,9 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 	Const Lay2 = 3;//LEDs
 	Const Lay3 = 4;//Inside flame
 	Const Lay4 = 5;//Flames start
+	Const Lay5 = -2;//Flame under muzzle
+	Const Lay6 = Lay4+5;//Bright muzzle
+	Const Lay7 = Lay6+1;//Flame on muzzle
 	
 	int BobState, IdleDelay;
 	
@@ -163,6 +166,9 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				For(int i=0;i<5;i++){
 					A_Overlay(Lay4+i, "GunBarrelFlame");
 				}
+				A_Overlay(Lay5, "UnderFlame");
+				A_Overlay(Lay6, "MuzzleLight");
+				A_Overlay(Lay7, "MuzzleFlame");
 			}
 			#### A 1 {
 				if(invoker.LEDs<1)invoker.LEDs += Min(1-invoker.LEDs, .25);
@@ -171,7 +177,56 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				if(!(Player.Cmd.Buttons&BT_ATTACK))Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
 			}
 			Wait;
-			
+		
+		UnderFlame:
+			FL1U A 1 BRIGHT{
+				A_OverlayPivot(OverlayId(), .5, 1);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ColorAdd);
+				A_OverlayScale(OverlayId(), .1, .1);
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, false);
+			}
+		UnderFlameLoop:
+			#### ABC 1 BRIGHT{
+				Let PSP = Player.GetPSprite(OverlayId());
+				
+				if(PSP.Scale.X<.7)
+					PSP.Scale += (Min(1-PSP.Scale.X, .25), Min(1.1-PSP.Scale.Y, .4));
+				else A_OverlayScale(OverlayId(), CFRandom(.8, 1), CFRandom(.3, 1), WOF_INTERPOLATE);
+			}
+			#### # 0 A_JumpIf(!(Player.Cmd.Buttons&BT_ATTACK), 1);
+			Loop;
+			#### DEFGH 1 BRIGHT A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+			Stop;
+		MuzzleLight:
+			FL1M A 1 BRIGHT{
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				A_OverlayAlpha(OverlayId(), Min(CFRandom(.2, 1), invoker.Heat));
+			}
+			Wait;
+		MuzzleFlame:
+			FL1H A 0 {
+				Player.GetPSprite(OverlayId()).Scale = (0,0);
+				A_OverlayPivot(OverlayId(), .5, .8);
+			}
+			FL1H A 1 BRIGHT {
+				Bool Inter = !Player.GetPSprite(OverlayId()).firstTic && Player.GetPSprite(OverlayId()).Scale.Y>0;
+
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				A_OverlayAlpha(OverlayId(), Min(CFRandom(.4, 1.5), invoker.Heat*1));
+				A_OverlayScale(OverlayId(), CFRandom(.8, 1), Clamp(invoker.Heat*1.5, 0, CFRandom(.3, 1)), WOF_INTERPOLATE);
+				
+				Player.GetPSprite(OverlayId()).Frame = GetAge()%2;
+				
+				Player.GetPSprite(OverlayId()).OldX = Player.GetPSprite(Lay1).OldX;
+				Player.GetPSprite(OverlayId()).OldY = Player.GetPSprite(Lay1).OldY;
+				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
+				Player.GetPSprite(OverlayId()).Y = Player.GetPSprite(Lay1).Y;
+				
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, Inter);
+				if(Inter && invoker.Heat<=0)A_ClearOverlays(OverlayId(), OverlayId());
+			}
+			Wait;
 		GunLEDs:
 			FL1L A 1 BRIGHT {
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
