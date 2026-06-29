@@ -58,33 +58,38 @@ Class MRIntWeaps_ActorEffects: Thinker
 }
 
 enum MRIntWeaps_PlrParticlesFlags{
-	MRIWPP_Puff = 8388608,
+	MRIWPP_Puff = 8388608,//23
 	
-	MRIWPP_PlasmaFly = 1,
-	MRIWPP_PlasmaTrail = 4096,
-	MRIWPP_PlasmaLightning = 2,
-	MRIWPP_PlasmaRaisingSparks = 4,
-	MRIWPP_PlasmaDroppingSparks = 8,
-	MRIWPP_PlasmaSmoke = 16,
+	MRIWPP_PlasmaFly = 1,//0
+	MRIWPP_PlasmaTrail = 4096,//12
+	MRIWPP_PlasmaLightning = 2,//1
+	MRIWPP_PlasmaRaisingSparks = 4,//2
+	MRIWPP_PlasmaDroppingSparks = 8,//3
+	MRIWPP_PlasmaSmoke = 16,//4
 	
-	MRIWPP_RocketFlare = 32,
-	MRIWPP_RocketSmoke = 64,
-	MRIWPP_RocketTrail = 8192,
-	MRIWPP_RocketSparks = 16384,
-	MRIWPP_RocketImpactSmoke = 128,
-	MRIWPP_RocketImpactSparks = 256,
+	MRIWPP_RocketFlare = 32,//5
+	MRIWPP_RocketSmoke = 64,//6
+	MRIWPP_RocketTrail = 8192,//13
+	MRIWPP_RocketSparks = 16384,//14
+	MRIWPP_RocketImpactSmoke = 128,//7
+	MRIWPP_RocketImpactSparks = 256,//8
 	
-	MRIWPP_BFGOrbital = 512,
-	MRIWPP_BFGFly = 1024,
-	MRIWPP_BFGTrail = 2048,
-	MRIWPP_BFGHitSteam = 32768,
-	MRIWPP_BFGHitTrace = 65536,
-	MRIWPP_BFGOnlyHitTrace = 262144,//XD
-	MRIWPP_BFGHitBallTrace = 131072,
-	MRIWPP_BFGHitRaisingSparks = 4194304,
-	MRIWPP_BFGImpactLightning = 524288,
-	MRIWPP_BFGImpactSteam = 1048576,
-	MRIWPP_BFGImpactSparks = 2097152,
+	MRIWPP_BFGOrbital = 512,//9
+	MRIWPP_BFGFly = 1024,//10
+	MRIWPP_BFGTrail = 2048,//11
+	MRIWPP_BFGHitSteam = 32768,//15
+	MRIWPP_BFGHitTrace = 65536,//16
+	MRIWPP_BFGOnlyHitTrace = 262144,//XD //18
+	MRIWPP_BFGHitBallTrace = 131072,//17
+	MRIWPP_BFGHitRaisingSparks = 4194304,//22
+	MRIWPP_BFGImpactLightning = 524288,//19
+	MRIWPP_BFGImpactSteam = 1048576,//20
+	MRIWPP_BFGImpactSparks = 2097152,//21
+
+	MRIWPP_InciFire = 16777216,//24
+	MRIWPP_InciSmoke = 33554432,//25
+	
+	//= 67108864,//26
 }
 
 Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
@@ -145,11 +150,15 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					Setting&MRIWPP_BFGImpactSteam||
 					Setting&MRIWPP_BFGImpactSparks)
 				){Destroy();Return;}
+			Case 3://Incinirator
+				if(!(Setting&MRIWPP_InciFire||
+					Setting&MRIWPP_InciSmoke)
+				){Destroy();Return;}
 		}
 		
 		PAmnt = MRIntW_PlayerParticlesAmount;
 		
-		if(Type>1 && Setting&MRIWPP_BFGOrbital){
+		if(Type==2 && Setting&MRIWPP_BFGOrbital){
 			For(int i=0;i<5*PAmnt;i++){
 				Let a = MRIntWeaps_BFGParticle(Level.SpawnVisualThinker('MRIntWeaps_BFGParticle'));
 				a.Master = Master;
@@ -339,7 +348,37 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						MRSpawnParticle(Color(Col,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, (DeathTick-2)*6, Size, Master.Pos+(0,0,5)+Dir*CFRandom(0, 3), Dir*Pow);
 					}
 				}
-				
+				Return;
+			Case 3://Incinirator
+				if(Setting&MRIWPP_InciSmoke && DeathTick%3==0 && DeathTick<19){
+					Vector3 Pos = Master.Pos + (CFRandom(-15, 15), CFRandom(-15, 15), DeathTick*.5);
+					if(Enemy)Pos = Master.Master.Pos + (CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(0, .5)*Master.Master.Height);
+					int Col = CRandom(25, 40);
+					MRSpawnParticle(Color(Col,Col,Col), SPF_NOTIMEFREEZE, STYLE_None, CRandom(17, 21), CRandom(44, 46), Pos, (Actor.AngleToVector(CRandom(0, 360), CFRandom(.4, 1.4)), 3), SizeStep:CFRandom(2.7, 4));
+				}
+				if(Setting&MRIWPP_InciFire){
+					Float Amnt = (50-DeathTick*.75)/PAmnt;
+					For(double i=0;i<Amnt;i++){
+						Float Size = CFRandom(2, 6);
+						
+						Vector3 Ofst = (CFRandom(-25+Deathtick*.25, 25-DeathTick*.25),CFRandom(-25+DeathTick*.25, 25-DeathTick*.25),CFRandom(-10, 10)+DeathTick*.5);
+						
+						Vector3 Pos = Master.Pos + Ofst;
+						
+						if(Enemy){
+							Float Height = DeathTick;
+							Height = Height/50*Master.Master.Height;
+							Ofst = (CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(0, 20)+Height);
+							Pos = Master.Master.Pos + Ofst;
+						}
+						
+						int Col[3];
+						Col[0] = 255;
+						Col[1] = CRandom(100, 200);
+						Col[2] = Col[1]*.5;
+						MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Pos, (-Ofst.XY*CFRandom(-.01, .05), CFRandom(.4, 1.4)), SizeStep:1);
+					}
+				}
 				Return;
 		}
 	}
@@ -417,6 +456,28 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					int Col = 25*CRandom(1, 4);
 					
 					MRSpawnParticle(Color(Col,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, 10, 90, Master.Prev+(0,0,15), Alpha: .7, SizeStep:-8);
+				}
+				Return;
+			Case 3://Incinirator
+				if(Setting&MRIWPP_InciFire && Master.GetAge()>0){
+					Vector3 Diff = Master.Pos-Master.Prev;
+					Float Age = Min(4, Master.GetAge());
+					
+					Vector3 ThrwVel = (0,0,0);
+					if(Master.Target)ThrwVel = Master.Target.Vel * (1-Age/4);
+					
+					For(double i=0;i<Diff.Length();i+=3/PAmnt){
+						Float Size = CFRandom(1, 3);
+						Float Dist = CFRandom(0, 5*Max(1, Age));
+						Float Ang = CRandom(0, 360);
+						Float Pit = CRandom(-90, 90);
+						Vector3 RPos = (Actor.AngleToVector(Ang, Dist)*Cos(Pit), Sin(Pit)*(Dist-2*Max(1, Age)));
+						int Col[3];
+						Col[0] = 255;
+						Col[1] = CRandom(100, 200);
+						Col[2] = Col[1]*.5;
+						MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 7, Size, Master.Pos-Diff.Unit()*i + RPos + ThrwVel*(i/Diff.Length()), (CFRandom(-.1, .1), CFRandom(-.1, .1), CFRandom(0, .25))*Age + ThrwVel*(i/Diff.Length())*.5, SizeStep:1);
+					}
 				}
 				Return;
 		}

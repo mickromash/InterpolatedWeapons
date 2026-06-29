@@ -202,6 +202,11 @@ OptionMenu "MRIntWeaps_PlayerParticlesMenu"
 	FlagOption "$MRIntW_PlrParticles_BFGHit3", "MRIntW_PlayerWhichParticles", "YesNo", 18, "MRIntW_PlayerParticles"
 	FlagOption "$MRIntW_PlrParticles_BFGHit4", "MRIntW_PlayerWhichParticles", "YesNo", 15, "MRIntW_PlayerParticles"
 	FlagOption "$MRIntW_PlrParticles_BFGHit5", "MRIntW_PlayerWhichParticles", "YesNo", 22, "MRIntW_PlayerParticles"
+	StaticText ""
+	StaticText "$TAG_ID24INCINERATOR", "Fire"
+	StaticText "$MRIntW_Particles_Tick", "Green"
+	FlagOption "$MRIntW_PlrParticles_InciFly1", "MRIntW_PlayerWhichParticles", "YesNo", 24, "MRIntW_PlayerParticles"
+	FlagOption "$MRIntW_PlrParticles_InciFly2", "MRIntW_PlayerWhichParticles", "YesNo", 25, "MRIntW_PlayerParticles"
 }
 OptionMenu "MRIntWeaps_MonsterParticlesMenu"
 {

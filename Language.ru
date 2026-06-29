@@ -221,6 +221,9 @@ MRIntW_PlrParticles_BFGHit3 = "Только попавшие трасеры из
 MRIntW_PlrParticles_BFGHit4 = "Пар от трасеров";
 MRIntW_PlrParticles_BFGHit5 = "Испарения от трасеров";
 
+MRIntW_PlrParticles_InciFly1 = "Пламя (убирает спрайт)";
+MRIntW_PlrParticles_InciFly2 = "Дым";
+
 MRIntW_MonsterParticles = "Эффекты монстров";
 MRIntW_MonsterParticlesAmount = "Качество эффектов монстров";
 MRIntWeaps_MonsterParticlesMenu = "Выбрать эффекты монстров";

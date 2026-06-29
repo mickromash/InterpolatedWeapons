@@ -221,6 +221,9 @@ MRIntW_PlrParticles_BFGHit3 = "Only hit tracers from player";
 MRIntW_PlrParticles_BFGHit4 = "Tracer steam";
 MRIntW_PlrParticles_BFGHit5 = "Tracer vapor";
 
+MRIntW_PlrParticles_InciFly1 = "Fire (removes the sprite)";
+MRIntW_PlrParticles_InciFly2 = "Smoke";
+
 MRIntW_MonsterParticles = "Monsters particles";
 MRIntW_MonsterParticlesAmount = "Monster effects quality";
 MRIntWeaps_MonsterParticlesMenu = "Set up monster effects";
