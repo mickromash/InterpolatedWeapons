@@ -393,17 +393,17 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 							invoker.CuttingWay *= .9;
 							if(invoker.SawAngle<90)invoker.SawAngle *= .7;
 							else invoker.SawAngle = (invoker.SawAngle-180)*.7+180;
-							if(invoker.SawAngle<90)invoker.SawCurAngle = Clamp(invoker.SawAngle, invoker.SawCurAngle-10, invoker.SawCurAngle+10);
-							else invoker.SawCurAngle = Clamp(invoker.SawAngle-180, invoker.SawCurAngle-10, invoker.SawCurAngle+10);
-							invoker.SawCurOffset = Clamp(invoker.SawAngle, invoker.SawCurOffset-10, invoker.SawCurOffset+10);
+							if(invoker.SawAngle<90)invoker.SawCurAngle = Clamp(invoker.SawAngle, invoker.SawCurAngle - 10, invoker.SawCurAngle + 10);
+							else invoker.SawCurAngle = Clamp(invoker.SawAngle-180, invoker.SawCurAngle - 10, invoker.SawCurAngle + 10);
+							invoker.SawCurOffset = Clamp(invoker.SawAngle, invoker.SawCurOffset - 10, invoker.SawCurOffset + 10);
 						}
 					}
 					
 					//Interpolate cutting state
 					if(invoker.SawAngle!=invoker.SawCurAngle){
-						if(invoker.SawAngle<90)invoker.SawCurAngle = Clamp(invoker.SawAngle, invoker.SawCurAngle -20, invoker.SawCurAngle +20);
-						else invoker.SawCurAngle = Clamp(invoker.SawAngle-180, invoker.SawCurAngle -20, invoker.SawCurAngle +20);
-						invoker.SawCurOffset = Clamp(invoker.SawAngle, invoker.SawCurOffset -20, invoker.SawCurOffset + 20);
+						if(invoker.SawAngle<90)invoker.SawCurAngle = Clamp(invoker.SawAngle, invoker.SawCurAngle - 10, invoker.SawCurAngle + 10);
+						else invoker.SawCurAngle = Clamp(invoker.SawAngle-180, invoker.SawCurAngle - 10, invoker.SawCurAngle + 10);
+						invoker.SawCurOffset = Clamp(invoker.SawAngle, invoker.SawCurOffset - 10, invoker.SawCurOffset + 10);
 					}
 				}
 				
@@ -416,9 +416,11 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 
 				A_OverlayRotate(Lay1, CFRandom(-1, 1) + CRandom(-3, 3)*RandOfst - invoker.SawCurAngle, WOF_INTERPOLATE);
 				
+				Float OldScal = Player.GetPSprite(Lay1).Scale.X;
 				Float Scal = 1-.1*invoker.SawPos+ CFRandom(-.1, .1)*RandOfst + Distance*.1 - invoker.CuttingWay*.15 + CFRandom(0, .01);
 				Scal = Max(.7, Scal);
-				A_OverlayScale(Lay1, Scal, Scal, WOF_INTERPOLATE);
+				Float NewScal = OldScal+Clamp(Scal-OldScal, -.05, .05);
+				A_OverlayScale(Lay1, NewScal, NewScal, WOF_INTERPOLATE);
 				
 				if(invoker.SawPos>0 && !invoker.CutDir)invoker.SawPos -= .25;
 				else if(invoker.SawPos<1 && invoker.CutDir)invoker.SawPos += .25;
