@@ -6,9 +6,10 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 	}
 	
 	Const Lay1 = 2;//Main layer
-	Const Lay2 = 3;//LEDs
-	Const Lay3 = 4;//Inside flame
-	Const Lay4 = 5;//Flames start
+	Const Lay2 = 3;//Red tubes
+	Const Lay2a = 4;//LED
+	Const Lay3 = 5;//Inside flame
+	Const Lay4 = 6;//Flames start
 	Const Lay5 = -2;//Flame under muzzle
 	Const Lay6 = Lay4+5;//Bright muzzle
 	Const Lay7 = Lay6+1;//Flame on muzzle
@@ -35,6 +36,43 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		if(Wads.CheckNumForName("FLMGA0", wads.ns_sprites)<0){Destroy();Return;}
 		Super.PostBeginPlay();
 		if(Owner && Owner.CountInv("ID24Incinerator"))Destroy();
+	}
+	
+	Action Void A_SyncWithLay(int Lay = Lay1, int Sync = Lay1){
+		if(Lay==Lay1)Lay = OverlayId();
+		
+		Player.GetPSprite(Lay).OldX = Player.GetPSprite(Sync).OldX;
+		Player.GetPSprite(Lay).OldY = Player.GetPSprite(Sync).OldY;
+		Player.GetPSprite(Lay).X = Player.GetPSprite(Sync).X;
+		Player.GetPSprite(Lay).Y = Player.GetPSprite(Sync).Y;
+	}
+	
+	action void MBF21_WeaponProjectile(class<Actor> type, double angle, double pitch, double Spawnofs_xy, double Spawnofs_z)
+	{
+		if(!player||!type)return;
+
+		FTranslatedLineTarget t;
+
+		angle += self.angle;
+		Vector2 ofs = AngleToVector(self.Angle - 90, spawnofs_xy);
+
+		let mo = SpawnPlayerMissile(type, angle, ofs.x, ofs.y, Spawnofs_z, pLineTarget: t);
+		if(!mo)return;
+
+		Pitch += mo.PitchFromVel();
+		mo.Vel3DFromAngle(mo.Speed, mo.angle, Pitch);
+
+		// set tracer to the player's autoaim target,
+		// so player seeker missiles prioritizing the
+		// baddie the player is actually aiming at. ;)
+		mo.tracer = t.linetarget;
+		
+		if(MRIntW_PlayerParticles){
+			Let a = New('MRIntWeaps_PlayerProjectileParticles');
+			a.Master = mo;
+			a.Type = 3;
+			if(MRIntW_PlayerWhichParticles&MRIWPP_InciFire)mo.A_SetRenderStyle(mo.Alpha, STYLE_None);
+		}
 	}
 		
 	int SwitchAnim, SwitchState;
@@ -94,6 +132,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			Loop;
 		GunLower:
 			FL1G A 1 {
+				A_ClearOverlays(Lay2, Lay7);
+				A_ClearOverlays(Lay5, Lay5);
 				invoker.IdleDelay = Min(invoker.IdleDelay, 0);
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
 				else invoker.SwitchAnim = CRandom(0, 1);
@@ -157,11 +197,14 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		
 		GunFire:
 			FL1G A 0 {
-				A_Overlay(Lay2, "GunLEDs");
+				A_Overlay(Lay2, "RedTubes");
+				A_Overlay(Lay2a, "GunLED");
 				A_Overlay(Lay3, "GunInsideLight");
+				
 				For(int i=0;i<5;i++){
 					A_Overlay(Lay4+i, "GunBarrelFlame");
 				}
+				
 				A_Overlay(Lay5, "UnderFlame");
 				A_Overlay(Lay6, "MuzzleLight");
 				A_Overlay(Lay7, "MuzzleFlame");
@@ -176,96 +219,33 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayOffset(Lay1, CFRandom(-2, 2)*invoker.AnimRec, Min(CFRandom(.5, 1), invoker.AnimRec)*4, WOF_INTERPOLATE);
 			}
 			Wait;
-			
-		UnderFlame:
-			FL1U A 1 BRIGHT{
-				A_OverlayPivot(OverlayId(), .5, 1);
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
-				A_OverlayRenderStyle(OverlayId(), STYLE_ColorAdd);
-				A_OverlayScale(OverlayId(), .1, .1);
-				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, false);
-			}
-		UnderFlameLoop:
-			#### BC 1 BRIGHT{
-				Let PSP = Player.GetPSprite(OverlayId());
-				
-				if(PSP.Scale.X<.7)
-					PSP.Scale += (Min(1-PSP.Scale.X, .25), Min(1.1-PSP.Scale.Y, .4));
-				else A_OverlayScale(OverlayId(), CFRandom(.8, 1.2), CFRandom(.8, 1), WOF_INTERPOLATE);
-			}
-			#### # 0 A_JumpIf(!(Player.Cmd.Buttons&BT_ATTACK), 1);
-			Loop;
-			#### # 0 {
-				A_OverlayPivot(OverlayId(), .5, 0);
-				A_OverlayScale(OverlayId(), 1, 1, WOF_INTERPOLATE);
-				A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
-			}
-			#### DEEFFGGHH 1 BRIGHT {
-				A_OverlayScale(OverlayId(), -CFRandom(.03, .05), -CFRandom(.03, .08), WOF_ADD);
-				Player.GetPSprite(OverlayId()).Alpha -= CFRandom(.06, .14);
-			}
-			Stop;
-		MuzzleLight:
-			FL1M A 1 BRIGHT{
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
-				A_OverlayAlpha(OverlayId(), Min(CFRandom(.2, 1), invoker.Heat));
-				
-				Player.GetPSprite(OverlayId()).OldX = Player.GetPSprite(Lay1).OldX;
-				Player.GetPSprite(OverlayId()).OldY = Player.GetPSprite(Lay1).OldY;
-				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
-				Player.GetPSprite(OverlayId()).Y = Player.GetPSprite(Lay1).Y;
-			}
-			Wait;
-		MuzzleFlame:
-			FL1H A 0 {
-				Player.GetPSprite(OverlayId()).Scale = (0,0);
-				A_OverlayPivot(OverlayId(), .5, .8);
-			}
-			FL1H A 1 BRIGHT {
-				Bool Inter = !Player.GetPSprite(OverlayId()).firstTic && Player.GetPSprite(OverlayId()).Scale.Y>0;
-
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
-				A_OverlayAlpha(OverlayId(), Min(CFRandom(.4, 1.5), invoker.Heat*1));
-				A_OverlayScale(OverlayId(), CFRandom(.8, 1), Clamp(invoker.Heat*1.5, 0, CFRandom(.3, 1)), WOF_INTERPOLATE);
-				
-				Player.GetPSprite(OverlayId()).Frame = GetAge()%2;
-				
-				Player.GetPSprite(OverlayId()).OldX = Player.GetPSprite(Lay1).OldX;
-				Player.GetPSprite(OverlayId()).OldY = Player.GetPSprite(Lay1).OldY;
-				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
-				Player.GetPSprite(OverlayId()).Y = Player.GetPSprite(Lay1).Y;
-				
-				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, Inter);
-				if(Inter && invoker.Heat<=0)A_ClearOverlays(OverlayId(), OverlayId());
-			}
-			Wait;
-		GunLEDs:
+		RedTubes:
 			FL1L A 1 BRIGHT {
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
-				A_OverlayAlpha(OverlayId(), Min(CFRandom(.7, 2), invoker.LEDs));
+				Float Alph = CountInv("ID24Fuel");
+				Alph /= FindInventory("ID24Fuel").MaxAmount;
+				A_OverlayAlpha(OverlayId(), (invoker.LEDs>.4?Clamp(Alph, CFRandom(-1, .7), invoker.LEDs):Min(invoker.LEDs, Alph)));
 				
-				Player.GetPSprite(OverlayId()).OldX = Player.GetPSprite(Lay1).OldX;
-				Player.GetPSprite(OverlayId()).OldY = Player.GetPSprite(Lay1).OldY;
-				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
-				Player.GetPSprite(OverlayId()).Y = Player.GetPSprite(Lay1).Y;
-				Player.GetPSprite(OverlayId()).Scale = Player.GetPSprite(Lay1).Scale;
-				Player.GetPSprite(OverlayId()).Pivot = Player.GetPSprite(Lay1).Pivot;
-				Player.GetPSprite(OverlayId()).Rotation = Player.GetPSprite(Lay1).Rotation;
+				A_SyncWithLay();
+			}
+			Wait;
+		GunLED:
+			FL1L B 1 BRIGHT {
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				Float Alph = abs(GetAge()%6-3);
+				Alph /= 3;
+				A_OverlayAlpha(OverlayId(), Min(invoker.Heat*2, Alph));
+				
+				A_SyncWithLay();
 			}
 			Wait;
 		GunInsideLight:
-			FL1L B 1 BRIGHT {
+			FL1L C 1 BRIGHT {
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
 				A_OverlayRenderStyle(OverlayId(), STYLE_Add);
 				A_OverlayAlpha(OverlayId(), Min(CFRandom(.6, .8), invoker.Heat));
 				
-				Player.GetPSprite(OverlayId()).OldX = Player.GetPSprite(Lay1).OldX;
-				Player.GetPSprite(OverlayId()).OldY = Player.GetPSprite(Lay1).OldY;
-				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
-				Player.GetPSprite(OverlayId()).Y = Player.GetPSprite(Lay1).Y;
-				Player.GetPSprite(OverlayId()).Scale = Player.GetPSprite(Lay1).Scale;
-				Player.GetPSprite(OverlayId()).Pivot = Player.GetPSprite(Lay1).Pivot;
-				Player.GetPSprite(OverlayId()).Rotation = Player.GetPSprite(Lay1).Rotation;
+				A_SyncWithLay();
 			}
 			Wait;
 		GunBarrelFlame:
@@ -294,12 +274,67 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				Player.GetPSprite(OverlayId()).Frame = (OverlayId()-Lay4)*3 + Min(2, GetAge()%4);
 				A_OverlayScale(OverlayId(), (OverlayId()-Lay4==4 && invoker.Heat>0)?CFRandom(1, 1.5):Min(CFRandom(1, 1.5), invoker.Heat*1.5), Min(CFRandom(.4, 1.5), invoker.Heat*1.5), WOF_INTERPOLATE);
 				
-				Player.GetPSprite(OverlayId()).OldX = Player.GetPSprite(Lay1).OldX;
-				Player.GetPSprite(OverlayId()).OldY = Player.GetPSprite(Lay1).OldY;
-				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
-				Player.GetPSprite(OverlayId()).Y = Player.GetPSprite(Lay1).Y;
+				A_SyncWithLay();
 				
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, Inter);
+			}
+			Wait;
+		UnderFlame:
+			FL1U A 1 BRIGHT{
+				A_OverlayPivot(OverlayId(), .5, 1);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ColorAdd);
+				A_OverlayScale(OverlayId(), .1, .1);
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, false);
+			}
+		UnderFlameLoop:
+			#### BC 1 BRIGHT{
+				Let PSP = Player.GetPSprite(OverlayId());
+				
+				if(PSP.Scale.X<.7)
+					PSP.Scale += (Min(1-PSP.Scale.X, .25), Min(1.1-PSP.Scale.Y, .4));
+				else A_OverlayScale(OverlayId(), CFRandom(.8, 1.2), CFRandom(.8, 1), WOF_INTERPOLATE);
+				
+				A_SyncWithLay();
+			}
+			#### # 0 A_JumpIf(!(Player.Cmd.Buttons&BT_ATTACK), 1);
+			Loop;
+			#### # 0 {
+				A_OverlayPivot(OverlayId(), .5, 0);
+				A_OverlayScale(OverlayId(), 1, 1, WOF_INTERPOLATE);
+				A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
+			}
+			#### DEEFFGGHH 1 BRIGHT {
+				A_OverlayScale(OverlayId(), -CFRandom(.03, .05), -CFRandom(.03, .08), WOF_ADD);
+				Player.GetPSprite(OverlayId()).Alpha -= CFRandom(.06, .14);
+			}
+			Stop;
+		MuzzleLight:
+			FL1M A 1 BRIGHT{
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				A_OverlayAlpha(OverlayId(), Min(CFRandom(.2, 1), invoker.Heat));
+				
+				A_SyncWithLay();
+			}
+			Wait;
+		MuzzleFlame:
+			FL1H A 0 {
+				Player.GetPSprite(OverlayId()).Scale = (0,0);
+				A_OverlayPivot(OverlayId(), .5, .8);
+			}
+			FL1H A 1 BRIGHT {
+				Bool Inter = !Player.GetPSprite(OverlayId()).firstTic && Player.GetPSprite(OverlayId()).Scale.Y>0;
+
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
+				A_OverlayAlpha(OverlayId(), Min(CFRandom(.4, 1.5), invoker.Heat*1));
+				A_OverlayScale(OverlayId(), CFRandom(.8, 1), Clamp(invoker.Heat*1.5, 0, CFRandom(.3, 1)), WOF_INTERPOLATE);
+				
+				Player.GetPSprite(OverlayId()).Frame = GetAge()%2;
+				
+				A_SyncWithLay();
+				
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, Inter);
+				if(Inter && invoker.Heat<=0)A_ClearOverlays(OverlayId(), OverlayId());
 			}
 			Wait;
 	
@@ -342,15 +377,15 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			}
 		FireLoop:
 			#### A 0 BRIGHT A_Jump(128, "FireAltSound");
-			#### A 0 BRIGHT A_StartSound("weapons/incinerator/fire1", CHAN_WEAPON);
+			#### A 0 BRIGHT A_StartSound("weapons/incinerator/fire1", CHAN_WEAPON, pitch:i_timescale);
 			Goto DoFire;
 		FireAltSound:
-			#### A 0 BRIGHT A_StartSound("weapons/incinerator/fire2", CHAN_WEAPON);
+			#### A 0 BRIGHT A_StartSound("weapons/incinerator/fire2", CHAN_WEAPON, pitch:i_timescale);
 			Goto DoFire;
 		DoFire:
 			#### A 0 BRIGHT A_GunFlash();
 			#### A 0 BRIGHT MBF21_ConsumeAmmo(1);
-			#### A 1 BRIGHT MBF21_WeaponProjectile("ID24IncineratorFlame", 0, 0, 0, 0);
+			#### A 1 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorFlame", 0, 0, 0, 0);
 			#### B 1 BRIGHT;
 			TNT1 A 1{
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("FLMGA0");
@@ -390,5 +425,14 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 	Action Void A_BersShake()
 	{
 		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
+	}
+}
+
+class MRIntWeaps_ID24IncineratorFlame : ID24IncineratorFlame
+{
+	Override int SpecialMissileHit(Actor Victim)
+	{
+		if(Victim && Victim!=Target && Victim.bShootable)Master = Victim;
+		Return Super.SpecialMissileHit(Victim);
 	}
 }
