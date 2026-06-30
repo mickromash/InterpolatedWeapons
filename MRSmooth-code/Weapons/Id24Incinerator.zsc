@@ -62,9 +62,6 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		Pitch += mo.PitchFromVel();
 		mo.Vel3DFromAngle(mo.Speed, mo.angle, Pitch);
 
-		// set tracer to the player's autoaim target,
-		// so player seeker missiles prioritizing the
-		// baddie the player is actually aiming at. ;)
 		mo.tracer = t.linetarget;
 		
 		if(MRIntW_PlayerParticles){
@@ -88,27 +85,33 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			}
 			TNT1 AAA 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
-				A_OverlayPivot(Lay1, .5, .5);
-				A_OverlayOffset(Lay1, invoker.SwitchAnim?-61:61, 80);
-				A_OverlayScale(Lay1, .5, .5);
-				A_OverlayRotate(Lay1, invoker.SwitchAnim?20:-20);
+				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?-41:41, 110);
+				A_OverlayScale(Lay1, 1.4, 1.1);
+				A_OverlayRotate(Lay1, invoker.SwitchAnim?2:-2);
 				invoker.SwitchState = 12;
 			}
 			FL1G A 1;
-			#### ######## 1 {
-				A_OverlayOffset(Lay1, invoker.SwitchAnim?5:-5, -7, WOF_ADD);
-				A_OverlayScale(Lay1, .05, .05, WOF_ADD);
-				A_OverlayRotate(Lay1, invoker.SwitchAnim?-1.4:1.4, WOF_ADD);
+			#### ##### 1 {
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?4:-4, -11, WOF_ADD);
+				A_OverlayScale(Lay1, -.05, -.01, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.SwitchAnim?-.5:.5, WOF_ADD);
 				invoker.SwitchState--;
 			}
 			#### ### 1 {
-				A_OverlayOffset(Lay1, invoker.SwitchAnim?6:-6, 4, WOF_ADD);
-				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, invoker.SwitchAnim?-4.2:4.2, WOF_ADD);
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?4:-4, -11, WOF_ADD);
+				A_OverlayScale(Lay1, -.025, -.03, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.SwitchAnim?-.5:.5, WOF_ADD);
+				invoker.SwitchState--;
+			}
+			#### ### 1 {
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?2:-2, 2, WOF_ADD);
+				A_OverlayScale(Lay1, -.01, .02, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.SwitchAnim?.5:-.5, WOF_ADD);
 				invoker.SwitchState--;
 			}
 			#### # 1{
-				A_OverlayOffset(Lay1, 0, 36, WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				invoker.BobState = 0;
@@ -144,16 +147,24 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayScale(Lay1, 1, 1);
 			}
 			#### ### 1 {
-				A_OverlayOffset(Lay1, invoker.SwitchAnim?-6:6, -4, WOF_ADD);
-				A_OverlayRotate(Lay1, invoker.SwitchAnim?4.2:-4.2, WOF_ADD);
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?-2:2, -2, WOF_ADD);
+				A_OverlayScale(Lay1, .01, -.02, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.SwitchAnim?.5:-.5, WOF_ADD);
+				
+				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
+			}
+			#### ### 1 {
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?-4:4, 11, WOF_ADD);
+				A_OverlayScale(Lay1, .025, .03, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.SwitchAnim?.5:-.5, WOF_ADD);
 				
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
 			}
 			#### # 1 {
-				A_OverlayOffset(Lay1, invoker.SwitchAnim?-5:5, 7, WOF_ADD);
-				A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);
-				A_OverlayRotate(Lay1, invoker.SwitchAnim?1.4:-1.4, WOF_ADD);
-
+				A_OverlayOffset(Lay1, invoker.SwitchAnim?-4:4, 11, WOF_ADD);
+				A_OverlayScale(Lay1, .05, .01, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.SwitchAnim?.5:-.5, WOF_ADD);
+				
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
 			}
 			Wait;
@@ -360,6 +371,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		Deselect:
 			TNT1 A 0 {
 				if(invoker.Dropped)invoker.Dropped.Destroy();
+				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
 				A_Overlay(Lay1, "GunLower");
 				Player.GetPSprite(PSP_WEAPON).Y = 32;
 				
