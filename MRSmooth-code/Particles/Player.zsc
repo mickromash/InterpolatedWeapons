@@ -350,16 +350,16 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				Return;
 			Case 3://Incinirator
-				if(Setting&MRIWPP_InciSmoke && DeathTick%3==0 && DeathTick<19){
+				if(Setting&MRIWPP_InciSmoke && DeathTick%(6/Min(2, PAmnt))==0 && DeathTick<19){
 					Vector3 Pos = Master.Pos + (CFRandom(-15, 15), CFRandom(-15, 15), DeathTick*.5);
 					if(Enemy)Pos = Master.Master.Pos + (CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(0, .5)*Master.Master.Height);
 					int Col = CRandom(25, 40);
 					MRSpawnParticle(Color(Col,Col,Col), SPF_NOTIMEFREEZE, STYLE_None, CRandom(17, 21), CRandom(44, 46), Pos, (Actor.AngleToVector(CRandom(0, 360), CFRandom(.4, 1.4)), 3), SizeStep:CFRandom(2.7, 4));
 				}
 				if(Setting&MRIWPP_InciFire){
-					Float Amnt = (50-DeathTick*.75)/PAmnt;
+					Float Amnt = (15-DeathTick*.34)*PAmnt;
 					For(double i=0;i<Amnt;i++){
-						Float Size = CFRandom(2, 6);
+						Float Size = CFRandom(2, 6)/PAmnt;
 						
 						Vector3 Ofst = (CFRandom(-25+Deathtick*.25, 25-DeathTick*.25),CFRandom(-25+DeathTick*.25, 25-DeathTick*.25),CFRandom(-10, 10)+DeathTick*.5);
 						
@@ -467,7 +467,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					if(Master.Target)ThrwVel = Master.Target.Vel * (1-Age/4);
 					
 					For(double i=0;i<Diff.Length();i+=3/PAmnt){
-						Float Size = CFRandom(1, 3);
+						Float Size = CFRandom(1, 3)/PAmnt;
 						Float Dist = CFRandom(0, 5*Max(1, Age));
 						Float Ang = CRandom(0, 360);
 						Float Pit = CRandom(-90, 90);
