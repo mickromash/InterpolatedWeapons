@@ -224,6 +224,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 		Super.Tick();
 		PAmnt = MRIntW_MonsterParticlesAmount;
 		
+		if(PAmnt<=0)Return;
+		
 		if(Type==6){
 			if(!Master){
 				MasterDeath();
@@ -249,6 +251,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 	
 	Void MasterDeath()
 	{
+		if(PAmnt<=0)Return;
+		
 		DeathTick++;
 		
 		if(Type!=6 && (!MRGPartsCheckDraw() && Master && Master.Target && Master.Target.Target!=Players[ConsolePlayer].Camera))Return;

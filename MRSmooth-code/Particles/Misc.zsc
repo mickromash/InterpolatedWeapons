@@ -216,10 +216,12 @@ Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 	Void MasterDeath()
 	{
 		DeathTick++;
-		
+ 		
 		//if(!InSight && !MRGPartsCheckDraw())Return;
 		
 		if(!(Setting&MRIWDP_BarrelExplosion)){Destroy();Return;}
+		
+		if(PAmnt<=0)Return;
 		
 		if(DeathTick<2 && MRIntW_ScreenShake>1){
 			Double Intens = MRIntW_ScreenShakeAmount*2;
@@ -263,6 +265,8 @@ Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 	
 	Void MasterTick()
 	{
+		if(PAmnt<=0)Return;
+		
 		Double Ang = FaceCam(Sprite:1);
 		
 		if(Burning){
@@ -334,6 +338,8 @@ Class MRIntWeaps_TorchParticles: MRIntWeaps_ActorEffects
 	
 	Void MasterTick()
 	{
+		if(PAmnt<=0)Return;
+		
 		if(!MRGPartsCheckDraw())Return;
 		
 		Double Ang = FaceCam(Sprite:1);
