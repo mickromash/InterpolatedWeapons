@@ -189,6 +189,8 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 	{
 		DeathTick++;
 		
+		if(PAmnt<=0)Return;
+		
 		if(!MRGPartsCheckDraw() && Master.Target != Players[ConsolePlayer].mo)Return;
 		Bool Enemy = Master.Master;
 		
@@ -350,16 +352,16 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				Return;
 			Case 3://Incinirator
-				if(Setting&MRIWPP_InciSmoke && DeathTick%(6/Min(2, PAmnt))==0 && DeathTick<19){
+				if(Setting&MRIWPP_InciSmoke && DeathTick%3==0 && DeathTick<19){
 					Vector3 Pos = Master.Pos + (CFRandom(-15, 15), CFRandom(-15, 15), DeathTick*.5);
 					if(Enemy)Pos = Master.Master.Pos + (CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(0, .5)*Master.Master.Height);
-					int Col = CRandom(25, 40);
-					MRSpawnParticle(Color(Col,Col,Col), SPF_NOTIMEFREEZE, STYLE_None, CRandom(17, 21), CRandom(44, 46), Pos, (Actor.AngleToVector(CRandom(0, 360), CFRandom(.4, 1.4)), 3), SizeStep:CFRandom(2.7, 4));
+					int Col = CRandom(30, 50);
+					MRSpawnParticle(Color(Col,Col,int(Col*CFRandom(.8, 1))), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_None, CRandom(17, 21), CRandom(44, 46), Pos, (Actor.AngleToVector(CRandom(0, 360), CFRandom(.4, 1.4)), 3), SizeStep:CFRandom(2.7, 4));
 				}
 				if(Setting&MRIWPP_InciFire){
-					Float Amnt = (15-DeathTick*.34)*PAmnt;
+					Float Amnt = (5-DeathTick*.11)*PAmnt;
 					For(double i=0;i<Amnt;i++){
-						Float Size = CFRandom(2, 6)/PAmnt;
+						Float Size = CFRandom(6, 12)/((PAmnt-1)*.5+1);
 						
 						Vector3 Ofst = (CFRandom(-25+Deathtick*.25, 25-DeathTick*.25),CFRandom(-25+DeathTick*.25, 25-DeathTick*.25),CFRandom(-10, 10)+DeathTick*.5);
 						
@@ -384,6 +386,8 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 	}
 	
 	Void MasterTick(){
+		if(PAmnt<=0)Return;
+		
 		if(!MRGPartsCheckDraw() && Master.Target != Players[ConsolePlayer].mo)Return;
 		
 		Switch(Type)
