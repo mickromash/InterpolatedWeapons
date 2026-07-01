@@ -94,7 +94,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayOffset(Lay1, invoker.SwitchAnim?-41:41, 110);
 				A_OverlayScale(Lay1, 1.4, 1.1);
 				A_OverlayRotate(Lay1, invoker.SwitchAnim?2:-2);
-				invoker.SwitchState = 12;
+				invoker.SwitchState = 11;
 			}
 			FL1G A 1;
 			#### ##### 1 {
