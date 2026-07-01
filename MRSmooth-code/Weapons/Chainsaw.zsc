@@ -365,14 +365,16 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 							
 							if(!invoker.Cutting||invoker.Cutting!=Blade.HitActor){
 								//if just started cutting, select direction
-								if(abs(invoker.SawCurAngle)>5){
+								if(abs(invoker.SawCurAngle)>5){//if just finished the previous target, cutting in the opposite direction
 									if(invoker.SawAngle<90)invoker.SawAngle += 180;
 									else invoker.SawAngle -= 180;
 									if(invoker.SawAngle<90)invoker.SawAngle = Clamp(invoker.SawAngle, -35, 20);
-									else invoker.SawAngle = Clamp(invoker.SawAngle, 160, 200);
+									else invoker.SawAngle = Clamp(invoker.SawAngle, 170, 200);
 								}
 								else invoker.SawAngle = CRandomPick(CFRandom(-35, 20), CFRandom(170, 200));
 								invoker.CuttingWay = Clamp(-.3, invoker.CuttingWay -.3, invoker.CuttingWay +.3);
+								
+								//Console.Printf("Cutting angle: \cd"..invoker.SawAngle);
 							}
 							
 							invoker.NoCutting = false;
@@ -411,16 +413,33 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				if(invoker.SawCurAngle>0)BladeOfst = invoker.SawCurAngle/180;
 				
 				A_OverlayPivot(Lay1, .8, .2);
-				A_OverlayOffset(Lay1, -invoker.SawPos*2 + CRandom(-6, 6)*RandOfst - invoker.CuttingWay*70*BladeOfst*Cos(invoker.SawCurOffset),
-					6-invoker.SawPos*2.5 + CRandom(-3, 3)*RandOfst + Distance*2 + invoker.CuttingWay*70*Sin(invoker.SawCurOffset) + CFRandom(-1, 1), WOF_INTERPOLATE);
-
-				A_OverlayRotate(Lay1, CFRandom(-1, 1) + CRandom(-3, 3)*RandOfst - invoker.SawCurAngle, WOF_INTERPOLATE);
+				
+				Vector2 OldOffset = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				Vector2 NewOffset = (-invoker.SawPos*2 + CRandom(-6, 6)*RandOfst - invoker.CuttingWay*70*BladeOfst*Cos(invoker.SawCurOffset),
+					6-invoker.SawPos*2.5 + CRandom(-3, 3)*RandOfst + Distance*2 + invoker.CuttingWay*70*(Sin(invoker.SawCurOffset)*1.5) + CFRandom(-1, 1));
+				
+				A_OverlayOffset(Lay1, Clamp(NewOffset.X-OldOffset.X, -4, 4), Clamp(NewOffset.Y-OldOffset.Y, -6, 6), WOF_ADD);
+				
+				
+				Double OldRot = Player.GetPSprite(Lay1).Rotation;
+				Double NewRot = CFRandom(-1, 1) + CRandom(-3, 3)*RandOfst - invoker.SawCurAngle;
+				A_OverlayRotate(Lay1, Clamp(NewRot-OldRot, -1, 1), WOF_ADD);
+				
+				
+				OldOffset = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				
 				Float OldScal = Player.GetPSprite(Lay1).Scale.X;
 				Float Scal = 1-.1*invoker.SawPos+ CFRandom(-.1, .1)*RandOfst + Distance*.1 - invoker.CuttingWay*.15 + CFRandom(0, .01);
 				Scal = Max(.7, Scal);
-				Float NewScal = OldScal+Clamp(Scal-OldScal, -.05, .05);
+				Float NewScal;
+				if(
+					(OldOffset.X>NewOffset.X && Cos(invoker.SawCurOffset)<0)||
+					(OldOffset.Y>NewOffset.Y && Sin(invoker.SawCurOffset)<0)
+				)NewScal = OldScal+Clamp(Scal-OldScal, -0, .05);
+				else NewScal = OldScal+Clamp(Scal-OldScal, -.05, .05);
+				
 				A_OverlayScale(Lay1, NewScal, NewScal, WOF_INTERPOLATE);
+				
 				
 				if(invoker.SawPos>0 && !invoker.CutDir)invoker.SawPos -= .25;
 				else if(invoker.SawPos<1 && invoker.CutDir)invoker.SawPos += .25;
