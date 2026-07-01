@@ -205,8 +205,8 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30)*2, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .7), SizeStep: CFRandom(4.4, 5));
 				}
 				if(Setting&MRIWPP_RocketImpactSparks && DeathTick<7 && DeathTick%2==0){
-					int Amount = 10*PAmnt;
-					For(int i=CRandom(0, 5)*PAmnt;i<Amount;i++){
+					int Amount = 30*PAmnt;
+					For(int i=CRandom(0, 10)*PAmnt;i<Amount;i++){
 						Vector3 Pos = Master.Pos + (CRandom(-4, 4), CRandom(-4, 4), CRandom(0, 5));
 						
 						Double Pow = CFRandom(3, 6);
@@ -378,7 +378,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						Col[0] = 255;
 						Col[1] = CRandom(100, 200);
 						Col[2] = Col[1]*.5;
-						MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Pos, (-Ofst.XY*CFRandom(-.01, .05), CFRandom(.4, 1.4)), SizeStep:1);
+						MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 7*((PAmnt-1)*.5+1), Size, Pos, (-Ofst.XY*CFRandom(-.01, .05), CFRandom(.4, 1.4)), SizeStep:1);
 					}
 				}
 				Return;
@@ -471,7 +471,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					if(Master.Target)ThrwVel = Master.Target.Vel * (1-Age/4);
 					
 					For(double i=0;i<Diff.Length();i+=3/PAmnt){
-						Float Size = CFRandom(1, 3)/PAmnt;
+						Float Size = CFRandom(3, 6)/((PAmnt-1)*.5+1);
 						Float Dist = CFRandom(0, 5*Max(1, Age));
 						Float Ang = CRandom(0, 360);
 						Float Pit = CRandom(-90, 90);
@@ -480,7 +480,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						Col[0] = 255;
 						Col[1] = CRandom(100, 200);
 						Col[2] = Col[1]*.5;
-						MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 7, Size, Master.Pos-Diff.Unit()*i + RPos + ThrwVel*(i/Diff.Length()), (CFRandom(-.1, .1), CFRandom(-.1, .1), CFRandom(0, .25))*Age + ThrwVel*(i/Diff.Length())*.5, SizeStep:1);
+						MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 6, Size, Master.Pos-Diff.Unit()*i + RPos + ThrwVel*(i/Diff.Length()), (CFRandom(-.1, .1), CFRandom(-.1, .1), CFRandom(0, .25))*Age + ThrwVel*(i/Diff.Length())*.5, SizeStep:1);
 					}
 				}
 				Return;

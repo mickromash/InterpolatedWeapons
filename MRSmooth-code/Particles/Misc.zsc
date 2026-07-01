@@ -234,7 +234,7 @@ Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 			MRSpawnParticle(Color(30,30+CRandom(0, 5)*2,30), SPF_NOTIMEFREEZE, STYLE_None, CRandom(40, 60)*Min(1, PAmnt), CRandom(32, 35), Master.Pos + (0,0,16), (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30)*2, 2), CFRandom(-.5, 2))+Master.Vel, Alpha: CFRandom(.7, 1), SizeStep: CFRandom(6.3, 7)/PAmnt);
 		}
 		if(DeathTick<7 && DeathTick%2==0){
-			For(int i=CRandom(0, 5)*PAmnt;i<10*PAmnt;i++){
+			For(int i=CRandom(0, 10)*PAmnt;i<30*PAmnt;i++){
 				Vector3 Pos = Master.Pos + (CRandom(-4, 4), CRandom(-4, 4), Master.Height*.5);
 				
 				Double Pow = CFRandom(3, 6);
