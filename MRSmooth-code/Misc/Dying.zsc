@@ -517,8 +517,8 @@ Extend Class MRIntWeaps_ID24Incinerator
 		GunDie:
 			TNT1 A 0 {
 				A_DropWeapon();
-				A_ClearOverlays(Lay2, Lay7);
-				A_ClearOverlays(Lay5, Lay5);
+				A_ClearOverlays(LayLED1, LayFlare);
+				A_ClearOverlays(LayUnderFlame, LayUnderFlame);
 				A_GiveInventory("MRIntWeaps_DyingAnimation");
 			}
 			Stop;
