@@ -6,13 +6,16 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 	}
 	
 	Const Lay1 = 2;//Main layer
-	Const Lay2 = 3;//Red tubes
-	Const Lay2a = 4;//LED
-	Const Lay3 = 5;//Inside flame
-	Const Lay4 = 6;//Flames start
-	Const Lay5 = -2;//Flame under muzzle
-	Const Lay6 = Lay4+5;//Bright muzzle
-	Const Lay7 = Lay6+1;//Flame on muzzle
+	Const LayLED1 = 3;//Red tubes
+	Const LayLED2 = LayLED1+1;//LED
+	Const Lay2 = LayLED2+1;//Inside flame
+	Const LayFlames = Lay2+1;//Flames start
+	Const LayUnderFlame = -2;
+	Const Lay3 = LayFlames+5;//Bright muzzle
+	Const LayFlame = Lay3+1;//Flame on muzzle
+	Const LayFlare = LayFlame+1;
+	Const LayUnderSmoke = LayUnderFlame-1;
+	Const LaySmallSmoke = LayFlare+1;//Flames smoke start
 	
 	int BobState, IdleDelay;
 	
@@ -55,24 +58,26 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 
 		angle += self.angle;
 		Vector2 ofs = AngleToVector(self.Angle - 90, spawnofs_xy);
-
-		let mo = SpawnPlayerMissile(type, angle, ofs.x, ofs.y, Spawnofs_z, pLineTarget: t);
-		if(!mo)return;
-
-		Pitch += mo.PitchFromVel();
-		mo.Vel3DFromAngle(mo.Speed, mo.angle, Pitch);
-
-		mo.tracer = t.linetarget;
 		
-		if(MRIntW_PlayerParticles){
+		Actor mo, realmo;
+		[mo, realmo] = SpawnPlayerMissile(type, angle, ofs.x, ofs.y, Spawnofs_z, pLineTarget: t);
+		
+		if(mo){
+			Pitch += mo.PitchFromVel();
+			mo.Vel3DFromAngle(mo.Speed, mo.angle, Pitch);
+
+			mo.tracer = t.linetarget;
+		}
+		
+		if(realmo && MRIntW_PlayerParticles){
 			Let a = New('MRIntWeaps_PlayerProjectileParticles');
-			a.Master = mo;
+			a.Master = realmo;
 			a.Type = 3;
-			if(MRIntW_PlayerWhichParticles&MRIWPP_InciFire)mo.A_SetRenderStyle(mo.Alpha, STYLE_None);
+			if(MRIntW_PlayerWhichParticles&MRIWPP_InciFire)realmo.A_SetRenderStyle(realmo.Alpha, STYLE_None);
 		}
 	}
 		
-	int SwitchAnim, SwitchState;
+	int SwitchAnim, SwitchState, Firing;
 	
 	Float LEDs, Heat, AnimRec;
 	
@@ -135,8 +140,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			Loop;
 		GunLower:
 			FL1G A 1 {
-				A_ClearOverlays(Lay2, Lay7);
-				A_ClearOverlays(Lay5, Lay5);
+				A_ClearOverlays(LayLED1, LayFlare);
+				A_ClearOverlays(LayUnderFlame, LayUnderFlame);
 				invoker.IdleDelay = Min(invoker.IdleDelay, 0);
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
 				else invoker.SwitchAnim = CRandom(0, 1);
@@ -208,19 +213,22 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		
 		GunFire:
 			FL1G A 0 {
-				A_Overlay(Lay2, "RedTubes");
-				A_Overlay(Lay2a, "GunLED");
-				A_Overlay(Lay3, "GunInsideLight");
+				invoker.Firing = 0;
+				A_Overlay(LayLED1, "RedTubes");
+				A_Overlay(LayLED2, "GunLED");
+				A_Overlay(Lay2, "GunInsideLight");
 				
 				For(int i=0;i<5;i++){
-					A_Overlay(Lay4+i, "GunBarrelFlame");
+					A_Overlay(LayFlames+i, "GunBarrelFlame");
 				}
 				
-				A_Overlay(Lay5, "UnderFlame");
-				A_Overlay(Lay6, "MuzzleLight");
-				A_Overlay(Lay7, "MuzzleFlame");
+				A_Overlay(LayUnderFlame, "UnderFlame");
+				A_Overlay(Lay3, "MuzzleLight");
+				A_Overlay(LayFlame, "MuzzleFlame");
+				A_Overlay(LayFlare, "MuzzleFlameFlare");
 			}
 			#### A 1 {
+				if(invoker.Firing<5)invoker.Firing++;
 				if(invoker.LEDs<1)invoker.LEDs += Min(1-invoker.LEDs, .25);
 				if(invoker.Heat<.8)invoker.Heat += Min(.8-invoker.Heat, .35);
 				if(invoker.AnimRec<1)invoker.AnimRec += Min(1-invoker.AnimRec, .5);
@@ -237,6 +245,11 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				Alph /= FindInventory("ID24Fuel").MaxAmount;
 				A_OverlayAlpha(OverlayId(), (invoker.LEDs>.4?Clamp(Alph, CFRandom(-1, .7), invoker.LEDs):Min(invoker.LEDs, Alph)));
 				
+				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+					A_OverlayRenderStyle(OverlayID(), STYLE_None);
+				else 
+					A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
+				
 				A_SyncWithLay();
 			}
 			Wait;
@@ -247,6 +260,11 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				Alph /= 3;
 				A_OverlayAlpha(OverlayId(), Min(invoker.Heat*2, Alph));
 				
+				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+					A_OverlayRenderStyle(OverlayID(), STYLE_None);
+				else 
+					A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
+				
 				A_SyncWithLay();
 			}
 			Wait;
@@ -256,13 +274,18 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayRenderStyle(OverlayId(), STYLE_Add);
 				A_OverlayAlpha(OverlayId(), Min(CFRandom(.6, .8), invoker.Heat));
 				
+				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+					A_OverlayRenderStyle(OverlayID(), STYLE_None);
+				else 
+					A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
+				
 				A_SyncWithLay();
 			}
 			Wait;
 		GunBarrelFlame:
 			TNT1 A 0 {
 				Vector2 Pivot;
-				Switch(OverlayId()-Lay4)
+				Switch(OverlayId()-LayFlames)
 				{
 					Case 0:
 					Case 1:
@@ -281,9 +304,10 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			FL1F A 1 BRIGHT {
 				Bool Inter = Player.GetPSprite(OverlayId()).Scale.Y>0;
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
-				A_OverlayAlpha(OverlayId(), Min(CFRandom(.4, 1.5), invoker.Heat*1));
-				Player.GetPSprite(OverlayId()).Frame = (OverlayId()-Lay4)*3 + Min(2, GetAge()%4);
-				A_OverlayScale(OverlayId(), (OverlayId()-Lay4==4 && invoker.Heat>0)?CFRandom(1, 1.5):Min(CFRandom(1, 1.5), invoker.Heat*1.5), Min(CFRandom(.4, 1.5), invoker.Heat*1.5), WOF_INTERPOLATE);
+				A_OverlayAlpha(OverlayId(), Clamp(invoker.Heat, .01, CFRandom(.4, 1.5)));
+				Player.GetPSprite(OverlayId()).Frame = (OverlayId()-LayFlames)*3 + Min(2, GetAge()%4);
+				A_OverlayScale(OverlayId(), (OverlayId()-LayFlames==4 && invoker.Heat>0)?CFRandom(1, 1.5):Min(CFRandom(1, 1.5), invoker.Heat*1.5), Min(CFRandom(.4, 1.5), invoker.Heat*1.5), WOF_INTERPOLATE);
+				if(invoker.Firing<5 && invoker.Firing>2)A_OverlayScale(OverlayId(), CFRandom(0, .5), CFRandom(0, 1), WOF_ADD);
 				
 				A_SyncWithLay();
 				
@@ -315,15 +339,32 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayScale(OverlayId(), 1, 1, WOF_INTERPOLATE);
 				A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
 			}
-			#### DEEFFGGHH 1 BRIGHT {
+			#### DEEFFGGHHHHHHHHHHHH 1 BRIGHT {
 				A_OverlayScale(OverlayId(), -CFRandom(.03, .05), -CFRandom(.03, .08), WOF_ADD);
 				Player.GetPSprite(OverlayId()).Alpha -= CFRandom(.06, .14);
+				if(Player.GetPSprite(OverlayId()).Alpha<.01)Player.GetPSprite(OverlayId()).Alpha = .01;
+				
+				if(Player.GetPSprite(OverlayId()).Frame<5 || CRandom(0, 2)==1)Return;
+				
+				int i;
+				For(i=LayUnderSmoke;i>LayUnderSmoke-15;i--){
+					if(!Player.FindPSprite(i))Break;
+				}
+				
+				if(i==LayUnderSmoke-14)i = LayUnderSmoke;
+				
+				A_Overlay(i, "UnderSmoke");
 			}
 			Stop;
 		MuzzleLight:
 			FL1M A 1 BRIGHT{
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
 				A_OverlayAlpha(OverlayId(), Min(CFRandom(.2, 1), invoker.Heat));
+				
+				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+					A_OverlayRenderStyle(OverlayID(), STYLE_None);
+				else 
+					A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
 				
 				A_SyncWithLay();
 			}
@@ -335,10 +376,13 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			}
 			FL1H A 1 BRIGHT {
 				Bool Inter = !Player.GetPSprite(OverlayId()).firstTic && Player.GetPSprite(OverlayId()).Scale.Y>0;
-
+				
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
-				A_OverlayAlpha(OverlayId(), Min(CFRandom(.4, 1.5), invoker.Heat*1));
-				A_OverlayScale(OverlayId(), CFRandom(.8, 1), Clamp(invoker.Heat*1.5, 0, CFRandom(.3, 1)), WOF_INTERPOLATE);
+				A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
+				
+				A_OverlayAlpha(OverlayId(), Clamp(invoker.Heat, 0, CFRandom(.4, 1.5)));
+				A_OverlayScale(OverlayId(), CFRandom(.8, 1), Clamp(invoker.Heat*1.5, .01, CFRandom(.3, 1)), WOF_INTERPOLATE);
+				if(invoker.Firing<5 && invoker.Firing>2)A_OverlayScale(OverlayId(), CFRandom(0, .3), CFRandom(0, .7), WOF_ADD);
 				
 				Player.GetPSprite(OverlayId()).Frame = GetAge()%2;
 				
@@ -346,6 +390,65 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, Inter);
 				if(Inter && invoker.Heat<=0)A_ClearOverlays(OverlayId(), OverlayId());
+			}
+			Wait;
+		MuzzleFlameFlare:
+			NSHS B 1 BRIGHT{
+				if(!Player.FindPSprite(LayFlame)){A_ClearOverlays(OverlayId(), OverlayId());Return;}
+				A_OverlayTranslation(OverlayId(), "MRIntWParYellow");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayPivot(OverlayId(), .5, .7);
+				
+				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+					A_OverlayRenderStyle(OverlayID(), STYLE_None);
+				}
+				else {
+					A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+					A_OverlayAlpha(OverlayId(), .1*Player.GetPSprite(LayFlame).Alpha);
+				}
+				
+				if(!MRIntW_FlashFlare){A_OverlayRenderStyle(OverlayId(), STYLE_NONE);Return;}
+				
+				
+				Vector2 Scale = (.85, .85);
+				if(Player.GetPSprite(LayFlame).Frame>0)Scale = (.95, 1);
+				
+				Player.GetPSprite(OverlayId()).X = 127 + Player.GetPSprite(Lay1).X;
+				Player.GetPSprite(OverlayId()).Y = 57 + Player.GetPSprite(Lay1).Y;
+				Player.GetPSprite(OverlayId()).OldX = 127 + Player.GetPSprite(Lay1).OldX;
+				Player.GetPSprite(OverlayId()).OldY = 57 + Player.GetPSprite(Lay1).OldY;
+				
+				A_OverlayScale(OverlayId(), Scale.X*Player.GetPSprite(LayFlame).Scale.X, Scale.Y*Player.GetPSprite(LayFlame).Scale.Y, Player.GetPSprite(OverlayId()).firstTic?0:WOF_INTERPOLATE);
+			}
+			Wait;
+		UnderSmoke:
+			NSHS C 0{
+				//A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, False);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
+				A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayScale(OverlayId(), .5, .4);
+				A_OverlayOffset(OverlayId(), 127, 75);
+				A_OverlayAlpha(OverlayId(), .6);
+			}
+			#### # 1{
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_INTERPOLATE, true);
+				A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
+				
+				Player.GetPSprite(OverlayId()).Alpha-=.04;
+				
+				A_OverlayScale(OverlayId(), .025, .025, WOF_ADD);
+				
+				Player.GetPSprite(OverlayId()).Y--;
+				
+				A_OverlayRotate(OverlayId(), CFRandom(.1, .5), WOF_ADD);
+				
+				if(Player.GetPSprite(OverlayId()).Alpha<=0){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+				
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
 			}
 			Wait;
 	
