@@ -71,6 +71,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		
 		MuzzleSmoke();
 		
+		if(Owner.Player.ReadyWeapon!=Self)Return;
+		
 		if(Owner.Health>0){
 			if(Owner.Player.WeaponState&WF_WEAPONREADY  && Owner.Player.Cmd.Buttons&BT_ALTATTACK){//Alt fire
 				if(abs(Speed)<10)Speed--;
