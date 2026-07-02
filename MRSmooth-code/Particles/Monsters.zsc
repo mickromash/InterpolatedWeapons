@@ -283,7 +283,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pow = CFRandom(1, 3);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
-						Float Size = CFRandom(1,5);
+						Float Size = CFRandom(1,5)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 					For(int i=CRandom(0, 5)*PAmnt;i<12*PAmnt;i++){
@@ -297,9 +297,9 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting&MRIWMP_ImpBallImpactFire && GotHit){
 					For(int i=CRandom(0, 3)*PAmnt;i<(7-DeathTick*.5)*PAmnt;i++){
-						Float Size = CFRandom(2,4);
+						Float Size = CFRandom(3,5)/((PAmnt-1)*.5+1);
 						int Green = CRandom(70, 240);
-						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + (HitPlace.XY*CFRandom(0, 1), HitPlace.Z) + (CFRandom(-4, 4),CFRandom(-4, 4),CRandom(-6, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, GotHit.Pos + (HitPlace.XY*CFRandom(0, 1), HitPlace.Z) + (CFRandom(-4, 4),CFRandom(-4, 4),CFRandom(-6, 0)+DeathTick*.5), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:1);
 					}
 				}
 				Return;
@@ -316,7 +316,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pow = CFRandom(1, 3);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
-						Float Size = CFRandom(1,5);
+						Float Size = CFRandom(1,5)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(250,CRandom(140, 220),255), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 				}
@@ -354,7 +354,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pow = CFRandom(1, 3);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
-						Float Size = CFRandom(1,5);
+						Float Size = CFRandom(1,5)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 				}
@@ -372,7 +372,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pow = CFRandom(2, 4);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
-						Float Size = CFRandom(2,7);
+						Float Size = CFRandom(2,7)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 					For(int i=CRandom(0, 5)*PAmnt;i<12*PAmnt;i++){
@@ -386,9 +386,9 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting&MRIWMP_FatShotImpactFire && GotHit){
 					For(int i=CRandom(0, 3)*PAmnt;i<(13-DeathTick*.5)*PAmnt;i++){
-						Float Size = CFRandom(3,6);
+						Float Size = CFRandom(1,6)/((PAmnt-1)*.5+1);
 						int Green = CRandom(70, 240);
-						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + (HitPlace.XY*CFRandom(0, 1), HitPlace.Z) + (CFRandom(-8, 8),CFRandom(-8, 8),CRandom(-13, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, GotHit.Pos + (HitPlace.XY*CFRandom(0, 1), HitPlace.Z) + (CFRandom(-8, 8),CFRandom(-8, 8),CFRandom(-13, 0)+Deathtick*.5), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:1);
 					}
 				}
 				Return;
@@ -405,7 +405,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pow = CFRandom(1, 2);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
-						Float Size = CFRandom(1,4);
+						Float Size = CFRandom(1,4)/((PAmnt-1)*.5+1);
 						int Col = CRandom(140, 220);
 						MRSpawnParticle(Color(Col,255,Col), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.1), SizeStep:-(Size/40.));
 					}
@@ -434,7 +434,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 			Case 5://BaronBall
 				if(Setting&MRIWMP_BaronBallImpactSmoke && DeathTick<7){
 					int Green = CRandom(50, 160);
-					MRSpawnParticle(Color(Min(Green, 80),Green,Min(Green, 80)), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(39, 42), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .8), SizeStep: CFRandom(3, 4));
+					MRSpawnParticle(Color(Min(Green, 80),Green,Min(Green, 80)), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 25)*Min(1, PAmnt), CRandom(39, 42), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .8), SizeStep: CFRandom(3, 4));
 				}
 				if(Setting&MRIWMP_BaronBallImpactSplash && DeathTick<3){
 					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
@@ -445,7 +445,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pow = CFRandom(2, 4);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
-						Float Size = CFRandom(2,7);
+						Float Size = CFRandom(1,7)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(CRandom(30, 80),255,CRandom(30, 80)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 					For(int i=CRandom(0, 5)*PAmnt;i<12*PAmnt;i++){
@@ -459,9 +459,9 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting&MRIWMP_BaronBallImpactFire && GotHit){
 					For(int i=CRandom(0, 3)*PAmnt;i<(13-DeathTick*.5)*PAmnt;i++){
-						Float Size = CFRandom(3,6);
+						Float Size = CFRandom(1,5)/((PAmnt-1)*.5+1);
 						int Red = CRandom(30, 160);
-						MRSpawnParticle(Color(Red,255,CRandom(10, Red*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, GotHit.Pos + (HitPlace.XY*CFRandom(0, 1), HitPlace.Z) + (CFRandom(-8, 8),CFRandom(-8, 8),CRandom(-13, 0)), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(Red,255,CRandom(10, Red*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, GotHit.Pos + (HitPlace.XY*CFRandom(0, 1), HitPlace.Z) + (CFRandom(-8, 8),CFRandom(-8, 8),CFRandom(-13, 0)+DeathTick*.5), (0,0,.5), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.1), Alpha: CFRandom(.4, 1), SizeStep:1);
 					}
 				}
 				Return;
@@ -493,27 +493,27 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				Return;
 			Case 7://LostSoul
 				if(Setting2&MRIWMP_SoulSplash && DeathTick<4){
-					For(int i=CRandom(0, 4)*PAmnt;i<12*PAmnt;i++){
+					For(int i=CRandom(0, 4)*PAmnt;i<15*PAmnt;i++){
 						Float An = CFRandom(0, 359);
 						Float Pi = CRandom(0, 90);
 						Float Pow = CFRandom(2, 4);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
-						Float Size = CFRandom(2,7);
+						Float Size = CFRandom(2,7)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(255,CRandom(60, 180),CRandom(0, 20)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos + (0,0,17), Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 				}
 				if(Setting&MRIWMP_SoulSmoke && DeathTick<7){
-					MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(39, 42), Master.Pos + (0,0,17), (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
+					MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, CRandom(35, 40)*Min(2, (PAmnt-1)*.5+1), CRandom(39, 42), Master.Pos + (0,0,17), (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
 				}
 				Return;
 			Case 8://PainElemental
 				if(Setting2&MRIWMP_PainSplash && DeathTick>22 && DeathTick<27){
-					For(int i=CRandom(0, 4)*PAmnt;i<12*PAmnt-(DeathTick-23);i++){
+					For(int i=CRandom(0, 4)*PAmnt;i<15*PAmnt-(DeathTick-23);i++){
 						Float An = CFRandom(0, 359);
 						Float Pi = CRandom(0, 90);
 						Float Pow = CFRandom(4, 8);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
-						Float Size = CFRandom(4,10);
+						Float Size = CFRandom(4,10)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(255,CRandom(0, 80),0), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos + (Actor.AngleToVector(An, CFRandom(0, 4)),20), Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 				}
@@ -525,7 +525,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pi = CRandom(0, 80);
 						Float Pow = CFRandom(2, 11);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
-						Float Size = CFRandom(2,5);
+						Float Size = CFRandom(2,5)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(255,CRandom(70, 140),20), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 70, Size, Master.Pos + (Actor.AngleToVector(FaceCam()+90, GetDefaultByType(Master.GetClass()).Radius*CFRandom(-.6, .6)),GetDefaultByType(Master.GetClass()).Height*CFRandom(.1, .7)), Vel, Accel:(0,0,-.2), SizeStep:-(Size/70.));
 					}
 				}
@@ -539,7 +539,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pi = CRandom(0, 90);
 						Float Pow = CFRandom(4, 10);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
-						Float Size = CFRandom(1,6);
+						Float Size = CFRandom(1,6)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(CRandom(90, 140),0,0), SPF_NOTIMEFREEZE, STYLE_None, 80, Size, Master.Pos + (Actor.AngleToVector(FaceCam()+90, GetDefaultByType(Master.GetClass()).Radius*CFRandom(-.6, .6)),GetDefaultByType(Master.GetClass()).Height*CFRandom(.1, .7)), Vel, Accel:(0,0,-.5), Fade:0, SizeStep:-(Size/80.));
 					}
 				}
@@ -552,7 +552,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pi = CRandom(0, 80);
 						Float Pow = CFRandom(2, 11);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
-						Float Size = CFRandom(2,5);
+						Float Size = CFRandom(2,5)/((PAmnt-1)*.5+1);
 						MRSpawnParticle(Color(255,CRandom(70, 140),20), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 70, Size, Master.Pos + (Actor.AngleToVector(FaceCam()+90, GetDefaultByType(Master.GetClass()).Radius*CFRandom(-.6, .6)),GetDefaultByType(Master.GetClass()).Height*CFRandom(0, .4)), Vel, Accel:(0,0,-.2), SizeStep:-(Size/70.));
 					}
 				}
@@ -566,7 +566,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pi = CRandom(0, 90);
 						Float Pow = CFRandom(4, 10);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
-						Float Size = CFRandom(1,7);
+						Float Size = CFRandom(1,7)/((PAmnt-1)*.5+1);
 						Double Angl = FaceCam();
 						if(Players[ConsolePlayer].Camera)Angl = Players[ConsolePlayer].Camera.Angle+180;
 						Vector3 Pos = (Actor.AngleToVector(Angl, 1)+Actor.AngleToVector(Angl-90, GetDefaultByType(Master.GetClass()).Radius*CFRandom(0, .5)), GetDefaultByType(Master.GetClass()).Height*CFRandom(.2, .7));
@@ -590,7 +590,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-3, 3)), Sin(Pit)*2);
 					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit)*2);
 					//Console.Printf("Pit "..Pit.." Vel "..Vel.." MVel "..Master.Vel);
-					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, 10, CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, SizeStep:.5);
+					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, 10*Clamp(PAmnt, .4, 1), CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:.5);
 				}
 				if(Setting&MRIWMP_ImpBallDrops && CRandom(0,3)==1){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
@@ -647,7 +647,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-2, 2)), Sin(Pit)*2);
 					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit)*2);
 
-					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, 10, CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2 + (0,0,3), Vel, SizeStep:.5);
+					MRSpawnParticle(Color(30,30,30), SPF_NOTIMEFREEZE, STYLE_None, 10*Clamp(PAmnt, .4, 1), CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2 + (0,0,3), Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:.5);
 				}
 				if(Setting&MRIWMP_RevenantTracerFire){
 					For(int i=0;i<Max(1, 2*PAmnt);i++){
@@ -663,13 +663,13 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-1, 1)), Sin(Pit));
 					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit));
 
-					MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, 16, CRandom(44, 46), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, SizeStep:2);
+					MRSpawnParticle(Color(20,20,20), SPF_NOTIMEFREEZE, STYLE_None, 16*Clamp(PAmnt, .4, 1), CRandom(44, 46), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:2);
 				}
 				if(Setting&MRIWMP_FatShotFire){
 					Vector3 Diff = Master.Pos-Master.Prev;
 					For(double i=0;i<Diff.Length();i+=3/PAmnt){
-						Float Size = CFRandom(2, 6);
-						MRSpawnParticle(Color(255,CRandom(100, 200),0), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Master.Pos-Diff.Unit()*i + (CFRandom(-10, 10),CFRandom(-10, 10),CFRandom(-4, 12)), (CFRandom(-.5, .5), CFRandom(-.5, .5), CFRandom(-.5, .5)), SizeStep:-(Size/10.));
+						Float Size = CFRandom(1, 4)/((PAmnt-1)*.5+1);
+						MRSpawnParticle(Color(255,CRandom(100, 200),0), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 6, Size, Master.Pos-Diff.Unit()*i + (CFRandom(-10, 10),CFRandom(-10, 10),CFRandom(-6, 10)), (CFRandom(-.5, .5), CFRandom(-.5, .5), CFRandom(-.5, .5)), Fade:.2, SizeStep:1);
 					}
 				}
 				if(Setting&MRIWMP_FatShotDrops && CRandom(0,4)==1){
@@ -709,13 +709,13 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit));
 						int S = i-1;
 						int Green = CRandom(50, 160);
-						MRSpawnParticle(Color(Min(Green, 90),Green,Min(Green, 90)), SPF_NOTIMEFREEZE, STYLE_None, 13, CRandom(14, 16), Master.Pos-(Master.Pos-Master.Prev)*i + Vel.Unit()*2, Vel, Alpha: .6, SizeStep:3);
+						MRSpawnParticle(Color(Min(Green, 90),Green,Min(Green, 90)), SPF_NOTIMEFREEZE, STYLE_None, 13*Clamp(PAmnt, .4, 1), CRandom(14, 16), Master.Pos-(Master.Pos-Master.Prev)*i + Vel.Unit()*2, Vel, Alpha:.6*Clamp(PAmnt, .4, 1), SizeStep:3);
 					}
 				}
 				if(Setting2&MRIWMP_BaronBallFire){
 					Vector3 Diff = Master.Pos-Master.Prev;
 					For(double i=0;i<Diff.Length();i+=6/PAmnt){
-						Float Size = CFRandom(2, 6);
+						Float Size = CFRandom(3, 8)/((PAmnt-1)*.5+1);
 						int Col = CRandom(40, 80);
 						MRSpawnParticle(Color(Col,255,Col), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 10, Size, Master.Pos-Diff.Unit()*i + (CFRandom(-5, 5),CFRandom(-5, 5),CFRandom(-2, 5)), (CFRandom(-.5, .5), CFRandom(-.5, .5), CFRandom(-.5, .5)), SizeStep:-(Size/10.));
 					}
@@ -739,7 +739,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Size = CFRandom(3,6);
 						int Green = CRandom(70, 240);
 						Float Ang = CFRandom(0, 359);
-						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, HitPlace + (Actor.AngleToVector(Ang, CFRandom(10, 24)),CRandom(0, 30)), LastVel*.75 + (Actor.AngleToVector(Ang, CFRandom(0, 4)),2), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.2), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 7, Size, HitPlace + (Actor.AngleToVector(Ang, CFRandom(10, 24)),CRandom(0, 30)), LastVel*.75 + (Actor.AngleToVector(Ang, CFRandom(0, 4)),2), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.6), Alpha: CFRandom(.6, 1), SizeStep:1);
 					}
 				}
 				Return;
