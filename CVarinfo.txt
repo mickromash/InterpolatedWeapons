@@ -91,6 +91,8 @@ nosave float MRIntW_RocketSmoke = 1;//Smoke from muzzle
 nosave int MRIntW_PlasmaParticles = 1;//0 - None, 1 - Flare only, 2 - Flare and particles
 //BFG 9000
 nosave bool MRIntW_BFGParticles = true;//Fancy ahh firing animation
+//id24 Incinerator
+nosave int MRIntW_InciniSmoke = 3;//0 - None, 1 - Only muzzle, 2 - Only small, 3 - Both
 
 nosave bool MRIntW_PlayerParticles = false;
 nosave int MRIntW_PlayerWhichParticles = 16580507;
