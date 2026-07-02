@@ -281,7 +281,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting&MRIWPP_PlasmaSmoke && DeathTick==10){
 					if(Enemy)MRSpawnParticle(Color(255,255,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_None, CRandom(16, 22), GetDefaultByType(Master.Master.GetClass()).Radius, Master.Master.Pos+(Actor.AngleToVector(FaceCam(Master.Master), GetDefaultByType(Master.Master.GetClass()).Radius*CFRandom(-1, 1)),Master.Master.Height*CFRandom(.2, .7)), (Actor.AngleToVector(FaceCam(Master.Master), .5), 1.5), Alpha: CFRandom(.25, .3), SizeStep: CFRandom(.19, .21)*GetDefaultByType(Master.Master.GetClass()).Radius);
-					else MRSpawnParticle(Color(255,255,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_None, CRandom(16, 22), CRandom(27, 32), Master.Pos, (Actor.AngleToVector(FaceCam(Master), .5), .5), Alpha: CFRandom(.4, .55), SizeStep: CFRandom(1.3, 1.6));
+					else MRSpawnParticle(Color(255,255,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_None, CRandom(16, 22), CRandom(27, 32), Master.Pos, (Actor.AngleToVector(FaceCam(Master), .5), .5), Alpha: CFRandom(.4, .55), SizeStep: CFRandom(1.6, 2));
 				}
 				Return;
 			Case 2://BFG
