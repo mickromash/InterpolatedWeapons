@@ -105,10 +105,10 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 				
 				int Col = CRandom(140, 150);
 				Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));
-				Part.Life = 15;
-				Part.Alpha = .2+Alpha*.2;
-				Part.Fade = Part.Alpha/(Part.Life-1);
-				Part.StartGrow = 1.4+Alpha*.1;
+				Part.Life = 20;
+				Part.Alpha = CFRandom(.1, .15)+Alpha*.2;
+				Part.Fade = Part.Alpha/(Part.Life-CRandom(1, 3));
+				Part.StartGrow = CFRandom(1.4, 2.4);
 				Part.StartScale = .2+Alpha*.1;
 
 				Part.Place = (AngleToVector(Angle, 5)*Cos(Abs(Pitch)), -5*Sin(Pitch));
