@@ -19,7 +19,7 @@ Chainsaw
 {
 	SAW1 CDEF - Ready animation
 	SAW1 G (textures) - Cutting animation
-	SAW1 HIJ - Cutting animation
+	SAW1 HIJKL (textures) - Cutting animation
 	SAW1 Y (textures) - Starting hand
 	
 	SAW1 Z - Starting rope

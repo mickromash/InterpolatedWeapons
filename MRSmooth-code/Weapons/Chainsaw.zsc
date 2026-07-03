@@ -352,7 +352,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 					LineTrace(Angle, 65, Pitch, OffsetZ:PZ, data:Blade);
 					
 					if(Blade.HitType!=TRACE_HitNone){
-						invoker.SawSpeed = 0;
+						invoker.SawSpeed = CFRandom(.67, .8);
 						if(!Blade.HitActor && GetCVar("MRIntW_ChainsawCuttingWall")){//Cutting a surface
 							RandOfst = .3+1-Blade.Distance/65;
 							invoker.CuttingWay *= .5;
@@ -463,13 +463,16 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 					}
 				}
 				
-				int Frame = Player.GetPSprite(Lay1).Frame-6;
-				int ChainSpeed = Clamp(Min(2, invoker.SawSpeed)+GetAge()%2+int(CFRandomPick(0,.01,.02,.03,.04, 1)), 0, 2);
-				Frame += ChainSpeed;
-				
-				if(Frame>3)Frame = Frame%3;
-				
-				Player.GetPSprite(Lay1).Frame = Frame+6;
+				if(invoker.SawSpeed<.7 || (GetAge()%3==0 && CRandom(0, 1)==1) || i_timescale<.8){
+					int Frame = Player.GetPSprite(Lay1).Frame-6;
+					int ChainSpeed = Clamp(Min(2, invoker.SawSpeed)+GetAge()%2+int(CFRandomPick(0,.01,.02,.03,.04, 1)), 0, 2);
+					Frame += ChainSpeed;
+					
+					if(Frame>3)Frame = Frame%3;
+					
+					Player.GetPSprite(Lay1).Frame = Frame+6;
+				}
+				else Player.GetPSprite(Lay1).Frame = 10+GetAge()%2;
 				
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 			}
