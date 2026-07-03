@@ -24,7 +24,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		if(LEDs>0)LEDs -= .05;
 		if(Heat>0)Heat -= Min(Heat, .2);
 		
-		//MuzzleSmoke();
+		MuzzleSmoke();
 		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
@@ -236,6 +236,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				if(!(Player.Cmd.Buttons&BT_ATTACK)){Player.SetPsprite(Lay1, invoker.FindState("GunWait"));Return;}
 				
 				A_OverlayOffset(Lay1, CFRandom(-2, 2)*invoker.AnimRec, Min(CFRandom(.5, 1), invoker.AnimRec)*4, WOF_INTERPOLATE);
+				
+				invoker.IncreaseSmoke();
 			}
 			Wait;
 		RedTubes:
