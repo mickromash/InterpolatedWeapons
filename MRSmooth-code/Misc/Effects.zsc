@@ -752,7 +752,7 @@ Extend Class MRIntWeaps_Chaingun
 	{
 		if(MRIntW_LongTermSmoke){
 			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
-			if(Handler)Handler.AddLTSmoke(Pos, .045);
+			if(Handler)Handler.AddLTSmoke(Pos, .035);
 		}
 		
 		if(!MRIntW_Smoke)Return;
