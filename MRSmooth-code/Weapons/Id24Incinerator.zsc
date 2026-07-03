@@ -83,9 +83,9 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 	
 	States{
 	
-	GunRaise:
-			GunRaise:
+		GunRaise:
 			TNT1 A 0{
+				invoker.Firing = 0;
 				invoker.SwitchAnim = CRandom(0, 1);
 			}
 			TNT1 AAA 1 {
@@ -228,7 +228,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_Overlay(LayFlare, "MuzzleFlameFlare");
 			}
 			#### A 1 {
-				if(invoker.Firing<5)invoker.Firing++;
+				if(invoker.Firing<50)invoker.Firing++;
 				if(invoker.LEDs<1)invoker.LEDs += Min(1-invoker.LEDs, .25);
 				if(invoker.Heat<.8)invoker.Heat += Min(.8-invoker.Heat, .35);
 				if(invoker.AnimRec<1)invoker.AnimRec += Min(1-invoker.AnimRec, .5);
@@ -315,7 +315,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, Inter);
 				
-				if(invoker.LEDs<.1 || MRIntW_InciniSmoke<2)Return;
+				if(invoker.LEDs<.1 || invoker.Firing<10 || MRIntW_InciniSmoke<2)Return;
 				
 				if((invoker.LEDs>.6 && CRandom(0, 12)==1) || (invoker.LEDs<.6 && CRandom(0, 3)==1)){
 					int i;
@@ -383,7 +383,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				Player.GetPSprite(OverlayId()).Alpha -= CFRandom(.06, .14);
 				if(Player.GetPSprite(OverlayId()).Alpha<.01)Player.GetPSprite(OverlayId()).Alpha = .01;
 				
-				if(MRIntW_InciniSmoke%2!=1 || Player.GetPSprite(OverlayId()).Frame<5 || CRandom(0, 2)==1)Return;
+				invoker.Firing--;
+				if(MRIntW_InciniSmoke%2!=1 || Player.GetPSprite(OverlayId()).Frame<5 || invoker.Firing<25 || CRandom(0, 2)==1)Return;
 				
 				int i;
 				For(i=LayUnderSmoke;i>LayUnderSmoke-15;i--){
