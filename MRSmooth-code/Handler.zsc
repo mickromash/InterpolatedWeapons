@@ -393,23 +393,31 @@ Class MRIntW_DifVersionMessage: Thinker
 		{
 			Case Start:
 				Console.Printf(StringTable.Localize("$MRIntW_VersionMessage"));
-				Plr.A_StartSound("MRIntW/Message1", Chan, CHANF_LOOP, .05, pitch:Pitch = CFRandom(4, 9));
+				Plr.A_StartSound("MRIntW/Message1", Chan, CHANF_LOOP, .05, pitch:Pitch = 4);
 				Break;
 				
 			Default:
 				Float Vol = Time-Start;
 				if(Vol<8){
-					Plr.A_SoundVolume(Chan, Vol/7.);
+					Plr.A_SoundVolume(Chan, Vol/7.+.2);
 				}
 				else if(Vol>26){
-					Plr.A_SoundVolume(Chan, 1.-((Vol-26)/9.));
+					Plr.A_SoundVolume(Chan, 1.-((Vol-26)/9.)+.2);
 				}
-				else Plr.A_SoundVolume(Chan, CFRandom(.8, 1));
+				else {
+					Plr.A_SoundVolume(Chan, 1);
+				}
 				
-				if(Pitch>=9)Pitch -= CFRandom(0, 2);
-				else if(Pitch<=4)Pitch += CFRandom(0, 2);
-				else Pitch += CFRandom(-1, 1);
-				Plr.A_SoundPitch(Chan, Pitch);
+				Float Pit = (Time%4)*.2;
+				if(Vol<6){
+					Plr.A_SoundPitch(Chan, Pitch+ (Pit/5.)*.2+Pit);
+				}
+				else if(Vol>14){
+					Plr.A_SoundPitch(Chan, Pitch+ (1.-((Pit-14)/21.))*.2+Pit);
+				}
+				else {
+					Plr.A_SoundPitch(Chan, Pitch+ .2+Pit);
+				}
 				Break;
 				
 			Case Start+35:

@@ -72,4 +72,4 @@ $Random MRIntW/RocketlauncherBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 $Random MRIntW/PlasmaRifleBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 $Random MRIntW/BFG9000Bounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 
-MRIntW/Message1 dsquake
+MRIntW/Message1 "Sounds/SBNCE1.ogg"
