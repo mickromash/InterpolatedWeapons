@@ -244,9 +244,9 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 			#### ### 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(-.5, .5), WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, CFRandom(-.25, .25), WOF_INTERPOLATE);
-				A_OverlayScale(Lay1, CFRandom(1, 1.025), CFRandom(1, 1.025), WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, CFRandom(-.5, .5)*(1+invoker.SawSpeed), CFRandom(-.5, .5)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, CFRandom(-.25, .25)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1+CFRandom(0, .025)*(1+invoker.SawSpeed), 1+CFRandom(0, .025)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
 				if(GetAge()%Max(1, int(2-invoker.SawSpeed))==0)invoker.SawFrame++;
 				if(invoker.SawFrame>5)invoker.SawFrame = 2;
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
@@ -497,26 +497,26 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, .16*Mult, .16*Mult, WOF_ADD);
 				A_OverlayOffset(Lay1, -4, 7*Mult, WOF_ADD);
 				A_OverlayRotate(Lay1, 3*Mult, WOF_ADD);
-				if(GetAge()%2==0)invoker.SawFrame++;
+				
+				A_OverlayOffset(Lay1, CFRandom(-.5, .5)*(1+invoker.SawSpeed), CFRandom(-.5, .5)*(1+invoker.SawSpeed), WOF_ADD);
+				if(GetAge()%Max(1, int(2-invoker.SawSpeed))==0)invoker.SawFrame++;
 				if(invoker.SawFrame>5)invoker.SawFrame = 2;
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
+				if(invoker.SawSpeed>0)invoker.SawSpeed-=Min(invoker.SawSpeed, .5);
 			}
 			#### ###### 1{
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.8;
 				Player.GetPSprite(Lay1).X *= .8;
 				Player.GetPSprite(Lay1).Y *= .8;
 				Player.GetPSprite(Lay1).Rotation *= .8;
-				if(GetAge()%2==0)invoker.SawFrame++;
+				
+				A_OverlayOffset(Lay1, CFRandom(-.5, .5)*(1+invoker.SawSpeed), CFRandom(-.5, .5)*(1+invoker.SawSpeed), WOF_ADD);
+				A_OverlayRotate(Lay1, CFRandom(-.25, .25)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1+CFRandom(0, .025)*(1+invoker.SawSpeed), 1+CFRandom(0, .025)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
+				if(GetAge()%Max(1, int(2-invoker.SawSpeed))==0)invoker.SawFrame++;
 				if(invoker.SawFrame>5)invoker.SawFrame = 2;
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
-			}
-			#### # 1{
-				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
-				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
-				if(GetAge()%2==0)invoker.SawFrame++;
-				if(invoker.SawFrame>5)invoker.SawFrame = 2;
-				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
+				if(invoker.SawSpeed>0)invoker.SawSpeed-=Min(invoker.SawSpeed, .5);
 			}
 			Goto SawReady;
 		
