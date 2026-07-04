@@ -346,5 +346,4 @@ MRIntW_ApplyPressetPrompt = "Load previously saved settings?\nThis presset won't
 TAG_RIFLE = "Rifle";
 
 MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- This game was saved with a different version of the mod\n"
-						"if you'll encounter any issues,"
-						"prossed to the mod's settings menu and press \"Make animations smooth\" button.";
+						"if you'll encounter any issues, proceed to the mod's settings menu and press \"Make animations smooth\" button.";
