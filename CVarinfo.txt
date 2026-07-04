@@ -114,4 +114,4 @@ nosave int MRIntW_TeleportParticlesStyleMonsters = 2;
 nosave string MRIntW_PressetCust1 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
-server noarchive int MRIntW_Version = 0307261;//DDMMYYI
+server noarchive int MRIntW_Version = 0407261;//DDMMYYI

@@ -31,8 +31,11 @@ Class MRIntWeaps_Handler: EventHandler
 	{
 		if(!Plr)Return;
 		
-		if(!WeaponChecker[Plr.PlayerNumber()])WeaponChecker[Plr.PlayerNumber()] = New('MRIntWeaps_WeaponChecker');
-		WeaponChecker[Plr.PlayerNumber()].Master = Plr;
+		if(!WeaponChecker[Plr.PlayerNumber()]){
+			WeaponChecker[Plr.PlayerNumber()] = New('MRIntWeaps_WeaponChecker');
+			WeaponChecker[Plr.PlayerNumber()].Master = Plr;
+			Return;
+		}
 		
 		String Select;
 		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
@@ -71,6 +74,8 @@ Class MRIntWeaps_Handler: EventHandler
 				}
 			}
 		}
+		
+		Console.printf("Select: "..Select);
 		
 		if(Select!="")Plr.A_SelectWeapon("MRIntWeaps_"..Select);
 		
@@ -141,11 +146,15 @@ Class MRIntWeaps_Handler: EventHandler
 			
 	Override Void PlayerSpawned(PlayerEvent e)
 	{
+		if(WeaponChecker[e.PlayerNumber])Return;
+
 		GiveWeapons(Players[e.PlayerNumber].mo);
 	}
 	
 	Override Void PlayerRespawned(PlayerEvent e)
 	{
+		if(WeaponChecker[e.PlayerNumber])Return;
+		
 		GiveWeapons(Players[e.PlayerNumber].mo);
 	}
 	
@@ -348,6 +357,9 @@ Class MRIntWeaps_WeaponChecker: Thinker
 	{
 		if(!Master)Return;
 		Super.Tick();
+		
+		//Voodoo doll check (stolen from Hideous Destructor)
+		if(PlayerPawn(Master)&& !!Master.player && !!Master.player.mo)Master = Master.Player.mo;
 		
 		if(!Master.FindInventory("MRIntWeaps_Fist"))GiveWeapons();
 	}
