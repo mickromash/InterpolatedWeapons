@@ -330,6 +330,7 @@ Class MRIntWeaps_Handler: EventHandler
 		LoadingDelay = 3;
 		
 		if((MRIntW_Version!=CVar.GetCVar("MRIntW_Version").GetDefaultInt()))New('MRIntW_DifVersionMessage');
+		MRIntW_Version = CVar.GetCVar("MRIntW_Version").GetDefaultInt();
 		//Console.Printf("Register");
 	}
 	
