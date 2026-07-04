@@ -75,8 +75,6 @@ Class MRIntWeaps_Handler: EventHandler
 			}
 		}
 		
-		Console.printf("Select: "..Select);
-		
 		if(Select!="")Plr.A_SelectWeapon("MRIntWeaps_"..Select);
 		
 		if(!Smokers[Plr.PlayerNumber()])
