@@ -481,7 +481,7 @@ Extend Class MRIntWeaps_Shotgun
 	{
 		if(MRIntW_LongTermSmoke){
 			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
-			if(Handler)Handler.AddLTSmoke(Pos, .5);
+			if(Handler)Handler.AddLTSmoke(Pos, .4);
 		}
 		
 		if(!MRIntW_Smoke)Return;
