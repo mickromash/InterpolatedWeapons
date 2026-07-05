@@ -26,8 +26,8 @@ Extend Class MRIntWeaps_Handler
 		}
 		if(Melee||CRandom(0, 9)>4){//Smoke
 			int Rand = CRandom(80, 120);
-			Obj.A_SpawnParticle(Color(Rand,Rand,Rand), SPF_RELATIVE, 70, CFRandom(6, 8), 0,
-				0,0,0, CFRandom(0, .1),0,CFRandom(.1, .3), 0,0,-CFRandom(-.00001, .01), CFRandom(.4, .7), CFRandom(.02, .08), CFRandom(.1, .3));
+			Obj.A_SpawnParticle(Color(Rand,Rand,Rand), SPF_RELATIVE, 16, CFRandom(13, 15), 0,
+				0,0,0, CFRandom(0, .1),0,CFRandom(.1, .3), 0,0,-CFRandom(-.00001, .01), .5, .5/15., CFRandom(.7, .9));
 		}
 		Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
 	}
