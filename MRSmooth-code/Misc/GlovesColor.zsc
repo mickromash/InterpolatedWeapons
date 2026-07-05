@@ -399,28 +399,29 @@ Extend Class MRIntWeaps_Fist
 
 						Switch(Arm.ArmorType)
 						{
+							Case 'BasicArmorPickup':
 							Case 'ArmorBonus':
-								Col[0] = Arm.Amount*1;
-								Col[1] = Arm.Amount*1.25;
-								Col[2] = Arm.Amount*1;
+								Col[0] = Arm.Amount*.7;
+								Col[1] = Arm.Amount*1.35;
+								Col[2] = Arm.Amount*.7;
 								Break;
 							Case 'GreenArmor':
 								Col[0] = Arm.Amount*.15;
-								Col[1] = Arm.Amount*1.25;
+								Col[1] = Arm.Amount*1.35;
 								Col[2] = Arm.Amount*.4;
 								Break;
 							Case 'BlueArmor':
 								Col[0] = Arm.Amount*.15;
-								Col[1] = Arm.Amount*.4;
-								Col[2] = Arm.Amount*1.25;
+								Col[1] = Arm.Amount*.25;
+								Col[2] = Arm.Amount*1.15;
 								Break;
 							Default:
-								Col[0] = Col[1] = Col[2] = 30;
+								Col[0] = Col[1] = Col[2] = 0;
 								Break;
 						}
 					}
 					
-					TargetColor = Color(Col[0], Col[1], Col[2]);
+					TargetColor = Color(20+Col[0], 20+Col[1], 20+Col[2]);
 					
 					Array<int> Cols;
 					Cols.Push(GlovesLights.R);
