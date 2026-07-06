@@ -301,6 +301,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 			TNT1 A 0 {
 				A_DropWeapon();
 				A_ClearOverlays(LHand, LHand);
+				A_ClearOverlays(Lay2, Lay3);
 				A_GiveInventory("MRIntWeaps_DyingAnimation");
 			}
 			Stop;
