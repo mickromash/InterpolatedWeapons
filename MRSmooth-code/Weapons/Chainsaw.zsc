@@ -340,7 +340,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				if(!Blade.HitActor||!GetCVar("MRIntW_ChainsawCutting")){invoker.SawPos = 1;invoker.CutDir = false;}
 				else invoker.CutDir = !invoker.CutDir;
 				
-				if(invoker.SawSpeed<30)invoker.SawSpeed+=.25;
+				if(invoker.SawSpeed<6)invoker.SawSpeed+=.25;
 			}
 			#### #### 1{
 				
