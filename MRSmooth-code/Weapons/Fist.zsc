@@ -1006,7 +1006,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			#### C 4 {
 				FLineTraceData Punch;
 				
-				Double PZ = player.mo.height * 0.5 - player.mo.floorclip + player.mo.AttackZOffset*player.crouchFactor;
+				Double PZ = height * .5 - floorclip + Player.mo.AttackZOffset*player.crouchFactor;
 				LineTrace(Angle, 64, Pitch, 0, PZ, data:Punch);
 				
 				A_Punch();
