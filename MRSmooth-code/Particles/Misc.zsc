@@ -398,7 +398,7 @@ Class MRIntWeaps_HeartColumnParticles: MRIntWeaps_ActorEffects
 		
 		if(Master.GetAge()%(TickOffset)==0 && CRandom(0, 3)==0){
 			int RC = CRandom(180, 230);
-			int Col = Min(RC*.7, 25*CRandom(1, 4));
+			int Col = Min(RC*.5, 25*CRandom(1, 4));
 				
 			Float Size = CFRandom(2, 7);
 			
