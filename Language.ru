@@ -284,6 +284,8 @@ MRIntW_MonstParticles_SpiderSplash = "Взрыв";
 MRIntW_MonstParticles_SpiderSmoke = "Дым";
 MRIntW_MonstParticles_SpiderBlood = "Кровь";
 
+MRIntW_AltLightnings = "Альт. визуализация молний";
+
 MRIntW_DecorationParticles = "Эффекты декораций";
 MRIntW_DecorationParticlesAmount = "Качество эффектов декораций";
 MRIntWeaps_DecorationParticlesMenu = "Выбрать эффекты декораций";

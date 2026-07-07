@@ -111,6 +111,8 @@ nosave bool MRIntW_TeleportParticles = false;
 nosave int MRIntW_TeleportParticlesStyle = 6;
 nosave int MRIntW_TeleportParticlesStyleMonsters = 2;
 
+nosave bool MRIntW_AltLightnings = false;
+
 nosave string MRIntW_PressetCust1 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations

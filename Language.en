@@ -284,6 +284,8 @@ MRIntW_MonstParticles_SpiderSplash = "Explosion splash";
 MRIntW_MonstParticles_SpiderSmoke = "Explosion smoke";
 MRIntW_MonstParticles_SpiderBlood = "Explosion blood";
 
+MRIntW_AltLightnings = "Alternative lightnings";
+
 MRIntW_DecorationParticles = "Decorations particles";
 MRIntW_DecorationParticlesAmount = "Decoration effects quality";
 MRIntWeaps_DecorationParticlesMenu = "Set up decoration effects";

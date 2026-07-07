@@ -21,7 +21,8 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		"MRIntW_ChaingunStopTime 61", "MRIntW_ChaingunMaxSmokes 62", "MRIntW_RocketSmoke 63", "MRIntW_PlasmaParticles 64", "MRIntW_BFGParticles 65",
 		"wbobspeed 66", "MRIntW_PlayerParticles 70", "MRIntW_PlayerWhichParticles 71", "MRIntW_PlayerParticlesAmount 72", "MRIntW_MonsterWhichParticles 73",
 		"MRIntW_MonsterWhichParticles2 74", "MRIntW_MonsterParticlesAmount 75", "MRIntW_DecorationParticles 76", "MRIntW_DecorationWhichParticles 77",
-		"MRIntW_DecorationParticlesAmount 78", "MRIntW_TeleportParticles 79", "MRIntW_TeleportParticlesStyle 80", "MRIntW_TeleportParticlesStyleMonsters 81"
+		"MRIntW_DecorationParticlesAmount 78", "MRIntW_TeleportParticles 79", "MRIntW_TeleportParticlesStyle 80", "MRIntW_TeleportParticlesStyleMonsters 81",
+		"MRIntW_AltLightnings 83"
 	};
 	
 	//Presset CVar syntax: "[Index] Value,[Index] Value,"
