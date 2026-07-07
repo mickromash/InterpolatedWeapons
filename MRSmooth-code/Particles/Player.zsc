@@ -96,7 +96,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 {
 	int Type;
 	int DeathTick, Setting;
-	Bool Monster;
+	Bool Monster, AltLightnings;
 	Float PAmnt;
 	
 	Override Void PostBeginPlay()
@@ -157,6 +157,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 		}
 		
 		PAmnt = MRIntW_PlayerParticlesAmount;
+		AltLightnings = MRIntW_AltLightnings;
 		
 		if(Type==2 && Setting&MRIWPP_BFGOrbital){
 			For(int i=0;i<5*PAmnt;i++){
@@ -255,48 +256,61 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting&MRIWPP_PlasmaLightning && DeathTick%2==0){
 					Vector3 Pos = Master.Pos + (CRandom(-2 ,2), CRandom(-2, 2), CRandom(-3, 3));
+					Float Alpha = 1;
 					if(Enemy){
 						Double Height = DeathTick;
 						Height /= 19;
 						Height = 1-Height;
 						Pos = Master.Master.Pos + (Actor.AngleToVector(FaceCam(Master.Master)+90, Master.Master.Radius*CFRandom(-.5, .5)), GetDefaultByType(Master.Master.GetClass()).Height*Height);
+						Alpha = CFRandom(.3, .7);
 					}
-					
-					int Leng = 20*Min(2, PAmnt);
 					Double Ang = CFRandom(0, 359);
 					Double Pit = CFRandom(-90, 90);
 					Double Size = 3./Clamp(PAmnt, 1, 1.4);
 					
-					For(double i=0;i<Leng;i+=Max(.5, 1/PAmnt)){
+					
+					int Leng = 20*Clamp(PAmnt, .5, 1.5);
+					
+					Float Step = Max(.25, 1/PAmnt);
+					if(PAmnt<1)Step = 1/((PAmnt-1)*.1+1);
+					
+					Float StepL = Min(2, PAmnt);
+					if(PAmnt<1)StepL = (PAmnt-1)*.25+1;
+					
+					Int Life = (8+DeathTick)*Min(1, (PAmnt-1)*.5+1);
+					
+					For(double i=0;i<Leng;i+=Step){
 						int Col = 25*CRandom(5, 10);
-						Vector3 PPos = (Cos(Ang), Sin(Ang), Sin(Pit))/Min(2, PAmnt);
+						Vector3 PPos = (Cos(Ang), Sin(Ang), Sin(Pit))/StepL;
+						Pos = Pos+PPos;
 						
-						MRSpawnParticle(Color(Col,Col,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(10, 11)+DeathTick, Size, Pos+PPos);
+						if(AltLightnings)MRSpawnParticle(Color(Col,Col,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE|SPF_NEGATIVE_FADESTEP, STYLE_Add, Life*CFRandom(1, 1.2), Size, Pos, Alpha: 0, Fade: -(i/Leng), SizeStep:-(Size/Life));
+						else MRSpawnParticle(Color(Col,Col,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, Life*CFRandom(1, 1.2), Size, Pos, Alpha:Alpha);
 						
 						Ang += CRandom(-2, 2)*(20+DeathTick);
 						Pit += CRandom(-2, 2)*(10+DeathTick);
-						
-						Pos = Pos+PPos;
 					}
 				}
 				if(Setting&MRIWPP_PlasmaSmoke && DeathTick==10){
 					if(Enemy)MRSpawnParticle(Color(255,255,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_None, CRandom(16, 22), GetDefaultByType(Master.Master.GetClass()).Radius, Master.Master.Pos+(Actor.AngleToVector(FaceCam(Master.Master), GetDefaultByType(Master.Master.GetClass()).Radius*CFRandom(-1, 1)),Master.Master.Height*CFRandom(.2, .7)), (Actor.AngleToVector(FaceCam(Master.Master), .5), 1.5), Alpha: CFRandom(.25, .3), SizeStep: CFRandom(.19, .21)*GetDefaultByType(Master.Master.GetClass()).Radius);
-					else MRSpawnParticle(Color(255,255,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_None, CRandom(16, 22), CRandom(27, 32), Master.Pos, (Actor.AngleToVector(FaceCam(Master), .5), .5), Alpha: CFRandom(.4, .55), SizeStep: CFRandom(1.6, 2));
+					else MRSpawnParticle(Color(255,255,255), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_None, CRandom(16, 22), CRandom(27, 32), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-90, 90), .5), CFRandom(.2, .6)), Alpha: CFRandom(.4, .55), SizeStep: CFRandom(1.6, 2));
 				}
 				Return;
 			Case 2://BFG
-				if(Setting&MRIWPP_BFGImpactLightning && (Enemy || DeathTick<21)){
+				if(Setting&MRIWPP_BFGImpactLightning && ((Enemy && DeathTick%2==0) || DeathTick<21)){
 					Vector3 Pos = (CRandom(-1, 1)*DeathTick*1.5, CRandom(-1, 1)*DeathTick*1.5, CFRandom(-1.5, 1.5)*DeathTick*1.5);
+					Float Alpha = 1;
 					if(Enemy){
 						Double Height = DeathTick;
 						Height /= (Master.Master.Health>0?100:50);
 						if(Master.Master.Health>0)Height = CFRandom(.1, .8);//(DeathTick%2==0)?.5-Height:.5+Height;
 						else Height = 1-Height;
 						Pos = (Actor.AngleToVector(FaceCam(Master.Master)+90, Master.Master.Radius*CFRandom(-.5, .5)), GetDefaultByType(Master.Master.GetClass()).Height*Height);
+						Alpha = CFRandom(.3, .8);
 					}
 					
-					int Leng = 30*Min(2, PAmnt);
-					if(Enemy)Leng = ((GetDefaultByType(Master.Master.GetClass()).Radius+GetDefaultByType(Master.Master.GetClass()).Height)*.5)*Min(2, PAmnt);
+					int Leng = 30*Clamp(PAmnt, .5, 1.5);
+					if(Enemy)Leng = ((GetDefaultByType(Master.Master.GetClass()).Radius+GetDefaultByType(Master.Master.GetClass()).Height)*.5)*Clamp(PAmnt, .5, 1.5);
 					Double Ang = VectorAngle(Pos.X, Pos.Y);
 					Double Pit = VectorAngle(Pos.Z, Pos.XY.Length());
 					Double Size = 3./Clamp(PAmnt, 1, 2);
@@ -310,18 +324,26 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					else Pos += Master.Pos;
 					
 					
-					For(double i=0;i<Leng;i+=Max(.5, 1/PAmnt)){
+					Float Step = Max(.25, 1/PAmnt);
+					if(PAmnt<1)Step = 1/((PAmnt-1)*.1+1);
+					
+					Float StepL = Min(2, PAmnt);
+					if(PAmnt<1)StepL = (PAmnt-1)*.25+1;
+					
+					Int Life = (8+DeathTick)*Min(1, (PAmnt-1)*.5+1);
+					
+					For(double i=0;i<Leng;i+=Step){
 						int Col = 25*CRandom(1, 5)*2-i*.5;
 						
-						Vector3 PPos = (Cos(Ang), Sin(Ang), Sin(Pit))*.8/Min(2, PAmnt);
-						if(!Enemy)PPos = (Cos(Ang), Sin(Ang), Sin(Pit))*1.1/Min(2, PAmnt);
+						Vector3 PPos = (Cos(Ang), Sin(Ang), Sin(Pit))*.8/StepL;
+						if(!Enemy)PPos = (Cos(Ang), Sin(Ang), Sin(Pit))*1.1/StepL;
+						Pos = Pos+PPos;
 						
-						MRSpawnParticle(Color(255,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(10, 11)+DeathTick, Size, Pos+PPos);
+						if(AltLightnings)MRSpawnParticle(Color(255,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE|SPF_NEGATIVE_FADESTEP, STYLE_Add, Life*CFRandom(1, 1.2), Size, Pos, Alpha: 0, Fade: -(i/Leng), SizeStep:-(Size/Life));
+						else MRSpawnParticle(Color(255,255,Col), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, Life*CFRandom(1, 1.2), Size, Pos, Alpha:Alpha);
 						
 						Ang += CRandom(-4, 4)*(Enemy?10+DeathTick*.25:30-DeathTick);
 						Pit += CRandom(-4, 4)*(Enemy?10+DeathTick*.25:30-DeathTick);
-						
-						Pos = Pos+PPos;
 					}
 				}
 				
@@ -378,8 +400,29 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						Col[0] = 255;
 						Col[1] = CRandom(100, 200);
 						Col[2] = Col[1]*.5;
-						MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 7*((PAmnt-1)*.5+1), Size, Pos, (-Ofst.XY*CFRandom(-.01, .05), CFRandom(.4, 1.4)), SizeStep:1);
+						MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 7*((PAmnt-1)*.5+1), Size, Pos, (-Ofst.XY*CFRandom(-.01, .05), CFRandom(.4, 1.4)), Alpha: CFRandom(.5, 1), SizeStep:1);
 					}
+					
+					if(DeathTick%4!=0 || DeathTick>20)Return;
+					
+					Float Size = CFRandom(.5, 2)/((PAmnt-1)*.5+1);
+					
+					Vector3 Ofst = (CFRandom(-25+Deathtick*.25, 25-DeathTick*.25),CFRandom(-25+DeathTick*.25, 25-DeathTick*.25),CFRandom(-10, 10)+DeathTick*.5);
+					
+					Vector3 Pos = Master.Pos + Ofst;
+					
+					if(Enemy){
+						Float Height = DeathTick;
+						Height = Height/50*Master.Master.Height;
+						Ofst = (CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(-.8, .8)*GetDefaultByType(Master.Master.GetClass()).Radius, CFRandom(0, 20)+Height);
+						Pos = Master.Master.Pos + Ofst;
+					}
+					
+					int Col[3];
+					Col[0] = 255;
+					Col[1] = CRandom(100, 200);
+					Col[2] = Col[1]*.5;
+					MRSpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 20*((PAmnt-1)*.5+1), Size, Pos, (-Ofst.XY*CFRandom(-.01, .05), CFRandom(1.2, 2)), Alpha: CFRandom(.5, 1), SizeStep:.25);
 				}
 				Return;
 		}
@@ -639,7 +682,7 @@ Extend Class MRIntWeaps_BFGBall
 		
 		Actor Who = Self;
 		Double Height = 5;
-		if(Setting&MRIWPP_BFGOnlyHitTrace){Who = target;Height = Target.Player.ViewZ-Target.Pos.Z-5;}
+		if(Setting&MRIWPP_BFGOnlyHitTrace){Who = target;Height = Target.Player.ViewZ-Target.Pos.Z-10;}
 		
 		Float Mult = 1;
 		For(int i=0;i<Hit.Size();i++){
