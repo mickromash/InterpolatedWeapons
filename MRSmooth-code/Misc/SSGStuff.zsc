@@ -200,11 +200,6 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 	
 	Void MuzzleSmoke(Vector2 Ofst1=(0,0), Vector2 Ofst2=(0,0), Double Scale1=1, Double Scale2=1)
 	{
-		if(Reloading && Ofst1==(0,0)){
-			Smoker.Update(true);
-			Return;
-		}
-		
 		if(!Smoker){
 			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 			if(!Handler)Return;
@@ -212,6 +207,11 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 			Smoker = Handler.Smokers[Owner.PlayerNumber()];
 		
 			if(!Smoker)Return;
+		}
+		
+		if(Reloading && Ofst1==(0,0)){
+			Smoker.Update(true);
+			Return;
 		}
 		
 		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self)?.028:.014;
