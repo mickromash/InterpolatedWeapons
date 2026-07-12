@@ -4,8 +4,106 @@
 
 Extend Class MRIntWeaps_Handler
 {
+	//Stolen from UGibs
+	Static Const String Waters [] = {"SEWER", "WATER", "WATR", "WTR", "LAVA", "LAV", "SLIME0", "SLM", "SLUGDE", "MAGMA", "FLATHUH", "FLTFLWW", "FLTWAWA", "X_0", "OICYWA"};
+	Static Const String Bloods [] = {"BLOOD", "BLOD", "BLD"};
+	Static Const String Nukes [] = {"NUKE", "NUKAGE", "GOOP"};
+	
+	Void SpawnLiquidSplash(Actor mo, int Type=0)
+	{
+		if(!mo)Return;
+		
+		
+		Switch(Type)
+		{
+			Case 0://Water
+				For(int i=0;i<10;i++){
+					int Bright = CRandom(30, 70);
+					Color Col = Color(Bright, int(Bright*1.2), CRandom(200, 255));
+					
+					mo.A_SpawnParticle(Col, 0, 50, CFRandom(1, 4), 0, 0,0,0, CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4), 0,0,-.5, CFRandom(.6, .9));
+				}
+				For(int i=0;i<5;i++){
+					int Bright = CRandom(30, 70);
+					Color Col = Color(Bright, int(Bright*1.2), CRandom(200, 255));
+					
+					mo.A_SpawnParticle(Col, 0, 70, CFRandom(.5, 3), 0, 0,0,0, 0,0,CFRandom(4, 6), CFRandom(-.05,.05),CFRandom(-.05,.05),-.5, CFRandom(.6, .9));
+				}
+				Break;
+			Case 1://Nuke
+				For(int i=0;i<10;i++){
+					int Bright = CRandom(20, 70);
+					Color Col = Color(Bright, 200, Bright);
+					
+					mo.A_SpawnParticle(Col, SPF_FullBright, 30, CFRandom(1, 4), 0, 0,0,0, CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4), 0,0,-.7, 1);
+				}
+				For(int i=0;i<5;i++){
+					int Bright = CRandom(20, 70);
+					Color Col = Color(Bright, 200, Bright);
+					
+					mo.A_SpawnParticle(Col, SPF_FullBright, 50, CFRandom(.5, 3), 0, 0,0,0, 0,0,CFRandom(4, 7), CFRandom(-.05,.05),CFRandom(-.05,.05),-.7, 1);
+				}
+				Break;
+			Case 2://Blood
+				For(int i=0;i<10;i++){
+					int Bright = CRandom(0, 30);
+					Color Col = Color(170, Bright, Bright);
+					
+					mo.A_SpawnParticle(Col, 0, 50, CFRandom(1, 4), 0, 0,0,0, CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4), 0,0,-.6, 1);
+				}
+				For(int i=0;i<5;i++){
+					int Bright = CRandom(0, 30);
+					Color Col = Color(170, Bright, Bright);
+					
+					mo.A_SpawnParticle(Col, 0, 70, CFRandom(.5, 3), 0, 0,0,0, 0,0,CFRandom(4, 7), CFRandom(-.05,.05),CFRandom(-.05,.05),-.6, 1);
+				}
+				Break;
+				
+		}
+	}
+	
 	Void SpawnPuffParticles(Actor Obj)
 	{
+		if(Obj.Pos.Z<Obj.FloorZ+8 && Obj.FloorPic.IsValid() &&
+			MRIntW_PlayerWhichParticles&MRIWPP_PuffLiquid){//Liquid Splash
+			String PicName = Texman.GetName(Obj.FloorPic);
+			PicName.MakeUpper();
+			
+			Bool IsLiquid, IsBlood, IsNuke;
+			
+			For(int i=0;i<Bloods.Size();i++){
+				if(PicName.IndexOf(Bloods[i])>-1){
+					IsBlood = true;Break;
+				}
+			}
+			if(IsBlood){
+				SpawnLiquidSplash(Obj, 2);
+				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
+				Return;
+			}
+			
+			For(int i=0;i<Nukes.Size();i++){
+				if(PicName.IndexOf(Nukes[i])>-1){
+					IsNuke = true;Break;
+				}
+			}
+			if(IsNuke){
+				SpawnLiquidSplash(Obj, 1);
+				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
+				Return;
+			}
+			
+			For(int i=0;i<Waters.Size();i++){
+				if(PicName.IndexOf(Waters[i])>-1){
+					IsLiquid = true;Break;
+				}
+			}
+			if(IsLiquid){
+				SpawnLiquidSplash(Obj);
+				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
+				Return;
+			}
+		}
 		Bool Melee = Actor.InStateSequence(Obj.CurState, Obj.FindState("Melee"));
 		if(!Melee)
 		{

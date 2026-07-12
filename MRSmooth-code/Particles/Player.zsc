@@ -59,6 +59,7 @@ Class MRIntWeaps_ActorEffects: Thinker
 
 enum MRIntWeaps_PlrParticlesFlags{
 	MRIWPP_Puff = 8388608,//23
+	MRIWPP_PuffLiquid = 67108864,//26
 	
 	MRIWPP_PlasmaFly = 1,//0
 	MRIWPP_PlasmaTrail = 4096,//12
@@ -88,8 +89,6 @@ enum MRIntWeaps_PlrParticlesFlags{
 
 	MRIWPP_InciFire = 16777216,//24
 	MRIWPP_InciSmoke = 33554432,//25
-	
-	//= 67108864,//26
 }
 
 Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
