@@ -136,7 +136,7 @@ Extend Class MRIntWeaps_Chainsaw
 			}
 			else {
 				if(invoker.BldCooldown[i]<Cooldown)invoker.BldCooldown[i] += Min(Cooldown-invoker.BldCooldown[i], Cooldown*CFRandom(.4, .9));
-				if(invoker.Dripping[i]<35*20)invoker.Dripping[i] += CRandom(10, 35);
+				if(invoker.Dripping[i]<35*20 && MRIntW_ChainsawBlood&2)invoker.Dripping[i] += CRandom(10, 35);
 			}
 		}
 		
