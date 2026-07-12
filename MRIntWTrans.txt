@@ -34,7 +34,7 @@ Script "MRIntWeaps_GlovesColorPistol" (int arg0, int arg1, int arg2, int arg3)
 	arg0 = FixedDiv(arg0, 100);
 	arg1 = FixedDiv(arg1, 100);
 	arg2 = FixedDiv(arg2, 100);
-	CreateTranslation(arg3, 112:127=%[OyBlya[0],OyBlya[1],OyBlya[2]]:[arg0,arg1,arg2], 197:201=9:11, 251:253=125:127, 175:181=152:159);
+	CreateTranslation(arg3, 112:127=%[OyBlya[0],OyBlya[1],OyBlya[2]]:[arg0,arg1,arg2], 197:201=9:11, 250:254=125:127, 175:181=152:159);
 	
 	Thing_SetTranslation(0, arg3);
 }
@@ -103,25 +103,25 @@ Script "MRIntWeaps_GlovesColorPressetPistol" (int arg0, int arg1)
 {
 	Switch(arg0){
 		Case 0://Classic
-			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159,  112:125=57:79, 126:127=1:1);
+			CreateTranslation(arg1, 197:201=9:11, 250:254=125:127, 175:181=152:159,  112:125=57:79, 126:127=1:1);
 			Break;
 		Case 1://Black
-			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=[40,40,40]:[0,0,0]);
+			CreateTranslation(arg1, 197:201=9:11, 250:254=125:127, 175:181=152:159, 112:127=[40,40,40]:[0,0,0]);
 			Break;
 		Case 2://Brown
-			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.89,0.55,0.28]);
+			CreateTranslation(arg1, 197:201=9:11, 250:254=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.89,0.55,0.28]);
 			Break;
 		Case 3://Green
-			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.58,1.45,0.55]);
+			CreateTranslation(arg1, 197:201=9:11, 250:254=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.58,1.45,0.55]);
 			Break;
 		Case 4://Red
-			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[1.03,0.22,0.24]);
+			CreateTranslation(arg1, 197:201=9:11, 250:254=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[1.03,0.22,0.24]);
 			Break;
 		Case 5://Grey
-			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.86,0.86,0.86]);
+			CreateTranslation(arg1, 197:201=9:11, 250:254=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.86,0.86,0.86]);
 			Break;
 		Case 6://Blue
-			CreateTranslation(arg1, 197:201=9:11, 251:253=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.31,0.51,1.66]);
+			CreateTranslation(arg1, 197:201=9:11, 250:254=125:127, 175:181=152:159, 112:127=%[0.0,0.0,0.0]:[0.31,0.51,1.66]);
 			Break;
 	}
 	
