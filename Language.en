@@ -150,6 +150,9 @@ MRIntW_ChainsawStart = "Starting animation";
 MRIntW_ChainsawCutting = "Improved chainsaw cutting animation";
 MRIntW_ChainsawCuttingWall = "Chainsaw surface cutting shaking";
 MRIntW_ChainsawSmoke = "Chainsaw smoke";
+MRIntW_ChainsawBlood0 = "Blood on the saw";
+MRIntW_ChainsawBlood1 = "Blood dripping";
+MRIntW_ChainsawBloodLife = "Blood time (in seconds)";
 
 MRIntW_LHand = "Hold the pistol in the left hand";
 MRIntW_PistolSHand = "Hold gun with two hands";
@@ -193,6 +196,7 @@ MRIntW_PlayerParticlesAmount = "Player weapon effects quality";
 MRIntWeaps_PlayerParticlesMenu = "Set up player weapon effects";
 
 MRIntW_PlrParticles_Puff = "Puff sparks";
+MRIntW_PlrParticles_PuffLiquid = "Water splashes";
 
 MRIntW_PlrParticles_RocketFly0 = "(Not recommended)";
 MRIntW_PlrParticles_RocketFly1 = "Strong smoke";
@@ -322,8 +326,11 @@ MRIntW_TeleportParticlesStyleMonsters = "Monster teleport style";
 MRIntW_ApplyParticles = "Apply particles settings";
 
 
-MRIntWeaps_SoundMenu = "Sounds settings (add-on required)";
+MRIntWeaps_SoundMenu = "Sounds settings";
+MRIntWeaps_SoundAddonRequired = "(add-on required)";
 
+MRIntW_ChainsawVolume = "Chainsaw idle volume";
+MRIntW_ChainsawRandomPitch = "Chainsaw idle pitch randomness";
 MRIntW_ShotgunSound = "Shotgun custom firing sound";
 MRIntW_ChaingunSound = "Chaingun custom firing sound";
 

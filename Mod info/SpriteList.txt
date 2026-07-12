@@ -23,6 +23,14 @@ Chainsaw
 	SAW1 Y (textures) - Starting hand
 	
 	SAW1 Z - Starting rope
+	
+	SAB1 ABCDEF (textures) - blood on the blade (cutting animation)
+	SAB2 ABCDEFGHIJKLMNOPQR (textures) - #1 set of blood on the chainsaw (cutting animation)
+	SAC2 SAD2 SAE2 SAF2 ABCDEFGHIJKLMNOPQR (textures) - #1 set of blood on the chainsaw (ready animation)
+	SAB3 ABCDEF (textures) - #2 set of blood on the chainsaw (cutting animation)
+	SAC3 SAD3 SAE3 SAF3 ABCDEF (textures) - #2 set of blood on the chainsaw (ready animation)
+	SAB4 ABCDEFGHIJK (textures) - #3 set of blood on the chainsaw (cutting animation)
+	SAC4 SAD4 SAE4 SAF4 ABCDEFGHIJK (textures) - #3 set of blood on the chainsaw (ready animation)
 }
 
 Pistol

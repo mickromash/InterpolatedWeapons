@@ -274,6 +274,7 @@ Extend Class MRIntWeaps_Chainsaw
 				A_DropWeapon();
 				A_Overlay(DieLay, "DyingLeftHand");
 				A_GiveInventory("MRIntWeaps_DyingAnimation");
+				A_ClearOverlays(LayBlood, LayBlood+40);
 			}
 			Stop;
 			

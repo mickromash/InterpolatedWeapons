@@ -86,6 +86,9 @@ OptionMenu "MRIntW_WeaponsMenu"
 	Option "$MRIntW_ChainsawCutting", "MRIntW_ChainsawCutting", "YesNo"
 	Option "$MRIntW_ChainsawCuttingWall", "MRIntW_ChainsawCuttingWall", "YesNo"
 	Option "$MRIntW_ChainsawSmoke", "MRIntW_ChainsawSmoke", "YesNo"
+	FlagOption "$MRIntW_ChainsawBlood0", "MRIntW_ChainsawBlood", "YesNo", 0
+	FlagOption "$MRIntW_ChainsawBlood1", "MRIntW_ChainsawBlood", "YesNo", 1, "MRIntW_ChainsawBlood"
+	Slider "$MRIntW_ChainsawBloodLife", "MRIntW_ChainsawBloodLife", 0, 180, 5, 0, "MRIntW_ChainsawBlood"
 	StaticText ""
 	StaticText "$TAG_PISTOL", "Fire"
 	Option "$MRIntW_LHand", "MRIntW_LHand", "YesNo"
@@ -168,6 +171,7 @@ OptionMenu "MRIntWeaps_PlayerParticlesMenu"
 	Title "$MRIntWeaps_PlayerParticlesMenu"
 	StaticText ""
 	FlagOption "$MRIntW_PlrParticles_Puff", "MRIntW_PlayerWhichParticles", "YesNo", 23, "MRIntW_PlayerParticles"
+	FlagOption "$MRIntW_PlrParticles_PuffLiquid", "MRIntW_PlayerWhichParticles", "YesNo", 26, "MRIntW_PlayerParticles"
 	StaticText ""
 	StaticText "$TAG_ROCKETLAUNCHER", "Fire"
 	StaticText "$MRIntW_Particles_Tick", "Green"
@@ -329,6 +333,10 @@ OptionMenu "MRIntWeaps_SoundMenu"
 {
 	Title "$MRIntWeaps_SoundMenu"
 	StaticText ""
+	Slider "$MRIntW_ChainsawVolume", "MRIntW_ChainsawVolume", 0, 1, .1
+	Slider "$MRIntW_ChainsawRandomPitch", "MRIntW_ChainsawRandomPitch", 0, 10, 1
+	StaticText ""
+	StaticText "$MRIntWeaps_SoundAddonRequired", "Gold"
 	Option "$MRIntW_ShotgunSound", "MRIntW_ShotgunSound", "YesNo"
 	Option "$MRIntW_ChaingunSound", "MRIntW_ChaingunSound", "YesNo"
 }

@@ -66,6 +66,10 @@ user bool MRIntW_ChainsawStart = false;//Chainsaw starting animation
 user bool MRIntW_ChainsawCutting = true;//Improved cutting animations
 user bool MRIntW_ChainsawCuttingWall = true;//Chainsaw shaking when cutting map geometry
 nosave bool MRIntW_ChainsawSmoke = true;
+nosave int MRIntW_ChainsawBlood = 0;//0 - overlay, 1 - dripping
+nosave int MRIntW_ChainsawBloodLife = 60;//How long blood stays on the saw (in seconds)
+nosave float MRIntW_ChainsawVolume = 1;//Chainsaw idle sound volume
+nosave float MRIntW_ChainsawRandomPitch = 0;//Chainsaw idle sound pitch randomness
 //Pistol
 user bool MRIntW_LHand = true;//Hold pistol in left hand
 user bool MRIntW_Rifle = false;//Replace pistol with the rifle
@@ -95,7 +99,7 @@ nosave bool MRIntW_BFGParticles = true;//Fancy ahh firing animation
 nosave int MRIntW_InciniSmoke = 3;//0 - None, 1 - Only muzzle, 2 - Only small, 3 - Both
 
 nosave bool MRIntW_PlayerParticles = false;
-nosave int MRIntW_PlayerWhichParticles = 16580507;
+nosave int MRIntW_PlayerWhichParticles = 134021019;
 nosave float MRIntW_PlayerParticlesAmount = 1;
 
 nosave bool MRIntW_MonsterParticles = false;
@@ -116,4 +120,5 @@ nosave bool MRIntW_AltLightnings = false;
 nosave string MRIntW_PressetCust1 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
+nosave noarchive bool MRIntW_Debug = false;
 server noarchive int MRIntW_Version = 0407260;//DDMMYYI

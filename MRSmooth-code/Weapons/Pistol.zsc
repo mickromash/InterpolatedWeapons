@@ -14,10 +14,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	
 	int BobState, IdleDelay, 
 		SHandState,//SHandState: -1 - Must go off screen, 0 - Must go off screen if cooldown is 0, 1 - Must be on screen, if cooldown is 0 must go off screen
-		HandTime, EnableSecondHand,//HandTime - second hand cooldown
-		ShotPower;
+		HandTime, EnableSecondHand;//HandTime - second hand cooldown
 	Bool IsRifle, LeftHanded, 
 		SecondHand;
+	Double ShotPower;
 
 	Float Recoil;
 	Override Void DoEffect()
@@ -122,7 +122,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 
 		A_StartSound(invoker.IsRifle?"MRIntW/RifleFire":"weapons/pistol", CHAN_WEAPON, pitch:i_timescale);
-		invoker.ShotPower = GunShot(accurate, "BulletPuff", BulletSlope ());
+		invoker.ShotPower = GunShot(accurate, "BulletPuff", BulletSlope ())-5;
+		invoker.ShotPower /= 15-5;
+		if(MRIntW_Debug)Console.Printf("\cgMRIntW:\c- Shot power\cd "..invoker.ShotPower);
 		
 		if(CountInv(invoker.AmmoType1)<1 && MRIntW_ReloadAnims%2==1){
 			if(invoker.IsRifle)invoker.ReloadR = true;
@@ -383,14 +385,14 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 					Double Amnt = MRIntW_ScreenShakeAmount;
 					A_QuakeEx(.05*Amnt,0,.15*Amnt, 5, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 15,0,10, rollIntensity: .1*Amnt, rollwave: 1);
 				}
-				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*CFRandom(0, 1);
+				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*invoker.ShotPower;
 			}
 			#### BB 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
 				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
-				Float Scal = CFRandom(.07, .1);
-				Vector2 Ofst = (CFRandom(.4, 1.7), CFRandom(3, 4));
-				if(invoker.SecondHand){Ofst = (0,2);Scal = CFRandom(.05, .06);}
+				Float Scal = .07 + .02*invoker.ShotPower;
+				Vector2 Ofst = (.4+1.2*invoker.ShotPower, 3+invoker.ShotPower*.75);
+				if(invoker.SecondHand){Ofst = (0,2);Scal = .05+.01*invoker.ShotPower;}
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot, WOF_ADD);
@@ -406,9 +408,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_FireSmoke();
 			}
 			#### C 1{
-				Float Scal = CFRandom(.01, .02);
+				Float Scal = .01+.0075*invoker.ShotPower;
 				if(invoker.SecondHand)Scal = .008;
-				Vector2 Ofst = (CFRandom(.2, .4), 0);
+				Vector2 Ofst = (.2+.1*invoker.ShotPower, 0);
 				if(invoker.SecondHand)Ofst = (0,0);
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);

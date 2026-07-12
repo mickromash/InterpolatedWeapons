@@ -10,8 +10,9 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 	Const LHand = -PSP_FLASH;
 	Const Lay3 = LHand-1;//Muzzle flash flare
 	
-	int BobState, IdleDelay, ShotPower;
-		
+	int BobState, IdleDelay;
+	Double ShotPower;
+	
 	Float Recoil;
 	Override Void DoEffect()
 	{
@@ -64,6 +65,10 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		{
 			invoker.ShotPower += GunShot(false, "BulletPuff", pitch);
 		}
+		
+		invoker.ShotPower -= 35;
+		invoker.ShotPower /= 100-35;
+		if(MRIntW_Debug)Console.Printf("\cgMRIntW:\c- Shot power\cd "..invoker.ShotPower);
 		
 		A_FiringParticles();
 		
@@ -568,13 +573,13 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### # 1;//Shot
 			#### # 1 {//Recoil
 				invoker.SpriteRecoil = MRIntW_ShotgunsRecoil;
-				Vector2 Pivot = (.5+CFRandom(-.2, .2)*invoker.SpriteRecoil, CFRandom(.3, .6));
+				Vector2 Pivot = (.5+CFRandomPick(-.2, .2)*invoker.ShotPower*invoker.SpriteRecoil, .3+.3*invoker.ShotPower);
 				A_OverlayPivot(Lay1, Pivot.X, Pivot.Y);
 				A_OverlayPivot(Lay2, Pivot.X, Pivot.Y);
 				
-				Vector2 Scal = (CFRandom(.3, .4)*invoker.SpriteRecoil, 0);
+				Vector2 Scal = ((.3+.1*invoker.ShotPower)*invoker.SpriteRecoil, 0);
 				Scal.Y = Scal.X*1.5;
-				Vector2 Ofst = (-CFRandom(2, 3), CFRandom(14, 16))*invoker.SpriteRecoil;
+				Vector2 Ofst = (-3+invoker.ShotPower, 14+2*invoker.ShotPower)*invoker.SpriteRecoil;
 				Float Rotate = (Player.GetPSprite(Lay1).Pivot.X-.5)*-Ofst.X;
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
@@ -723,11 +728,9 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 						A_OverlayOffset(SmokeStart+index, 130+Player.GetPSprite(Lay1).X+Bob.X, 170);
 						Player.GetPSprite(SmokeStart+index).Scale = (1,1)*CFRandom(.3, .4);
 						//Smoke amount from last shot damage (min dmg 35, max dmg 100)
-						Double Alpha = invoker.ShotPower-35.;
-						Alpha /= 100;
-						Alpha *= .6;
+						Double Alpha = invoker.ShotPower;
 						
-						A_OverlayAlpha(SmokeStart+index, Alpha);
+						A_OverlayAlpha(SmokeStart+index, .1+Alpha*.2);
 					}
 				}
 			}

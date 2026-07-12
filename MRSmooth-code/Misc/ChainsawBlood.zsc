@@ -1,0 +1,508 @@
+Extend Class MRIntWeaps_Chainsaw
+{
+	Const LayBloodDrip = -2;
+	
+	int BldTrans[40], BldFrame[40], BldCooldown[40], Dripping[6];
+	Float BldAlpha[40];
+	Array<int> BldFrames, BldFrames2, BldFrames3;
+	
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		For(int i=0;i<18;i++){
+			BldFrames.Push(i);
+		}
+		
+		For(int i=0;i<6;i++){
+			BldFrames2.Push(i);
+		}
+		
+		For(int i=0;i<10;i++){
+			BldFrames3.Push(i);
+		}
+	}
+	
+	Void DoBloodTick()
+	{
+		Bool Underwater = Owner.WaterLevel>1;
+		For(int i=0;i<40;i++){
+			/*if(GetAge()%35==0){
+				String Frames = "";
+				For(int i1=0;i1<BldFrames.Size();i1++)Frames = Frames..BldFrames[i1].." ";
+				Console.Printf("Frames 1: "..Frames.." ("..BldFrames.Size()..")");
+				Frames = "";
+				For(int i1=0;i1<BldFrames2.Size();i1++)Frames = Frames..BldFrames2[i1].." ";
+				Console.Printf("Frames 2: "..Frames.." ("..BldFrames2.Size()..")");
+				Frames = "";
+				For(int i1=0;i1<BldFrames3.Size();i1++)Frames = Frames..BldFrames3[i1].." ";
+				Console.Printf("Frames 3: "..Frames.." ("..BldFrames3.Size()..")");
+			}*/
+			
+			if(i<6 && Dripping[i]>0){
+				Dripping[i]--;
+			}
+			
+			if(BldAlpha[i]>0){
+				if(Underwater){
+					BldCoolDown[i] = 0;
+					BldAlpha[i] -= .05;
+					Continue;
+				}
+				if(BldCooldown[i]<1)BldAlpha[i] -= .01;
+				else BldCooldown[i]--;
+				if(BldAlpha[i]<=0){
+					if(i>29){
+						BldFrames3.Push(BldFrame[i-29]);
+					}
+					else if(i>23){
+						BldFrames2.Push(BldFrame[i-23]);
+					}
+					else if(i>5){
+						BldFrames.Push(BldFrame[i-5]);
+					}
+					
+					BldFrame[i] = 0;
+				}
+			}
+		}
+	}
+	
+	Action Void A_AddBlood(Actor Victim=Null, int Type=0)
+	{
+		if(Type<1 && (!Victim || !Victim.bIsMonster || Victim.bNoBlood))Return;
+		if(MRIntW_ChainsawBlood<1)Return;
+		
+		
+		int Trans;
+		if(Victim){
+			if(Victim.BloodTranslation != 0)Trans = Victim.BloodTranslation;
+			else {
+				int OldTrans = Player.GetPSprite(Lay1).Translation;
+				Switch(Victim.GetClassName())
+				{
+					Case 'LostSoul':
+						Return;
+					Case 'Cacodemon':
+						A_OverlayTranslation(Lay1, "MRIntWBldBlue");
+						Break;
+					Case 'HellKnight':
+					Case 'BaronOfHell':
+						A_OverlayTranslation(Lay1, "MRIntWBldGreen");
+						Break;
+					Default:
+						A_OverlayTranslation(Lay1, "MRIntWBldRed");
+						Break;
+				}
+				Trans = Player.GetPSprite(Lay1).Translation;
+				Player.GetPSprite(Lay1).Translation = OldTrans;
+			}
+		}
+		else {
+			int OldTrans = Player.GetPSprite(Lay1).Translation;
+			if(Type==1){
+				A_OverlayTranslation(Lay1, "MRIntWBldRed");
+				Trans = Player.GetPSprite(Lay1).Translation;
+				Player.GetPSprite(Lay1).Translation = OldTrans;
+			}
+			if(Type==2){
+				A_OverlayTranslation(Lay1, "MRIntWBldGreen");
+				Trans = Player.GetPSprite(Lay1).Translation;
+				Player.GetPSprite(Lay1).Translation = OldTrans;
+			}
+		}
+		
+		int Force = -1;
+		int CoolDown = MRIntW_ChainsawBloodLife*35;
+	
+		Bool NoAdd = false;
+		For(int i=0;i<41;i++){
+			if(i>39)Break;
+			
+			if(invoker.BldAlpha[i]<=0)Continue;
+			
+			if(invoker.BldTrans[i]!=Trans){
+				if(Force == -1)Force = i;
+				Continue;
+			}
+			
+			if(invoker.BldAlpha[i]<1){
+				invoker.BldAlpha[i] += CFRandom(.025, .05);
+				NoAdd = true;
+			}
+			else if(NoAdd)Continue;
+			if(i>5){
+				if(invoker.BldCooldown[i]<Cooldown*.75)invoker.BldCooldown[i] += Min(Cooldown*.75-invoker.BldCooldown[i], Cooldown*.75*CFRandom(.4, .9));
+			}
+			else {
+				if(invoker.BldCooldown[i]<Cooldown)invoker.BldCooldown[i] += Min(Cooldown-invoker.BldCooldown[i], Cooldown*CFRandom(.4, .9));
+				if(invoker.Dripping[i]<35*20)invoker.Dripping[i] += CRandom(10, 35);
+			}
+		}
+		
+		if(Force>5 || (Force>1 && CRandom(0, 20)!=0))Force = -1;
+		
+		int Num;
+		if(Force>-1){
+			Num = Force;
+		}
+		else For(Num=0;Num<6;Num++){
+			if(invoker.BldAlpha[Num]<=0)Break;
+			//Console.Printf("Frame "..Num..": "..invoker.BldFrame[Num]);
+		}
+		
+		if(CRandom(0, 120-invoker.BldFrames.Size()*5)==0)
+		{
+			if(invoker.BldFrames.Size()<1)
+			{
+				int Force = -1;
+
+				For(Force=23;Force>4;Force--){
+					if(Force<6){Force = -1;Break;}
+					
+					if(invoker.BldAlpha[Force]<=0)Continue;
+					
+					if(invoker.BldTrans[Force]!=Trans)Break;
+				}
+				
+				if(Force>-1){
+					invoker.BldAlpha[Force] = .1;
+					invoker.BldCooldown[Force] = CoolDown*.75;
+					invoker.BldTrans[Force] = Trans;
+					//Console.Printf("Force 1: "..Force);
+				}
+			}
+			else
+			{
+				int Num;
+				For(Num=6;Num<24;Num++){
+					if(invoker.BldAlpha[Num]<=0)Break;
+				}
+				//Console.Printf("Frames 1: "..invoker.BldFrames.Size().." Num "..Num);
+				
+				if(Num<24){
+					int Frame = CRandom(0, invoker.BldFrames.Size()-1);
+			
+					A_Overlay(LayBlood+Num, "SawBlood");
+					invoker.BldAlpha[Num] = .1;
+					invoker.BldCooldown[Num] = CoolDown*.75;
+					invoker.BldTrans[Num] = Trans;
+					invoker.BldFrame[Num] = invoker.BldFrames[Frame];
+					invoker.BldFrames.Delete(Frame);
+				}
+			}
+		}
+		
+		else if(CRandom(0, 80-invoker.BldFrames3.Size()*7)==0)
+		{
+			if(invoker.BldFrames3.Size()<1)
+			{
+				int Force = -1;
+
+				For(Force=39;Force>28;Force--){
+					if(Force<30){Force = -1;Break;}
+					
+					if(invoker.BldAlpha[Force]<=0)Continue;
+					
+					if(invoker.BldTrans[Force]!=Trans)Break;
+				}
+				
+				if(Force>-1){
+					invoker.BldAlpha[Force] = .1;
+					invoker.BldCooldown[Force] = CoolDown*.75;
+					invoker.BldTrans[Force] = Trans;
+					//Console.Printf("Force 3: "..Force);
+				}
+			}
+			else
+			{
+				int Num;
+				For(Num=30;Num<40;Num++){
+					if(invoker.BldAlpha[Num]<=0)Break;
+				}
+				//Console.Printf("Frames 3: "..invoker.BldFrames3.Size().." Num "..Num);
+				
+				if(Num<40){
+					int Frame = CRandom(0, invoker.BldFrames3.Size()-1);
+			
+					A_Overlay(LayBlood+Num, "SawBlood");
+					invoker.BldAlpha[Num] = .1;
+					invoker.BldCooldown[Num] = CoolDown*.75;
+					invoker.BldTrans[Num] = Trans;
+					invoker.BldFrame[Num] = invoker.BldFrames3[Frame];
+					invoker.BldFrames3.Delete(Frame);
+				}
+			}
+		}
+		
+		else if(Type<1 && CRandom(0, 280-invoker.BldFrames2.Size()*10)==0)
+		{
+			if(invoker.BldFrames2.Size()<1)
+			{
+				int Force = -1;
+				For(Force=29;Force>22;Force--){
+					if(Force<24){Force = -1;Break;}
+					
+					if(invoker.BldAlpha[Force]<=0)Continue;
+					
+					if(invoker.BldTrans[Force]!=Trans)Break;
+				}
+				
+				if(Force>-1){
+					invoker.BldAlpha[Force] = .1;
+					invoker.BldCooldown[Force] = CoolDown*.75;
+					invoker.BldTrans[Force] = Trans;
+					//Console.Printf("Force 2: "..Force);
+				}
+			}
+			else
+			{
+				int Num;
+				For(Num=24;Num<30;Num++){
+					if(invoker.BldAlpha[Num]<=0)Break;
+				}
+				//Console.Printf("Frames 2: "..invoker.BldFrames2.Size().." Num "..Num);
+				
+				if(Num<30){
+					int Frame = CRandom(0, invoker.BldFrames2.Size()-1);
+					//Console.Printf("Frame "..Frame);
+			
+					A_Overlay(LayBlood+Num, "SawBlood");
+					invoker.BldAlpha[Num] = .1;
+					invoker.BldCooldown[Num] = CoolDown*.75;
+					invoker.BldTrans[Num] = Trans;
+					invoker.BldFrame[Num] = invoker.BldFrames2[Frame];
+					invoker.BldFrames2.Delete(Frame);
+				}
+			}
+		}
+		
+		if(Num>5)Return;
+		
+		if(Num>1 && Num<5){
+			if(CRandom(0, 50+Num*5)!=0)Return;
+			
+			if(invoker.BldFrame[Num]<1){
+				Array<int> Frames;
+				For(int i=2;i<5;i++)Frames.Push(i);
+				For(int i=2;i<5;i++){
+					if(invoker.BldFrame[i]!=0)Frames.Delete(Frames.Find(invoker.BldFrame[i]));
+				}
+				
+				invoker.BldFrame[Num] = Frames[CRandom(0, Frames.Size()-1)];
+			}
+		}
+		
+		if(Num>4 && CRandom(0, 200)!=0)Return;
+		
+		if(invoker.BldFrame[Num]==0)invoker.BldFrame[Num] = Num;
+		
+		A_Overlay(LayBlood+Num, "SawBlood");
+		if(Force==-1)invoker.BldAlpha[Num] = .1;
+		invoker.BldCooldown[Num] = CoolDown;
+		
+		invoker.BldTrans[Num] = Trans;
+	}
+	
+	Action Void A_CheckLiquid(TextureId Pic)
+	{
+		if(!Pic.IsValid())Return;
+		
+		String PicName = Texman.GetName(Pic);
+		PicName.MakeUpper();
+		
+		//Stolen from UGibs
+		Static Const String Waters [] = {"SEWER", "WATER", "WATR", "WTR", "LAVA", "LAV", "SLIME0", "SLM", "SLUGDE", "MAGMA", "FLATHUH", "FLTFLWW", "FLTWAWA", "X_0", "OICYWA"};
+		Static Const String Bloods [] = {"BLOOD", "BLOD", "BLD"};
+		Static Const String Nukes [] = {"NUKE", "NUKAGE", "GOOP"};
+		
+		Bool IsLiquid, IsBlood, IsNuke;
+		
+		For(int i=0;i<Bloods.Size();i++){
+			if(PicName.IndexOf(Bloods[i])>-1){
+				if(MRIntW_Debug)Console.Printf("\cgMRIntW:\c- cutting \cgblood\c- (texture: \cg"..PicName.."\c- contain: \cd"..Bloods[i].."\c-)");
+				IsBlood = true;Break;
+			}
+		}
+		if(IsBlood){
+			A_AddBlood(Type: 1);
+		}
+		
+		For(int i=0;i<Nukes.Size();i++){
+			if(PicName.IndexOf(Nukes[i])>-1){
+				if(MRIntW_Debug)Console.Printf("\cgMRIntW:\c- cutting \cdnukage\c- (texture: \cg"..PicName.."\c- contain: \cd"..Nukes[i].."\c-)");
+				IsNuke = true;Break;
+			}
+		}
+		if(IsNuke){
+			A_AddBlood(Type: 2);
+		}
+		
+		For(int i=0;i<Waters.Size();i++){
+			if(PicName.IndexOf(Waters[i])>-1){
+				if(MRIntW_Debug)Console.Printf("\cgMRIntW:\c- cutting \cvwater\c- (texture: \cg"..PicName.."\c- contain: \cd"..Waters[i].."\c-)");
+				IsLiquid = true;Break;
+			}
+		}
+		if(IsLiquid){
+			For(int i=0;i<6;i++){
+				if(invoker.BldAlpha[i]>0){
+					invoker.BldCooldown[i] = 0;
+					invoker.BldAlpha[i] *= .8;
+				}
+			}
+		}
+	}
+	
+	Action Void A_BloodLayTick(int Num)
+	{
+		int Lay = Num+LayBlood;
+		
+		Player.GetPSprite(Lay).Frame = invoker.BldFrame[Num];
+				
+		String Sprit = "B";
+		if(Player.GetPSprite(Lay1).Frame<6){
+			Switch(Player.GetPSprite(Lay1).Frame){
+				Case 2:
+					Sprit = "C";
+					Break;
+				Case 3:
+					Sprit = "D";
+					Break;
+				Case 4:
+					Sprit = "E";
+					Break;
+				Case 5:
+					Sprit = "F";
+					Break;
+			}
+		}
+		//Console.Printf("Fram: "..Sprit);
+		Player.GetPSprite(Lay).Sprite = GetSpriteIndex("SA"..Sprit..(Num>29?"4A0":(Num>23?"3A0":(Num>5?"2A0":"1A0"))));
+		
+		Player.GetPSprite(Lay).Translation = invoker.BldTrans[Num];
+		A_OverlayFlags(Lay, PSPF_RENDERSTYLE|PSPF_ALPHA|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+		
+		if(MRIntW_SawBloodAdd){
+			if(invoker.BldAlpha[Num]>.3  && ((Num>0 && Num!=5) || Sprit!="B"))A_OverlayRenderStyle(Lay, STYLE_ColorBlend);
+			else A_OverlayRenderStyle(Lay, STYLE_Translucent);
+			A_OverlayAlpha(Lay, invoker.BldAlpha[Num]);
+		}
+		else {
+			A_OverlayRenderStyle(Lay, STYLE_Translucent);
+			A_OverlayAlpha(Lay, Min(.85, invoker.BldAlpha[Num]));
+		}
+		
+		Player.GetPSprite(Lay).OldX = Player.GetPSprite(Lay1).OldX;
+		Player.GetPSprite(Lay).OldY = Player.GetPSprite(Lay1).OldY;
+		Player.GetPSprite(Lay).X = Player.GetPSprite(Lay1).X;
+		Player.GetPSprite(Lay).Y = Player.GetPSprite(Lay1).Y;
+		Player.GetPSprite(Lay).Scale = Player.GetPSprite(Lay1).Scale;
+		Player.GetPSprite(Lay).Pivot = Player.GetPSprite(Lay1).Pivot;
+		Player.GetPSprite(Lay).Rotation = Player.GetPSprite(Lay1).Rotation;
+		Player.GetPSprite(Lay).bInterpolate = Player.GetPSprite(Lay1).bInterpolate;
+		Player.GetPSprite(Lay).FirstTic = Player.GetPSprite(Lay1).FirstTic;
+		
+		Bool OldAdd = Player.GetPSprite(Lay).bAddWeapon;
+		Bool CheckIt = false;
+		if(Weapon(Player.PendingWeapon)){
+			Player.GetPSprite(Lay).bAddWeapon = false;
+			CheckIt = true;
+		}
+		else Player.GetPSprite(Lay).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
+		
+		if(CheckIt && OldAdd!=Player.GetPSprite(Lay).bAddWeapon){
+			Player.GetPSprite(Lay).bInterpolate = false;
+			Player.GetPSprite(Lay).OldY = Player.GetPSprite(Lay).Y = Player.GetPSprite(Lay).Y+32;
+		}
+		
+		if(Num<6 && invoker.Dripping[Num]>0 && !invoker.Cutting){
+			if(CRandom(0, 35*25-invoker.Dripping[Num])<4){
+				int PNum;
+				For(PNum=LayBloodDrip;PNum>LayBloodDrip-40;PNum--){
+					if(!Player.FindPSprite(PNum))Break;
+				}
+				
+				if(PNum<LayBloodDrip-38)PNum = LayBloodDrip;
+				
+				A_Overlay(PNum, "SawBloodDrop");
+				
+				A_OverlayAlpha(PNum, CFRandom(.8, .9));
+				A_OverlayPivot(PNum, .5, .5);
+				Player.GetPSprite(PNum).Translation = invoker.BldTrans[Num];
+				Player.GetPSprite(PNum).Rotation = 0;
+				
+				if(Player.GetPSprite(Lay1).Frame<6){
+					Player.GetPSprite(PNum).Scale = (.08, .12);
+					Float Down = CRandom(0, 20);
+					A_OverlayOffset(PNum, Player.GetPSprite(Lay1).X + 138 + Down*.3, Player.GetPSprite(Lay1).Y + 62 + Down);
+					Player.GetPSprite(PNum).bPowDouble = false;
+				}
+				else {
+					Player.GetPSprite(PNum).Scale = (.06, .08);
+					Float Down = CRandom(0, 10);
+					A_OverlayOffset(PNum, Player.GetPSprite(Lay1).X + 150 + Down*.25, Player.GetPSprite(Lay1).Y + 83 + Down);
+					Player.GetPSprite(PNum).bPowDouble = true;
+				}
+			}
+		}
+		
+		if(!MRIntW_ChainsawBlood){
+			invoker.Dripping[Num] = 0;
+			if(invoker.BldAlpha[Num]>0)invoker.BldAlpha[Num] -= .1;
+			else {
+				invoker.BldAlpha[Num] = invoker.BldFrame[Num] = 0;
+				A_ClearOverlays(Lay, Lay);
+			}
+		}
+	}
+	
+	States{
+		SawBlood:
+			SAB1 A 1 {
+				int Num = OverlayId()-LayBlood;
+				A_BloodLayTick(Num);
+			}
+			Wait;
+		SawBloodDrop:
+			NSHS A 1 {
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+			}
+			NSHS # 1{
+				if(!Player.GetPSprite(OverlayId()).bPowDouble && (Player.GetPSprite(Lay1).Frame>5 || CRandom(0, 20)==0)){
+					Player.GetPSprite(OverlayId()).bPowDouble = true;
+					Player.GetPSprite(OverlayId()).Rotation += CFRandom(1, 2);
+				}
+				
+				if(Player.GetPSprite(OverlayId()).bPowDouble){
+					A_OverlayOffset(OverlayId(), 0, Player.GetPSprite(OverlayId()).Rotation, WOF_ADD);
+					Player.GetPSprite(OverlayId()).Rotation += CFRandom(.25, .5);
+				}
+				
+				if(Player.GetPSprite(OverlayId()).Y>140)A_ClearOverlays(OverlayId(), OverlayId());
+			}
+			Wait;
+		//Caching sprites
+		Sprites:
+			SAC1 A 0;
+			SAD1 A 0;
+			SAE1 A 0;
+			SAF1 A 0;
+			SAB2 A 0;
+			SAC2 A 0;
+			SAD2 A 0;
+			SAE2 A 0;
+			SAF2 A 0;
+			SAB3 A 0;
+			SAC3 A 0;
+			SAD3 A 0;
+			SAE3 A 0;
+			SAF3 A 0;
+			SAB4 A 0;
+			SAC4 A 0;
+			SAD4 A 0;
+			SAE4 A 0;
+			SAF4 A 0;
+			Stop;
+	}
+}

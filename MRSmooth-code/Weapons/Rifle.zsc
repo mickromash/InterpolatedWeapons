@@ -129,13 +129,13 @@ Extend Class MRIntWeaps_Pistol
 					Double Amnt = MRIntW_ScreenShakeAmount;
 					A_QuakeEx(.05*Amnt,0,.15*Amnt, 5, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 15,0,10, rollIntensity: .1*Amnt, rollwave: 1);
 				}
-				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*CFRandom(0, 1);
+				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*invoker.ShotPower;
 			}
 			#### A 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				Vector2 Scal = (CFRandom(.15, .16), 0);
+				Vector2 Scal = (.15+.01*invoker.ShotPower, 0);
 				Scal.Y = Scal.X*1.5;
-				Vector2 Ofst = (0, CFRandom(11, 13));
+				Vector2 Ofst = (0, 11+2*invoker.ShotPower);
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot, WOF_ADD);
@@ -150,9 +150,9 @@ Extend Class MRIntWeaps_Pistol
 				A_FireSmoke(-.3-Player.GetPSprite(Lay1).Y*.015, .8);
 			}
 			#### A 1 {
-				Vector2 Scal = (CFRandom(.025, .03), 0);
+				Vector2 Scal = (.025+.004*invoker.ShotPower, 0);
 				Scal.Y = Scal.X*1.5;
-				Vector2 Ofst = (0, CFRandom(3, 4));
+				Vector2 Ofst = (0, 3+invoker.ShotPower*.75);
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot*.5, WOF_ADD);
@@ -167,9 +167,9 @@ Extend Class MRIntWeaps_Pistol
 				A_FireSmoke(-.3-Player.GetPSprite(Lay1).Y*.015, .8);
 			}
 			#### A 1{
-				Vector2 Scal = (CFRandom(.015, .02), 0);
+				Vector2 Scal = (.015+.004*invoker.ShotPower, 0);
 				Scal.Y = Scal.X*1.5;
-				Vector2 Ofst = (0, CFRandom(1.5, 2));
+				Vector2 Ofst = (0, 1.5+.4*invoker.ShotPower);
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot*.5, WOF_ADD);
@@ -199,7 +199,7 @@ Extend Class MRIntWeaps_Pistol
 				A_FireSmoke(-.3-Player.GetPSprite(Lay1).Y*.015, .8);
 			}
 			#### AA 1{
-				Vector2 Scal = (CFRandom(.001, .01), 0);
+				Vector2 Scal = (.001+.007*invoker.ShotPower, 0);
 				Scal.Y = Scal.X*2;
 				A_OverlayScale(Lay1, Scal.X, Scal.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot*.5, WOF_ADD);

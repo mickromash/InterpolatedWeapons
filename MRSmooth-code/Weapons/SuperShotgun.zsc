@@ -12,9 +12,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	Const Lay4 = -2;
 	Const LHand = -3;
 	
-	int BobState, IdleDelay, ShotPower;
+	int BobState, IdleDelay;
 	Bool LowerOpen, //For switching mid reload
 		Reloading;//Disable smoke calls from doeffect during reloading
+	Double ShotPower;
 		
 	Float Recoil;
 	Override Void DoEffect()
@@ -65,6 +66,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 
 			LineAttack (ang, PLAYERMISSILERANGE, pitch + Random2[FireSG2]() * (7.097 / 256), damage, 'Hitscan', "BulletPuff");
 		}
+		//Recoil and smoke alpha from last shot damage (min dmg 145, max dmg 255)
+		invoker.ShotPower -= 145;
+		invoker.ShotPower /= 255-145;
+		if(MRIntW_Debug)Console.Printf("\cgMRIntW:\c- Shot power\cd "..invoker.ShotPower);
 		
 		if(CountInv(invoker.AmmoType1)<2 && MRIntW_ReloadAnims%2==1)invoker.Reload = true;
 		
@@ -534,13 +539,13 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### A 1;//Shot
 			#### A 1 {//Recoil
 				invoker.SpriteRecoil = MRIntW_ShotgunsRecoil;
-				Vector2 Pivot = (.5+CFRandom(-.15, .15)*invoker.SpriteRecoil, CFRandom(.3, .6));
+				Vector2 Pivot = (.5+CFRandomPick(-.15, .15)*invoker.ShotPower*invoker.SpriteRecoil, .3+.3*invoker.ShotPower);
 				A_OverlayPivot(Lay1, Pivot.X, Pivot.Y);
 				A_OverlayPivot(Lay2, Pivot.X, Pivot.Y);
 				
-				Float Scal = CFRandom(.3, .4)*invoker.SpriteRecoil;
-				Vector2 Ofst = (-(Pivot.X-.5)*2, CFRandom(14, 18))*invoker.SpriteRecoil;
-				Float Rotate = (Pivot.X-.5)*4*invoker.SpriteRecoil;
+				Float Scal = (.3+.1*invoker.ShotPower)*invoker.SpriteRecoil;
+				Vector2 Ofst = (-(Pivot.X-.5)*2, 14+4*invoker.ShotPower)*invoker.SpriteRecoil;
+				Float Rotate = (Pivot.X-.5)*4*invoker.ShotPower*invoker.SpriteRecoil;
 				A_OverlayScale(Lay1, Scal, Scal*1.8, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
@@ -560,9 +565,9 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				}
 			}
 			#### # 1{
-				Float Scal = CFRandom(.07, .1)*invoker.SpriteRecoil;
-				Vector2 Ofst = (-(Player.GetPSprite(Lay1).Pivot.X-.5), CFRandom(7, 10))*invoker.SpriteRecoil;
-				Float Rotate = (Player.GetPSprite(Lay1).Pivot.X-.5)*2*invoker.SpriteRecoil;
+				Float Scal = (.07+.015*invoker.ShotPower)*invoker.SpriteRecoil;
+				Vector2 Ofst = (-(Player.GetPSprite(Lay1).Pivot.X-.5), 7+2*invoker.ShotPower)*invoker.SpriteRecoil;
+				Float Rotate = (Player.GetPSprite(Lay1).Pivot.X-.5)*1*invoker.ShotPower*invoker.SpriteRecoil;
 				A_OverlayScale(Lay1, Scal, Scal*1.5, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, Rotate, WOF_ADD);
@@ -722,9 +727,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### # 0{
 				if(MRIntW_ShotgunSmoke){//Smoke
 					//Smoke amount from last shot damage (min dmg 145, max dmg 255)
-					Double Alpha = invoker.ShotPower-145.;
-					Alpha /= 255;
-					Alpha *= .7;
+					Double Alpha = invoker.ShotPower;
 					
 					For(int i=0;i<3;i++){
 						int index;
@@ -741,7 +744,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 							A_Overlay(SmokeStart+index, "SmokeLay");
 							A_OverlayOffset(SmokeStart+index, 95, 137);
 							Player.GetPSprite(SmokeStart+index).Scale = (1,1)*CFRandom(.3, .4);
-							A_OverlayAlpha(SmokeStart+index, Alpha);
+							A_OverlayAlpha(SmokeStart+index, .1+Alpha*.2);
 						}
 					}
 					
@@ -760,7 +763,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 							A_Overlay(SmokeStart+index, "SmokeLay");
 							A_OverlayOffset(SmokeStart+index, 95+20, 137);
 							Player.GetPSprite(SmokeStart+index).Scale = (1,1)*CFRandom(.3, .4);
-							A_OverlayAlpha(SmokeStart+index, Alpha);
+							A_OverlayAlpha(SmokeStart+index, .1+Alpha*.2);
 						}
 					}
 				}
