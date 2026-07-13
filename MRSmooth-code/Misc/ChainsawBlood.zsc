@@ -50,7 +50,10 @@ Extend Class MRIntWeaps_Chainsaw
 					Continue;
 				}
 				if(BldCooldown[i]<1)BldAlpha[i] -= .01;
-				else BldCooldown[i]--;
+				else {
+					if(BldAlpha[i]<1)BldAlpha[i]+=.3;
+					BldCooldown[i]--;
+				}
 				if(BldAlpha[i]<=0){
 					if(i>29){
 						BldFrames3.Push(BldFrame[i-29]);
@@ -126,7 +129,7 @@ Extend Class MRIntWeaps_Chainsaw
 				Continue;
 			}
 			
-			if(invoker.BldAlpha[i]<1){
+			if(invoker.BldAlpha[i]<1 && invoker.BldCooldown[i]<1){
 				invoker.BldAlpha[i] += CFRandom(.025, .05);
 				NoAdd = true;
 			}
@@ -335,6 +338,17 @@ Extend Class MRIntWeaps_Chainsaw
 			}
 		}
 		if(IsNuke){
+			int OldTrans = Player.GetPSprite(PSP_WEAPON).Translation;
+			A_OverlayTranslation(PSP_WEAPON, "MRIntWBldGreen");
+			
+			For(int i=0;i<6;i++){
+					if(invoker.BldAlpha[i]>0 && invoker.BldTrans[i]!=Player.GetPSprite(PSP_WEAPON).Translation){
+						invoker.BldCooldown[i] = 0;
+						invoker.BldAlpha[i] *= .8;
+					}
+			}
+			
+			Player.GetPSprite(PSP_WEAPON).Translation = OldTrans;
 			A_AddBlood(Type: 2);
 		}
 		
@@ -390,7 +404,7 @@ Extend Class MRIntWeaps_Chainsaw
 		}
 		else {
 			A_OverlayRenderStyle(Lay, STYLE_Translucent);
-			A_OverlayAlpha(Lay, Min(.85, invoker.BldAlpha[Num]));
+			A_OverlayAlpha(Lay, invoker.BldAlpha[Num]);
 		}
 		
 		Player.GetPSprite(Lay).OldX = Player.GetPSprite(Lay1).OldX;
