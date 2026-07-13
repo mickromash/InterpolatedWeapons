@@ -193,7 +193,7 @@ MRIntW_Particles_Impact = "При столкновении";
 
 MRIntW_PlayerParticles = "Эффекты оружия игрока";
 MRIntW_PlayerParticlesAmount = "Качество эффектов оружия игрока";
-MRIntWeaps_PlayerParticlesMenu = "Выбрать эффекты оружия игрока";
+MRIntWeaps_PlayerParticlesMenu = "Кастомизировать эффекты оружия игрока";
 
 MRIntW_PlrParticles_Puff = "Искры от пуль";
 MRIntW_PlrParticles_PuffLiquid = "Всплески на воде";
@@ -230,7 +230,8 @@ MRIntW_PlrParticles_InciFly2 = "Дым";
 
 MRIntW_MonsterParticles = "Эффекты монстров";
 MRIntW_MonsterParticlesAmount = "Качество эффектов монстров";
-MRIntWeaps_MonsterParticlesMenu = "Выбрать эффекты монстров";
+MRIntWeaps_MonsterParticlesMenu = "Кастомизировать эффекты монстров";
+MRIntW_MonsterParticleCustom = "Применять эффекты к монстрам из модов";
 
 MRIntW_MonstParticles_ImpBallFlySmoke = "Дым";
 MRIntW_MonstParticles_ImpBallFlyDrops = "Капли";
@@ -292,7 +293,7 @@ MRIntW_AltLightnings = "Альт. визуализация молний";
 
 MRIntW_DecorationParticles = "Эффекты декораций";
 MRIntW_DecorationParticlesAmount = "Качество эффектов декораций";
-MRIntWeaps_DecorationParticlesMenu = "Выбрать эффекты декораций";
+MRIntWeaps_DecorationParticlesMenu = "Кастомизировать эффекты декораций";
 
 MRIntW_DecorParticles_Bloom = "Эмуляция свечения";
 

@@ -87,11 +87,26 @@ Extend Class MRIntWeaps_Handler
 				Return;
 			}
 			
+			Name ActName = Thing.GetClassName();
+			
+			if(MRIntW_MonsterParticleCustom){
+				if(Thing is 'DoomImpBall' || Actor.GetReplacement('DoomImpBall')==Thing.GetClass())ActName = 'DoomImpBall';
+				if(Thing is 'CacodemonBall' || Actor.GetReplacement('CacodemonBall')==Thing.GetClass())ActName = 'CacodemonBall';
+				if(Thing is 'RevenantTracer' || Actor.GetReplacement('RevenantTracer')==Thing.GetClass())ActName = 'RevenantTracer';
+				if(Thing is 'FatShot' || Actor.GetReplacement('FatShot')==Thing.GetClass())ActName = 'FatShot';
+				if(Thing is 'ArachnotronPlasma' || Actor.GetReplacement('ArachnotronPlasma')==Thing.GetClass())ActName = 'ArachnotronPlasma';
+				if(Thing is 'BaronBall' || Actor.GetReplacement('BaronBall')==Thing.GetClass())ActName = 'BaronBall';
+				if(Thing is 'LostSoul' || Actor.GetReplacement('LostSoul')==Thing.GetClass())ActName = 'LostSoul';
+				if(Thing is 'PainElemental' || Actor.GetReplacement('PainElemental')==Thing.GetClass())ActName = 'PainElemental';
+				if(Thing is 'CyberDemon' || Actor.GetReplacement('CyberDemon')==Thing.GetClass())ActName = 'CyberDemon';
+				if(Thing is 'SpiderMastermind' || Actor.GetReplacement('SpiderMastermind')==Thing.GetClass())ActName = 'SpiderMastermind';
+			}
+			
 			int Type, Setting, Setting2;
 			Setting = MRIntW_MonsterWhichParticles;
 			Setting2 = MRIntW_MonsterWhichParticles2;
 			
-			Switch(Thing.GetClassName()){
+			Switch(ActName){
 				Case 'DoomImpBall':
 					if(!(Setting&MRIWMP_ImpBallSmoke||
 						Setting&MRIWMP_ImpBallDrops||

@@ -106,6 +106,7 @@ nosave bool MRIntW_MonsterParticles = false;
 nosave int MRIntW_MonsterWhichParticles = -33;
 nosave int MRIntW_MonsterWhichParticles2 = 524031;
 nosave float MRIntW_MonsterParticlesAmount = 1;
+nosave bool MRIntW_MonsterParticleCustom = false;//Apply particle effects to custom monsters
 
 nosave bool MRIntW_DecorationParticles = false;
 nosave int MRIntW_DecorationWhichParticles = 511;

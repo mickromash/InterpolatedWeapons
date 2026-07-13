@@ -193,7 +193,7 @@ MRIntW_Particles_Impact = "On impact";
 
 MRIntW_PlayerParticles = "Player's weapon particles";
 MRIntW_PlayerParticlesAmount = "Player weapon effects quality";
-MRIntWeaps_PlayerParticlesMenu = "Set up player weapon effects";
+MRIntWeaps_PlayerParticlesMenu = "Customize player weapon effects";
 
 MRIntW_PlrParticles_Puff = "Puff sparks";
 MRIntW_PlrParticles_PuffLiquid = "Water splashes";
@@ -230,7 +230,8 @@ MRIntW_PlrParticles_InciFly2 = "Smoke";
 
 MRIntW_MonsterParticles = "Monsters particles";
 MRIntW_MonsterParticlesAmount = "Monster effects quality";
-MRIntWeaps_MonsterParticlesMenu = "Set up monster effects";
+MRIntWeaps_MonsterParticlesMenu = "Customize monster effects";
+MRIntW_MonsterParticleCustom = "Apply effects to custom monsters";
 
 MRIntW_MonstParticles_ImpBallFlySmoke = "Smoke";
 MRIntW_MonstParticles_ImpBallFlyDrops = "Drops";
@@ -292,7 +293,7 @@ MRIntW_AltLightnings = "Alternative lightnings";
 
 MRIntW_DecorationParticles = "Decorations particles";
 MRIntW_DecorationParticlesAmount = "Decoration effects quality";
-MRIntWeaps_DecorationParticlesMenu = "Set up decoration effects";
+MRIntWeaps_DecorationParticlesMenu = "Customize decoration effects";
 
 MRIntW_DecorParticles_Bloom = "Bloom emulation";
 
