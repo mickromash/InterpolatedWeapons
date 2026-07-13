@@ -211,11 +211,11 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						
 						Double Pow = CFRandom(3, 6);
 						
-						Vector3 Vel = (Actor.AngleToVector(CRandom(0, 360), Pow), -Sin(-CRandom(0, 30))*Pow*2);
+						Vector3 Vel = (Actor.AngleToVector(CRandom(0, 360), Pow), -Sin(-CRandom(-20, 40))*Pow*2);
 						
 						int Col = 25*CRandom(4, 10);
 						
-						int Size = CFRandom(.5, 5);
+						int Size = CFRandom(.25, 4);
 						MRSpawnParticle(Color(255,Col,int(Col*.5)), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(19, 25), Size, Pos, Vel, (0,0,-Size*.1), SizeStep:-(Size/21));
 					}
 				}
