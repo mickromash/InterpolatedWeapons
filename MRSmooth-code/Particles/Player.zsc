@@ -215,7 +215,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						
 						int Col = 25*CRandom(4, 10);
 						
-						int Size = CFRandom(1.5, 5);
+						int Size = CFRandom(.5, 5);
 						MRSpawnParticle(Color(255,Col,int(Col*.5)), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(19, 25), Size, Pos, Vel, (0,0,-Size*.1), SizeStep:-(Size/21));
 					}
 				}
