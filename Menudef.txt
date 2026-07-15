@@ -152,7 +152,7 @@ OptionMenu "MRIntWeaps_ParticlesMenu"
 	Option "$MRIntW_MonsterParticles", "MRIntW_MonsterParticles", "YesNo"
 	Slider "$MRIntW_MonsterParticlesAmount", "MRIntW_MonsterParticlesAmount", 0, 5, .25, 2
 	SubMenu "$MRIntWeaps_MonsterParticlesMenu", "MRIntWeaps_MonsterParticlesMenu"
-	Option "$MRIntW_MonsterParticleCustom", "MRIntW_MonsterParticleCustom", "YesNo", "$MRIntW_MonsterParticles"
+	Option "$MRIntW_MonsterParticleCustom", "MRIntW_MonsterParticleCustom", "YesNo", "MRIntW_MonsterParticles"
 	StaticText ""
 	Option "$MRIntW_AltLightnings", "MRIntW_AltLightnings", "YesNo"
 	StaticText ""
