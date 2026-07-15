@@ -856,7 +856,7 @@ Class MRIntWeaps_TeleportParticles: MRIntWeaps_ActorEffects
 
 Class MRIntW_ParticleFly: VisualThinker
 {
-	Const Pit = 1.4;
+	Const Pit = 2.3;
 	Float Vol, SndVol, SndPitch, Amount;
 	Bool Main;
 	Actor Master;
@@ -878,6 +878,7 @@ Class MRIntW_ParticleFly: VisualThinker
 		Offset = BaseOffset*Scale.X;
 		if(!Main)StopFly = -CRandom(85, 100)*35;
 		else StopFly = -100*35;
+		//StartFly = 35;
 		
 		FlyAwayDir = (Actor.AngleToVector(CRandom(0, 360), 1), CFRandom(-.1, .7));
 		
