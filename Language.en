@@ -290,6 +290,7 @@ MRIntW_MonstParticles_SpiderSmoke = "Explosion smoke";
 MRIntW_MonstParticles_SpiderBlood = "Explosion blood";
 
 MRIntW_ParticleFlies = "Cropse flies";
+MRIntW_ParticleFliesVolume = "Flies buzz volume";
 
 MRIntW_AltLightnings = "Alternative lightnings";
 

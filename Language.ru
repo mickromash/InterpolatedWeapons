@@ -290,6 +290,7 @@ MRIntW_MonstParticles_SpiderSmoke = "Дым";
 MRIntW_MonstParticles_SpiderBlood = "Кровь";
 
 MRIntW_ParticleFlies = "Мухи над трупами";
+MRIntW_ParticleFliesVolume = "Громкость жужжания";
 
 MRIntW_AltLightnings = "Альт. визуализация молний";
 
