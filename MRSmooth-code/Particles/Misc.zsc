@@ -923,10 +923,10 @@ Class MRIntW_ParticleFly: VisualThinker
 				Vector3 Diff = Pos-Players[ConsolePlayer].Camera.Pos;
 				if(Diff.Length()>100)Return;
 				if(SndVol<Vol-.1)SndVol += CFRandom(0, .05);
-				else SndVol = Vol-.1+(1.-abs(Master.GetAge()%20/10.-1.))*.2;
+				else SndVol = Vol-.1+(1.-abs(Master.GetAge()%40/20.-1.))*.2;
 				
-				Master.A_SoundVolume(14, SndVol*Amount);
-				Master.A_SoundVolume(15, SndVol*Amount+.1);
+				Master.A_SoundVolume(14, SndVol*Amount*CFRandom(.4, 1));
+				Master.A_SoundVolume(15, SndVol*Amount*CFRandom(.4, 1));
 			}
 			
 			Return;
@@ -948,7 +948,7 @@ Class MRIntW_ParticleFly: VisualThinker
 				SndPitch = Pit;
 				
 				Master.A_StartSound("MRIntW/FlyBuzz", 14, CHANF_LOOP, SndVol, ATTN_STATIC, SndPitch);
-				Master.A_StartSound("MRIntW/FlyBuzz", 15, CHANF_LOOP, SndVol, ATTN_STATIC, SndPitch+.05);
+				Master.A_StartSound("MRIntW/FlyBuzz2", 15, CHANF_LOOP, SndVol, ATTN_STATIC, SndPitch+1);
 			}
 		}
 	}

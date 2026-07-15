@@ -73,5 +73,6 @@ $Random MRIntW/PlasmaRifleBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 $Random MRIntW/BFG9000Bounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 
 MRIntW/FlyBuzz "Sounds/MRIntW/MRIntFly.wav"
+MRIntW/FlyBuzz2 "Sounds/MRIntW/MRIntFly2.wav"
 
 MRIntW/Message1 "Sounds/MRIntW/SBNCE1.ogg"
