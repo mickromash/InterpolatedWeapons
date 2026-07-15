@@ -878,7 +878,6 @@ Class MRIntW_ParticleFly: VisualThinker
 		Offset = BaseOffset*Scale.X;
 		if(!Main)StopFly = -CRandom(85, 100)*35;
 		else StopFly = -100*35;
-		StartFly = 2;
 		
 		FlyAwayDir = (Actor.AngleToVector(CRandom(0, 360), 1), CFRandom(-.1, .7));
 		
