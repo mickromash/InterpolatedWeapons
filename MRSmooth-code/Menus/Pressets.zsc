@@ -23,7 +23,7 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		"MRIntW_MonsterWhichParticles2 74", "MRIntW_MonsterParticlesAmount 75", "MRIntW_MonsterParticleCustom 88", "MRIntW_DecorationParticles 76", "MRIntW_DecorationWhichParticles 77",
 		"MRIntW_DecorationParticlesAmount 78", "MRIntW_TeleportParticles 79", "MRIntW_TeleportParticlesStyle 80", "MRIntW_TeleportParticlesStyleMonsters 81",
 		"MRIntW_AltLightnings 83", "MRIntW_ChainsawBlood 84", "MRIntW_ChainsawBloodLife 85", "MRIntW_ChainsawVolume 86", "MRIntW_ChainsawRandomPitch 87",
-		"MRIntW_ParticleFlies 89"
+		"MRIntW_ParticleFlies 89", "MRIntW_ParticleFliesVolume 90"
 	};
 	
 	//Presset CVar syntax: "[Index] Value,[Index] Value,"

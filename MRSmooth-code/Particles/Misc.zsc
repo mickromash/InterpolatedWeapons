@@ -267,7 +267,7 @@ Extend Class MRIntWeaps_Handler
 		if(!e.Thing || (!e.Thing.bIsMonster && !PlayerPawn(e.Thing)) || e.Thing.bNOBLOOD || !MRIntW_ParticleFlies)Return;
 		
 		Float Radius = GetDefaultByType(e.Thing.GetClass()).Radius;
-		int Start = CRandom(40, 80)*35;
+		int Start = CRandom(120, 240)*35;
 		For(int i=0;i<Radius/5;i++){
 			Let a = MRIntW_ParticleFly(Level.SpawnVisualThinker('MRIntW_ParticleFly'));
 			a.Master = e.Thing;
@@ -275,6 +275,7 @@ Extend Class MRIntWeaps_Handler
 			if(i==0){
 				a.Main = true;
 				a.Amount = .6+Radius/50;
+				a.Vol = MRIntW_ParticleFliesVolume;
 			}
 		}
 	}
@@ -855,9 +856,8 @@ Class MRIntWeaps_TeleportParticles: MRIntWeaps_ActorEffects
 
 Class MRIntW_ParticleFly: VisualThinker
 {
-	Const Pit = 14;
-	Const Vol = .5;
-	Float SndVol, SndPitch, Amount;
+	Const Pit = 1.1;
+	Float Vol, SndVol, SndPitch, Amount;
 	Bool Main;
 	Actor Master;
 	Vector2 Size;
@@ -878,6 +878,7 @@ Class MRIntW_ParticleFly: VisualThinker
 		Offset = BaseOffset*Scale.X;
 		if(!Main)StopFly = -CRandom(85, 100)*35;
 		else StopFly = -100*35;
+		StartFly = 2;
 		
 		FlyAwayDir = (Actor.AngleToVector(CRandom(0, 360), 1), CFRandom(-.1, .7));
 		
@@ -900,7 +901,10 @@ Class MRIntW_ParticleFly: VisualThinker
 		if(StartFly<StopFly){
 			Vel = FlyAwayDir*CFRandom(6, 9) + (CFRandom(-4, 4), CFRandom(-4, 4), CFRandom(-4, 4));
 			Alpha -= .005;
-			if(Main)Master.A_SoundVolume(14, SndVol);
+			if(Main){
+				Master.A_SoundVolume(14, SndVol);
+				Master.A_SoundVolume(15, SndVol);
+			}
 			SndVol -= .01;
 			Return;
 		}
@@ -916,14 +920,14 @@ Class MRIntW_ParticleFly: VisualThinker
 			Vel = Diff.Unit() * Min(Diff.Length(), Speed*CFRandom(.8, 1)) + (CFRandom(-4, 4), CFRandom(-4, 4), CFRandom(-4, 4))*.5;
 			Alpha = CFRandom(0, 3);
 			
-			if(Main && Players[ConsolePlayer].Camera){
+			if(Main && Vol>0 && Players[ConsolePlayer].Camera){
 				Vector3 Diff = Pos-Players[ConsolePlayer].Camera.Pos;
 				if(Diff.Length()>100)Return;
-				if(SndVol<Vol-.1)SndVol += CFRandom(0, .025);
-				else if(SndVol>Vol)SndVol -= CFRandom(0, .025);
-				else SndVol += CFRandom(-.025, .025);
-					
+				if(SndVol<Vol-.1)SndVol += CFRandom(0, .05);
+				else SndVol = Vol-.1+(1.-abs(Master.GetAge()%20/10.-1.))*.2;
+				
 				Master.A_SoundVolume(14, SndVol*Amount);
+				Master.A_SoundVolume(15, SndVol*Amount+.1);
 			}
 			
 			Return;
@@ -940,10 +944,12 @@ Class MRIntW_ParticleFly: VisualThinker
 			Moving = Master.Pos + (Size.X*CFRandom(-1, 1), Size.Y*CFRandom(-1, 1), Master.Height*.5 + CFRandom(0, 60));
 			Speed = CFRandom(4, 10);
 			
-			if(Main){
-				SndVol = Vol;
+			if(Main && Vol>0){
+				SndVol = .01;
 				SndPitch = Pit;
+				
 				Master.A_StartSound("MRIntW/FlyBuzz", 14, CHANF_LOOP, SndVol, ATTN_STATIC, SndPitch);
+				Master.A_StartSound("MRIntW/FlyBuzz", 15, CHANF_LOOP, SndVol, ATTN_STATIC, SndPitch+.05);
 			}
 		}
 	}
