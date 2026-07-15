@@ -185,6 +185,11 @@ Class MRIntWeaps_Handler: EventHandler
 		if(Level.Time<2 && MRIntW_DecorationParticles)SpawnDecorationParticleEffects(e.Thing);
 	}
 	
+	Override Void WorldTick()
+	{
+		ReduceCasingsCluster();
+	}
+	
 	Override Void WorldThingDamaged(WorldEvent e)
 	{
 		if(!e.Thing || !e.Inflictor)Return;

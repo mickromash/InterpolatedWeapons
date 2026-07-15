@@ -1,15 +1,15 @@
-MRIntW/FistSwing "Sounds/FistSwing.wav"
+MRIntW/FistSwing "Sounds/MRIntW/FistSwing.wav"
 MRIntW/FistSelect ""
 MRIntW/FistDeselect ""
-MRIntW/FistAltSelect "Sounds/GloveStrip.ogg"
-MRIntW/FistAltDeselect "Sounds/GlovePuton.ogg"
+MRIntW/FistAltSelect "Sounds/MRIntW/GloveStrip.ogg"
+MRIntW/FistAltDeselect "Sounds/MRIntW/GlovePuton.ogg"
 MRIntW/FistPunchFleshKnuckles ""
 MRIntW/FistPunchFlesh ""
 MRIntW/FistPunchWallKnuckles ""
 MRIntW/FistPunchWall ""
 
 MRIntW/PistolSelect ""
-MRIntW/PistolReload "Sounds/dsrifclk.wav"
+MRIntW/PistolReload "Sounds/MRIntW/dsrifclk.wav"
 MRIntW/PistolDeselect ""
 
 MRIntW/RifleSelect ""
@@ -51,16 +51,16 @@ MRIntW/BFGFire ""
 MRIntW/BFGSelect ""
 MRIntW/BFGDeselect ""
 
-MRIntW/PistolCasing "Sounds/dsding.ogg"
-MRIntW/ShotgunCasingLand "Sounds/SDIE1.ogg"
+MRIntW/PistolCasing "Sounds/MRIntW/dsding.ogg"
+MRIntW/ShotgunCasingLand "Sounds/MRIntW/SDIE1.ogg"
 
-MRIntW/ShotgunCasingBounce1 "Sounds/SBNCE1.ogg"
-MRIntW/ShotgunCasingBounce2 "Sounds/SBNCE2.ogg"
+MRIntW/ShotgunCasingBounce1 "Sounds/MRIntW/SBNCE1.ogg"
+MRIntW/ShotgunCasingBounce2 "Sounds/MRIntW/SBNCE2.ogg"
 $Random MRIntW/ShotgunCasingBounce { MRIntW/ShotgunCasingBounce1 MRIntW/ShotgunCasingBounce2 }
 
 
-MRIntW/WeapBounce1 "Sounds/WeapDrop1.ogg"
-MRIntW/WeapBounce2 "Sounds/WeapDrop2.ogg"
+MRIntW/WeapBounce1 "Sounds/MRIntW/WeapDrop1.ogg"
+MRIntW/WeapBounce2 "Sounds/MRIntW/WeapDrop2.ogg"
 
 $Random MRIntW/ChainsawBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 $Random MRIntW/PistolBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
@@ -71,5 +71,7 @@ $Random MRIntW/ChaingunBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 $Random MRIntW/RocketlauncherBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 $Random MRIntW/PlasmaRifleBounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 $Random MRIntW/BFG9000Bounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
+
+MRIntW/FlyBuzz "Sounds/MRIntW/SDIE1.ogg"
 
 MRIntW/Message1 "Sounds/SBNCE1.ogg"

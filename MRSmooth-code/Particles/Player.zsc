@@ -537,9 +537,7 @@ Class MRIntWeaps_BFGParticle: VisualThinker//Particles spinning around the ball
 	Bool FlyAway;
 	
 	Double StartScale;
-	
-	Vector2 BaseOffset;
-	
+		
 	Override Void PostBeginPlay()
 	{
 		Flags = SPF_FULLBRIGHT;
@@ -550,7 +548,7 @@ Class MRIntWeaps_BFGParticle: VisualThinker//Particles spinning around the ball
 		Alpha = .7;
 		Texture = Texman.CheckForTexture("NSHSB0");
 		Scale = (.02,.02)*StartScale;
-		BaseOffset = -(32,32);
+		Vector2 BaseOffset = -(32,32);
 		Offset = BaseOffset*Scale.X;
 		Super.PostBeginPlay();
 	}

@@ -261,6 +261,23 @@ Extend Class MRIntWeaps_Handler
 			Return;
 		}
 	}
+	
+	Override Void WorldThingDied(WorldEvent e)
+	{
+		if(!e.Thing || (!e.Thing.bIsMonster && !PlayerPawn(e.Thing)) || e.Thing.bNOBLOOD || !MRIntW_ParticleFlies)Return;
+		
+		Float Radius = GetDefaultByType(e.Thing.GetClass()).Radius;
+		int Start = CRandom(40, 80)*35;
+		For(int i=0;i<Radius/5;i++){
+			Let a = MRIntW_ParticleFly(Level.SpawnVisualThinker('MRIntW_ParticleFly'));
+			a.Master = e.Thing;
+			a.StartFly = Start;
+			if(i==0){
+				a.Main = true;
+				a.Amount = .6+Radius/50;
+			}
+		}
+	}
 }
 
 
@@ -833,5 +850,107 @@ Class MRIntWeaps_TeleportParticles: MRIntWeaps_ActorEffects
 		}
 		
 		if(!Level.IsFrozen())Age++;
+	}
+}
+
+Class MRIntW_ParticleFly: VisualThinker
+{
+	Const Pit = 14;
+	Const Vol = .5;
+	Float SndVol, SndPitch, Amount;
+	Bool Main;
+	Actor Master;
+	Vector2 Size;
+	int StartFly, StopFly;
+	Vector3 FlyAwayDir, Moving;
+	Double Speed;
+	
+	Double StartScale;
+	
+	Override Void PostBeginPlay()
+	{
+		Alpha = 0;
+		StartScale = CFRandom(.5, 1.5);
+		SetRenderStyle(STYLE_Translucent);
+		Texture = Texman.CheckForTexture("NSHSD0");
+		Scale = (.02,.02)*StartScale;
+		Vector2 BaseOffset = -(32,32);
+		Offset = BaseOffset*Scale.X;
+		if(!Main)StopFly = -CRandom(85, 100)*35;
+		else StopFly = -100*35;
+		
+		FlyAwayDir = (Actor.AngleToVector(CRandom(0, 360), 1), CFRandom(-.1, .7));
+		
+		Super.PostBeginPlay();
+	}
+	
+	Override Void Tick()
+	{
+		Super.Tick();
+		
+		if(!Master || StartFly<StopFly-70){
+			Destroy();
+			Return;
+		}
+		
+		StartFly--;
+		
+		if(StartFly>1)Return;
+		
+		if(StartFly<StopFly){
+			Vel = FlyAwayDir*CFRandom(6, 9) + (CFRandom(-4, 4), CFRandom(-4, 4), CFRandom(-4, 4));
+			Alpha -= .005;
+			if(Main)Master.A_SoundVolume(14, SndVol);
+			SndVol -= .01;
+			Return;
+		}
+		
+		if(StartFly<1){
+			Vector3 Diff = Moving-Pos;
+			if(Diff.Length()<Speed){
+				Moving = Master.Pos + (Size.X*CFRandom(-1, 1), Size.Y*CFRandom(-1, 1), Master.Height*.5 + CFRandom(0, 60));
+				Speed = CFRandom(8, 10);
+			}
+			Diff = Moving-Pos;
+			
+			Vel = Diff.Unit() * Min(Diff.Length(), Speed*CFRandom(.8, 1)) + (CFRandom(-4, 4), CFRandom(-4, 4), CFRandom(-4, 4))*.5;
+			Alpha = CFRandom(0, 3);
+			
+			if(Main && Players[ConsolePlayer].Camera){
+				Vector3 Diff = Pos-Players[ConsolePlayer].Camera.Pos;
+				if(Diff.Length()>100)Return;
+				if(SndVol<Vol-.1)SndVol += CFRandom(0, .025);
+				else if(SndVol>Vol)SndVol -= CFRandom(0, .025);
+				else SndVol += CFRandom(-.025, .025);
+					
+				Master.A_SoundVolume(14, SndVol*Amount);
+			}
+			
+			Return;
+		}
+		
+		if(StartFly==1){
+			Alpha = 1;
+			TextureId Sprit = Master.CurState.GetSpriteTexture(0);
+			Size = Texman.GetScaledSize(Sprit);
+			Size = (Size.X*Master.Scale.X, Size.Y*Master.Scale.Y)*.9;
+			
+			Pos = Master.Pos;
+			Pos.XY += (Size.X*CFRandom(-1, 1), Size.Y*CFRandom(-1, 1));
+			Moving = Master.Pos + (Size.X*CFRandom(-1, 1), Size.Y*CFRandom(-1, 1), Master.Height*.5 + CFRandom(0, 60));
+			Speed = CFRandom(4, 10);
+			
+			if(Main){
+				SndVol = Vol;
+				SndPitch = Pit;
+				Master.A_StartSound("MRIntW/FlyBuzz", 14, CHANF_LOOP, SndVol, ATTN_STATIC, SndPitch);
+			}
+		}
+	}
+	
+	Override Void OnDestroy()
+	{
+		if(Main && Master)Master.A_StopSound(14);
+		Super.OnDestroy();
 	}
 }

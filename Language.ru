@@ -289,6 +289,8 @@ MRIntW_MonstParticles_SpiderSplash = "Взрыв";
 MRIntW_MonstParticles_SpiderSmoke = "Дым";
 MRIntW_MonstParticles_SpiderBlood = "Кровь";
 
+MRIntW_ParticleFlies = "Мухи над трупами";
+
 MRIntW_AltLightnings = "Альт. визуализация молний";
 
 MRIntW_DecorationParticles = "Эффекты декораций";

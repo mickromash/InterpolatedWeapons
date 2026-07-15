@@ -20,7 +20,7 @@ Extend Class MRIntWeaps_Handler
 		Casings.Push(a);
 	}
 	
-	Override Void WorldTick()
+	Void ReduceCasingsCluster()
 	{
 		if(int(GameTic%20)!=0)Return;
 		

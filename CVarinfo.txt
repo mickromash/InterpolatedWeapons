@@ -118,6 +118,8 @@ nosave int MRIntW_TeleportParticlesStyleMonsters = 2;
 
 nosave bool MRIntW_AltLightnings = false;
 
+nosave bool MRIntW_ParticleFlies = false;
+
 nosave string MRIntW_PressetCust1 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
