@@ -167,6 +167,63 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 	}
 	
+	Action VOid A_DoSecondHandHold()
+	{
+		Player.GetPSprite(SHand2).Pivot = Player.GetPSprite(Lay1).Pivot + (.6, -.1);
+				
+		Vector2 Offset = (0,0);
+		Vector2 Scal = (0,0);
+		
+		Switch(Player.GetPSprite(Lay1).Frame){
+			Case 7:
+			Case 0:
+				Offset = (0,0);
+				Scal = (0,0);
+				Break;
+			Case 1:
+				Offset = (0, 0);
+				Scal = (0, .05);
+				Break;
+			Case 2:
+				Offset = (-1, 3);
+				Scal = (0, .075);
+				Break;
+			Case 9:
+			Case 5:
+				Offset = (-2, 3);
+				Scal = (.05, .1);
+				Break;
+			Case 6:
+				Offset = (-1, 3);
+				Scal = (.1, .125);
+				Break;
+			Case 4:
+				Offset = (-.5, 2);
+				Scal = (.05, .125);
+				Break;
+			Case 3:
+				Offset = (0, 1);
+				Scal = (.015, .025);
+				Break;
+			Case 8:
+				Offset = (0, 0);
+				Scal = (.005, .075);
+				Break;
+				
+		}
+		
+		Player.GetPSprite(SHand2).OldX = Player.GetPSprite(Lay1).OldX;
+		Player.GetPSprite(SHand2).OldY = Player.GetPSprite(Lay1).OldY;
+		Player.GetPSprite(SHand2).X = Player.GetPSprite(Lay1).X;
+		Player.GetPSprite(SHand2).Y = Player.GetPSprite(Lay1).Y;
+
+		A_OverlayRotate(SHand2, Player.GetPSprite(Lay1).Rotation, WOF_INTERPOLATE);
+		Player.GetPSprite(SHand2).Scale = Player.GetPSprite(Lay1).Scale + Scal;
+		Player.GetPSprite(SHand2).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
+		
+		A_OverlayFlags(SHand2, PSPF_INTERPOLATE, true);
+	}
+	
 	Double RecRot, RecMis;//Recoil animation parameters
 	int SwitchAnim, SwitchState, SwitchFrame;
 	
@@ -256,6 +313,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayFlags(SHand2, PSPF_INTERPOLATE, false);
 				Player.GetPSprite(Lay1).Frame = invoker.SwitchFrame;
 				if(invoker.Reload)Player.GetPSprite(Lay1).Frame = 2;
+				
+				if(invoker.SecondHand)A_DoSecondHandHold();
 			}
 			#### ## 1 {
 				//A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
@@ -633,57 +692,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(SHand2).Scale = Player.GetPSprite(Lay1).Scale;
 				A_OverlayFlags(SHand2, PSPF_MIRROR|PSPF_FLIP, invoker.LeftHanded);//Left or right handed
 			}
-			P2SG A 1 {
-				Player.GetPSprite(SHand2).Pivot = Player.GetPSprite(Lay1).Pivot + (.6, -.1);
-				
-				Vector2 Offset = (0,0);
-				Vector2 Scal = (0,0);
-				
-				Switch(Player.GetPSprite(Lay1).Frame){
-					Case 7:
-					Case 0:
-						Offset = (0,0);
-						Scal = (0,0);
-						Break;
-					Case 1:
-						Offset = (0, 0);
-						Scal = (0, .05);
-						Break;
-					Case 2:
-						Offset = (-1, 3);
-						Scal = (0, .075);
-						Break;
-					Case 9:
-					Case 5:
-						Offset = (-2, 3);
-						Scal = (.05, .1);
-						Break;
-					Case 6:
-						Offset = (-1, 3);
-						Scal = (.1, .125);
-						Break;
-					Case 4:
-						Offset = (-.5, 2);
-						Scal = (.05, .125);
-						Break;
-					Case 3:
-						Offset = (0, 1);
-						Scal = (.015, .025);
-						Break;
-					Case 8:
-						Offset = (0, 0);
-						Scal = (.005, .075);
-						Break;
-						
-				}
-				
-				A_OverlayOffset(SHand2, Player.GetPSprite(Lay1).X+Offset.X, Player.GetPSprite(Lay1).Y+Offset.Y, WOF_INTERPOLATE);
-				A_OverlayRotate(SHand2, Player.GetPSprite(Lay1).Rotation, WOF_INTERPOLATE);
-				Player.GetPSprite(SHand2).Scale = Player.GetPSprite(Lay1).Scale + Scal;
-				Player.GetPSprite(SHand2).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
-				
-				A_OverlayFlags(SHand2, PSPF_INTERPOLATE, true);
-			}
+			P2SG A 1 A_DoSecondHandHold();
 			Wait;
 		SecondHandLower:
 			MRD1 G 1{
