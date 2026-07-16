@@ -119,7 +119,7 @@ nosave int MRIntW_TeleportParticlesStyleMonsters = 2;
 nosave bool MRIntW_AltLightnings = false;
 
 nosave bool MRIntW_ParticleFlies = false;
-nosave float MRIntW_ParticleFliesVolume = .2;
+nosave float MRIntW_ParticleFliesVolume = .4;
 
 nosave string MRIntW_PressetCust1 = "";
 

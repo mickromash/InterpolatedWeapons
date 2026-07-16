@@ -885,6 +885,24 @@ Class MRIntW_ParticleFly: VisualThinker
 		Super.PostBeginPlay();
 	}
 	
+	Void DoSound()
+	{
+		if(StartFly>StopFly && StartFly%70==0)Vol = MRIntW_ParticleFliesVolume;
+		
+		if(Vol<.01 || !Players[ConsolePlayer].Camera)Return;
+		
+		Vector3 Diff = Pos-Players[ConsolePlayer].Camera.Pos;
+		if(Diff.Length()>100)Return;
+		
+		if(StartFly<StopFly)Vol -= .025;
+		
+		if(SndVol<Vol-.1)SndVol += CFRandom(0, .05);
+		else SndVol = Vol*.4 + (1.-abs(abs(StartFly)%40/CFRandom(15, 20)-1.))*Vol*.7;
+		
+		Master.A_SoundVolume(14, SndVol*Amount*(1.-(abs(StartFly)%2)*CFRandom(.2, .4)));
+		Master.A_SoundPitch(14, SndPitch-.05+(SndVol-Vol)*CFRandom(0, .3));
+	}
+	
 	Override Void Tick()
 	{
 		Super.Tick();
@@ -902,8 +920,7 @@ Class MRIntW_ParticleFly: VisualThinker
 			Vel = FlyAwayDir*CFRandom(6, 9) + (CFRandom(-4, 4), CFRandom(-4, 4), CFRandom(-4, 4));
 			Alpha -= .005;
 			
-			if(Main)Master.A_SoundVolume(14, SndVol);
-			SndVol -= .01;
+			if(Main)DoSound();
 			Return;
 		}
 		
@@ -918,16 +935,7 @@ Class MRIntW_ParticleFly: VisualThinker
 			Vel = Diff.Unit() * Min(Diff.Length(), Speed*CFRandom(.8, 1)) + (CFRandom(-4, 4), CFRandom(-4, 4), CFRandom(-4, 4))*.5;
 			Alpha = CFRandom(0, 3);
 			
-			if(Main && Vol>0 && Players[ConsolePlayer].Camera){
-				Vector3 Diff = Pos-Players[ConsolePlayer].Camera.Pos;
-				if(Diff.Length()>100)Return;
-				if(SndVol<Vol-.1)SndVol += CFRandom(0, .05);
-				else SndVol = Vol-.1+(1.-abs(Master.GetAge()%40/CFRandom(17, 20)-1.))*.3;
-				
-				Master.A_SoundVolume(14, SndVol*Amount*(1.-(Master.GetAge()%2)*CFRandom(.2, .4)));
-				Master.A_SoundPitch(14, SndPitch-.05+(SndVol-Vol)*CFRandom(0, .4));
-			}
-			
+			if(Main)DoSound();
 			Return;
 		}
 		
