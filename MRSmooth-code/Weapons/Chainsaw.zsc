@@ -68,7 +68,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayPivot(Lay3, 0, 1);
 			}
 			#### # 0 {
-				A_OverlayFlags(Lay3, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay3, PSPF_INTERPOLATE, !Player.GetPSprite(Lay3).FirstTic);
 				
 				A_OverlayRotate(Lay2, -48, WOF_ADD);
 				A_OverlayScale(Lay2, 1, 1);
@@ -128,7 +128,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay2, -30, 0);
 				A_OverlayPivot(Lay2, .5, 1);
 			}
-			#### # 1 A_OverlayFlags(Lay2, PSPF_INTERPOLATE, 1);
+			#### # 1 A_OverlayFlags(Lay2, PSPF_INTERPOLATE, !Player.GetPSprite(Lay2).FirstTic);
 			Wait;
 		
 		SawRaise:
@@ -165,7 +165,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 			#### #### 1 {
 				A_OverlayOffset(Lay1, 1, -6, WOF_ADD);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayScale(Lay1, .07, .07, WOF_ADD);
 				A_OverlayRotate(Lay1, -3, WOF_ADD);
 				
@@ -223,7 +223,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 		SawReady:
 			SAW1 # 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_GlovesColor(1);
 				A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(-.5, .5), WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-.25, .25), WOF_INTERPOLATE);
@@ -253,7 +253,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				}
 			}
 			#### ### 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayOffset(Lay1, CFRandom(-.5, .5)*(1+invoker.SawSpeed), CFRandom(-.5, .5)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-.25, .25)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1+CFRandom(0, .025)*(1+invoker.SawSpeed), 1+CFRandom(0, .025)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
@@ -263,7 +263,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				if(invoker.SawSpeed>0)invoker.SawSpeed-=Min(invoker.SawSpeed, .5);
 			}
 			#### # 0{
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayPivot(Lay1, .5, 1);
 			}
 			Loop;
@@ -296,7 +296,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, -.03, -.1, WOF_ADD);
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 				else {
-					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 					A_OverlayScale(Lay2, .5, .1, WOF_INTERPOLATE);
 					A_OverlayRotate(Lay2, -70, WOF_INTERPOLATE);
 					A_OverlayOffset(Lay3, -5, 20, WOF_ADD);
@@ -308,7 +308,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, -.04, -.09, WOF_ADD);
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 				else {
-					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 					A_OverlayScale(Lay2, .5, .1, WOF_INTERPOLATE);
 					A_OverlayRotate(Lay2, -70, WOF_INTERPOLATE);
 					A_OverlayOffset(Lay3, -5, 20, WOF_ADD);
@@ -320,7 +320,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, -.015, -.022, WOF_ADD);
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 				else {
-					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 					A_OverlayScale(Lay2, .5, .1, WOF_INTERPOLATE);
 					A_OverlayRotate(Lay2, -70, WOF_INTERPOLATE);
 					A_OverlayOffset(Lay3, -5, 20, WOF_ADD);
@@ -343,7 +343,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayScale(Lay1, .8, .8, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay1, 6, -2, WOF_ADD);
 				A_OverlayRotate(Lay1, -3.5, WOF_ADD);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			}
 			#### G 1 {
 				invoker.Cutting = Null;
@@ -505,7 +505,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				}
 				else Player.GetPSprite(Lay1).Frame = 10+GetAge()%2;
 				
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			}
 			Loop;
 		SawStopCut://Transition back to ready
@@ -523,7 +523,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayRotate(Lay1, -3.5);
 			}
 			#### ## 1{
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				Double Mult = CFRandom(.4, .8);
 				A_OverlayScale(Lay1, .16*Mult, .16*Mult, WOF_ADD);
 				A_OverlayOffset(Lay1, -4, 7*Mult, WOF_ADD);

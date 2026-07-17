@@ -89,7 +89,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 					Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;// + (.01,.01)*invoker.Muzzle;
 					Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 					Player.GetPSprite(Lay2).Pivot = Player.GetPSprite(Lay1).Pivot;
-					A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(Lay2, PSPF_INTERPOLATE, !Player.GetPSprite(Lay2).FirstTic);
 				}
 				else {
 					Player.GetPSprite(OverlayId()).ResetInterpolation();
@@ -106,7 +106,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 					Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;// + (.01,.01)*invoker.Muzzle;
 					Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 					Player.GetPSprite(Lay2).Pivot = Player.GetPSprite(Lay1).Pivot;
-					A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(Lay2, PSPF_INTERPOLATE, !Player.GetPSprite(Lay2).FirstTic);
 				}
 				else {
 					Player.GetPSprite(OverlayId()).ResetInterpolation();
@@ -141,7 +141,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				else invoker.Muzzle = 0;
 			}
 			BFG1 ######## 1{
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayOffset(Lay1, 0, -6, WOF_ADD);
 				A_OverlayScale(Lay1, .04, .04, WOF_ADD);
 				
@@ -189,7 +189,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			BFG1 A 1 {
 				A_IdleAnimation(Lay1);
 				if(invoker.Reload||!invoker.InterpolateMuzzle)Return;
-				if(invoker.Muzzle>.1){invoker.Muzzle *= .5;A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);}
+				if(invoker.Muzzle>.1){invoker.Muzzle *= .5;A_OverlayFlags(Lay2, PSPF_INTERPOLATE, !Player.GetPSprite(Lay2).FirstTic);}
 				else {invoker.Muzzle = 0;A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);}
 			}
 			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);invoker.InterpolateMuzzle = true;}

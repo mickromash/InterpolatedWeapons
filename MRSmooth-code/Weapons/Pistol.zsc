@@ -221,7 +221,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		Player.GetPSprite(SHand2).Scale = Player.GetPSprite(Lay1).Scale + Scal;
 		Player.GetPSprite(SHand2).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
 		
-		A_OverlayFlags(SHand2, PSPF_INTERPOLATE, true);
+		A_OverlayFlags(SHand2, PSPF_INTERPOLATE, !Player.GetPSprite(SHand2).FirstTic);
 	}
 	
 	Double RecRot, RecMis;//Recoil animation parameters
@@ -262,7 +262,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			}
 			#### AAAAAAA 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayOffset(Lay1, invoker.SwitchAnim?-6:6, -10, WOF_ADD);
 				A_OverlayScale(Lay1, .02, .02, WOF_ADD);
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
@@ -355,7 +355,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				invoker.SwitchFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### CCCFJJG 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayOffset(Lay1, -6, -4, WOF_ADD);
 				A_OverlayScale(Lay1, .02, .02, WOF_ADD);
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
@@ -447,8 +447,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*invoker.ShotPower;
 			}
 			#### BB 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
-				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
+				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, !Player.GetPSprite(Lay2).FirstTic);
 				Float Scal = .07 + .02*invoker.ShotPower;
 				Vector2 Ofst = (.4+1.2*invoker.ShotPower, 3+invoker.ShotPower*.75);
 				if(invoker.SecondHand){Ofst = (0,2);Scal = .05+.01*invoker.ShotPower;}
@@ -664,7 +664,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			}
 		SecondHandToMain:
 			MRD1 G 1 {
-				A_OverlayFlags(SHand, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(SHand, PSPF_INTERPOLATE, !Player.GetPSprite(SHand).FirstTic);
 				Player.GetPSprite(SHand).X = Player.GetPSprite(Lay1).X+210+(Player.GetPSprite(SHand).X-210-Player.GetPSprite(Lay1).X)*.6;
 				Player.GetPSprite(SHand).Y = Player.GetPSprite(Lay1).Y+10+(Player.GetPSprite(SHand).Y-10-Player.GetPSprite(Lay1).Y)*.6;
 				Player.GetPSprite(SHand).Rotation = Player.GetPSprite(Lay1).Rotation-30+(Player.GetPSprite(SHand).Rotation+30-Player.GetPSprite(Lay1).Rotation)*.6;
@@ -710,7 +710,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				}
 			}
 			MRD1 G 1{
-				A_OverlayFlags(SHand, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(SHand, PSPF_INTERPOLATE, !Player.GetPSprite(SHand).FirstTic);
 				A_OverlayOffset(SHand, 2, -2, WOF_ADD);
 				A_OverlayRotate(SHand, 1, WOF_ADD);
 				A_OverlayScale(SHand, -.025, -.025, WOF_ADD);
@@ -762,7 +762,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				if(MRIntW_BobRangeZ!=0){
 					Double BobZ = MRIntWeaps_Fist.GetBobZ(invoker, .5);
 					A_OverlayScale(Lay1, 1+BobZ, 1+BobZ, WOF_INTERPOLATE);
-					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				}
 				A_WeaponReady();
 			}

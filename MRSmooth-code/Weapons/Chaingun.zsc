@@ -371,7 +371,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			CH1G ######### 1 {
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?4:-4, -3, WOF_ADD);
 				For(int i=Muzzle0;i<=Muzzle5;i++){
-					A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 				}
 				invoker.SwitchState--;
 				
@@ -381,7 +381,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			CH1G ### 1 {
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, invoker.SwitchAnim?4:-4, 6, WOF_ADD);
 				For(int i=Muzzle0;i<=Muzzle5;i++){
-					A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 				}
 				invoker.SwitchState--;
 				
@@ -447,7 +447,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			CH1G ## 1 {
 				if(invoker.SwitchState<0){
-					For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+					For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 					invoker.InterpolateBarrels = true;
 				}
 				
@@ -470,7 +470,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			CH1G # 1 {
 				if(invoker.SwitchState<0){
-					For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+					For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 					invoker.InterpolateBarrels = true;
 				}
 				
@@ -484,7 +484,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayRotate(i, invoker.SwitchAnim?1:-1, WOF_ADD);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayScale(i, .025, .025, WOF_ADD);
 				For(int i=BarrReflct0;i<=Ring;i++){
-					if(abs(invoker.Speed)>3)A_OverlayFlags(i, PSPF_INTERPOLATE, False);
+					if(abs(invoker.Speed)>3)A_OverlayFlags(i, PSPF_INTERPOLATE, false);
 				}
 				if(invoker.SwitchState>0){invoker.SwitchState--;For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, false);A_SetTics(0);}
 				else if(invoker.SwitchState==0){
@@ -589,7 +589,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_FireSmoke();
 			}
 			CH1F ABB 1 BRIGHT {
-				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y, wof_interpolate);
 				Float Scale = Min(1, invoker.Speed/MaxSpeed);
 				A_OverlayScale(Lay2, Scale*CFRandom(.93, 1), Scale*CFRandom(.93, 1), WOF_INTERPOLATE);
@@ -597,7 +597,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_FireSmoke();
 			}
 			CH1F B 1 BRIGHT {
-				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, true);
+				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y, wof_interpolate);
 				A_OverlayScale(Lay2, -.25, -.25, WOF_ADD);
 			}

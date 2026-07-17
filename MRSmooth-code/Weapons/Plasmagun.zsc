@@ -105,7 +105,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 					Player.GetPSprite(Lay2).Scale.X -= invoker.BodyScal;
 					Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 					Player.GetPSprite(Lay2).Pivot = Player.GetPSprite(Lay1).Pivot;
-					A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(Lay2, PSPF_INTERPOLATE, !Player.GetPSprite(Lay2).FirstTic);
 				}
 				else if(invoker.InterpolateMuzzle==0){
 					Player.GetPSprite(Lay2).ResetInterpolation();
@@ -169,7 +169,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			}
 			PLSR C 1{invoker.Selecting = true;}
 			#### CC 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayOffset(Lay1, 15, -23, WOF_ADD);
 				A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 				A_OverlayRotate(Lay1, -.9, WOF_ADD);
@@ -186,7 +186,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
 				A_OverlayOffset(Lay1, 7, -9, WOF_ADD);
 				A_OverlayRotate(Lay1, -.6, WOF_ADD);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
 				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
@@ -195,7 +195,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			#### C 1 {
 				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
 				A_OverlayOffset(Lay1, 7, -6, WOF_ADD);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
 				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
@@ -225,7 +225,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
 				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			}
 			#### A 1 {
 				A_OverlayScale(Lay1, .05, .08, WOF_ADD);
@@ -246,7 +246,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayOffset(Lay2, 0, 200);
 				A_OverlayScale(Lay1, -.05, -.08, WOF_ADD);
 				A_OverlayOffset(Lay1, 10, 2, WOF_ADD);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
 				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
@@ -419,7 +419,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayScale(Lay4, 1.4*MuzzleScale+CFRandom(-.01, .01), 1.4*MuzzleScale+CFRandom(-.01, .01), WOF_INTERPOLATE);
 				
 				
-				if(!invoker.Selecting)A_OverlayFlags(Lay2, PSPF_INTERPOLATE, true);
+				if(!invoker.Selecting)A_OverlayFlags(Lay2, PSPF_INTERPOLATE, !Player.GetPSprite(Lay2).FirstTic);
 				invoker.Selecting = false;
 			}
 			#### # 0 {
@@ -436,7 +436,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayScale(Lay1, 1, 1.2);
 			}
 			#### B 1{
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayOffset(Lay1, -9, 0, WOF_ADD);
 				
 				For(int i = ParLay-29;i<=ParLay;i++){
@@ -472,7 +472,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_GlovesColor(0, Lay2);
 			}
 			#### ## 1{
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay2, 0, WOF_INTERPOLATE);
 				if(invoker.Muzzle>.1)invoker.Muzzle *= .3;
@@ -508,7 +508,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			#### C 1;
 			#### CCBA 1{
 				invoker.Muzzle = 0;
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayOffset(Lay1, 10, 0, WOF_ADD);
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
@@ -528,7 +528,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			PL1G A 1 {
 				A_OverlayOffset(Lay1, CFRandom(-3, 2), CFRandom(0, 3), WOF_INTERPOLATE);
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y, WOF_INTERPOLATE);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			}
 			#### # 0 {invoker.InterpolateMuzzle = true;}
 			#### # 2 {

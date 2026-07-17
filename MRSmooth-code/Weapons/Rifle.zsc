@@ -21,7 +21,7 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			}
 			#### AAAAAA 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayOffset(Lay1, invoker.SwitchAnim?7:-7, -9, WOF_ADD);
 				A_OverlayScale(Lay1, .06, .06, WOF_ADD);
 				A_OverlayRotate(Lay1, 1, WOF_ADD);
@@ -132,7 +132,7 @@ Extend Class MRIntWeaps_Pistol
 				invoker.RecRot = (Player.GetPSprite(Lay1).Pivot.X-.5)*invoker.ShotPower;
 			}
 			#### A 1 {
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				Vector2 Scal = (.15+.01*invoker.ShotPower, 0);
 				Scal.Y = Scal.X*1.5;
 				Vector2 Ofst = (0, 11+2*invoker.ShotPower);

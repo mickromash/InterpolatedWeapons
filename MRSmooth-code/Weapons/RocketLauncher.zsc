@@ -194,7 +194,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			}
 			MI1G CC 1{
 				invoker.Fire += 20;
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayScale(Lay1, .15, .15, WOF_ADD);
 				A_OverlayOffset(Lay1, invoker.RecoilDir*.5, 7, WOF_ADD);
 				
@@ -296,7 +296,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				if(MRIntW_BobRangeZ!=0){
 					Double BobZ = MRIntWeaps_Fist.GetBobZ(invoker, .5);
 					A_OverlayScale(Lay1, 1+BobZ, 1+BobZ, WOF_INTERPOLATE);
-					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				}
 				A_WeaponReady();
 			}

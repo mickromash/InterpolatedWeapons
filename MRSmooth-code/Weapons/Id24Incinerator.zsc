@@ -304,7 +304,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayPivot(OverlayId(), Pivot.X, Pivot.Y);
 			}
 			FL1F # 1 BRIGHT {
-				Bool Inter = Player.GetPSprite(OverlayId()).Scale.Y>0;
+				Bool Inter = Player.GetPSprite(OverlayId()).Scale.Y>0 && !Player.GetPSprite(OverlayId()).FirstTic;
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
 				A_OverlayAlpha(OverlayId(), Clamp(invoker.Heat, .01, CFRandom(.4, 1.5)));
 				Player.GetPSprite(OverlayId()).Frame = (OverlayId()-LayFlames)*3 + Min(2, GetAge()%4);
@@ -474,7 +474,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayAlpha(OverlayId(), .6);
 			}
 			#### # 1{
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_INTERPOLATE, true);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, true);
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
 				A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
 				
 				Player.GetPSprite(OverlayId()).Alpha-=.04;
@@ -501,7 +502,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayAlpha(OverlayId(), .6);
 			}
 			#### # 1{
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_INTERPOLATE, true);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, true);
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
 				A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
 				
 				Player.GetPSprite(OverlayId()).Alpha-=.025;
@@ -538,7 +540,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				if(MRIntW_BobRangeZ!=0){
 					Double BobZ = MRIntWeaps_Fist.GetBobZ(invoker, .5);
 					A_OverlayScale(Lay1, 1+BobZ, 1+BobZ, WOF_INTERPOLATE);
-					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, true);
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				}
 				A_WeaponReady();
 				
