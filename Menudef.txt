@@ -145,6 +145,9 @@ OptionMenu "MRIntWeaps_ParticlesMenu"
 	Option "$MRIntW_LongTermSmoke", "MRIntW_LongTermSmoke", "YesNo"
 	StaticText ""
 	StaticText ""
+	Option "$MRIntW_ParticleTexture", "MRIntW_ParticleTexture", "MRIntW_ParticleTextureValues"
+	Option "$MRIntW_ParticleSmokeTexture", "MRIntW_ParticleSmokeTexture", "MRIntW_ParticleTextureValues"
+	StaticText ""
 	Option "$MRIntW_PlayerParticles", "MRIntW_PlayerParticles", "YesNo"
 	Slider "$MRIntW_PlayerParticlesAmount", "MRIntW_PlayerParticlesAmount", 0, 5, .25, 2
 	SubMenu "$MRIntWeaps_PlayerParticlesMenu", "MRIntWeaps_PlayerParticlesMenu"
@@ -480,6 +483,14 @@ OptionValue "MRIntW_PlasmaParticlesValues"
 	0, "$MRIntW_PlasmaParticles0"
 	1, "$MRIntW_PlasmaParticles1"
 	2, "$MRIntW_PlasmaParticles2"
+}
+
+OptionValue "MRIntW_ParticleTextureValues"
+{
+	-1, "$MRIntW_ParticleTextureDef"
+	0, "$MRIntW_ParticleTexture0"
+	1, "$MRIntW_ParticleTexture1"
+	2, "$MRIntW_ParticleTexture2"
 }
 
 OptionValue "MRIntW_TeleportParticlesStyleValues"

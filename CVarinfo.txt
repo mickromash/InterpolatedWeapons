@@ -121,6 +121,10 @@ nosave bool MRIntW_AltLightnings = false;
 nosave bool MRIntW_ParticleFlies = false;
 nosave float MRIntW_ParticleFliesVolume = .4;
 
+//-1 - UZDoom, 0 - Smooth, 1 - Round, 2 - Square
+nosave int MRIntW_ParticleTexture = -1;
+nosave int MRIntW_ParticleSmokeTexture = -1;
+
 nosave string MRIntW_PressetCust1 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations

@@ -188,6 +188,13 @@ MRIntW_BFGParticles = "Firing particles";
 
 MRIntWeaps_ParticlesMenu = "Particles settings";
 
+MRIntW_ParticleTexture = "Particles texture";
+MRIntW_ParticleSmokeTexture = "Smoke particles texture";
+MRIntW_ParticleTextureDef = "Same as UZDoom Particles";
+MRIntW_ParticleTexture0 = "Smooth";
+MRIntW_ParticleTexture1 = "Round";
+MRIntW_ParticleTexture2 = "Square";
+
 MRIntW_Particles_Tick = "During flight";
 MRIntW_Particles_Impact = "On impact";
 

@@ -144,6 +144,10 @@ Particles
 	NSHS A - RGB light grey smoke
 	NSHS B - nontrasparant particle sprite (used with Add render style only)
 	NSHS C (textures) - RGB dark grey smoke
+	NSHS D (textires) - opaque grey circle
+	NSHS E (textures) - square
+	NSHS F (texutres) - RGB white smoke
+	NSHS G (textures) - opaque white circle
 }
 
 

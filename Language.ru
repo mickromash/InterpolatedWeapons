@@ -188,6 +188,13 @@ MRIntW_BFGParticles = "Частицы при стрельбе";
 
 MRIntWeaps_ParticlesMenu = "Настройки частиц";
 
+MRIntW_ParticleTexture = "Текстура частиц";
+MRIntW_ParticleSmokeTexture = "Текстура частиц дыма";
+MRIntW_ParticleTextureDef = "Такая же как у остальных частиц";
+MRIntW_ParticleTexture0 = "Плавная";
+MRIntW_ParticleTexture1 = "Круглая";
+MRIntW_ParticleTexture2 = "Квадратная";
+
 MRIntW_Particles_Tick = "Во время полёта";
 MRIntW_Particles_Impact = "При столкновении";
 
