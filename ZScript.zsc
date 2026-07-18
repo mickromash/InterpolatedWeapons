@@ -1,4 +1,4 @@
-Version "4.0"
+Version "4.10"
 
 #include "MRSmooth-code/Handler.zsc"//Weapon sapwning/replacing/removing functions and other global events
 

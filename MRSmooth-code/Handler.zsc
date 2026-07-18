@@ -138,7 +138,9 @@ Class MRIntWeaps_Handler: EventHandler
 			}
 		}
 		
-		For(int i=0;i<Berserks.Size();i++){if(Berserks[i])Berserks[i].Destroy();}
+		foreach(Bers : Berserks)
+			if(Bers)Bers.Destroy();
+		//For(int i=0;i<Berserks.Size();i++){if(Berserks[i])Berserks[i].Destroy();}
 		Berserks.Clear();
 	}
 			
@@ -249,9 +251,11 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Void UpdateOnStartupParticles()
 	{
-		For(int i=0;i<PartThinkers.Size();i++){
-			if(PartThinkers[i])PartThinkers[i].Destroy();
-		}
+		//For(int i=0;i<PartThinkers.Size();i++){
+		//	if(PartThinkers[i])PartThinkers[i].Destroy();
+		//}
+		foreach(PartThink : PartThinkers)
+			if(PartThink)PartThink.Destroy();
 		PartThinkers.Clear();
 		
 		ThinkerIterator it = ThinkerIterator.Create();

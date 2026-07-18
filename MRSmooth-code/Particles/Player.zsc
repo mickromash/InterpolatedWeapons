@@ -7,12 +7,14 @@ Class MRIntWeaps_ActorEffects: Thinker
 	Actor Master;
 	TextureId ParTex, SmkTex;
 	
-	Static Void MRSpawnParticle(Color Col, TextureId Texture, int Flags=0, int Style=STYLE_None, int Life=1, double Size=1, Vector3 Pos=(0,0,0), Vector3 Vel=(0,0,0), Vector3 Accel=(0,0,0), Double Alpha=1, Double Fade=-1, Double SizeStep=0)
+	Static Void MRSpawnParticle(Color Col, TextureId Texture, int Flags=0, int Style=STYLE_None, int Life=1, double Size=1, Vector3 Pos=(0,0,0), Vector3 Vel=(0,0,0), Vector3 Accel=(0,0,0), Double Alpha=1, Double Fade=-1, Double SizeStep=0, Double Roll=0, Double RollVel=0)
 	{
 		FSpawnParticleParams p;
 		p.Accel = Accel;
 		p.Vel = Vel;
 		p.Pos = Pos;
+		p.StartRoll = Roll;
+		p.RollVel = RollVel;
 		
 		p.Texture = Texture;
 		p.Color1 = Col;
@@ -144,14 +146,13 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					Setting&MRIWMP_CyberRocketImpactSmoke||
 					Setting&MRIWMP_CyberRocketImpactSparks)
 				){Destroy();Return;}
-				else if(!(Setting&MRIWPP_RocketFlare||
+				if(!(Setting&MRIWPP_RocketFlare||
 					Setting&MRIWPP_RocketSmoke||
 					Setting&MRIWPP_RocketTrail||
 					Setting&MRIWPP_RocketSparks||
 					Setting&MRIWPP_RocketImpactSmoke||
 					Setting&MRIWPP_RocketImpactSparks)
 				){Destroy();Return;}
-				Return;
 			Case 1://Plasma
 				if(!(Setting&MRIWPP_PlasmaFly||
 					Setting&MRIWPP_PlasmaTrail||
@@ -160,7 +161,6 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					Setting&MRIWPP_PlasmaDroppingSparks||
 					Setting&MRIWPP_PlasmaSmoke)
 				){Destroy();Return;}
-				Return;
 			Case 2://BFG
 				if(!(Setting&MRIWPP_BFGOrbital||
 					Setting&MRIWPP_BFGFly||
@@ -229,7 +229,8 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					Master.A_QuakeEx(Intens, Intens, Intens, 13, 0, 200, "", QF_SCALEDOWN, RollIntensity: Intens*.5);
 				}
 				if(Setting&MRIWPP_RocketImpactSmoke && DeathTick<7*PAmnt){
-					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30)*2, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .7), SizeStep: CFRandom(4.4, 5));
+					Double Ang = CRandom(-30,30);
+					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(20, 30), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+Ang*2, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .7), SizeStep: CFRandom(4.4, 5), Roll:CRandom(0, 360), RollVel:-Ang*.1);
 				}
 				if(Setting&MRIWPP_RocketImpactSparks && DeathTick<7 && DeathTick%2==0){
 					int Amount = 30*PAmnt;

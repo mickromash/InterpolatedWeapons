@@ -294,7 +294,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 		{
 			Case 0://DoomImpBall
 				if(Setting&MRIWMP_ImpBallImpactSmoke && DeathTick<7){
-					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 2), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .7), SizeStep: CFRandom(2, 3));
+					Double Ang = CRandom(-30,30);
+					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+Ang, 2), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .7), SizeStep: CFRandom(2, 3), Roll:CRandom(0, 360), RollVel:-Ang*.05);
 				}
 				if(Setting&MRIWMP_ImpBallImpactSplash && DeathTick<3){
 					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
@@ -380,7 +381,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				Return;
 			Case 2://RevenantTracer
 				if(Setting&MRIWMP_RevenantImpactTracerSmoke && DeathTick<7){
-					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, CRandom(10, 16)*Min(1, PAmnt), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-50,50), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.8, 1), SizeStep: CFRandom(2, 3));
+					Double Ang = CRandom(-50,50);
+					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(10, 16)*Min(1, PAmnt), CRandom(32, 35), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+Ang, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.8, 1), SizeStep: CFRandom(2, 3), Roll:CRandom(0, 360), RollVel:-Ang*.05);
 				}
 				if(Setting&MRIWMP_RevenantImpactTracerSplash && DeathTick<3){
 					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
@@ -398,7 +400,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				Return;
 			Case 3://FatShot (Mancubus)
 				if(Setting&MRIWMP_FatShotImpactSmoke && DeathTick<7){
-					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(39, 42), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
+					Double Ang = CRandom(-30,30);
+					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(39, 42), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+Ang, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4), Roll:CRandom(0, 360), RollVel:-Ang*.05);
 				}
 				if(Setting&MRIWMP_FatShotImpactSplash && DeathTick<3){
 					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
@@ -486,7 +489,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 			Case 5://BaronBall
 				if(Setting&MRIWMP_BaronBallImpactSmoke && DeathTick<7){
 					int Green = CRandom(50, 160);
-					MRSpawnParticle(Color(Min(Green, 80),Green,Min(Green, 80)), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, CRandom(20, 25)*Min(1, PAmnt), CRandom(39, 42), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .8), SizeStep: CFRandom(3, 4));
+					Double Ang = CRandom(-30,30);
+					MRSpawnParticle(Color(Min(Green, 80),Green,Min(Green, 80)), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(20, 25)*Min(1, PAmnt), CRandom(39, 42), Master.Pos, (Actor.AngleToVector(FaceCam(Master)+Ang, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.6, .8), SizeStep: CFRandom(3, 4), Roll:CRandom(0, 360), RollVel:-Ang*.05);
 				}
 				if(Setting&MRIWMP_BaronBallImpactSplash && DeathTick<3){
 					Float Ang = VectorAngle(-LastVel.X, -LastVel.Y);
@@ -538,7 +542,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					}
 					if(Setting2&MRIWMP_ArchFlameSmoke){
 						For(int i=CRandom(0, 2)*PAmnt;i<10*PAmnt;i++)
-							MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, 20, CRandom(39, 42), Monster.Target.Pos, (Actor.AngleToVector(CRandom(0, 359), CFRandom(1.8, 3)), CFRandom(.4, 1.7)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
+							MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 20, CRandom(39, 42), Monster.Target.Pos, (Actor.AngleToVector(CRandom(0, 359), CFRandom(1.8, 3)), CFRandom(.4, 1.7)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4), Roll:CRandom(0, 360), RollVel:CFRandom(-2, 2));
 					}
 				}
 				else Destroy();
@@ -555,7 +559,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					}
 				}
 				if(Setting&MRIWMP_SoulSmoke && DeathTick<7){
-					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, CRandom(35, 40)*Min(2, (PAmnt-1)*.5+1), CRandom(39, 42), Master.Pos + (0,0,17), (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
+					Double Ang = CRandom(-30,30);
+					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(35, 40)*Min(2, (PAmnt-1)*.5+1), CRandom(39, 42), Master.Pos + (0,0,17), (Actor.AngleToVector(FaceCam(Master)+Ang, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4), Roll:CRandom(0, 360), RollVel:-Ang*.05);
 				}
 				Return;
 			Case 8://PainElemental
@@ -583,7 +588,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting2&MRIWMP_CyberSmoke && DeathTick>7 && DeathTick<30 && DeathTick%4==0){
 					Double Radius = GetDefaultByType(Master.GetClass()).Radius;
-					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, CRandom(70, 90)*Min(1, PAmnt), CRandom(50, 55), Master.Pos + (Radius*CFrandom(-.5, .5),Radius*CFRandom(-.5, .5),GetDefaultByType(Master.GetClass()).Height*CFRandom(0,.5)), (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 1), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(7, 10));
+					Double Ang = CRandom(-30,30);
+					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(70, 90)*Min(1, PAmnt), CRandom(50, 55), Master.Pos + (Radius*CFrandom(-.5, .5),Radius*CFRandom(-.5, .5),GetDefaultByType(Master.GetClass()).Height*CFRandom(0,.5)), (Actor.AngleToVector(FaceCam(Master)+Ang, 1), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(7, 10), Roll:CRandom(0, 360), RollVel:-Ang*.05);
 				}
 				if(Setting2&MRIWMP_CyberBlood && DeathTick>6 && DeathTick<15 && DeathTick%2==0){
 					For(int i=CRandom(0, 4)*PAmnt;i<25*PAmnt-(DeathTick-19);i++){
@@ -610,7 +616,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting2&MRIWMP_SpiderSmoke && DeathTick>40 && DeathTick<58 && DeathTick%4==0){
 					Double Radius = GetDefaultByType(Master.GetClass()).Radius;
-					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, CRandom(70, 90)*Min(1, PAmnt), CRandom(50, 55), Master.Pos + (Radius*CFrandom(-.5, .5),Radius*CFRandom(-.5, .5),GetDefaultByType(Master.GetClass()).Height*CFRandom(0,.5)), (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 1), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(7, 10));
+					Double Ang = CRandom(-30,30);
+					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(70, 90)*Min(1, PAmnt), CRandom(50, 55), Master.Pos + (Radius*CFrandom(-.5, .5),Radius*CFRandom(-.5, .5),GetDefaultByType(Master.GetClass()).Height*CFRandom(0,.5)), (Actor.AngleToVector(FaceCam(Master)+Ang, 1), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(7, 10), Roll:CRandom(0, 360), RollVel:-Ang*.05);
 				}
 				if(Setting2&MRIWMP_SpiderBlood && DeathTick>26 && DeathTick<45 && DeathTick%2==0){
 					For(int i=CRandom(0, 4)*PAmnt;i<25*PAmnt-(DeathTick-19);i++){
@@ -639,10 +646,11 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				if(Setting&MRIWMP_ImpBallSmoke){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
 					Float Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z)+CRandom(-40, 40);
-					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-3, 3)), Sin(Pit)*2);
+					Double ToSide = CFRandom(-3, 3);
+					Vector3 Vel = (Actor.AngleToVector(Ang+90, ToSide), Sin(Pit)*2);
 					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit)*2);
 					//Console.Printf("Pit "..Pit.." Vel "..Vel.." MVel "..Master.Vel);
-					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, 10*Clamp(PAmnt, .4, 1), CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:.5);
+					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 10*Clamp(PAmnt, .4, 1), CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:.5, Roll:CRandom(0, 360), RollVel:-ToSide*.1);
 				}
 				if(Setting&MRIWMP_ImpBallDrops && CRandom(0,3)==1){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
@@ -706,10 +714,11 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				if(Setting&MRIWMP_RevenantTracerSmoke){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
 					Float Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z)+CRandom(-20, 20);
-					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-2, 2)), Sin(Pit)*2);
+					Double ToSide = CFRandom(-2, 2);
+					Vector3 Vel = (Actor.AngleToVector(Ang+90, ToSide), Sin(Pit)*2);
 					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit)*2);
 
-					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, 10*Clamp(PAmnt, .4, 1), CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2 + (0,0,3), Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:.5);
+					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 10*Clamp(PAmnt, .4, 1), CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2 + (0,0,3), Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:.5, Roll:CRandom(0, 360), RollVel:-ToSide);
 				}
 				if(Setting&MRIWMP_RevenantTracerFire){
 					For(int i=0;i<Max(1, 2*PAmnt);i++){
@@ -722,10 +731,11 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				if(Setting&MRIWMP_FatShotSmoke){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
 					Float Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z)+CRandom(-40, 40);
-					Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-1, 1)), Sin(Pit));
+					Double ToSide = CFRandom(-1, 1);
+					Vector3 Vel = (Actor.AngleToVector(Ang+90, ToSide), Sin(Pit));
 					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit));
 
-					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, 16*Clamp(PAmnt, .4, 1), CRandom(44, 46), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:2);
+					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 16*Clamp(PAmnt, .4, 1), CRandom(44, 46), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:2, RollVel:-ToSide);
 				}
 				if(Setting&MRIWMP_FatShotFire){
 					Vector3 Diff = Master.Pos-Master.Prev;
@@ -767,11 +777,12 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					For(Float i=1.5;i<2.5;i+=.5){
 						Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
 						Float Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z)+CRandom(-40, 40);
-						Vector3 Vel = (Actor.AngleToVector(Ang+90, CFRandom(-1, 1)), Sin(Pit));
+						Double ToSide = CFRandom(-1, 1);
+						Vector3 Vel = (Actor.AngleToVector(Ang+90, ToSide), Sin(Pit));
 						Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit));
 						int S = i-1;
 						int Green = CRandom(50, 160);
-						MRSpawnParticle(Color(Min(Green, 90),Green,Min(Green, 90)), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, 13*Clamp(PAmnt, .4, 1), CRandom(14, 16), Master.Pos-(Master.Pos-Master.Prev)*i + Vel.Unit()*2, Vel, Alpha:.6*Clamp(PAmnt, .4, 1), SizeStep:3);
+						MRSpawnParticle(Color(Min(Green, 90),Green,Min(Green, 90)), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 13*Clamp(PAmnt, .4, 1), CRandom(14, 16), Master.Pos-(Master.Pos-Master.Prev)*i + Vel.Unit()*2, Vel, Alpha:.6*Clamp(PAmnt, .4, 1), SizeStep:3, RollVel:-ToSide);
 					}
 				}
 				if(Setting2&MRIWMP_BaronBallFire){
@@ -794,7 +805,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				if(Players[ConsolePlayer].Camera!=Monster.Target && !MRGPartsCheckDraw())Return;
 				
 				if(Setting2&MRIWMP_ArchFlameSmoke){
-					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, 20*Min(1, PAmnt), CRandom(39, 42), HitPlace + (0,0,CRandom(0, 20)), LastVel*.75 + (Actor.AngleToVector(CRandom(0, 359), CFRandom(.1, 1)), CFRandom(1, 3))/PAmnt, Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4));
+					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 20*Min(1, PAmnt), CRandom(39, 42), HitPlace + (0,0,CRandom(0, 20)), LastVel*.75 + (Actor.AngleToVector(CRandom(0, 359), CFRandom(.1, 1)), CFRandom(1, 3))/PAmnt, Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4), Roll:CRandom(0, 360), RollVel:CFRandom(-1, 1));
 				}
 				if(Setting2&MRIWMP_ArchFlameSparks){
 					For(int i=CRandom(0, 1)*PAmnt;i<3*PAmnt;i++){
@@ -812,8 +823,8 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					MRSpawnParticle(Color(255,CRandom(40, 140),CRandom(0, 10)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Prev + (Actor.AngleToVector(Ang, CFRandom(3, 10)), CFRandom(15, 25)), (Actor.AngleToVector(Ang, CFRandom(.1, 1)), 0), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.15), SizeStep:-(Size/40.));
 				}
 				if(Setting&MRIWMP_SoulSmoke && Master.GetAge()%6==0){
-					Float Ang = Master.Angle+CRandom(100, 260);
-					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, 30, CRandom(39, 42), Master.Prev + (Actor.AngleToVector(Ang, CFRandom(4, 10)), CFRandom(16, 25)), (Actor.AngleToVector(Ang, CFRandom(.1, .3)), 0), Accel:(CFRandom(-.01, .01), CFRandom(-.01, .01), .05), Alpha: CFRandom(.4, .5), SizeStep: CFRandom(1, 2));
+					Float Ang = CRandom(100, 260);
+					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 30, CRandom(39, 42), Master.Prev + (Actor.AngleToVector(Master.Angle+Ang, CFRandom(4, 10)), CFRandom(16, 25)), (Actor.AngleToVector(Ang, CFRandom(.1, .3)), 0), Accel:(CFRandom(-.01, .01), CFRandom(-.01, .01), .05), Alpha: CFRandom(.4, .5), SizeStep: CFRandom(1, 2), RollVel:-Ang*.05);
 				}
 				Return;
 		}

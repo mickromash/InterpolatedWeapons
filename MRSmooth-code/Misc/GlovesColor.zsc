@@ -239,9 +239,9 @@ Extend Class MRIntWeaps_Fist
 				Case 14://Last actor received damage
 					{
 					if(LastActor && LastActor.GetClassName()!=LastName){
-						For(int i=0;i<Monstry.Size();i++){
-							if(LastActor is Monstry[i])LastName = Monstry[i];
-						}
+						foreach( Monstr : Monstry)
+							if(LastActor is Monstr)LastName = Monstr;
+						
 						Switch(LastName){
 							Case 'DoomPlayer':
 								if(LastActor.Player)TargetColor = LastActor.Player.GetColor();

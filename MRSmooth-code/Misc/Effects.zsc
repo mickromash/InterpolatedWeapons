@@ -99,8 +99,7 @@ Class MRIntWeaps_Casing: VisualThinker
 				Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 				if(!Handler)Return;
 				
-				For(int i=0;i<Handler.Casings.Size();i++){
-					Let Casing = Handler.Casings[i];
+				foreach( Casing : Handler.Casings){
 					if(!Casing || Casing == Self || Casing.bDestroyed || Casing.ShotgunShell != ShotgunShell || NearCasings.Find(Casing)!=NearCasings.Size())Continue;
 					
 					Vector3 Dist = Level.Vec3Diff(Pos, Casing.Pos);

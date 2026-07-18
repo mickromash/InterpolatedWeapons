@@ -131,8 +131,8 @@ Extend Class MRIntWeaps_Handler
 		}
 		if(Melee||CRandom(0, 9)>4){//Smoke
 			int Rand = CRandom(80, 120);
-			Obj.A_SpawnParticleEx(Color(Rand,Rand,Rand), SmkTex, STYLE_None, SPF_RELATIVE, 16, CFRandom(13, 15), 0,
-				0,0,0, CFRandom(0, .1),0,CFRandom(.1, .3), 0,0,-CFRandom(-.00001, .01), .5, .5/15., CFRandom(.7, .9));
+			Obj.A_SpawnParticleEx(Color(Rand,Rand,Rand), SmkTex, STYLE_None, SPF_RELATIVE|SPF_ROLL, 16, CFRandom(13, 15), 0,
+				0,0,0, CFRandom(0, .1),0,CFRandom(.1, .3), 0,0,-CFRandom(-.00001, .01), .5, .5/15., CFRandom(.7, .9), CRandom(0, 360), CRandom(2, 3)*CRandomPick(-1, 1));
 		}
 		Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
 	}
@@ -357,7 +357,8 @@ Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 		if(DeathTick<4)Return;
 		
 		if(DeathTick<9){
-			MRSpawnParticle(Color(30,30+CRandom(0, 5)*2,30), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, CRandom(40, 60)*Min(1, PAmnt), CRandom(32, 35), Master.Pos + (0,0,16), (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30)*2, 2), CFRandom(-.5, 2))+Master.Vel, Alpha: CFRandom(.7, 1), SizeStep: CFRandom(6.3, 7)/PAmnt);
+			Double Ang = CRandom(-30,30);
+			MRSpawnParticle(Color(30,30+CRandom(0, 5)*2,30), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(40, 60)*Min(1, PAmnt), CRandom(32, 35), Master.Pos + (0,0,16), (Actor.AngleToVector(FaceCam(Master)+Ang*2, 2), CFRandom(-.5, 2))+Master.Vel*.25, Alpha: CFRandom(.7, 1), SizeStep: CFRandom(6.3, 7)/PAmnt, Roll: CRandom(0, 360), RollVel: -Ang*.1);
 		}
 		if(DeathTick<7 && DeathTick%2==0){
 			For(int i=CRandom(0, 10)*PAmnt;i<30*PAmnt;i++){
@@ -412,7 +413,7 @@ Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 				Vector3 Pos = Master.Pos + (Actor.AngleToVector(Ang, -2), 28);
 				Pos += Actor.AngleToVector(Ang+90, CRandom(-10, -5));
 				
-				MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE, STYLE_None, 70, Size, Pos, (Actor.AngleToVector(Ang+CRandom(100, 120), .65), .8), (CFRandom(-.01, .01), CFRandom(-.01, .01), CFRandom(-.01, .01)), SizeStep:1.5);
+				MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 70, Size, Pos, (Actor.AngleToVector(Ang+CRandom(100, 120), .65), .8), (CFRandom(-.01, .01), CFRandom(-.01, .01), CFRandom(-.01, .01)), SizeStep:2, Roll:CRandom(0, 360), RollVel:CFRandom(-2.5, .5));
 			}
 			if(Setting&MRIWDP_Bloom){
 				int Col = 25*CRandom(7, 13);
@@ -480,7 +481,7 @@ Class MRIntWeaps_TorchParticles: MRIntWeaps_ActorEffects
 			Vector3 Pos = Master.Pos + (Actor.AngleToVector(Ang, -2), Height-41);
 			Pos += Actor.AngleToVector(Ang+90, CRandom(-8, 6));
 			
-			MRSpawnParticle(Color(CRandom(RCols[0].X, RCols[0].Y),CRandom(RCols[1].X, RCols[1].Y),CRandom(RCols[2].X, RCols[2].Y)), ParTex, SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, 10*Size, Size, Pos, (0, 0, CFRandom(.8, 1.6)), (CFRandom(-.01, .01), CFRandom(-.01, .01), CFRandom(-.01, .01)), Fade:0, SizeStep:-(Size/(Size*10)));
+			MRSpawnParticle(Color(CRandom(RCols[0].X, RCols[0].Y),CRandom(RCols[1].X, RCols[1].Y),CRandom(RCols[2].X, RCols[2].Y)), ParTex, SPF_FULLBRIGHT|SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_Add, 10*Size, Size, Pos, (0, 0, CFRandom(.8, 1.6)), (CFRandom(-.01, .01), CFRandom(-.01, .01), CFRandom(-.01, .01)), Fade:0, SizeStep:-(Size/(Size*10)), Roll:CRandom(0, 360), RollVel:CFRandom(-1, 1));
 		}
 		if(Setting&MRIWDP_TorchSmoke && Master.GetAge()%3==0){
 			int Cols[3];
