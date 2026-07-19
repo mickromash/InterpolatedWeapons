@@ -30,7 +30,10 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 			Super.Tick();
 			Vel.XY *= .9;
 			if(CurSector){
-				if(Pos.Z>CurSector.CenterFloor())Vel.Z -= Gravity;
+				if(Pos.Z>CurSector.CenterFloor()){
+					if(Pos.Z - CurSector.CenterFloor()<8)Pos.Z = CurSector.CenterFloor();
+					else Vel.Z -= Gravity;
+				}
 				else {
 					if(Vel.Z!=0)S_StartSoundAt(Pos, BounceSound, CHAN_AUTO, 0, 1, pitch:CFRandom(.9, 1.1)+BouncePitch);
 					Pos.Z = CurSector.CenterFloor();
