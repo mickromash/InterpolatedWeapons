@@ -610,11 +610,12 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				PSP.Scale = Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
 				PSP.Rotation = Player.GetPSprite(Lay1).Rotation *= Recover;
 			}
-			#### A 2{
+			#### A 1{
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay1, CFRandom(-2, 2), CFRandom(0, 2), WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-.5, .5), WOF_INTERPOLATE);
-				
+			}
+			#### A 1{
 				if(GetCVar("MRIntW_SSGHandless") && CountInv("Shell")>1 && (GetCVar("MRIntW_SSGHandless")>1 || CRandom(0, 10)>2)){
 					invoker.Handless = true;
 					Player.GetPSprite(Lay1).Frame = 25;
@@ -694,10 +695,20 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			}
 			#### # 0 A_JumpIf(InStateSequence(Player.GetPSprite(PSP_WEAPON).CurState, invoker.FindState("Deselect")), "GunLowerOpen");
 			#### # 0 {invoker.LowerOpen = false;}
-			#### DDD 1 {//Openin
+			#### D 1 {//Openin
 				A_OverlayRotate(Lay1, -CFRandom(5, 7), WOF_ADD);
 				A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);
 				A_OverlayOffset(Lay1, 30, 8, WOF_ADD);
+				
+				Double Rot = Player.GetPSprite(Lay1).Rotation*2;
+				Double Scal = Player.GetPSprite(lay1).Scale.X;
+				
+				invoker.MuzzleSmoke((-25*Scal-Rot*2, 5/Scal-Rot), (-15*Scal-Rot*2, 1/Scal-Rot), Scal+.3, Scal+.3);
+			}
+			#### DD 1 {
+				A_OverlayRotate(Lay1, -CFRandom(14, 19), WOF_ADD);
+				A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);
+				A_OverlayOffset(Lay1, 15, 10, WOF_ADD);
 				
 				Double Rot = Player.GetPSprite(Lay1).Rotation*2;
 				Double Scal = Player.GetPSprite(lay1).Scale.X;
@@ -708,7 +719,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### P 0 A_JumpIf(GetCVar("MRIntW_Casings"), 2);
 			#### E 0;
 			#### # 1 {
-				A_OverlayRotate(Lay1, Player.GetPSprite(Lay1).Rotation+64);
+				A_OverlayRotate(Lay1, Player.GetPSprite(Lay1).Rotation+84);
 				A_OverlayScale(Lay1, 1, 1);
 				Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay1).OldX = -30;
 				Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).OldY = 10;
