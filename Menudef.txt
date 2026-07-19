@@ -104,6 +104,7 @@ OptionMenu "MRIntW_WeaponsMenu"
 	Slider "$MRIntW_ShotgunsRecoil", "MRIntW_ShotgunsRecoil", 0, 2, .1
 	StaticText ""
 	StaticText "$TAG_SuperShotgun", "Fire"
+	Option "$MRIntW_SSGHandless", "MRIntW_SSGHandless", "MRIntW_SSGHandlessValues"
 	Option "$MRIntW_SSGSmoke", "MRIntW_SSGSmoke", "YesNo"
 	Option "$MRIntW_SSGSparks", "MRIntW_SSGSparks", "YesNo"
 	Slider "$MRIntW_ShotgunsRecoil", "MRIntW_ShotgunsRecoil", 0, 2, .1
@@ -476,6 +477,13 @@ OptionValue "MRIntW_PistolSHandValues"
 	0, "$MRIntW_PistolSHand0"
 	1, "$MRIntW_PistolSHand1"
 	2, "$MRIntW_PistolSHand2"
+}
+
+OptionValue "MRIntW_SSGHandlessValues"
+{
+	0, "$MRIntW_SSGHandless0"
+	1, "$MRIntW_SSGHandless1"
+	2, "$MRIntW_SSGHandless2"
 }
 
 OptionValue "MRIntW_PlasmaParticlesValues"

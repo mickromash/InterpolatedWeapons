@@ -167,6 +167,10 @@ MRIntW_ShotgunPumpRandom = "Случайный наклон";
 MRIntW_ShotgunPumpRandRotation = "Радиус случайного наклона";
 MRIntW_ShotgunSparks = "Искры при выстреле";
 
+MRIntW_SSGHandless = "Держать цевьё при перезарядке";
+MRIntW_SSGHandless0 = "Нет";
+MRIntW_SSGHandless1 = "Иногда";
+MRIntW_SSGHandless2 = "Да";
 MRIntW_SSGSmoke = "Дым из казённика";
 MRIntW_SSGSparks = "Искры при выстреле";
 

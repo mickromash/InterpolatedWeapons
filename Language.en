@@ -167,6 +167,10 @@ MRIntW_ShotgunPumpRandom = "Randomize angle";
 MRIntW_ShotgunPumpRandRotation = "Random radius";
 MRIntW_ShotgunSparks = "Buckshot sparks";
 
+MRIntW_SSGHandless = "Holding stock during reloading";
+MRIntW_SSGHandless0 = "No";
+MRIntW_SSGHandless1 = "Some times";
+MRIntW_SSGHandless2 = "Yes";
 MRIntW_SSGSmoke = "Smoke from barrels when reloading";
 MRIntW_SSGSparks = "Buckshot sparks";
 
