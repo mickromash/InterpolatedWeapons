@@ -83,7 +83,7 @@ nosave float MRIntW_ShotgunPumpRandRotation = 1;//Pump animation angle random va
 //Super Shotgun
 nosave bool MRIntW_SSGSmoke = true;//Smoke from barrels when reloading
 nosave bool MRIntW_SSGSparks = false;
-user bool MRIntW_SSGHandless = false;//Not holding the stock during reloading
+user int MRIntW_SSGHandless = 0;//Not holding the stock during reloading
 //Chaingun
 user bool MRIntW_ChaingunFixed = false;//Fixed chaingun rotation
 user bool MRIntW_ChaingunCounterClock = false;//Inver chaingub spin direction
