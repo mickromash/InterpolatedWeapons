@@ -500,7 +500,7 @@ Extend Class MRIntWeaps_Shotgun
 			int Col = CRandom(140, 150);
 			Part.SColor = Color(Col,Col,int(Col*CFRandom(1.1, 1.4)));
 			Part.Life = 18;
-			Part.Alpha = CFRandom(.1, .25)+Alpha*.1;
+			Part.Alpha = .1+Alpha*.1;
 			Part.Fade = Part.Alpha/(Part.Life-CRandom(1, 3));
 			Part.StartGrow = CFRandom(1, 2.4);
 			Part.StartScale = CFRandom(.2, .3);
@@ -770,7 +770,7 @@ Extend Class MRIntWeaps_Chaingun
 			int Col = CRandom(170, 180);
 			Part.SColor = Color(Col,Col,int(Col*CFRandom(1, 1.4)));
 			Part.Life = 16;
-			Part.Alpha = CFRandom(.2, .3)+Alpha*.1;
+			Part.Alpha = .2+Alpha*.1;
 			Part.Fade = Part.Alpha/(Part.Life-CRandom(1, 3));
 			Part.StartGrow = CFRandom(1.4, 3);
 			Part.StartScale = CFRandom(.2, .3);
