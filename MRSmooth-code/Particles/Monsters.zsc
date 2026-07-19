@@ -560,7 +560,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting&MRIWMP_SoulSmoke && DeathTick<7){
 					Double Ang = CRandom(-30,30);
-					MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(35, 40)*Min(2, (PAmnt-1)*.5+1), CRandom(39, 42), Master.Pos + (0,0,17), (Actor.AngleToVector(FaceCam(Master)+Ang, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4), Roll:CRandom(0, 360), RollVel:-Ang*.05);
+					MRSpawnParticle(Color(40,40,40), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, CRandom(35, 40)*Min(1.5, (PAmnt-1)*.5+1), CRandom(39, 42), Master.Pos + (0,0,17), (Actor.AngleToVector(FaceCam(Master)+Ang, 3), CFRandom(-.5, 2)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4), Roll:CRandom(0, 360), RollVel:-Ang*.05);
 				}
 				Return;
 			Case 8://PainElemental
