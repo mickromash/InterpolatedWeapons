@@ -552,7 +552,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					
 					For(double i=0;i<Diff.Length();i+=3/PAmnt){
 						Float Size = CFRandom(3, 6)/((PAmnt-1)*.5+1);
-						Float Dist = CFRandom(0, 5*Max(2, Age));
+						Float Dist = CFRandom(0, 5*Max(i/Diff.Length()*2, Age));
 						Float Ang = CRandom(0, 360);
 						Float Pit = CRandom(-90, 90);
 						Vector3 RPos = (Actor.AngleToVector(Ang, Dist)*Cos(Pit), Sin(Pit)*(Dist-2*Max(2, Age)));
