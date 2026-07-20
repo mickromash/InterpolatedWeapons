@@ -741,11 +741,15 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayScale(Lay1, 1.05, .95, WOF_INTERPOLATE);
 			}
 			#### H 1 {
-				A_OverlayOffset(Lay1, 2, 4.*CFRandom(.9, 1.2), WOF_ADD);
-				A_OverlayScale(Lay1, 1.06, .92, WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, 4, 9.*CFRandom(.9, 1.2), WOF_ADD);
+				A_OverlayScale(Lay1, 1.07, .94, WOF_INTERPOLATE);
+			}
+			#### H 1 {
+				A_OverlayOffset(Lay1, -4, -6.*CFRandom(.9, 1.2), WOF_ADD);
+				A_OverlayScale(Lay1, 1.05, .95, WOF_INTERPOLATE);
 			}
 			#### G 1 {
-				A_OverlayOffset(Lay1, -5, -(Player.GetPSprite(Lay1).Y+36)*.6, WOF_ADD);//Y -20
+				A_OverlayOffset(Lay1, -2, -(Player.GetPSprite(Lay1).Y+36)*.6, WOF_ADD);//Y -20
 				A_OverlayScale(Lay1, 1.02, .94, WOF_INTERPOLATE);
 			}
 			#### F 1 {
@@ -769,8 +773,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayRotate(Lay1, Player.GetPSprite(Lay1).Rotation-invoker.PumpRotation*.1);
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
-			#### CC 1 {
-				A_OverlayOffset(Lay1, 5, 12, WOF_ADD);
+			#### C 1 {
+				A_OverlayOffset(Lay1, 10, 24, WOF_ADD);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 			}
 			#### A 1{
