@@ -220,6 +220,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 		
 		if(!MRGPartsCheckDraw() && Master.Target != Players[ConsolePlayer].mo)Return;
 		Bool Enemy = Master.Master;
+		if(Master.Master == Players[ConsolePlayer].Camera)AltLightnings = false;
 		
 		Switch(Type)
 		{
