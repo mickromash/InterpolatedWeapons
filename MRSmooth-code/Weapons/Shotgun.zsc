@@ -589,6 +589,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y;
+				Player.GetPSprite(Lay2).bInterpolate = !Player.GetPSprite(Lay2).FirstTic;
 				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130+(Player.GetPSprite(Lay1).Pivot.X-.5)*(Player.GetPSprite(Lay1).Scale.X*Player.GetPSprite(Lay1).Scale.X);
 				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80+(Player.GetPSprite(Lay1).Pivot.Y-.5)*(Player.GetPSprite(Lay1).Scale.Y*Player.GetPSprite(Lay1).Scale.Y);
 				A_FireSmoke();
@@ -612,6 +613,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				Player.GetPSprite(Lay2).X *= Min(1, .4/invoker.SpriteRecoil);
 				Player.GetPSprite(Lay2).Y *= Min(1, .4/invoker.SpriteRecoil);
 				Player.GetPSprite(Lay2).Rotation *= Min(1, .4/invoker.SpriteRecoil);
+				Player.GetPSprite(Lay2).bInterpolate = !Player.GetPSprite(Lay2).FirstTic;
 				
 				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay2).X+130+(Player.GetPSprite(Lay1).Pivot.X-.5)*(Player.GetPSprite(Lay1).Scale.X*Player.GetPSprite(Lay1).Scale.X);
 				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay2).Y+80+(Player.GetPSprite(Lay1).Pivot.Y-.5)*(Player.GetPSprite(Lay1).Scale.Y*Player.GetPSprite(Lay1).Scale.Y);
