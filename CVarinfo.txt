@@ -77,9 +77,9 @@ user int MRIntW_PistolSHand = 1;//Hold pistol with two hands; 0 - No, 1 - If tar
 //Shotgun
 nosave bool MRIntW_ShotgunSmoke = true;//Smoke from chamber
 nosave bool MRIntW_ShotgunSparks = false;
-nosave float MRIntW_ShotgunPumpAngle = 0;//Pump animation rotation
-nosave bool MRIntW_ShotgunPumpRandom = false;//Adding random value to pump animation angle
-nosave float MRIntW_ShotgunPumpRandRotation = 1;//Pump animation angle random value
+user float MRIntW_ShotgunPumpAngle = 0;//Pump animation rotation
+user bool MRIntW_ShotgunPumpRandom = false;//Adding random value to pump animation angle
+user float MRIntW_ShotgunPumpRandRotation = 1;//Pump animation angle random value
 //Super Shotgun
 nosave bool MRIntW_SSGSmoke = true;//Smoke from barrels when reloading
 nosave bool MRIntW_SSGSparks = false;

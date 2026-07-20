@@ -656,8 +656,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			}
 			#### B 1 {//Raise
 				invoker.PumpRotation = 0;
-				invoker.PumpRotation = -MRIntW_ShotgunPumpAngle*10;
-				if(MRIntW_ShotgunPumpRandom)invoker.PumpRotation += (CRandom(-10, 10)-invoker.PumpRotation*.5)*MRIntW_ShotgunPumpRandRotation;
+				invoker.PumpRotation = -GetCVar("MRIntW_ShotgunPumpAngle")*10;
+				if(GetCVar("MRIntW_ShotgunPumpRandom"))invoker.PumpRotation += (CRandom(-10, 10)-invoker.PumpRotation*.5)*GetCVar("MRIntW_ShotgunPumpRandRotation");
 				//invoker.PumpRotation = Clamp(invoker.PumpRotation, -20, 20);
 				A_OverlayPivot(Lay1, (invoker.PumpRotation+10)/20, 1);
 				A_OverlayRotate(Lay1, invoker.PumpRotation*.1, WOF_ADD);
