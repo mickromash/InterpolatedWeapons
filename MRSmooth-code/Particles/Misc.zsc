@@ -9,10 +9,8 @@ Extend Class MRIntWeaps_Handler
 	Static Const String Bloods [] = {"BLOOD", "BLOD", "BLD"};
 	Static Const String Nukes [] = {"NUKE", "NUKAGE", "GOOP"};
 	
-	Void SpawnLiquidSplash(Actor mo, int Type=0)
+	Static Void SpawnLiquidSplash(Vector3 Pos, int Type=0, Float Scale=1)
 	{
-		if(!mo)Return;
-		
 		TextureId ParTex = MRIntWeaps_ActorEffects.SetTexture(NoAdd:true);
 		
 		
@@ -23,13 +21,13 @@ Extend Class MRIntWeaps_Handler
 					int Bright = CRandom(30, 70);
 					Color Col = Color(Bright, int(Bright*1.2), CRandom(200, 255));
 					
-					mo.A_SpawnParticleEx(Col, ParTex, STYLE_None, 0, 50, CFRandom(1, 4), 0, 0,0,0, CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4), 0,0,-.5, CFRandom(.6, .9));
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, 0, STYLE_None, 50*Scale, CFRandom(1, 4)*Scale, Pos, (CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4))*Scale, (0,0,-.5), CFRandom(.6, .9));
 				}
 				For(int i=0;i<5;i++){
 					int Bright = CRandom(30, 70);
 					Color Col = Color(Bright, int(Bright*1.2), CRandom(200, 255));
 					
-					mo.A_SpawnParticleEx(Col, ParTex, STYLE_None, 0, 70, CFRandom(.5, 3), 0, 0,0,0, 0,0,CFRandom(4, 6), CFRandom(-.05,.05),CFRandom(-.05,.05),-.5, CFRandom(.6, .9));
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, 0, STYLE_None, 70*Scale, CFRandom(.5, 3)*Scale, Pos, (0,0,CFRandom(4, 6))*Scale, (CFRandom(-.05,.05),CFRandom(-.05,.05),-.5), CFRandom(.6, .9));
 				}
 				Break;
 			Case 1://Nuke
@@ -37,13 +35,13 @@ Extend Class MRIntWeaps_Handler
 					int Bright = CRandom(20, 70);
 					Color Col = Color(Bright, 200, Bright);
 					
-					mo.A_SpawnParticleEx(Col, ParTex, STYLE_Add, SPF_FullBright, 30, CFRandom(1, 4), 0, 0,0,0, CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4), 0,0,-.7, 1);
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, SPF_FullBright, STYLE_Add, 30*Scale, CFRandom(1, 4)*Scale, Pos, (CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4))*Scale, (0,0,-.7), 1);
 				}
 				For(int i=0;i<5;i++){
 					int Bright = CRandom(20, 70);
 					Color Col = Color(Bright, 200, Bright);
 					
-					mo.A_SpawnParticleEx(Col, ParTex, STYLE_Add, SPF_FullBright, 50, CFRandom(.5, 3), 0, 0,0,0, 0,0,CFRandom(4, 7), CFRandom(-.05,.05),CFRandom(-.05,.05),-.7, 1);
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, SPF_FullBright, STYLE_Add, 50*Scale, CFRandom(.5, 3)*Scale, Pos, (0,0,CFRandom(4, 7))*Scale, (CFRandom(-.05,.05),CFRandom(-.05,.05),-.7), 1);
 				}
 				Break;
 			Case 2://Blood
@@ -51,13 +49,13 @@ Extend Class MRIntWeaps_Handler
 					int Bright = CRandom(0, 30);
 					Color Col = Color(170, Bright, Bright);
 					
-					mo.A_SpawnParticleEx(Col, ParTex, STYLE_None, 0, 50, CFRandom(1, 4), 0, 0,0,0, CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4), 0,0,-.6, 1);
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, 0, STYLE_None, 50*Scale, CFRandom(1, 4)*Scale, Pos, (CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4))*Scale, (0,0,-.6), 1);
 				}
 				For(int i=0;i<5;i++){
 					int Bright = CRandom(0, 30);
 					Color Col = Color(170, Bright, Bright);
 					
-					mo.A_SpawnParticleEx(Col, ParTex, STYLE_None, 0, 70, CFRandom(.5, 3), 0, 0,0,0, 0,0,CFRandom(4, 7), CFRandom(-.05,.05),CFRandom(-.05,.05),-.6, 1);
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, 0, STYLE_None, 70*Scale, CFRandom(.5, 3)*Scale, Pos, (0,0,CFRandom(4, 7))*Scale, (CFRandom(-.05,.05),CFRandom(-.05,.05),-.6), 1);
 				}
 				Break;
 				
@@ -79,7 +77,7 @@ Extend Class MRIntWeaps_Handler
 				}
 			}
 			if(IsBlood){
-				SpawnLiquidSplash(Obj, 2);
+				SpawnLiquidSplash(Obj.Pos, 2);
 				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
 				Return;
 			}
@@ -90,7 +88,7 @@ Extend Class MRIntWeaps_Handler
 				}
 			}
 			if(IsNuke){
-				SpawnLiquidSplash(Obj, 1);
+				SpawnLiquidSplash(Obj.Pos, 1);
 				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
 				Return;
 			}
@@ -101,7 +99,7 @@ Extend Class MRIntWeaps_Handler
 				}
 			}
 			if(IsLiquid){
-				SpawnLiquidSplash(Obj);
+				SpawnLiquidSplash(Obj.Pos);
 				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
 				Return;
 			}

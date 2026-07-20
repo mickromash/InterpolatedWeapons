@@ -85,7 +85,12 @@ Class MRIntWeaps_Casing: VisualThinker
 				Return;
 			}
 			
-			if(CurSector)Pos.Z = CurSector.CenterFloor();
+			if(CurSector){
+				if(Pos.Z>CurSector.CenterFloor()){
+					Pos.Z = CurSector.CenterFloor();
+					if(CurSector.GetTexture(0).IsValid() && CheckLiquid(CurSector.GetTexture(0)))Return;
+				}
+			}
 			if(Vel.XY.Length()>0){
 				Vel.XY *= .6;
 				if(int(Roll%45)>0)Roll = Roll%45*(Vel.XY.Length()/10)+int(Roll/45)*45;
@@ -125,6 +130,9 @@ Class MRIntWeaps_Casing: VisualThinker
 		
 		if(CurSector.CenterFloor()>=Pos.Z){//if landed
 			Pos.Z = CurSector.CenterFloor();
+			
+			if(CurSector.GetTexture(0).IsValid() && CheckLiquid(CurSector.GetTexture(0)))Return;
+			
 			Vel.Z = abs(-Vel.Z*CFRandom(.4, .6));
 			Bounce--;
 			if(Bounce<1){
@@ -151,6 +159,53 @@ Class MRIntWeaps_Casing: VisualThinker
 			S_StartSoundAt(Pos, ShotgunShell?"MRIntW/ShotgunCasingBounce":"MRIntW/PistolCasing", CHAN_AUTO, volume:.5*MRIntW_CasingsVolume, pitch:CFRandom(.9, 1.05)*i_timescale);
 			Vel.XY = -Vel.XY*.8;
 		}
+	}
+	
+	Bool CheckLiquid(TextureId PicName)
+	{
+		Static Const String Waters [] = {"SEWER", "WATER", "WATR", "WTR", "LAVA", "LAV", "SLIME0", "SLM", "SLUGDE", "MAGMA", "FLATHUH", "FLTFLWW", "FLTWAWA", "X_0", "OICYWA"};
+		Static Const String Bloods [] = {"BLOOD", "BLOD", "BLD"};
+		Static Const String Nukes [] = {"NUKE", "NUKAGE", "GOOP"};
+		
+		String PicName = Texman.GetName(CurSector.GetTexture(0));
+		PicName.MakeUpper();
+		
+		Bool IsLiquid, IsBlood, IsNuke;
+		
+		For(int i=0;i<Bloods.Size();i++){
+			if(PicName.IndexOf(Bloods[i])>-1){
+				IsBlood = true;Break;
+			}
+		}
+		if(IsBlood){
+			MRIntWeaps_Handler.SpawnLiquidSplash(Pos, 2, .5);
+			Destroy();
+			Return true;
+		}
+		
+		For(int i=0;i<Nukes.Size();i++){
+			if(PicName.IndexOf(Nukes[i])>-1){
+				IsNuke = true;Break;
+			}
+		}
+		if(IsNuke){
+			MRIntWeaps_Handler.SpawnLiquidSplash(Pos, 1, .5);
+			Destroy();
+			Return true;
+		}
+		
+		For(int i=0;i<Waters.Size();i++){
+			if(PicName.IndexOf(Waters[i])>-1){
+				IsLiquid = true;Break;
+			}
+		}
+		if(IsLiquid){
+			MRIntWeaps_Handler.SpawnLiquidSplash(Pos, Scale: .5);
+			Destroy();
+			Return true;
+		}
+			
+		Return false;
 	}
 	
 	Static MRIntWeaps_Casing SpawnCasing(Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Bool ShotgunShell=false, Double Gravity=1, int Bounce=-1, Vector2 Scale=(.11,.11), int Translation=0)
