@@ -403,8 +403,14 @@ Extend Class MRIntWeaps_Chainsaw
 			A_OverlayAlpha(Lay, invoker.BldAlpha[Num]);
 		}
 		else {
-			A_OverlayRenderStyle(Lay, STYLE_Translucent);
-			A_OverlayAlpha(Lay, invoker.BldAlpha[Num]);
+			if(FindInventory("PowerInvisibility")){
+				A_OverlayRenderStyle(Lay1, GetRenderStyle());
+				A_OverlayAlpha(Lay, Min(Alpha, invoker.BldAlpha[Num]));
+			}
+			else {
+				A_OverlayRenderStyle(Lay, STYLE_Translucent);
+				A_OverlayAlpha(Lay, invoker.BldAlpha[Num]);
+			}
 		}
 		
 		Player.GetPSprite(Lay).OldX = Player.GetPSprite(Lay1).OldX;

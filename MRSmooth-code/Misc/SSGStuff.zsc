@@ -142,12 +142,12 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 			}
 			NSHS A 1{
 				A_OverlayPivot(OverlayId(), .5, .5);
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, True);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
 				A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
 			}
 			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
 				int Index = OverlayId()-SmokeStart;
-				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
 				
 				Player.GetPSprite(OverlayId()).Alpha-=.01;
 				
@@ -169,6 +169,11 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 					A_ClearOverlays(OverlayId(), OverlayId());
 					Return;
 				}
+				
+				if(FindInventory("PowerInvisibility") && Powerup(FindInventory("PowerInvisibility")).EffectTics<35*4){
+					A_OverlayRenderStyle(OverlayId(), STYLE_None);
+				}
+				else A_OverlayRenderStyle(Overlayid(), STYLE_Translucent);
 			}
 			TNT1 A 0 {invoker.Smokes[OverlayId()-SmokeStart].Destroy();invoker.Smokes[OverlayId()-SmokeStart]=Null;}
 			Stop;

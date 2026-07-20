@@ -231,10 +231,10 @@ Extend Class MRIntWeaps_Chainsaw
 				A_OverlayRenderStyle(OverlayId(), MRIntW_ChainsawSmoke?STYLE_TRANSLUCENT:STYLE_NONE);
 			}
 			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, True);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
 				int Index = OverlayId()-SmokeStart;
 				invoker.Smokes[OverlayId()-SmokeStart].Age++;
-				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
 				
 				Player.GetPSprite(OverlayId()).Alpha-=.015;
 				
@@ -243,11 +243,8 @@ Extend Class MRIntWeaps_Chainsaw
 				Scale *= .1;
 				A_OverlayScale(OverlayId(), Max(0, Scale), Max(0, Scale), WOF_ADD);
 				
-				if(Player.GetPSprite(OverlayId()).Scale.Length()>10)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
-				//if(invoker.Smokes[OverlayId()-SmokeStart].Age>8)Player.GetPSprite(OverlayId()).Y += Player.Cmd.Pitch*.02/* + Max(0, (Vel.X*Cos(Angle) + Vel.Y*Sin(Angle))*.1)*/ + Vel.Z;
 				Player.GetPSprite(OverlayId()).Y -= invoker.Smokes[Index].Vel.Z*Cos(Pitch);
 				Player.GetPSprite(OverlayId()).Y += invoker.Smokes[Index].Vel.Y*Sin(Pitch);
-				//if(invoker.Smokes[OverlayId()-SmokeStart].Age>8)Player.GetPSprite(OverlayId()).X += Player.Cmd.Yaw*.02;// + (Vel.X*Cos(Angle+90) + Vel.Y*Sin(Angle+90)*5);
 				Player.GetPSprite(OverlayId()).X += invoker.Smokes[index].Vel.X;
 				
 				if(Player.GetPSprite(OverlayId()).Alpha<=0){
@@ -255,6 +252,11 @@ Extend Class MRIntWeaps_Chainsaw
 					A_ClearOverlays(OverlayId(), OverlayId());
 					Return;
 				}
+				
+				if(FindInventory("PowerInvisibility") && Powerup(FindInventory("PowerInvisibility")).EffectTics<35*4){
+					A_OverlayRenderStyle(OverlayId(), STYLE_None);
+				}
+				else A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
 			}
 			TNT1 A 0 {invoker.Smokes[OverlayId()-SmokeStart].Destroy();invoker.Smokes[OverlayId()-SmokeStart]=Null;}
 			Stop;
@@ -534,12 +536,12 @@ Extend Class MRIntWeaps_Shotgun
 				A_OverlayPivot(OverlayId(), .5, .5);
 			}
 			NSHS A 1{
-				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE, True);
+				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, True);
 				A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
 			}
 			NSHS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1{
 				int Index = OverlayId()-PSP_FLASH-10;
-				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
 				
 				Player.GetPSprite(OverlayId()).Alpha-=.01;
 				
@@ -557,6 +559,9 @@ Extend Class MRIntWeaps_Shotgun
 					A_ClearOverlays(OverlayId(), OverlayId());
 					Return;
 				}
+				
+				if(FindInventory("PowerInvisibility") && Powerup(FindInventory("PowerInvisibility")).EffectTics<35*4)A_OverlayRenderStyle(OverlayId(), STYLE_None);
+				else A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
 			}
 			TNT1 A 0 {invoker.Smokes[OverlayId()-SmokeStart].Destroy();invoker.Smokes[OverlayId()-SmokeStart]=Null;}
 			Stop;
