@@ -245,6 +245,7 @@ MRIntWeaps_MonsterParticlesMenu = "Customize monster effects";
 MRIntW_MonsterParticleCustom = "Apply effects to custom monsters";
 
 MRIntW_MonstParticles_ImpBallFlySmoke = "Smoke";
+MRIntW_MonstParticles_ImpBallFlyFire = "Fire";
 MRIntW_MonstParticles_ImpBallFlyDrops = "Drops";
 MRIntW_MonstParticles_ImpBallImpactSmoke = "Smoke";
 MRIntW_MonstParticles_ImpBallImpactSplash = "Splash";

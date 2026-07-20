@@ -245,6 +245,7 @@ MRIntWeaps_MonsterParticlesMenu = "Кастомизировать эффекты
 MRIntW_MonsterParticleCustom = "Применять эффекты к монстрам из модов";
 
 MRIntW_MonstParticles_ImpBallFlySmoke = "Дым";
+MRIntW_MonstParticles_ImpBallFlyFire = "Пламя";
 MRIntW_MonstParticles_ImpBallFlyDrops = "Капли";
 MRIntW_MonstParticles_ImpBallImpactSmoke = "Дым";
 MRIntW_MonstParticles_ImpBallImpactSplash = "Искры";

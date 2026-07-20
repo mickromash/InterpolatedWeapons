@@ -66,6 +66,8 @@ enum MRIntWeaps_MonsterParticlesFlags{
 	MRIWMP_SpiderSplash = 65536,
 	MRIWMP_SpiderSmoke = 131072,
 	MRIWMP_SpiderBlood = 262144,
+	
+	MRIWMP_ImpBallFire = 524288,
 }
 
 Extend Class MRIntWeaps_Handler
@@ -109,6 +111,7 @@ Extend Class MRIntWeaps_Handler
 			Switch(ActName){
 				Case 'DoomImpBall':
 					if(!(Setting&MRIWMP_ImpBallSmoke||
+						Setting2&MRIWMP_ImpBallFire||
 						Setting&MRIWMP_ImpBallDrops||
 						Setting&MRIWMP_ImpBallImpactSmoke||
 						Setting&MRIWMP_ImpBallImpactSplash||
@@ -649,13 +652,21 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					Double ToSide = CFRandom(-3, 3);
 					Vector3 Vel = (Actor.AngleToVector(Ang+90, ToSide), Sin(Pit)*2);
 					Vel.XY += Actor.AngleToVector(Ang, -Cos(Pit)*2);
-					//Console.Printf("Pit "..Pit.." Vel "..Vel.." MVel "..Master.Vel);
 					MRSpawnParticle(Color(30,30,30), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 10*Clamp(PAmnt, .4, 1), CRandom(28, 34), Master.Pos-(Master.Pos-Master.Prev)*1.5 + Vel.Unit()*2, Vel, Alpha:Clamp(PAmnt, .4, 1), SizeStep:.5, Roll:CRandom(0, 360), RollVel:-ToSide*.1);
 				}
+				if(Setting2&MRIWMP_ImpBallFire){
+					Vector3 Diff = Master.Pos-Master.Prev;
+					Float Mult = CFRandom(.25, 1);
+					For(double i=0;i<Diff.Length()*Mult;i+=6/PAmnt){
+						Float Size = CFRandom(4, 9)/((PAmnt-1)*.5+1);
+						MRSpawnParticle(Color(255,CRandom(40, 100),0), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 7, Size, Master.Prev-Diff.Unit()*i + (CFRandom(-9, 9),CFRandom(-9, 9),CFRandom(-5, 6)), (CFRandom(-.5, .5), CFRandom(-.5, .5), CFRandom(-.5, .5)), SizeStep: -Size/7);
+					}
+				}
+					
 				if(Setting&MRIWMP_ImpBallDrops && CRandom(0,3)==1){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
-					Float Size = CRandom(1,14);
-					MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 50, Size, Master.Prev+Master.Vel.Unit()*2+(Actor.AngleToVector(Ang+90, CFRandom(-3, 3)),-1), Master.Vel*.25+(CFRandom(-1, 1),CFRandom(-1, 1),0), Accel:(0,0,-.2), SizeStep:-(Size/50.));
+					Float Size = CRandom(1,4);
+					MRSpawnParticle(Color(255,CRandom(40, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 50, Size, Master.Prev+Master.Vel.Unit()*2+(Actor.AngleToVector(Ang+90, CFRandom(-3, 3)),-1), Master.Vel*.25+(CFRandom(-1, 1),CFRandom(-1, 1),0), Accel:(0,0,-.2), SizeStep:-(Size/50.));
 				}
 				Return;
 			Case 1://CacodemonBall
@@ -669,7 +680,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting&MRIWMP_CacoBallDrops){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
-					Float Size = CFRandom(2, 5);
+					Float Size = CFRandom(1, 4);
 					int Col = CRandom(140, 220);
 					
 					Double Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z);
@@ -746,7 +757,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				if(Setting&MRIWMP_FatShotDrops && CRandom(0,4)==1){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
-					Float Size = CRandom(6,20);
+					Float Size = CRandom(2,5);
 					MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 50, Size, Master.Prev+Master.Vel.Unit()*2+(Actor.AngleToVector(Ang+90, CFRandom(-10, 10)),0), Master.Vel*.25+(CFRandom(-1, 1),CFRandom(-1, 1),0), Accel:(0,0,-.2), SizeStep:-(Size/50.));
 				}
 				Return;
