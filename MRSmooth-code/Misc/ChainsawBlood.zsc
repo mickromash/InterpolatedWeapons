@@ -73,7 +73,7 @@ Extend Class MRIntWeaps_Chainsaw
 	
 	Action Void A_AddBlood(Actor Victim=Null, int Type=0)
 	{
-		if(Type<1 && (!Victim || !Victim.bIsMonster || Victim.bNoBlood))Return;
+		if(Type<1 && (!Victim || !Victim.bShootable || Victim.bNoBlood))Return;
 		if(MRIntW_ChainsawBlood<1)Return;
 		
 		
@@ -461,7 +461,7 @@ Extend Class MRIntWeaps_Chainsaw
 				else {
 					Player.GetPSprite(PNum).Scale = (.06, .08);
 					Float Down = CRandom(0, 10);
-					A_OverlayOffset(PNum, Player.GetPSprite(Lay1).X + 150 + Down*.25, Player.GetPSprite(Lay1).Y + 83 + Down);
+					A_OverlayOffset(PNum, Player.GetPSprite(Lay1).X + 150 + Down*.5, Player.GetPSprite(Lay1).Y + 83 + Down);
 					Player.GetPSprite(PNum).bPowDouble = true;
 				}
 			}
