@@ -282,11 +282,14 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 		
 		if(Type!=6 && (!MRGPartsCheckDraw() && Master && Master.Target && Master.Target.Target!=Players[ConsolePlayer].Camera))Return;
 		
-		if(!GotHit && Master){
+		if(!GotHit && Master && DeathTick<2){
 			if(Type>6)GotHit = Master.Target;
 			else {
-				if(Master.Target)GotHit = Master.Target.Target;
-				if(GotHit && Master.Distance2D(GotHit)>GotHit.Radius*2+Master.Radius)GotHit = Null;
+				if(Master.BlockingMobj)GotHit = Master.BlockingMobj;
+				else {
+					if(Master.Target)GotHit = Master.Target.Target;
+					if(GotHit && Master.Distance2D(GotHit)>GotHit.Radius*2+Master.Radius)GotHit = Null;
+				}
 				if(GotHit){
 					HitPlace = Master.Pos - GotHit.Pos;
 				}
@@ -343,7 +346,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
 						Float Size = CFRandom(1,5)/((PAmnt-1)*.5+1);
-						MRSpawnParticle(Color(250,CRandom(140, 220),255), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+						MRSpawnParticle(Color(250,CRandom(1, 20)*11,255), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 				}
 				if(Setting&MRIWMP_CacoBallImpactLightnings && DeathTick%2==0){
@@ -352,7 +355,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					if(GotHit){
 						Pos = GotHit.Pos+(GotHit.Radius*CFRandom(-.7, .7), GotHit.Radius*CFRandom(-.7, .7),HitPlace.Z);
 						Alpha = CFRandom(.3, .8);
-						if(PlayerPawn(GotHit))AltLightnings = false;
+						if(GotHit == Players[ConsolePlayer].Camera)AltLightnings = false;
 					}
 					
 					Double Ang = CFRandom(0, 359);
@@ -459,7 +462,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					if(GotHit){
 						Pos = GotHit.Pos+(GotHit.Radius*CFRandom(-.7, .7), GotHit.Radius*CFRandom(-.7, .7),HitPlace.Z);
 						Alpha = CFRandom(.3, .8);
-						if(PlayerPawn(GotHit))AltLightnings = false;
+						if(GotHit == Players[ConsolePlayer].Camera)AltLightnings = false;
 					}
 					Double Ang = CFRandom(0, 359);
 					Double Pit = CFRandom(-90, 90);
@@ -681,7 +684,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				if(Setting&MRIWMP_CacoBallDrops){
 					Float Ang = VectorAngle(Master.Vel.X, Master.Vel.Y);
 					Float Size = CFRandom(1, 4);
-					int Col = CRandom(140, 220);
+					int Col = CRandom(1, 20)*11;
 					
 					Double Pit = VectorAngle(Master.Vel.XY.Length(), Master.Vel.Z);
 					Vector3 Pos = Master.Prev + (Actor.AngleToVector(Ang+90, CRandom(-4, 4)), CRandom(-3, 3));
@@ -713,7 +716,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Pos = Pos+PPos;
 						Float Size = (2-i*.025)/Min(1.4, PAmnt);
 						
-						if(AltLightnings)MRSpawnParticle(Color(Col,Col,255), ParTex, SPF_FULLBRIGHT|SPF_NOTIMEFREEZE|SPF_NEGATIVE_FADESTEP, STYLE_Add, Life*CFRandom(1, 1.2), Size, Pos, Alpha: 0, Fade: -(i/Leng), SizeStep:-(Size/Life));
+						if(AltLightnings)MRSpawnParticle(Color(Col,Col,255), ParTex, SPF_FULLBRIGHT|SPF_NOTIMEFREEZE|SPF_NEGATIVE_FADESTEP, STYLE_Add, Life*CFRandom(1, 1.2), Size, Pos, Master.Vel, Alpha: 0, Fade: -(i/Leng), SizeStep:-(Size/Life));
 						else MRSpawnParticle(Color(Col,Col,255), ParTex, SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, Life*CFRandom(1, 1.2), Size, Pos, Master.Vel, Alpha: .9);
 						
 						Ang += CRandom(-2, 2)*(20);
