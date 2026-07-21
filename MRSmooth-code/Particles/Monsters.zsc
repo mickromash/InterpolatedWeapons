@@ -313,15 +313,15 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
 						Float Size = CFRandom(1,5)/((PAmnt-1)*.5+1);
-						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, CRandom(20, 40), Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
-					For(int i=CRandom(0, 5)*PAmnt;i<12*PAmnt;i++){
+					For(int i=CRandom(0, 12)*PAmnt;i<12*PAmnt;i++){
 						Float An = Ang+90*CRandomPick(-1, 1);
 						Float Pi = CRandom(20, 90);
 						Float Pow = CFRandom(1, 4);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Float Size = CFRandom(1,4);
-						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 60, Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, CRandom(10, 60), Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
 					}
 				}
 				if(Setting&MRIWMP_ImpBallImpactFire && GotHit){
@@ -346,7 +346,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
 						Float Size = CFRandom(1,5)/((PAmnt-1)*.5+1);
-						MRSpawnParticle(Color(250,CRandom(1, 20)*11,255), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+						MRSpawnParticle(Color(250,CRandom(1, 20)*11,255), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, CRandom(5, 40), Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 				}
 				if(Setting&MRIWMP_CacoBallImpactLightnings && DeathTick%2==0){
@@ -400,7 +400,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
 						Float Size = CFRandom(1,5)/((PAmnt-1)*.5+1);
-						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, CRandom(5, 40), Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
 				}
 				Return;
@@ -419,15 +419,15 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
 						Float Size = CFRandom(2,7)/((PAmnt-1)*.5+1);
-						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, CRandom(5, 40), Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
-					For(int i=CRandom(0, 5)*PAmnt;i<12*PAmnt;i++){
+					For(int i=CRandom(0, 10)*PAmnt;i<12*PAmnt;i++){
 						Float An = Ang+90*CRandomPick(-1, 1);
 						Float Pi = CRandom(20, 90);
 						Float Pow = CFRandom(2, 5);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Float Size = CFRandom(2,5);
-						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 60, Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, CRandom(10, 60), Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
 					}
 				}
 				if(Setting&MRIWMP_FatShotImpactFire && GotHit){
@@ -453,7 +453,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
 						Float Size = CFRandom(1,4)/((PAmnt-1)*.5+1);
 						int Col = CRandom(140, 220);
-						MRSpawnParticle(Color(Col,255,Col), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.1), SizeStep:-(Size/40.));
+						MRSpawnParticle(Color(Col,255,Col), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, CRandom(5, 40), Size, Master.Pos, Vel, Accel:(0,0,-.1), SizeStep:-(Size/40.));
 					}
 				}
 				if(Setting&MRIWMP_ArachnoBallImpactLightnings && DeathTick%2==0){
@@ -508,15 +508,15 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Vel.XY += Actor.AngleToVector(An, -Cos(Pi)*Pow);
 						Float Size = CFRandom(1,7)/((PAmnt-1)*.5+1);
-						MRSpawnParticle(Color(CRandom(30, 80),255,CRandom(30, 80)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 40, Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
+						MRSpawnParticle(Color(CRandom(30, 80),255,CRandom(30, 80)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, CRandom(5, 40), Size, Master.Pos, Vel, Accel:(0,0,-.2), SizeStep:-(Size/40.));
 					}
-					For(int i=CRandom(0, 5)*PAmnt;i<12*PAmnt;i++){
+					For(int i=CRandom(0, 10)*PAmnt;i<12*PAmnt;i++){
 						Float An = Ang+90*CRandomPick(-1, 1);
 						Float Pi = CRandom(20, 90);
 						Float Pow = CFRandom(2, 5);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Abs(Cos(Pi)), Sin(Pi)*Pow);
 						Float Size = CFRandom(2,5);
-						MRSpawnParticle(Color(CRandom(30, 80),255,CRandom(30, 80)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 60, Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(CRandom(30, 80),255,CRandom(30, 80)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, CRandom(15, 60), Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
 					}
 				}
 				if(Setting&MRIWMP_BaronBallImpactFire && GotHit){
