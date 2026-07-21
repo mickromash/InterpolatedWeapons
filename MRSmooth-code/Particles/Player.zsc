@@ -261,12 +261,13 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 							Double Pow = 3;
 							Double Ang = FaceCam(Master);
 							Double Pit = FaceCam(Master, true);
-							Vel = (Actor.AngleToVector(Ang+CRandom(-180, 180)*Max(.4, Abs(Sin(Pit))), Pow)*Max(.3, Cos(Pit)), -Sin(Pit+CRandom(-30, 30)*Cos(Pit))*Pow*1.5);
+							Vel = (Actor.AngleToVector(Ang+CRandom(-180, 180)*Max(.4, Abs(Sin(Pit)*1.5)), Pow)*Max(.1, Cos(Pit)), -Sin(Pit-CRandom(0, 90)*Cos(Pit))*Pow*1.5);
 						}
 						int Col = 25*CRandom(5, 10);
 						
 						int Size = CFRandom(1.5, 3.5);
 						if(Enemy)Size = Max(1, GetDefaultByType(Master.Master.GetClass()).Radius*.05);
+						
 						MRSpawnParticle(Color(Col,Col,255), ParTex, SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, STYLE_Add, CRandom(19, 25), Size, Pos, Vel, (0,0,-.5));
 					}
 				}
