@@ -13,7 +13,7 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		"MRIntW_Lighting 23", "MRIntW_InstantFire 24", "MRIntW_FastPistol 25", "MRIntW_BetterAlert 26", "MRIntW_GlovesColor 27", 
 		"MRIntW_GlovesColorShade 28", "MRIntW_GlovesColorLight 29", "MRIntW_GlovesColorTemp 30", "MRIntW_Epilepsy 31", 
 		"MRIntW_NoMuzzleFlash 32", "MRIntW_FlashFlare 33", "MRIntW_ShotgunsRecoil 34", "MRIntW_BareHands 35", "MRIntW_GloveStrip 36", 
-		"MRIntW_BersShake 37", "MRIntW_LowHealthShake 38", "MRIntW_RightPunch 39", "MRIntW_SecondFist 40", "MRIntW_FinishPunch 41", 
+		"MRIntW_BersShake 37", "MRIntW_LowHealthShake 38", "MRIntW_RightPunch 39", "MRIntW_SecondFist 40", "MRIntW_FinishPunch 41", "MRIntW_MissPunch 91",
 		"MRIntW_FinishPunchChance 42", "MRIntW_SurfacePunchRecoil 43", "MRIntW_PunchingFist 44", "MRIntW_ChainsawStart 45", "MRIntW_ChainsawCutting 46", 
 		"MRIntW_ChainsawCuttingWall 47", "MRIntW_ChainsawSmoke 48", "MRIntW_LHand 49", "MRIntW_PistolSHand 67", "MRIntW_Rifle 50", "MRIntW_ShotgunSmoke 51",
 		"MRIntW_ShotgunSparks 52", "MRIntW_ShotgunPumpAngle 53", "MRIntW_ShotgunPumpRandom 54", "MRIntW_ShotgunPumpRandRotation 55",
@@ -23,7 +23,7 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		"MRIntW_MonsterWhichParticles2 74", "MRIntW_MonsterParticlesAmount 75", "MRIntW_MonsterParticleCustom 88", "MRIntW_DecorationParticles 76", "MRIntW_DecorationWhichParticles 77",
 		"MRIntW_DecorationParticlesAmount 78", "MRIntW_TeleportParticles 79", "MRIntW_TeleportParticlesStyle 80", "MRIntW_TeleportParticlesStyleMonsters 81",
 		"MRIntW_AltLightnings 83", "MRIntW_ChainsawBlood 84", "MRIntW_ChainsawBloodLife 85", "MRIntW_ChainsawVolume 86", "MRIntW_ChainsawRandomPitch 87",
-		"MRIntW_ParticleFlies 89", "MRIntW_ParticleFliesVolume 90"
+		"MRIntW_ParticleFlies 89", "MRIntW_ParticleFliesVolume 90", "MRIntW_SSGHandless 92", "MRIntW_LongTermSmoke 93"
 	};
 	
 	//Presset CVar syntax: "[Index] Value,[Index] Value,"
