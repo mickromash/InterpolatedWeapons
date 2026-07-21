@@ -5,17 +5,33 @@
 Extend Class MRIntWeaps_Handler
 {
 	//Stolen from UGibs
-	Static Const String Waters [] = {"SEWER", "WATER", "WATR", "WTR", "LAVA", "LAV", "SLIME0", "SLM", "SLUGDE", "MAGMA", "FLATHUH", "FLTFLWW", "FLTWAWA", "X_0", "OICYWA"};
-	Static Const String Bloods [] = {"BLOOD", "BLOD", "BLD"};
-	Static Const String Nukes [] = {"NUKE", "NUKAGE", "GOOP"};
+	Static Const String Slimes [] = {"SLIME0", "SLM"};//4
+	Static Const String Bloods [] = {"BLOOD", "BLOD", "BLD"};//2
+	Static Const String Nukes [] = {"NUKE", "NUKAGE", "GOOP", "SLUGDE"};//1
+	Static Const String Lavas [] = {"LAVA", "LAV", "MAGMA", "FLTWAWA"};//3
+	Static Const String Waters [] = {"SEWER", "WATER", "WATR", "WTR", "FLATHUH", "FLTFLWW", "X_0", "OICYWA"};//0
 	
 	Static Void SpawnLiquidSplash(Vector3 Pos, int Type=0, Float Scale=1)
 	{
 		TextureId ParTex = MRIntWeaps_ActorEffects.SetTexture(NoAdd:true);
-		
+		TextureId SmkTex = MRIntWeaps_ActorEffects.SetTexture(true);
 		
 		Switch(Type)
 		{
+			Case 4://Slime
+				For(int i=0;i<10;i++){
+					int Bright = CRandom(30, 70);
+					Color Col = Color(int(Bright*1.2), Bright, int(Bright*.25));
+					
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, 0, STYLE_None, 50*Scale, CFRandom(1, 4)*Scale, Pos, (CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4))*Scale, (0,0,-.5), CFRandom(.6, .9));
+				}
+				For(int i=0;i<5;i++){
+					int Bright = CRandom(30, 70);
+					Color Col = Color(int(Bright*1.2), Bright, int(Bright*.25));
+					
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, 0, STYLE_None, 70*Scale, CFRandom(.5, 3)*Scale, Pos, (0,0,CFRandom(4, 6))*Scale, (CFRandom(-.05,.05),CFRandom(-.05,.05),-.5), CFRandom(.6, .9));
+				}
+				Break;
 			Case 0://Water
 				For(int i=0;i<10;i++){
 					int Bright = CRandom(30, 70);
@@ -58,6 +74,20 @@ Extend Class MRIntWeaps_Handler
 					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, 0, STYLE_None, 70*Scale, CFRandom(.5, 3)*Scale, Pos, (0,0,CFRandom(4, 7))*Scale, (CFRandom(-.05,.05),CFRandom(-.05,.05),-.6), 1);
 				}
 				Break;
+			Case 3://Lava
+				For(int i=0;i<10;i++){
+					int Bright = CRandom(30, 200);
+					Color Col = Color(255, Bright, 20);
+					
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, ParTex, SPF_FullBright, STYLE_None, 50*Scale, CFRandom(1, 4)*Scale, Pos, (CFRandom(-1, 1),CFRandom(-1, 1),CFRandom(2, 4))*Scale, (0,0,-.6), 1);
+				}
+				For(int i=CRandom(0, 2);i<3;i++){
+					int Bright = CRandom(20, 40);
+					Color Col = Color(Bright, Bright, Bright);
+					
+					MRIntWeaps_ActorEffects.MRSpawnParticle(Col, SmkTex, 0, STYLE_None, 30*Scale, CFRandom(.25, .75)*Scale, Pos, (0,0,CFRandom(.1, .6))*Scale, (CFRandom(-.05,.05),CFRandom(-.05,.05),0)*Scale, 1, SizeStep:1*Scale);
+				}
+				Break;
 				
 		}
 	}
@@ -69,7 +99,18 @@ Extend Class MRIntWeaps_Handler
 			String PicName = Texman.GetName(Obj.FloorPic);
 			PicName.MakeUpper();
 			
-			Bool IsLiquid, IsBlood, IsNuke;
+			Bool IsLiquid, IsBlood, IsNuke, IsLava, IsSlime;
+			
+			For(int i=0;i<Slimes.Size();i++){
+				if(PicName.IndexOf(Slimes[i])>-1){
+					IsSlime = true;Break;
+				}
+			}
+			if(IsSlime){
+				SpawnLiquidSplash(Obj.Pos, 4);
+				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
+				Return;
+			}
 			
 			For(int i=0;i<Bloods.Size();i++){
 				if(PicName.IndexOf(Bloods[i])>-1){
@@ -89,6 +130,17 @@ Extend Class MRIntWeaps_Handler
 			}
 			if(IsNuke){
 				SpawnLiquidSplash(Obj.Pos, 1);
+				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
+				Return;
+			}
+			
+			For(int i=0;i<Lavas.Size();i++){
+				if(PicName.IndexOf(Lavas[i])>-1){
+					IsLava = true;Break;
+				}
+			}
+			if(IsLava){
+				SpawnLiquidSplash(Obj.Pos, 3);
 				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
 				Return;
 			}

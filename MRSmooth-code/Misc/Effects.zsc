@@ -163,14 +163,27 @@ Class MRIntWeaps_Casing: VisualThinker
 	
 	Bool CheckLiquid(TextureId PicName)
 	{
-		Static Const String Waters [] = {"SEWER", "WATER", "WATR", "WTR", "LAVA", "LAV", "SLIME0", "SLM", "SLUGDE", "MAGMA", "FLATHUH", "FLTFLWW", "FLTWAWA", "X_0", "OICYWA"};
-		Static Const String Bloods [] = {"BLOOD", "BLOD", "BLD"};
-		Static Const String Nukes [] = {"NUKE", "NUKAGE", "GOOP"};
+		Static Const String Slimes [] = {"SLIME0", "SLM"};//4
+		Static Const String Bloods [] = {"BLOOD", "BLOD", "BLD"};//2
+		Static Const String Nukes [] = {"NUKE", "NUKAGE", "GOOP", "SLUGDE"};//1
+		Static Const String Lavas [] = {"LAVA", "LAV", "MAGMA", "FLTWAWA"};//3
+		Static Const String Waters [] = {"SEWER", "WATER", "WATR", "WTR", "FLATHUH", "FLTFLWW", "X_0", "OICYWA"};//0
 		
 		String PicName = Texman.GetName(CurSector.GetTexture(0));
 		PicName.MakeUpper();
 		
-		Bool IsLiquid, IsBlood, IsNuke;
+		Bool IsLiquid, IsBlood, IsNuke, IsLava, IsSlime;
+		
+		For(int i=0;i<Slimes.Size();i++){
+			if(PicName.IndexOf(Slimes[i])>-1){
+				IsSlime = true;Break;
+			}
+		}
+		if(IsSlime){
+			MRIntWeaps_Handler.SpawnLiquidSplash(Pos, 4, .5);
+			Destroy();
+			Return true;
+		}
 		
 		For(int i=0;i<Bloods.Size();i++){
 			if(PicName.IndexOf(Bloods[i])>-1){
@@ -190,6 +203,17 @@ Class MRIntWeaps_Casing: VisualThinker
 		}
 		if(IsNuke){
 			MRIntWeaps_Handler.SpawnLiquidSplash(Pos, 1, .5);
+			Destroy();
+			Return true;
+		}
+		
+		For(int i=0;i<Lavas.Size();i++){
+			if(PicName.IndexOf(Lavas[i])>-1){
+				IsLava = true;Break;
+			}
+		}
+		if(IsLava){
+			MRIntWeaps_Handler.SpawnLiquidSplash(Pos, 3, .5);
 			Destroy();
 			Return true;
 		}
