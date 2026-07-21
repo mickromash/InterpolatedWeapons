@@ -443,11 +443,13 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayFlags(Overlayid(), PSPF_ADDWEAPON, false);
 				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
 				A_OverlayRenderStyle(OverlayID(), STYLE_NORMAL);
-				Player.GetPSprite(OverlayId()).bInterpolate=false;
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, false);
 				A_OverlayPivot(OverlayId(), .5, .5);
 				
 				A_OverlayRotate(OverlayId(), 140);
 				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
+				
+				A_OverlayOffset(OverlayId(), -4, -4+Vel.Z, WOF_ADD);
 			}
 			PISC A 20 A_SetTics(CaseLife);
 			TNT1 A 0 {
@@ -466,7 +468,7 @@ Extend Class MRIntWeaps_Shotgun
 	Const CaseStart = PSP_FLASH+30;
 	Const CaseLife = 20;
 	Bool Casings[2];
-	Float CasingDir[2], CasingSpeed;
+	Float CasingDir[2], CasingSpeed, CasingZMult[2];
 	Void DoCasing(int index)
 	{
 		int Lay = index+CaseStart;
@@ -484,7 +486,7 @@ Extend Class MRIntWeaps_Shotgun
 		if(Age==CaseLife-10)SpawnRealCasing();
 		
 		//if(Age<CaseLife)PSP.bInterpolate = true;//interpolates casings rotation but causes wobble
-		Double VelZ = (Age-(CaseLife-5-Min(2, 1-CasingSpeed)))/2;
+		Double VelZ = ((Age-(CaseLife-5-Min(2, 1-CasingSpeed)))+CasingZMult[index])/2;
 		VelZ /= CaseLife/2;
 		if(VelZ==0)VelZ = -.01;
 		

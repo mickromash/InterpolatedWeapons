@@ -793,7 +793,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				if(!GetCVar("MRIntW_Casings"))Return;
 				Float Dir = CFRandom(-.9, 1.5);
 
-				For(int i=0;i<2;i++){
+				For(float i=0;i<2;i++){
 					int index;
 					For(index=0;index<invoker.Casings.Size()+1;index++){
 						if(index>=invoker.Casings.Size()){index=-1;Break;}
@@ -802,7 +802,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 					
 					if(index<invoker.Casings.Size() && index>-1){
 						A_Overlay(CaseStart+index, "CasingLay");
-						A_OverlayOffset(CaseStart+index, 100+Player.GetPSprite(Lay1).X+i*20, 157+Player.GetPSprite(Lay1).Y-i*3);
+						A_OverlayOffset(CaseStart+index, 100+Player.GetPSprite(Lay1).X+i*19, 157+Player.GetPSprite(Lay1).Y-i*4);
+						A_OverlayScale(CaseStart+index, 1.14+i*.1, 1.14+i*.1);
 						invoker.CasingDir[index] = Dir;
 					}
 				}

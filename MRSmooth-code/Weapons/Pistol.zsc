@@ -495,6 +495,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 
 				if(index<invoker.Casings.Size() && index>-1){
 					A_Overlay(PSP_FLASH+10+index, "CasingLay");
+
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
 					A_OverlayOffset(PSP_FLASH+10+index, 170, 115+32);
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
