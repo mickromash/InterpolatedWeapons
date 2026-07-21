@@ -705,6 +705,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				if(index<invoker.Casings.Size() && index>-1){
 					A_Overlay(CaseStart+index, "CasingLay");
 					invoker.CasingDir[index] = CFRandom(-.5, 1);
+					invoker.CasingZMult[index] = Player.GetPSprite(Lay1).Rotation/16;
 				}
 			}
 			#### H 1 {
