@@ -577,18 +577,24 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayOffset(MainLay, invoker.MainHand.X, invoker.MainHand.Y);
 				A_SetHandsSprite();
 				Player.GetPSprite(MainLay).Translation = invoker.GlovesTrans;
+				
+				A_SetTics(CRandom(2, 3));
 			}
 			#### #### 1 {
-				A_OverlayOffset(MainLay, CFRandom(3, 6), CFRandom(7, 11), WOF_ADD);
-				Float Scal = CFRandom(.02, .04);
+				Float Mult = 1;
+				if(InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchThru")))Mult = 5;
+				A_OverlayOffset(MainLay, -CFRandom(4, 5)*Mult, CFRandom(4, 6)*Mult, WOF_ADD);
+				Float Scal = CFRandom(.02, .04)*Mult;
 				A_OverlayScale(MainLay, Scal, Scal, WOF_ADD);
 				
 				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
+				
+				if(invoker.HitWall && !(Player.Cmd.Buttons&BT_ATTACK))Player.SetPsprite(MainLay, invoker.FindState("MainHandRaiseABit"));
 			}
 			#### # 1 {
 				Float Mult = 1;
 				if(InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchThru")))Mult = 6;
-				A_OverlayOffset(MainLay, CFRandom(1, 2)*Mult, CFRandom(1, 2)*Mult, WOF_ADD);
+				A_OverlayOffset(MainLay, -CFRandom(2, 3)*Mult, CFRandom(1, 2)*Mult, WOF_ADD);
 				Float Scal = CFRandom(.01, .015)*Mult;
 				A_OverlayScale(MainLay, Scal, Scal, WOF_ADD);
 				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
@@ -596,7 +602,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		Loopec:
 			#### # 2{
 				if(InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchThru"))){
-					A_OverlayOffset(MainLay, 20, 42, WOF_INTERPOLATE);
+					A_OverlayOffset(MainLay, -30, 42, WOF_INTERPOLATE);
 					invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
 					A_SetTics(CRandom(12, 16));
 				}
@@ -607,10 +613,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				!InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchBerserk")) &&
 				!(Player.Cmd.Buttons&BT_ATTACK), 1);
 			Loop;
+		MainHandRaiseABit:
 			#### #### 1 {
-				Player.GetPSprite(MainLay).X *= .6;
-				Player.GetPSprite(MainLay).Y *= .6;
-				Player.GetPSprite(MainLay).Scale = (1,1)+(Player.GetPSprite(MainLay).Scale - (1,1))*.6;
+				Player.GetPSprite(MainLay).X *= CFRandom(.4, .5);
+				Player.GetPSprite(MainLay).Y *= CFRandom(.4, .5);
+				Player.GetPSprite(MainLay).Scale = (1,1)+(Player.GetPSprite(MainLay).Scale - (1,1))*CFRandom(.4, .5);
 				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
 			}
 			Goto MainHandWait;
