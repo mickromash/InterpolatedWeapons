@@ -532,8 +532,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_GlovesColor();
 				A_OverlayPivot(Lay1, .5, .5);
 				invoker.Reloading = false;
-				
-				if(GetCVar("MRIntW_SSGHandless") && CountInv("Shell")>1 && (GetCVar("MRIntW_SSGHandless")>1 || CRandom(0, 10)>2)){
+
+				if(GetCVar("MRIntW_SSGHandless") && CountInv("Shell")>3 && (GetCVar("MRIntW_SSGHandless")>1 || CRandom(0, 10)>2)){
 					invoker.Handless = CRandom(1, 10);
 					Player.GetPSprite(Lay1).Frame = 25;
 					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
