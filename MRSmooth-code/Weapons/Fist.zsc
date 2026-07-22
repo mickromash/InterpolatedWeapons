@@ -551,6 +551,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayPivot(MainLay, .5, .5);
 				A_IdleAnimation(MainLay);
 				Player.GetPSprite(MainLay).Translation = invoker.GlovesTrans;
+				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
 			}
 			Loop;
 		MainHandLower://Second fist deselect animation
@@ -568,6 +569,52 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				if(invoker.SwitchState>0)A_SetTics(0);
 			}
 			Stop;
+		MainHandLowerAbit:
+			PUN1 C 1 {
+				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
+				A_OverlayPivot(MainLay, 0, 0);
+				A_OverlayScale(MainLay, 1, 1, WOF_INTERPOLATE);
+				A_OverlayOffset(MainLay, invoker.MainHand.X, invoker.MainHand.Y);
+				A_SetHandsSprite();
+				Player.GetPSprite(MainLay).Translation = invoker.GlovesTrans;
+			}
+			#### #### 1 {
+				A_OverlayOffset(MainLay, CFRandom(3, 6), CFRandom(7, 11), WOF_ADD);
+				Float Scal = CFRandom(.02, .04);
+				A_OverlayScale(MainLay, Scal, Scal, WOF_ADD);
+				
+				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
+			}
+			#### # 1 {
+				Float Mult = 1;
+				if(InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchThru")))Mult = 6;
+				A_OverlayOffset(MainLay, CFRandom(1, 2)*Mult, CFRandom(1, 2)*Mult, WOF_ADD);
+				Float Scal = CFRandom(.01, .015)*Mult;
+				A_OverlayScale(MainLay, Scal, Scal, WOF_ADD);
+				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
+			}
+		Loopec:
+			#### # 2{
+				if(InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchThru"))){
+					A_OverlayOffset(MainLay, 20, 42, WOF_INTERPOLATE);
+					invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
+					A_SetTics(CRandom(12, 16));
+				}
+				else A_SetTics(CRandom(2, 4));
+			}
+			#### # 0 A_JumpIf(
+				!InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunch")) &&
+				!InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchBerserk")) &&
+				!(Player.Cmd.Buttons&BT_ATTACK), 1);
+			Loop;
+			#### #### 1 {
+				Player.GetPSprite(MainLay).X *= .6;
+				Player.GetPSprite(MainLay).Y *= .6;
+				Player.GetPSprite(MainLay).Scale = (1,1)+(Player.GetPSprite(MainLay).Scale - (1,1))*.6;
+				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
+			}
+			Goto MainHandWait;
+		
 		SecndHandPunch://After punching and second fist is on
 			PUN1 A 1 {
 				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
@@ -764,6 +811,8 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayRotate(OverlayId(), 2, WOF_ADD);
 				
 				if(GetCVar("MRIntW_PunchingFist")>0 && !invoker.SecondFist)A_SetTics(0);
+
+				if(OverlayId() != MainLay && Player.FindPSprite(MainLay))Player.SetPsprite(MainLay, invoker.FindState("MainHandLowerAbit"));
 			}
 			#### D 1 {
 				if(GetCVar("MRIntW_PunchingFist")>0){
@@ -879,10 +928,13 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayScale(OverlayId(), 1.1, 1.1);
 				invoker.MainHand = (Player.GetPSprite(OverlayId()).X, Player.GetPSprite(OverlayId()).Y);
 			}
-			#### CC 1 {
+			#### # 0 A_JumpIf(OverlayId() == MainLay && Player.Cmd.Buttons&BT_ATTACK, "MainHandLowerABit");
+			#### CCCC 1 {
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
-				A_OverlayScale(OverlayId(), -.05, -.05, WOF_ADD);
-				A_OverlayOffset(OverlayId(), 15, -20, WOF_ADD);
+				Player.GetPSprite(MainLay).X *= CFRandom(.4, .6);
+				Player.GetPSprite(MainLay).Y *= CFRandom(.4, .6);
+				Player.GetPSprite(MainLay).Scale = (1,1)+(Player.GetPSprite(MainLay).Scale - (1,1))*CFRandom(.4, .6);
+				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
 			}
 			#### # 0 {
 				A_Overlayoffset(OverlayId(), 0, 0, WOF_INTERPOLATE);
@@ -896,13 +948,16 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayOffset(OverlayId(), -30, 43);
 				A_OverlayRotate(OverlayId(), 0);
 				A_OverlayScale(OverlayId(), 1.1, 1.1);
-				invoker.MainHand = (Player.GetPSprite(OverlayId()).X, Player.GetPSprite(OverlayId()).Y);
+				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
 				Player.GetPSprite(OverlayId()).Translation = invoker.GlovesTrans;
 			}
-			#### CC 1 {
+			#### # 0 A_JumpIf(OverlayId() == MainLay && Player.Cmd.Buttons&BT_ATTACK, "MainHandLowerABit");
+			#### CCCC 1 {
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
-				A_OverlayScale(OverlayId(), -.05, -.05, WOF_ADD);
-				A_OverlayOffset(OverlayId(), 15, -20, WOF_ADD);
+				Player.GetPSprite(MainLay).X *= CFRandom(.4, .6);
+				Player.GetPSprite(MainLay).Y *= CFRandom(.4, .6);
+				Player.GetPSprite(MainLay).Scale = (1,1)+(Player.GetPSprite(MainLay).Scale - (1,1))*CFRandom(.4, .6);
+				invoker.MainHand = (Player.GetPSprite(MainLay).X, Player.GetPSprite(MainLay).Y);
 			}
 			#### # 0 {
 				A_Overlayoffset(OverlayId(), 0, 0, WOF_INTERPOLATE);
