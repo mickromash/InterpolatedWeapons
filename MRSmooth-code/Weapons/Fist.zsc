@@ -582,7 +582,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			}
 			#### #### 1 {
 				Float Mult = 1;
-				if(InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchThru")))Mult = 5;
+				if(InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchThru")))Mult = 3;
 				A_OverlayOffset(MainLay, -CFRandom(4, 5)*Mult, CFRandom(4, 6)*Mult, WOF_ADD);
 				Float Scal = CFRandom(.02, .04)*Mult;
 				A_OverlayScale(MainLay, Scal, Scal, WOF_ADD);
@@ -593,7 +593,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			}
 			#### # 1 {
 				Float Mult = 1;
-				if(InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchThru")))Mult = 6;
+				if(InStateSequence(Player.GetPSprite(SecndLay).CurState, invoker.FindState("MainHandPunchThru")))Mult = 5;
 				A_OverlayOffset(MainLay, -CFRandom(2, 3)*Mult, CFRandom(1, 2)*Mult, WOF_ADD);
 				Float Scal = CFRandom(.01, .015)*Mult;
 				A_OverlayScale(MainLay, Scal, Scal, WOF_ADD);
