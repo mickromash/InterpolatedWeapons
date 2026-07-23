@@ -82,7 +82,7 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 	{
 		if(MRIntW_LongTermSmoke){
 			Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
-			if(Handler)Handler.AddLTSmoke(Pos, .6);
+			if(Handler)Handler.AddLTSmoke(Pos, .5);
 		}
 		
 		if(!MRIntW_Smoke)Return;
