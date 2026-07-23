@@ -1,1 +1,1 @@
-"../Mod info/Readme-RU.md"
+../Readme-RU.md
