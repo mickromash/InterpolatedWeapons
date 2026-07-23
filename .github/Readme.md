@@ -1,1 +1,1 @@
-../readme-ru.md
+../Readme-RU.md
