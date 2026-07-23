@@ -94,6 +94,21 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	}
 	
 	States{
+		GunRaiseVanilla://Vanilla select animation
+			PL1G A 1 {
+				invoker.FloatSpeed = 4;
+				invoker.IdleEnd = false;
+				invoker.Selecting = false;
+				invoker.InterpolateMuzzle = -1;
+				A_OverlayPivot(Lay1, .5, 1);
+				A_Overlay(Lay2, "GunMuzzle");
+				A_OverlayOffset(Lay2, 0, 0);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
+			}
+			#### # 1{
+				if(Player.GetPSprite(PSP_WEAPON).Y<=32)Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
+			}
+			Wait;
 		GunMuzzle:
 			PLSO # 1{
 				if(invoker.InterpolateMuzzle==1){
@@ -296,7 +311,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			#### # 0 A_JumpIf(!Player.FindPSprite(Lay2), "GunLowerAlt");
 			PL1G A 1 {
 				invoker.IdleEnd = false;
-				invoker.LowerDir = CRandomPick(-1, 1);
+				if(MRIntW_SwitchAnims>1)invoker.LowerDir = CRandomPick(-1, 1);
 				invoker.InterpolateMuzzle = 2;
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayFlags(Lay2, PSPF_ADDWEAPON, false);
@@ -542,7 +557,8 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			TNT1 A 0 {
 				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
 				if(invoker.Dropped)invoker.Dropped.Destroy();
-				A_Overlay(Lay1, "GunRaise");
+				if(MRIntW_SwitchAnims || invoker.Reload)A_Overlay(Lay1, "GunRaise");
+				else A_Overlay(Lay1, "GunRaiseVanilla");
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
@@ -554,7 +570,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			TNT1 A 0 {
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
 				A_Overlay(Lay1, "GunLower");
-				Player.GetPSprite(PSP_WEAPON).Y = 32;
+				//Player.GetPSprite(PSP_WEAPON).Y = 32;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
 			}

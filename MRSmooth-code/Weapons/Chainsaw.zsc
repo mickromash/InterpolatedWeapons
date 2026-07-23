@@ -59,6 +59,26 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	int SwitchState;//Used to smooth select to deselect transition
 	
 	States{
+		SawRaiseVanilla://Vanilla select animation
+			SAW1 C 1 {
+				For(int i=0;i<40;i++){
+					if(invoker.BldAlpha[i]>0)A_Overlay(LayBlood+i, "SawBlood");
+				}
+				invoker.SawFrame = 2;
+				A_GlovesColor(1);
+			}
+			#### # 1 {
+				if(Player.GetPSprite(PSP_WEAPON).Y<=32)Player.SetPsprite(Lay1, invoker.FindState("SawReady"));
+			}
+			Wait;
+		SawLowerVanilla://Vanilla deselect animation
+			SAW1 C 1 {
+				A_GlovesColor(1);
+				invoker.SawFrame = 2+CRandom(0, 1)*2;
+				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
+			}
+			#### # 1;
+			Wait;
 		SawStartHand:
 			SAW1 Y 1 {
 				A_GlovesColor();
@@ -557,7 +577,8 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			TNT1 A 0 {
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
 				if(invoker.Dropped)invoker.Dropped.Destroy();
-				A_Overlay(Lay1, "SawRaise");
+				if(MRIntW_SwitchAnims || GetCVar("MRIntW_ChainsawStart"))A_Overlay(Lay1, "SawRaise");
+				else A_Overlay(Lay1, "SawRaiseVanilla");
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SAWGA0");
 			}
@@ -566,9 +587,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			Loop;
 		Deselect:
 			TNT1 A 0 {
-				Player.GetPSprite(PSP_WEAPON).Y = 32;
+				//Player.GetPSprite(PSP_WEAPON).Y = 32;
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				A_Overlay(Lay1, "SawLower");
+				if(MRIntW_SwitchAnims)A_Overlay(Lay1, "SawLower");
+				else A_Overlay(Lay1, "SawLowerVanilla");
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SAWGA0");
 			}

@@ -19,12 +19,12 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		"MRIntW_ShotgunSparks 52", "MRIntW_ShotgunPumpAngle 53", "MRIntW_ShotgunPumpRandom 54", "MRIntW_ShotgunPumpRandRotation 55",
 		"MRIntW_SSGSmoke 56", "MRIntW_SSGSparks 57", "MRIntW_ChaingunFixed 58", "MRIntW_ChaingunCounterClock 59", "MRIntW_ChaingunSpeed 60",
 		"MRIntW_ChaingunStopTime 61", "MRIntW_ChaingunMaxSmokes 62", "MRIntW_RocketSmoke 63", "MRIntW_PlasmaParticles 64", "MRIntW_BFGParticles 65",
-		"wbobspeed 66", "MRIntW_PlayerParticles 70", "MRIntW_PlayerWhichParticles 71", "MRIntW_PlayerParticlesAmount 72", "MRIntW_MonsterWhichParticles 73",
+		"wbobspeed 66", "wbobfire 99" "MRIntW_PlayerParticles 70", "MRIntW_PlayerWhichParticles 71", "MRIntW_PlayerParticlesAmount 72", "MRIntW_MonsterWhichParticles 73",
 		"MRIntW_MonsterWhichParticles2 74", "MRIntW_MonsterParticlesAmount 75", "MRIntW_MonsterParticleCustom 88", "MRIntW_DecorationParticles 76", "MRIntW_DecorationWhichParticles 77",
 		"MRIntW_DecorationParticlesAmount 78", "MRIntW_TeleportParticles 79", "MRIntW_TeleportParticlesStyle 80", "MRIntW_TeleportParticlesStyleMonsters 81",
 		"MRIntW_AltLightnings 83", "MRIntW_ChainsawBlood 84", "MRIntW_ChainsawBloodLife 85", "MRIntW_ChainsawVolume 86", "MRIntW_ChainsawRandomPitch 87",
 		"MRIntW_ParticleFlies 89", "MRIntW_ParticleFliesVolume 90", "MRIntW_SSGHandless 92", "MRIntW_LongTermSmoke 93", "MRIntW_LoRWeaps 94", "MRIntW_InciniSmoke 95",
-		"MRIntW_ParticleTexture 96", "MRIntW_ParticleSmokeTexture 97"
+		"MRIntW_ParticleTexture 96", "MRIntW_ParticleSmokeTexture 97", "MRIntW_SwitchAnims 98"
 	};
 	
 	//Presset CVar syntax: "[Index] Value,[Index] Value,"

@@ -54,6 +54,7 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Slider "$DSPLYMNU_BOBSPEED", "wbobspeed", 0, 3, .1
 	Option "$MRIntW_VanillaFireBob", "MRIntW_VanillaFireBob", "YesNo"
 	StaticText ""
+	Option "$MRIntW_SwitchAnims", "MRIntW_SwitchAnims", "MRIntW_SwitchAnimsValues"
 	Option "$MRIntW_Bounce", "MRIntW_Bounce", "YesNo"
 	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "YesNo"
 	Option "$MRIntW_ReloadAnims", "MRIntW_ReloadAnims", "MRIntW_ReloadAnimsValues"
@@ -442,6 +443,13 @@ OptionValue "MRIntW_BobStyleValues"
 	5, "$MRIntW_BobStyle5"//Alpha smooth
 	1, "$MRIntW_BobStyle1"//Alpha jumpy
 	6, "$MRIntW_BobStyle6"//None
+}
+
+OptionValue "MRIntW_SwitchAnimsValues"
+{
+	0, "$MRIntW_SwitchAnims0"//Vanilla
+	1, "$MRIntW_SwitchAnims1"//Single vriant
+	2, "$MRIntW_SwitchAnims2"//Random variants
 }
 
 OptionValue "MRIntW_ReloadAnimsValues"

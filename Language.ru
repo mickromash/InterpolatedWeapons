@@ -102,6 +102,11 @@ MRIntW_BobRangeZ = "Радиус глубины";
 
 MRIntW_VanillaFireBob = "Покачивание при стрельбе из оригинального (DOS) DOOM";
 
+MRIntW_SwitchAnims = "Анимации смены";
+MRIntW_SwitchAnims0 = "Классические";
+MRIntW_SwitchAnims1 = "Одна вариация";
+MRIntW_SwitchAnims2 = "Случайные вариации";
+
 MRIntW_IdleAnims = "Анимации безделья";
 
 MRIntW_ReloadAnims = "Анимации подбора и перезарядки";

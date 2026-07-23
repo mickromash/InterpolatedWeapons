@@ -108,10 +108,23 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	int SelFrame;
 	
 	States{
+		GunRaiseVanilla://Vanilla select animation
+			TNT1 A 0 A_JumpIf(invoker.Reload, "GunRaiseReload");
+			SH12 A 1 A_GlovesColor();
+			#### A 1 {
+				A_GlovesColor();
+				if(Player.GetPSprite(PSP_WEAPON).Y<=32)Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
+			}
+			Wait;
+		GunLowerVanilla://Vanilla deselect animation
+			SH12 A 1 A_GlovesColor();
+			#### A 1;
+			Wait;
 		GunRaise:
 			TNT1 A 0 A_JumpIf(invoker.Reload, "GunRaiseReload");
 			TNT1 A 0{
-				invoker.SwitchAnim = CRandom(0, 1);
+				if(MRIntW_SwitchAnims>1)invoker.SwitchAnim = CRandom(0, 1);
+				else invoker.SwitchAnim = 0;
 			}
 			TNT1 AAAA 1 {
 				invoker.Reloading = false;
@@ -189,7 +202,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			#### # 0 A_JumpIf(invoker.SwitchAnim==2, "GunLowerReload");
 			#### # 0 A_JumpIf(invoker.LowerOpen, "GunLowerOpen");
 			SH12 A 1 {
-				if(invoker.SwitchState<1)invoker.SwitchAnim = CRandom(0, 1);
+				if(invoker.SwitchState<1 && MRIntW_SwitchAnims>1)invoker.SwitchAnim = CRandom(0, 1);
 				A_GlovesColor();
 				invoker.Reloading = false;
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
@@ -1031,7 +1044,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		Select:
 			TNT1 A 0 {
 				if(invoker.Dropped)invoker.Dropped.Destroy();
-				A_Overlay(Lay1, "GunRaise");
+				if(MRIntW_SwitchAnims)A_Overlay(Lay1, "GunRaise");
+				else A_Overlay(Lay1, "GunRaiseVanilla");
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SHT2A0");
@@ -1042,8 +1056,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		Deselect:
 			TNT1 A 0 {
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				if(!invoker.LowerOpen)A_Overlay(Lay1, "GunLower");
-				Player.GetPSprite(PSP_WEAPON).Y = 32;
+				if(!invoker.LowerOpen){
+					if(MRIntW_SwitchAnims)A_Overlay(Lay1, "GunLower");
+					else A_Overlay(Lay1, "GunLowerVanilla");
+				}
+				//Player.GetPSprite(PSP_WEAPON).Y = 32;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SHT2A0");
 			}

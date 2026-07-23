@@ -425,7 +425,7 @@ Extend Class MRIntWeaps_Chainsaw
 		
 		Bool OldAdd = Player.GetPSprite(Lay).bAddWeapon;
 		Bool CheckIt = false;
-		if(Weapon(Player.PendingWeapon)){
+		if(Weapon(Player.PendingWeapon) && MRIntW_SwitchAnims){
 			Player.GetPSprite(Lay).bAddWeapon = false;
 			CheckIt = true;
 		}

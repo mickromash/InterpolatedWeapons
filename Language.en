@@ -102,6 +102,11 @@ MRIntW_BobRangeZ = "Bob Z range";
 
 MRIntW_VanillaFireBob = "Original (DOS) DOOM firing bob";
 
+MRIntW_SwitchAnims = "Switch animations";
+MRIntW_SwitchAnims0 = "Vanilla";
+MRIntW_SwitchAnims1 = "Single variant";
+MRIntW_SwitchAnims2 = "Random variants";
+
 MRIntW_IdleAnims = "Idle animations";
 
 MRIntW_ReloadAnims = "Pickup and reload anmations";

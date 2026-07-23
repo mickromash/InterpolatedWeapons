@@ -82,11 +82,18 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 	Float LEDs, Heat, AnimRec;
 	
 	States{
-	
+		GunRaiseVanilla://Vanilla select animation
+			FL1G A 1 {
+				if(Player.GetPSprite(PSP_WEAPON).Y<=32)Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
+			}
+			Wait;
+		GunLowerVanilla://Vanilla deselect animation
+			FL1G A 1;
+			Wait;
 		GunRaise:
 			TNT1 A 0{
 				invoker.Firing = 0;
-				invoker.SwitchAnim = CRandom(0, 1);
+				if(MRIntW_SwitchAnims>1)invoker.SwitchAnim = CRandom(0, 1);
 			}
 			TNT1 AAA 1 {
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
@@ -144,7 +151,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_ClearOverlays(LayUnderFlame, LayUnderFlame);
 				invoker.IdleDelay = Min(invoker.IdleDelay, 0);
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);}
-				else invoker.SwitchAnim = CRandom(0, 1);
+				else if(MRIntW_SwitchAnims>1)invoker.SwitchAnim = CRandom(0, 1);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayPivot(Lay1, .5, .5);
 				A_OverlayOffset(Lay1, 0, 32);
@@ -527,7 +534,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		Select:
 			TNT1 A 0 {
 				if(invoker.Dropped)invoker.Dropped.Destroy();
-				A_Overlay(Lay1, "GunRaise");
+				if(MRIntW_SwitchAnims)A_Overlay(Lay1, "GunRaise");
+				else A_Overlay(Lay1, "GunRaiseVanilla");
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("FLMGA0");
@@ -551,8 +559,9 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			TNT1 A 0 {
 				if(invoker.Dropped)invoker.Dropped.Destroy();
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				A_Overlay(Lay1, "GunLower");
-				Player.GetPSprite(PSP_WEAPON).Y = 32;
+				if(MRIntW_SwitchAnims)A_Overlay(Lay1, "GunLower");
+				else A_Overlay(Lay1, "GunLowerVanilla");
+				//Player.GetPSprite(PSP_WEAPON).Y = 32;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("FLMGA0");
 			}
