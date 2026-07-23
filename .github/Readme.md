@@ -1,1 +1,0 @@
-../Mod info/Readme-RU.md
