@@ -23,7 +23,11 @@ Extend Class MRIntWeaps_Fist
 		if(MRIntW_VanillaFireBob){
 			if(InStateSequence(PSP.CurState, Weap.FindState("Fire"))){
 				PSP.X = FireBob.X;
+				if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = -FireBob.X;
 				PSP.Y = 32+FireBob.Y;
+				
+				PSP.OldX = PSP.X;
+				PSP.OldY = PSP.Y;
 			}
 			else FireBob = PlayerPawn(Owner).BobWeapon(2);
 		}
