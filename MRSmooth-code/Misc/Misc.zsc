@@ -7,7 +7,8 @@ Extend Class MRIntWeaps_Fist
 	Double CurBounce, BounceStrength;
 	Bool Bouncing, Landed;
 	int DamageShake, PlrLastHealth;
-	Vector2 FireBob;
+	Vector2 FireBob, OldFireBob;
+	Double BobInter;
 	
 	Void DoMisc()
 	{
@@ -21,15 +22,46 @@ Extend Class MRIntWeaps_Fist
 		Weap.BobRangeY = MRIntW_BobRangeY;
 		
 		if(MRIntW_VanillaFireBob){
-			if(InStateSequence(PSP.CurState, Weap.FindState("Fire"))){
+			if(InStateSequence(PSP.CurState, Weap.FindState("Fire"))|| 
+				InStateSequence(PSP.CurState, Weap.FindState("Select"))||
+				InStateSequence(PSP.CurState, Weap.FindState("Deselect"))){
 				PSP.X = FireBob.X;
 				if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = -FireBob.X;
-				PSP.Y = 32+FireBob.Y;
+				if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.Y = 32+FireBob.Y;
 				
 				PSP.OldX = PSP.X;
-				PSP.OldY = PSP.Y;
+				if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.OldY = PSP.Y;
+				
+				OldFireBob = FireBob;
+				BobInter = 1;
 			}
-			else FireBob = PlayerPawn(Owner).BobWeapon(2);
+			else {
+				FireBob = PlayerPawn(Owner).BobWeapon(2);
+				if(BobInter>0 && OldFireBob.Length()>0){
+					if(InStateSequence(PSP.CurState, Weap.FindState("Ready"))){
+						PSP.X = -FireBob.X*BobInter;
+						PSP.X += OldFireBob.X*BobInter;
+						if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror){
+							PSP.X = FireBob.X*BobInter;
+							PSP.X -= OldFireBob.X*BobInter;
+						}
+						PSP.Y = -FireBob.Y*BobInter+32;
+						PSP.Y += OldFireBob.Y*BobInter;
+						
+						if(BobInter==1){
+							PSP.OldX = PSP.X;
+							PSP.OldY = PSP.Y;
+						}
+						
+						BobInter *= .6;
+						if(BobInter<.1){
+							OldFireBob = (0,0);
+							BobInter = 0;
+						}
+					}
+					else OldFireBob = (0,0);
+				}
+			}
 		}
 		
 		if(MRIntW_DamageShake){
