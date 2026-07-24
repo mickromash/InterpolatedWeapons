@@ -549,7 +549,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay1, -4, 7*Mult, WOF_ADD);
 				A_OverlayRotate(Lay1, 3*Mult, WOF_ADD);
 				
-				A_OverlayOffset(Lay1, CFRandom(-.5, .5)*(1+invoker.SawSpeed), CFRandom(-.5, .5)*(1+invoker.SawSpeed), WOF_ADD);
+				A_OverlayOffset(Lay1, CFRandom(-.5, .5)*(1+invoker.SawSpeed), Max(-1, CFRandom(-.5, .5)*(1+invoker.SawSpeed)), WOF_ADD);
 				if(GetAge()%Max(1, int(2-invoker.SawSpeed))==0)invoker.SawFrame++;
 				if(invoker.SawFrame>5)invoker.SawFrame = 2;
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
