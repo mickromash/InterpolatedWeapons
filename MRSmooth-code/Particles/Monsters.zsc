@@ -538,17 +538,17 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						Float Pow = CFRandom(8, 13);
 						Vector3 Vel = (Actor.AngleToVector(An, Pow)*Cos(Pi), Sin(Pi)*Pow);
 						Float Size = CFRandom(3,11);
-						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 20, Size, Monster.Target.Pos, Vel, Vel*.2 + (0,0,-1), Alpha: CFRandom(.3, 1), SizeStep:-(Size/20.));
+						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 20, Size, Monster.Target.Pos + (0,0,Monster.Target.Height*CFRandom(0, .5)), Vel, Vel*.2 + (0,0,-1), Alpha: CFRandom(.3, 1), SizeStep:-(Size/20.));
 					}
 					For(int i=CRandom(0, 6)*PAmnt;i<25*PAmnt;i++){
 						Float Size = CFRandom(3,6);
 						int Green = CRandom(70, 240);
 						Float Ang = CFRandom(0, 359);
-						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, Monster.Target.Pos + (Actor.AngleToVector(Ang, CFRandom(4, 10)),CRandom(0, 10)), Monster.Target.Vel*.75 + (Actor.AngleToVector(Ang, CFRandom(0, 4)),3), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.2), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
+						MRSpawnParticle(Color(255,Green,CRandom(40, Green*.5)), ParTex, SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, STYLE_Add, 30, Size, Monster.Target.Pos + (Actor.AngleToVector(Ang, CFRandom(4, 10)), Monster.Target.Height*CFRandom(0, .5)), Monster.Target.Vel*.75 + (Actor.AngleToVector(Ang, CFRandom(0, 4)),3), Accel:(CFRandom(-.01, .01),CFRandom(-.01, .01),.2), Alpha: CFRandom(.4, 1), SizeStep:-(Size/60.));
 					}
 					if(Setting2&MRIWMP_ArchFlameSmoke){
 						For(int i=CRandom(0, 2)*PAmnt;i<10*PAmnt;i++)
-							MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 20, CRandom(39, 42), Monster.Target.Pos, (Actor.AngleToVector(CRandom(0, 359), CFRandom(1.8, 3)), CFRandom(.4, 1.7)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4), Roll:CRandom(0, 360), RollVel:CFRandom(-2, 2));
+							MRSpawnParticle(Color(20,20,20), SmkTex, SPF_NOTIMEFREEZE|SPF_ROLL, STYLE_None, 20, CRandom(39, 42), Monster.Target.Pos + (0,0,Monster.Target.Height*CFRandom(0, .5)), (Actor.AngleToVector(CRandom(0, 359), CFRandom(1.8, 3)), CFRandom(.4, 1.7)), Alpha: CFRandom(.7, .9), SizeStep: CFRandom(3, 4), Roll:CRandom(0, 360), RollVel:CFRandom(-2, 2));
 					}
 				}
 				else Destroy();
@@ -813,7 +813,11 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				if(!Monster)Monster = Master.Target;
 				if(!Monster || !Monster.Target){Destroy();Return;}
 				
-				if(Monster.CheckSight(Monster.Target)){HitPlace = Monster.Target.Pos;LastVel = Monster.Target.Vel;}
+				if(Monster.CheckSight(Monster.Target)){
+					if(Monster.Target == Players[ConsolePlayer].Camera)HitPlace = Monster.Target.Pos;
+					else HitPlace = Master.Pos + (0,0,Monster.Target.Height*CFRandom(0, .7));
+					LastVel = Monster.Target.Vel;
+				}
 				else LastVel = (0,0,0);
 				
 				if(Players[ConsolePlayer].Camera!=Monster.Target && !MRGPartsCheckDraw())Return;
