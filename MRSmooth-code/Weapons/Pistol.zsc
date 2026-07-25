@@ -689,12 +689,13 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				if(invoker.LeftHanded){
 					A_OverlayFlags(SHand, PSPF_MIRROR, false);
 					A_OverlayFlags(SHand, PSPF_FLIP, true);
+					A_OverlayFlags(SHand, PSPF_ADDBOB, true);
 				}
 			}
 		SecondHandToMain:
 			MRD1 G 1 {
 				A_OverlayFlags(SHand, PSPF_INTERPOLATE, !Player.GetPSprite(SHand).FirstTic);
-				Player.GetPSprite(SHand).X = Player.GetPSprite(Lay1).X+210+(Player.GetPSprite(SHand).X-210-Player.GetPSprite(Lay1).X)*.6;
+				Player.GetPSprite(SHand).X = -Player.FindPSprite(PSP_WEAPON).X+ Player.GetPSprite(Lay1).X+210+(Player.GetPSprite(SHand).X-210-Player.GetPSprite(Lay1).X+Player.FindPSprite(PSP_WEAPON).X)*.6;
 				Player.GetPSprite(SHand).Y = Player.GetPSprite(Lay1).Y+10+(Player.GetPSprite(SHand).Y-10-Player.GetPSprite(Lay1).Y)*.6;
 				Player.GetPSprite(SHand).Rotation = Player.GetPSprite(Lay1).Rotation-30+(Player.GetPSprite(SHand).Rotation+30-Player.GetPSprite(Lay1).Rotation)*.6;
 				Player.GetPSprite(SHand).Scale = Player.GetPSprite(Lay1).Scale-(.05, .05)+(Player.GetPSprite(SHand).Scale-(Player.GetPSprite(Lay1).Scale-(.05,.05)))*.6;
@@ -702,8 +703,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			}
 			#### # 0 {
 				if(
-					Player.FindPSprite(PSP_WEAPON) && Player.FindPSprite(PSP_WEAPON).Y<=36 &&
-					abs(Player.GetPSprite(Lay1).X+210 - Player.GetPSprite(SHand).X)<4 &&
+					Player.FindPSprite(PSP_WEAPON) && 
+					(!InStateSequence(Player.FindPSprite(PSP_WEAPON).CurState, invoker.FindState("Select")) || Player.FindPSprite(PSP_WEAPON).Y<=36) &&
+					abs(Player.GetPSprite(Lay1).X+210 - (Player.GetPSprite(SHand).X + Player.GetPSprite(PSP_WEAPON).X))<4 &&
 					abs(Player.GetPSprite(Lay1).Y+10 - Player.GetPSprite(SHand).Y)<2 &&
 					abs(Player.GetPSprite(Lay1).Rotation-30 - Player.GetPSprite(SHand).Rotation)<4
 				){
