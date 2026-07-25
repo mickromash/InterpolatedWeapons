@@ -13,3 +13,5 @@ alias MRIntW_PressetMaximum "MRIntW_Casings 2;MRIntW_Smoke 1;MRIntW_FlowingSmoke
 alias MRIntW_PressetNoGameplay "MRIntW_Recoil 0;MRIntW_InstantFire 0;MRIntW_FastPistol 0;MRIntW_BetterAlert 0;"
 
 alias MRIntW_WritePresset "NetEvent MRIntWeaps_WritePresset"
+
+alias MRIntW_Crash "NetEvent MRIntWeaps_Crash %1"
