@@ -125,5 +125,5 @@
      * Quake 1, 2, 4
      * Doom 3
      * Аниме Black Lagoon
-     * C&Rsenal youtube channel (и канал с переводами C&Rsenal rus)
+     * Видео с youtube канала C&Rsenal (а точнее переводами с канала C&Rsenal rus)
      * Импакт шутера - Kefir succerland на youtube
