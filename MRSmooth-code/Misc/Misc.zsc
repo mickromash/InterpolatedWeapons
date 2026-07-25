@@ -113,7 +113,8 @@ Extend Class MRIntWeaps_Fist
 		if(Bouncing && Allowed){
 			Double Bounce = CurBounce*.5;
 			if(Bounce<0)Bounce /= Max(1, Weap.FloatSpeed*8/32);
-			PSP.Y = 32 + CurBounce*.5;
+			if(BobInter==0)PSP.Y = 32 + CurBounce*.5;
+			else PSP.Y += CurBounce*.5;
 		}
 	}
 	
