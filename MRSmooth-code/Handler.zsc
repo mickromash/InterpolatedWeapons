@@ -247,6 +247,24 @@ Class MRIntWeaps_Handler: EventHandler
 			UpdateOnStartupParticles();
 			Return;
 		}
+		if(e.name ~== "MRIntWeaps_Crash"){
+			Switch(e.Args[0])
+			{
+				Default:
+					Actor mo;
+					mo.Target.GetClassName();
+					Return;
+				Case 1:
+					int Zero = 0;
+					5/Zero;
+					Return;
+				Case 2:
+					ThrowAbortException("Crash.");
+					Return;
+				Case 3:
+					While(true){}
+			}
+		}
 	}
 	
 	Void UpdateOnStartupParticles()
@@ -329,6 +347,10 @@ Class MRIntWeaps_Handler: EventHandler
 	Bool Uninstalled;
 	Override Void OnDestroy()
 	{
+		if(gameState == GS_FullConsole){
+			Console.Printf(String.Format(StringTable.Localize("$MRIntW_VMAbortMessage"), MRIntW_Version));
+			Return;
+		}
 		if(Uninstalled)Console.Printf(StringTable.Localize("$MRIntWeaps_Uninstalled"));
 	}
 	

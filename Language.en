@@ -206,6 +206,7 @@ MRIntW_ParticleTexture2 = "Square";
 
 MRIntW_Particles_Tick = "During flight";
 MRIntW_Particles_Impact = "On impact";
+MRIntW_Particles_Death = "On death";
 
 MRIntW_PlayerParticles = "Player's weapon particles";
 MRIntW_PlayerParticlesAmount = "Player weapon effects quality";
@@ -377,3 +378,4 @@ TAG_RIFLE = "Rifle";
 
 MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- This game was saved with a different version of the mod\n"
 						"if you'll encounter any issues, proceed to the mod's settings menu and press \"Make animations smooth\" button.";
+MRIntW_VMAbortMessage = "\n\cdInterpolated Weapons version: \c-%i";

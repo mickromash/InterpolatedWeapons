@@ -206,6 +206,7 @@ MRIntW_ParticleTexture2 = "Квадратная";
 
 MRIntW_Particles_Tick = "Во время полёта";
 MRIntW_Particles_Impact = "При столкновении";
+MRIntW_Particles_Death = "При смерти";
 
 MRIntW_PlayerParticles = "Эффекты оружия игрока";
 MRIntW_PlayerParticlesAmount = "Качество эффектов оружия игрока";
@@ -377,3 +378,7 @@ TAG_RIFLE = "Винтовка";
 
 MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- Это сохранение было сделано с другой версией мода\n"
 						"если у вас возникнут проблемы, нажмите кнопку \"Сделать анимации плавными\" в меню настроек мода.";
+MRIntW_VMAbortMessage = "\n\cdВерсия Interpolated Weapons: \c-%i\n"
+						"\cdInterpolated Weapons:\c- Если текст сообщения ошибки содержит \cg\"MR\" \c-или\cg \"MRIntWeaps_\"\c-\n"
+						"пожалуйста введите screenshot в консоль и отправьте скрин в issues на github Interpolated Weapons\n"
+						"или на страницу мода на doom power.";
