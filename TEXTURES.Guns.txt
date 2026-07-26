@@ -287,19 +287,6 @@ Sprite "SH22D0", 108, 130
 	Patch "SH12D1", 0, 0
 }
 
-Sprite "SH22P0", 114, 64
-{
-	Offset -116, -124
-	Patch "SH12E1", 0, 0
-	Patch "SSGCASE", 1, 19
-}
-
-Sprite "SH22E0", 114, 64
-{
-	Offset -116, -124
-	Patch "SH12E1", 0, 0
-}
-
 Sprite "SH12J0", 147, 75
 {
 	Offset -80, -125
