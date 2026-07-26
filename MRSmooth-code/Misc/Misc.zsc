@@ -5,10 +5,10 @@
 Extend Class MRIntWeaps_Fist
 {
 	Double CurBounce, BounceStrength;
-	Bool Bouncing, Landed;
+	Bool Bouncing, Landed, LowerGun;
 	int DamageShake, PlrLastHealth;
 	Vector2 FireBob, OldFireBob;
-	Double BobInter;
+	Double BobInter, RunKey;
 	
 	Void DoMisc()
 	{
@@ -61,6 +61,7 @@ Extend Class MRIntWeaps_Fist
 					}
 					else OldFireBob = (0,0);
 				}
+				else BobInter = 0;
 			}
 		}
 		
@@ -69,8 +70,16 @@ Extend Class MRIntWeaps_Fist
 			if(DamageShake>0){
 				Double Shake = DamageShake;
 				Shake *= .1;
-				Owner.Player.GetPSprite(PSP_WEAPON).X = GetAge()%2==0?Shake:-Shake;
-				if(Allowed)Owner.Player.GetPSprite(PSP_WEAPON).Y = 32+Shake*CFRandom(0, 1);
+				
+				if(BobInter==0){
+					PSP.X = GetAge()%2==0?Shake:-Shake;
+					if(Allowed)PSP.Y = 32+Shake*CFRandom(0, 1);
+				}
+				else {
+					PSP.X += GetAge()%2==0?Shake:-Shake;
+					if(Allowed)PSP.Y += Shake*CFRandom(0, 1);
+				}
+				
 				DamageShake -= 4;
 				if(DamageShake<0)DamageShake = 0;
 			}
@@ -81,19 +90,47 @@ Extend Class MRIntWeaps_Fist
 			
 			PlrLastHealth = Owner.Health;
 		}
+		
+		if(LowerGun || MRIntW_RunKey>0){
+			if(Allowed){
+				Bool Invert = MRIntW_RunKey>1;
+				Bool Pressing = (Owner.Player.Cmd.Buttons&BT_SPEED) || LowerGun;
+				
+				if(Pressing != Invert){
+					if(RunKey<1)RunKey += Max(.1, (1-RunKey)*.5);
+				}
+				else {
+					if(RunKey>.05)RunKey *= .6;
+					else RunKey = 0;
+				}
+				
+				if(BobInter == 0 && DamageShake <= 0)PSP.Y = 32+RunKey*26;
+				else {
+					PSP.Y += RunKey*26;
+					PSP.OldY = PSP.Y;
+				}
+			}
+			else RunKey = 0;
+		}
+		
 		//Weapon movement mid air/on landing
 		if(!MRIntW_Bounce)Return;
+		
+		Bool Clear = MRIntW_Bounce>1;
 		
 		Bouncing = false;
 		
 		if(Owner.Pos.Z > Owner.FloorZ){
 			BounceStrength = Owner.Vel.Z;
-			CurBounce += (BounceStrength - CurBounce)*.5;
-			CurBounce = Clamp(CurBounce, -abs(Weap.FloatSpeed*8), 20);
+			CurBounce += (Clear?Max(0, (abs(BounceStrength) + CurBounce))*.4 : (BounceStrength - CurBounce)*.5);
+			if(Clear) CurBounce = Min(40, CurBounce);
+			else CurBounce = Clamp(CurBounce, -abs(Weap.FloatSpeed*8), 20);
 			Bouncing = true;
 			Landed = true;
 		}
 		else if(abs(BounceStrength)>0){
+			if(Clear && Landed)BounceStrength = -CurBounce;
+			
 			if(CurBounce<-BounceStrength)CurBounce -= BounceStrength*.5;
 			
 			else {
@@ -111,10 +148,17 @@ Extend Class MRIntWeaps_Fist
 		}
 		
 		if(Bouncing && Allowed){
-			Double Bounce = CurBounce*.5;
-			if(Bounce<0)Bounce /= Max(1, Weap.FloatSpeed*8/32);
-			if(BobInter==0)PSP.Y = 32 + CurBounce*.5;
-			else PSP.Y += CurBounce*.5;
+			if(Clear){
+				if(BobInter==0 && DamageShake<=0 && RunKey == 0)PSP.Y = 32 + CurBounce;
+				else {
+					PSP.Y += CurBounce;
+					PSP.OldY = PSP.Y;
+				}
+			}
+			else {
+				if(BobInter==0 && DamageShake<=0 && RunKey == 0)PSP.Y = 32 + CurBounce*.5;
+				else PSP.Y += CurBounce*.5;
+			}
 		}
 	}
 	

@@ -86,6 +86,16 @@ MRIntW_EpilepsyDesc3 = "If you are sure you don't have epilepsy, type MRIntW_Epi
 MRIntW_EpilepsyDesc4 = "";
 
 MRIntW_Bounce = "Bounce on land";
+MRIntW_Bounce0 = "No";
+MRIntW_Bounce1 = "Regular";
+MRIntW_Bounce2 = "Clear view";
+
+MRIntW_RunKey = "Run key";
+MRIntW_RunKey0 = "does nothing";
+MRIntW_RunKey1 = "lowers weapon";
+MRIntW_RunKey2 = "raises weapon";
+
+MRIntW_LowerGun = "Lower/raise weapon";
 
 MRIntW_BobStyle = "Weapon bob style";
 MRIntW_BobStyle0 = "Normal";

@@ -55,12 +55,16 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Option "$MRIntW_VanillaFireBob", "MRIntW_VanillaFireBob", "YesNo"
 	StaticText ""
 	Option "$MRIntW_SwitchAnims", "MRIntW_SwitchAnims", "MRIntW_SwitchAnimsValues"
-	Option "$MRIntW_Bounce", "MRIntW_Bounce", "YesNo"
+	StaticText ""
+	Option "$MRIntW_Bounce", "MRIntW_Bounce", "MRIntW_BounceValues"
+	Option "$MRIntW_RunKey", "MRIntW_RunKey", "MRIntW_RunKeyValues"
+	Control "$MRIntW_LowerGun", "MRIntW_LowerGun"
+	Option "$MRIntW_NoMuzzleFlash", "MRIntW_NoMuzzleFlash", "YesNo"
+	StaticText ""
 	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "YesNo"
 	Option "$MRIntW_ReloadAnims", "MRIntW_ReloadAnims", "MRIntW_ReloadAnimsValues"
 	Option "$MRIntW_DamageShake", "MRIntW_DamageShake", "YesNo"
 	Option "$MRIntW_LowHealthShake", "MRIntW_LowHealthShake", "YesNo"
-	Option "$MRIntW_NoMuzzleFlash", "MRIntW_NoMuzzleFlash", "YesNo"
 	Option "$MRIntW_FlashFlare", "MRIntW_FlashFlare", "YesNo"
 	StaticText ""
 	SubMenu "$MRIntW_WeaponsMenu", "MRIntW_WeaponsMenu"
@@ -454,6 +458,20 @@ OptionValue "MRIntW_SwitchAnimsValues"
 	0, "$MRIntW_SwitchAnims0"//Vanilla
 	1, "$MRIntW_SwitchAnims1"//Single vriant
 	2, "$MRIntW_SwitchAnims2"//Random variants
+}
+
+OptionValue "MRIntW_BounceValues"
+{
+	0, "$MRIntW_Bounce0"
+	1, "$MRIntW_Bounce1"
+	2, "$MRIntW_Bounce2"
+}
+
+OptionValue "MRIntW_RunKeyValues"
+{
+	0, "$MRIntW_RunKey0"
+	1, "$MRIntW_RunKey1"
+	2, "$MRIntW_RunKey2"
 }
 
 OptionValue "MRIntW_ReloadAnimsValues"

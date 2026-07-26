@@ -86,6 +86,16 @@ MRIntW_EpilepsyDesc3 = "Если вы уверены что не страдае�
 MRIntW_EpilepsyDesc4 = "откройте консоль и впишите MRIntW_Epilepsy 0";
 
 MRIntW_Bounce = "Подпрыгивание оружия при приземлении";
+MRIntW_Bounce0 = "Нет";
+MRIntW_Bounce1 = "Обычное";
+MRIntW_Bounce2 = "Низкое";
+
+MRIntW_RunKey = "Кнопка бега";
+MRIntW_RunKey0 = "ничего не делает";
+MRIntW_RunKey1 = "Опускает оружие";
+MRIntW_RunKey2 = "Поднимает оружие";
+
+MRIntW_LowerGun = "Опустить/поднять оружие";
 
 MRIntW_BobStyle = "Покачивание оружия";
 MRIntW_BobStyle0 = "Обычное";

@@ -211,6 +211,14 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Override Void NetworkProcess(ConsoleEvent e)
 	{
+		Let Plr = Players[e.Player].mo;
+		if(!Plr)Return;
+		
+		if(e.name ~== "MRIntWeaps_LowerGun"){
+			Let Handler = MRIntWeaps_Fist(Plr.FindInventory("MRIntWeaps_Fist"));
+			if(Handler)Handler.LowerGun = !Handler.LowerGun;
+		}
+		
 		if(e.name ~== "MRIntWeaps_Uninstall"){
 			For(int i=0;i<MAXPLAYERS;i++){
 				if(Players[i].mo)TakeWeapons(Players[i].mo);
@@ -220,9 +228,6 @@ Class MRIntWeaps_Handler: EventHandler
 			//Destroy();
 			Return;
 		}
-		
-		Let Plr = Players[e.Player].mo;
-		if(!Plr)Return;
 		
 		if(e.name ~== "MRIntWeaps_Give"){
 			GiveWeapons(Plr);
