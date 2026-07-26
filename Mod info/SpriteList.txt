@@ -65,8 +65,6 @@ Super Shotgun
 {
 	SH12 A (textures) - Ready
 	SH12 BCD (textures) - Opening animation
-	SH12 P (textures) - Opening animation (SH12 E with casings inside)
-	SH12 E - Opening animation
 	SH12 F - Opened
 	SH12 I - Opened, barrel part covering casings and loading shell
 	SH12 JK - Closing animation
