@@ -655,7 +655,7 @@ Extend Class MRIntWeaps_Shotgun
 				Player.GetPSprite(OverlayId()).bInterpolate=false;
 				A_OverlayPivot(OverlayId(), .5, .5);
 				
-				A_OverlayOffset(OverlayId(), 105, 200+32);
+				A_OverlayOffset(OverlayId(), 105+Player.GetPSprite(PSP_WEAPON).X, 200+Player.GetPSprite(PSP_WEAPON).Y);
 				A_OverlayRotate(OverlayId(), 160);
 				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
 			}
@@ -895,7 +895,7 @@ Extend Class MRIntWeaps_Chaingun
 				Player.GetPSprite(OverlayId()).bInterpolate=false;
 				A_OverlayPivot(OverlayId(), .5, .5);
 				
-				A_OverlayOffset(OverlayId(), 195, 190+32);
+				A_OverlayOffset(OverlayId(), 195+Player.GetPSprite(PSP_WEAPON).X, 190+Player.GetPSprite(PSP_WEAPON).Y);
 				A_OverlayScale(OverlayId(), .8, .8);
 				A_OverlayRotate(OverlayId(), 140);
 				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");

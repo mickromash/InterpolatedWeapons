@@ -193,7 +193,7 @@ Extend Class MRIntWeaps_Pistol
 				if(index<invoker.Casings.Size() && index>-1){
 					A_Overlay(PSP_FLASH+10+index, "CasingLay");
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
-					A_OverlayOffset(PSP_FLASH+10+index, 187, 157+32);
+					A_OverlayOffset(PSP_FLASH+10+index, 187+Player.GetPSprite(PSP_WEAPON).X, 157+Player.GetPSprite(PSP_WEAPON).Y);
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
 				}
 				A_FireSmoke(-.3-Player.GetPSprite(Lay1).Y*.015, .8);
