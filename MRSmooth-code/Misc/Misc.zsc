@@ -95,12 +95,13 @@ Extend Class MRIntWeaps_Fist
 			if(Allowed){
 				Bool Invert = MRIntW_RunKey>1;
 				Bool Pressing = (Owner.Player.Cmd.Buttons&BT_SPEED) || LowerGun;
+				if(LowerGun && Owner.Player.Cmd.Buttons&BT_SPEED)Pressing = !Pressing;
 				
 				if(Pressing != Invert){
-					if(RunKey<1)RunKey += Max(.1, (1-RunKey)*.5);
+					if(RunKey<1)RunKey += Max(.05, (1-RunKey)*.1);
 				}
 				else {
-					if(RunKey>.05)RunKey *= .6;
+					if(RunKey>.01)RunKey *= .8;
 					else RunKey = 0;
 				}
 				
@@ -116,12 +117,12 @@ Extend Class MRIntWeaps_Fist
 		//Weapon movement mid air/on landing
 		if(!MRIntW_Bounce)Return;
 		
-		Bool Clear = MRIntW_Bounce>1;
+		Bool Clear = MRIntW_Bounce>1;//Weapon only goes down
 		
 		Bouncing = false;
 		
 		if(Owner.Pos.Z > Owner.FloorZ){
-			BounceStrength = Owner.Vel.Z;
+			BounceStrength = Owner.Vel.Z;//Move weapon based on vertical velocity (going down - move up, going up - move down)
 			CurBounce += (Clear?Max(0, (abs(BounceStrength) + CurBounce))*.4 : (BounceStrength - CurBounce)*.5);
 			if(Clear) CurBounce = Min(40, CurBounce);
 			else CurBounce = Clamp(CurBounce, -abs(Weap.FloatSpeed*8), 20);
