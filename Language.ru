@@ -85,6 +85,8 @@ MRIntW_EpilepsyDesc2 = "и могут вызвать приступ эпилеп
 MRIntW_EpilepsyDesc3 = "Если вы уверены что не страдаете эпилепсией,";
 MRIntW_EpilepsyDesc4 = "откройте консоль и впишите MRIntW_Epilepsy 0";
 
+MRIntW_OffsetMenu = "Настройки движений оружия";
+
 MRIntW_Bounce = "Подпрыгивание оружия при приземлении";
 MRIntW_Bounce0 = "Нет";
 MRIntW_Bounce1 = "Обычное";
@@ -117,7 +119,7 @@ MRIntW_SwitchAnims0 = "Классические";
 MRIntW_SwitchAnims1 = "Одна вариация";
 MRIntW_SwitchAnims2 = "Случайные вариации";
 
-MRIntW_IdleAnims = "Анимации безделья";
+MRIntW_IdleAnims = "Анимации покоя";
 
 MRIntW_ReloadAnims = "Анимации подбора и перезарядки";
 MRIntW_ReloadAnims0 = "Нет";
@@ -130,6 +132,10 @@ MRIntW_LowHealthShake = "Тряска рук при низком здоровь�
 MRIntW_NoMuzzleFlash = "Отключить дульные вспышки";
 MRIntW_FlashFlare = "Свечение от дульных вспышек";
 MRIntW_ShotgunsRecoil = "Сила анимации отдачи дробовиков";
+
+MRIntW_BaseOffset = "Положение оружия";
+MRIntW_BaseOffsetX = "По горизонтали";
+MRIntW_BaseOffsetY = "По вертикали";
 
 MRIntW_WeaponsMenu = "Настройки оружия";
 

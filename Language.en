@@ -44,7 +44,6 @@ MRIntWeaps_Uninstall = "Uninstall mod";
 MRIntWeaps_UninstallPromt = "Remove the mod so the saved game could be loaded without it?";
 MRIntWeaps_Uninstalled = "Interpolated-Weapons: \cdMod successfully unistalled.";
 
-
 MRIntWeaps_AnimMenu = "Animations settings";
 
 MRIntW_GlovesColor = "Gloves color";
@@ -85,6 +84,8 @@ MRIntW_EpilepsyDesc2 = "and even cause an epileptic seizure.";
 MRIntW_EpilepsyDesc3 = "If you are sure you don't have epilepsy, type MRIntW_Epilepsy 0 into the console";
 MRIntW_EpilepsyDesc4 = "";
 
+MRIntW_OffsetMenu = "Weapon movement settings";
+
 MRIntW_Bounce = "Bounce on land";
 MRIntW_Bounce0 = "No";
 MRIntW_Bounce1 = "Regular";
@@ -124,6 +125,10 @@ MRIntW_ReloadAnims0 = "No";
 MRIntW_ReloadAnims1 = "Reload only";
 MRIntW_ReloadAnims2 = "Pickup only";
 MRIntW_ReloadAnims3 = "Yes";
+
+MRIntW_BaseOffset = "Weapon offset";
+MRIntW_BaseOffsetX = "Horizontal offset";
+MRIntW_BaseOffsetY = "Vertical offset";
 
 MRIntW_WeaponsMenu = "Weapons settings";
 

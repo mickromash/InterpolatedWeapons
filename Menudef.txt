@@ -35,18 +35,10 @@ OptionMenu "MRIntWeaps_Menu"
 	//SafeCommand "$MRIntWeaps_Uninstall", MRIntW_Uninstall, "$MRIntWeaps_UninstallPromt"
 }
 
-OptionMenu "MRIntWeaps_AnimMenu"
+OptionMenu "MRIntW_OffsetMenu"
 {
-	Class MRIntWeaps_AnimMenu
-	Title "$MRIntWeaps_AnimMenu"
+	Title "$MRIntW_OffsetMenu"
 	StaticText ""
-	Option "$MRIntW_GlovesColor", "MRIntW_GlovesColor", "MRIntW_GlovesColorValues"
-	ColorPicker "$MRIntW_GlovesColorShade", "MRIntW_GlovesColorShade"
-	ColorPicker "$MRIntW_GlovesColorLight", "MRIntW_GlovesColorLight"
-	Command "$MRIntW_RandomGlovesColor2", MRIntW_RandomGlovesColor2
-	Command "$MRIntW_RandomGlovesColor1", MRIntW_RandomGlovesColor1
-	//StaticText ""
-	Submenu "", "MRIntWeaps_EasterMenu"
 	Option "$MRIntW_BobStyle", "MRIntW_BobStyle", "MRIntW_BobStyleValues"
 	Slider "$MRIntW_BobRangeX", "MRIntW_BobRangeX", 0, 3, .1
 	Slider "$MRIntW_BobRangeY", "MRIntW_BobRangeY", 0, 3, .1
@@ -59,15 +51,35 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Option "$MRIntW_Bounce", "MRIntW_Bounce", "MRIntW_BounceValues"
 	Option "$MRIntW_RunKey", "MRIntW_RunKey", "MRIntW_RunKeyValues"
 	Control "$MRIntW_LowerGun", "MRIntW_LowerGun"
-	Option "$MRIntW_NoMuzzleFlash", "MRIntW_NoMuzzleFlash", "YesNo"
 	StaticText ""
 	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "YesNo"
-	Option "$MRIntW_ReloadAnims", "MRIntW_ReloadAnims", "MRIntW_ReloadAnimsValues"
 	Option "$MRIntW_DamageShake", "MRIntW_DamageShake", "YesNo"
 	Option "$MRIntW_LowHealthShake", "MRIntW_LowHealthShake", "YesNo"
+	StaticText ""
+	Option "$MRIntW_BaseOffset", "MRIntW_BaseOffset", "YesNo"
+	Slider "$MRIntW_BaseOffsetX", "MRIntW_BaseOffsetX", -100, 100, 1, 1, "MRIntW_BaseOffset"
+	Slider "$MRIntW_BaseOffsetY", "MRIntW_BaseOffsetY", -30, 30, 1, 1, "MRIntW_BaseOffset"
+}
+
+OptionMenu "MRIntWeaps_AnimMenu"
+{
+	Class MRIntWeaps_AnimMenu
+	Title "$MRIntWeaps_AnimMenu"
+	StaticText ""
+	Option "$MRIntW_GlovesColor", "MRIntW_GlovesColor", "MRIntW_GlovesColorValues"
+	ColorPicker "$MRIntW_GlovesColorShade", "MRIntW_GlovesColorShade"
+	ColorPicker "$MRIntW_GlovesColorLight", "MRIntW_GlovesColorLight"
+	Command "$MRIntW_RandomGlovesColor2", MRIntW_RandomGlovesColor2
+	Command "$MRIntW_RandomGlovesColor1", MRIntW_RandomGlovesColor1
+	//StaticText ""
+	Submenu "", "MRIntWeaps_EasterMenu"
+	SubMenu "$MRIntW_OffsetMenu", "MRIntW_OffsetMenu"
+	SubMenu "$MRIntW_WeaponsMenu", "MRIntW_WeaponsMenu"
+	StaticText ""
+	Option "$MRIntW_ReloadAnims", "MRIntW_ReloadAnims", "MRIntW_ReloadAnimsValues"
+	Option "$MRIntW_NoMuzzleFlash", "MRIntW_NoMuzzleFlash", "YesNo"
 	Option "$MRIntW_FlashFlare", "MRIntW_FlashFlare", "YesNo"
 	StaticText ""
-	SubMenu "$MRIntW_WeaponsMenu", "MRIntW_WeaponsMenu"
 }
 
 OptionMenu "MRIntW_WeaponsMenu"
