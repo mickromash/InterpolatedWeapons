@@ -83,8 +83,8 @@ Extend Class MRIntWeaps_Fist
 				}
 			}
 			else {
-				PSP.OldX = PSP.X = MRIntW_BaseOffsetX;
-				if(Allowed)PSP.OldY = PSP.Y = 32+MRIntW_BaseOffsetY;
+				PSP.X = MRIntW_BaseOffsetX;
+				if(Allowed)PSP.Y = 32+MRIntW_BaseOffsetY;
 				OfstAdd = true;
 			}
 		}
@@ -130,7 +130,7 @@ Extend Class MRIntWeaps_Fist
 					else RunKey = 0;
 				}
 				
-				if(!OfstAdd)PSP.OldY = PSP.Y = 32+RunKey*26;
+				if(!OfstAdd)PSP.Y = 32+RunKey*26;
 				else {
 					PSP.Y += RunKey*26;
 					PSP.OldY = PSP.Y;
