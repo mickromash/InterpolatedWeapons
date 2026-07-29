@@ -130,6 +130,11 @@ MRIntW_BaseOffset = "Weapon offset";
 MRIntW_BaseOffsetX = "Horizontal offset";
 MRIntW_BaseOffsetY = "Vertical offset";
 
+MRIntW_WeaponSway = "Weapon sway";
+MRIntW_WeaponSwayStyle = "Weapon sway style";
+MRIntW_WeaponSwayStyle0 = "Half Life 2";
+MRIntW_WeaponSwayStyle1 = "Battlefront 2015";
+
 MRIntW_WeaponsMenu = "Weapons settings";
 
 MRIntW_BersShake = "Hands shaking on berserk";

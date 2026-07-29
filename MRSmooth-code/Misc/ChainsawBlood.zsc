@@ -422,19 +422,7 @@ Extend Class MRIntWeaps_Chainsaw
 		Player.GetPSprite(Lay).Rotation = Player.GetPSprite(Lay1).Rotation;
 		Player.GetPSprite(Lay).bInterpolate = Player.GetPSprite(Lay1).bInterpolate;
 		Player.GetPSprite(Lay).FirstTic = Player.GetPSprite(Lay1).FirstTic;
-		
-		Bool OldAdd = Player.GetPSprite(Lay).bAddWeapon;
-		Bool CheckIt = false;
-		if(Weapon(Player.PendingWeapon) && MRIntW_SwitchAnims){
-			Player.GetPSprite(Lay).bAddWeapon = false;
-			CheckIt = true;
-		}
-		else Player.GetPSprite(Lay).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
-		
-		if(CheckIt && OldAdd!=Player.GetPSprite(Lay).bAddWeapon){
-			Player.GetPSprite(Lay).bInterpolate = false;
-			Player.GetPSprite(Lay).OldY = Player.GetPSprite(Lay).Y = Player.GetPSprite(Lay).Y+32;
-		}
+		Player.GetPSprite(Lay).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
 		
 		if(Num<6 && invoker.Dripping[Num]>0 && !invoker.Cutting){
 			if(CRandom(0, 35*25-invoker.Dripping[Num])<4){

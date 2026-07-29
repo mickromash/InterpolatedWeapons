@@ -4,145 +4,165 @@
 
 Extend Class MRIntWeaps_Fist
 {
-	Double CurBounce, BounceStrength;
-	Bool Bouncing, Landed, LowerGun;
-	int DamageShake, PlrLastHealth;
-	Vector2 FireBob, OldFireBob;
-	Double BobInter, RunKey;
+	Weapon Weap;
+	Bool Allowed, OfstAdd;
+	PSPrite PSP;
 	
 	Void DoMisc()
 	{
-		Let Weap = Owner.Player.ReadyWeapon;
+		Weap = Owner.Player.ReadyWeapon;
 		if(!Weap||!Owner.Player.FindPSprite(PSP_WEAPON))Return;
-		Let PSP = Owner.Player.GetPSprite(PSP_WEAPON);
-		Bool Allowed = (!InStateSequence(PSP.curState, Weap.GetDownState()) && !InStateSequence(PSP.CurState, Weap.FindState("Select")));
+		PSP = Owner.Player.GetPSprite(PSP_WEAPON);
+		Allowed = (!InStateSequence(PSP.curState, Weap.GetDownState()) && !InStateSequence(PSP.CurState, Weap.FindState("Select")));
 		
-		Bool OfstAdd = false;
+		OfstAdd = false;
 		
 		Weap.BobStyle = MRIntW_BobStyle;
 		Weap.BobRangeX = MRIntW_BobRangeX;
 		Weap.BobRangeY = MRIntW_BobRangeY;
 		
-		if(MRIntW_VanillaFireBob){
-			if(
-				InStateSequence(PSP.CurState, Weap.FindState("Fire"))||
-				InStateSequence(PSP.CurState, Weap.FindState("Select"))||
-				InStateSequence(PSP.CurState, Weap.FindState("Deselect"))
-			){
-				PSP.X = FireBob.X;
-				if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = -FireBob.X;
-				if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.Y = 32+FireBob.Y;
-				
-				PSP.OldX = PSP.X;
-				if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.OldY = PSP.Y;
-				
-				OldFireBob = FireBob;
-				BobInter = 1;
-				
-				OfstAdd = true;
-			}
-			else {
-				FireBob = PlayerPawn(Owner).BobWeapon(2);
-				if(BobInter>0 && OldFireBob.Length()>0){
-					if(InStateSequence(PSP.CurState, Weap.FindState("Ready"))){
-						PSP.X = -FireBob.X*BobInter;
-						PSP.X += OldFireBob.X*BobInter;
-						if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror){
-							PSP.X = FireBob.X*BobInter;
-							PSP.X -= OldFireBob.X*BobInter;
-						}
-						PSP.Y = -FireBob.Y*BobInter+32;
-						PSP.Y += OldFireBob.Y*BobInter;
-						
-						if(BobInter==1){
-							PSP.OldX = PSP.X;
-							PSP.OldY = PSP.Y;
-						}
-						
-						BobInter *= .6;
-						if(BobInter<.1){
-							OldFireBob = (0,0);
-							BobInter = 0;
-						}
-						
-						OfstAdd = true;
+		if(MRIntW_VanillaFireBob)DoVanillaFiringBob();
+		
+		if(MRIntW_BaseOffset)DoBaseOffset();
+		
+		if(MRIntW_DamageShake)DoDamageShake();
+		
+		if(LowerGun || MRIntW_RunKey>0)DoGunLower();
+		
+		if(MRIntW_Bounce)DoBounce();
+		
+		if(MRIntW_WeaponSway)DoSway(MRIntW_WeaponSwayStyle);
+	}
+	
+	Vector2 FireBob, OldFireBob;
+	Double BobInter;
+	Void DoVanillaFiringBob()
+	{
+		if(
+			InStateSequence(PSP.CurState, Weap.FindState("Fire"))||
+			InStateSequence(PSP.CurState, Weap.FindState("Select"))||
+			InStateSequence(PSP.CurState, Weap.FindState("Deselect"))
+		){
+			PSP.X = FireBob.X;
+			if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = -FireBob.X;
+			if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.Y = 32+FireBob.Y;
+			
+			PSP.OldX = PSP.X;
+			if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.OldY = PSP.Y;
+			
+			OldFireBob = FireBob;
+			BobInter = 1;
+			
+			OfstAdd = true;
+		}
+		else {
+			FireBob = PlayerPawn(Owner).BobWeapon(2);
+			if(BobInter>0 && OldFireBob.Length()>0){
+				if(InStateSequence(PSP.CurState, Weap.FindState("Ready"))){
+					PSP.X = -FireBob.X*BobInter;
+					PSP.X += OldFireBob.X*BobInter;
+					if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror){
+						PSP.X = FireBob.X*BobInter;
+						PSP.X -= OldFireBob.X*BobInter;
 					}
-					else OldFireBob = (0,0);
-				}
-				else BobInter = 0;
-			}
-		}
-		
-		if(MRIntW_BaseOffset){
-			if(OfstAdd){
-				PSP.X += MRIntW_BaseOffsetX;
-				PSP.OldX = PSP.X;
-				if(Allowed){
-					PSP.Y += MRIntW_BaseOffsetY;
-					PSP.OldY = PSP.Y;
-				}
-			}
-			else {
-				PSP.X = MRIntW_BaseOffsetX;
-				if(Allowed)PSP.Y = 32+MRIntW_BaseOffsetY;
-				OfstAdd = true;
-			}
-		}
-		
-		if(MRIntW_DamageShake){
-		
-			if(DamageShake>0){
-				Double Shake = DamageShake;
-				Shake *= .1;
-				
-				if(!OfstAdd){
-					PSP.X = GetAge()%2==0?Shake:-Shake;
-					if(Allowed)PSP.Y = 32+Shake*CFRandom(0, 1);
+					PSP.Y = -FireBob.Y*BobInter+32;
+					PSP.Y += OldFireBob.Y*BobInter;
+					
+					if(BobInter==1){
+						PSP.OldX = PSP.X;
+						PSP.OldY = PSP.Y;
+					}
+					
+					BobInter *= .6;
+					if(BobInter<.1){
+						OldFireBob = (0,0);
+						BobInter = 0;
+					}
+					
 					OfstAdd = true;
 				}
-				else {
-					PSP.X += GetAge()%2==0?Shake:-Shake;
-					if(Allowed)PSP.Y += Shake*CFRandom(0, 1);
-				}
-				
-				DamageShake -= 4;
-				if(DamageShake<0)DamageShake = 0;
+				else OldFireBob = (0,0);
 			}
-			
-			if(Owner.Health<PlrLastHealth){
-				DamageShake = PlrLastHealth - Owner.Health;
-			}
-			
-			PlrLastHealth = Owner.Health;
+			else BobInter = 0;
 		}
-		
-		if(LowerGun || MRIntW_RunKey>0){
+	}
+	
+	Void DoBaseOffset()
+	{
+		if(OfstAdd){
+			PSP.X += MRIntW_BaseOffsetX;
+			PSP.OldX = PSP.X;
 			if(Allowed){
-				Bool Invert = MRIntW_RunKey>1;
-				Bool Pressing = (Owner.Player.Cmd.Buttons&BT_SPEED) || LowerGun;
-				if(LowerGun && Owner.Player.Cmd.Buttons&BT_SPEED)Pressing = !Pressing;
-				
-				if(Pressing != Invert){
-					if(RunKey<1)RunKey += Max(.05, (1-RunKey)*.1);
-				}
-				else {
-					if(RunKey>.01)RunKey *= .8;
-					else RunKey = 0;
-				}
-				
-				if(!OfstAdd)PSP.Y = 32+RunKey*26;
-				else {
-					PSP.Y += RunKey*26;
-					PSP.OldY = PSP.Y;
-				}
+				PSP.Y += MRIntW_BaseOffsetY;
+				PSP.OldY = PSP.Y;
+			}
+		}
+		else {
+			PSP.X = MRIntW_BaseOffsetX;
+			if(Allowed)PSP.Y = 32+MRIntW_BaseOffsetY;
+			OfstAdd = true;
+		}
+	}
+	
+	int DamageShake, PlrLastHealth;
+	Void DoDamageShake()
+	{
+		if(DamageShake>0){
+			Double Shake = DamageShake;
+			Shake *= .1;
+			
+			if(!OfstAdd){
+				PSP.X = GetAge()%2==0?Shake:-Shake;
+				if(Allowed)PSP.Y = 32+Shake*CFRandom(0, 1);
 				OfstAdd = true;
 			}
-			else RunKey = 0;
+			else {
+				PSP.X += GetAge()%2==0?Shake:-Shake;
+				if(Allowed)PSP.Y += Shake*CFRandom(0, 1);
+			}
+			
+			DamageShake -= 4;
+			if(DamageShake<0)DamageShake = 0;
 		}
 		
-		//Weapon movement mid air/on landing
-		if(!MRIntW_Bounce)Return;
+		if(Owner.Health<PlrLastHealth){
+			DamageShake = PlrLastHealth - Owner.Health;
+		}
 		
+		PlrLastHealth = Owner.Health;
+	}
+	
+	Bool LowerGun;
+	Double RunKey;
+	Void DoGunLower()
+	{
+		if(Allowed){
+			Bool Invert = MRIntW_RunKey>1;
+			Bool Pressing = (Owner.Player.Cmd.Buttons&BT_SPEED) || LowerGun;
+			if(LowerGun && Owner.Player.Cmd.Buttons&BT_SPEED)Pressing = !Pressing;
+			
+			if(Pressing != Invert){
+				if(RunKey<1)RunKey += Max(.05, (1-RunKey)*.1);
+			}
+			else {
+				if(RunKey>.01)RunKey *= .8;
+				else RunKey = 0;
+			}
+			
+			if(!OfstAdd)PSP.Y = 32+RunKey*26;
+			else {
+				PSP.Y += RunKey*26;
+				PSP.OldY = PSP.Y;
+			}
+			OfstAdd = true;
+		}
+		else RunKey = 0;
+	}
+	
+	Double CurBounce, BounceStrength;
+	Bool Bouncing, Landed;
+	Void DoBounce()
+	{
 		Bool Clear = MRIntW_Bounce>1;//Weapon only goes down
 		
 		Bouncing = false;
@@ -151,7 +171,7 @@ Extend Class MRIntWeaps_Fist
 			BounceStrength = Owner.Vel.Z;//Move weapon based on vertical velocity (going down - move up, going up - move down)
 			CurBounce += (Clear?Max(0, (abs(BounceStrength) + CurBounce))*.4 : (BounceStrength - CurBounce)*.5);
 			if(Clear) CurBounce = Min(40, CurBounce);
-			else CurBounce = Clamp(CurBounce, -abs(Weap.FloatSpeed*8), 20);
+			else CurBounce = Clamp(CurBounce, -abs(Weap.FloatSpeed*6.5), 20);
 			Bouncing = true;
 			Landed = true;
 		}
@@ -181,6 +201,7 @@ Extend Class MRIntWeaps_Fist
 					PSP.Y += CurBounce;
 					PSP.OldY = PSP.Y;
 				}
+				OfstAdd = true;
 			}
 			else {
 				if(!OfstAdd)PSP.Y = 32 + CurBounce*.5;
@@ -188,9 +209,92 @@ Extend Class MRIntWeaps_Fist
 					PSP.Y += CurBounce*.5;
 					PSP.OldY = PSP.Y;
 				}
+				OfstAdd = true;
 			}
 		}
 	}
+	
+	Vector2 CurSway, Sway;
+	int GoingY;
+	Float GoingX;
+	Void DoSway(int Style)
+	{
+		Double Target = Sin(Owner.Pitch)*10;
+		Switch(Style)
+		{
+			Case 0://Half Life 2
+				Target = Sin(Owner.Pitch)*10;
+				
+				Sway *= .7;
+				
+				Sway += (Owner.Player.Cmd.Yaw, Owner.Player.Cmd.Pitch)*.005;
+				
+				Sway.X = Clamp(Sway.X, -50, 50);
+				Sway.Y = Clamp(Sway.Y, -50, 50);
+				
+				CurSway.Y += (Target - CurSway.Y)*.25;
+								
+				if(OfstAdd){
+					PSP.X += (Sway.X-PSP.X)*.5;
+					PSP.OldX = PSP.X;
+					if(Allowed){
+						PSP.Y += ((CurSway.Y + Sway.Y)-PSP.Y)*.5;
+						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y);
+					}
+				}
+				else {
+					PSP.X = PSP.X+(Sway.X-PSP.X)*.5;
+					if(Allowed)PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), 32 + CurSway.Y + Sway.Y);
+					OfstAdd = true;
+				}
+				
+				if(!Allowed)CurSway.Y = 0;
+				
+				Break;
+			Case 1://Battlefront 2015
+				Target = -Sin(Owner.Pitch)*10;
+
+				Sway.Y += (Target - CurSway.Y)*.1;
+				Sway.Y = Clamp(Sway.Y, -3, 3);
+				
+				if((Sway.Y<0 && CurSway.Y<Target)||
+					(Sway.Y>0 && CurSway.Y>Target))Sway.Y *= .2;
+				
+				CurSway.Y += Sway.Y;
+				
+				
+				Target = Owner.Player.Cmd.Yaw*.01;
+				
+				Sway.X += (Target - CurSway.X)*.1;
+				Sway.X = Clamp(Sway.X, -10, 10);
+				
+				if((Sway.X<0 && CurSway.X<Target)||
+					(Sway.X>0 && CurSway.X>Target))Sway.X *= .3;
+				
+				CurSway.X += Sway.X;
+
+				
+				if(OfstAdd){
+					PSP.X += (CurSway.X - PSP.X)*.5;
+					PSP.OldX = PSP.X;
+					if(Allowed){
+						PSP.Y += (CurSway.Y - PSP.Y +32)*.5;
+						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y);
+					}
+				}
+				else {
+					PSP.OldX = PSP.X = PSP.X+(CurSway.X - PSP.X)*.5;
+					if(Allowed)PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), 32 + CurSway.Y);
+					OfstAdd = true;
+				}
+				if(!Allowed)CurSway.Y = 0;
+				
+				Break;
+		}
+	}
+	
+	
+	
 	
 	Clearscope Static Double GetBobZ(Weapon Weap, Double Center = .5)
 	{

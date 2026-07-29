@@ -137,6 +137,11 @@ MRIntW_BaseOffset = "Положение оружия";
 MRIntW_BaseOffsetX = "По горизонтали";
 MRIntW_BaseOffsetY = "По вертикали";
 
+MRIntW_WeaponSway = "Инерция рук";
+MRIntW_WeaponSwayStyle = "Стиль инерции рук";
+MRIntW_WeaponSwayStyle0 = "Half Life 2";
+MRIntW_WeaponSwayStyle1 = "Battlefront 2015";
+
 MRIntW_WeaponsMenu = "Настройки оружия";
 
 MRIntW_BersShake = "Тряска рук при берсерке";

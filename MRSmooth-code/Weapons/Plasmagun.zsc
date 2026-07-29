@@ -305,7 +305,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				if(invoker.Muzzle>.05)invoker.Muzzle *= invoker.IdleEnd?.9:.5;
 				else invoker.IdleEnd = invoker.Muzzle = 0;
 			}
-			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);}
+			#### # 0 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, (MRIntW_WeaponSway && !Player.GetPSprite(Lay1).FirstTic));
+				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, (MRIntW_WeaponSway && !Player.GetPSprite(Lay2).FirstTic));
+			}
 			Loop;
 		GunLower:
 			#### # 0 A_JumpIf(!Player.FindPSprite(Lay2), "GunLowerAlt");

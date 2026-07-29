@@ -3,6 +3,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	Default{
 		Weapon.SlotNumber 3;
 		Decal "BulletChip";
+		FloatSpeed 3;//Max sprite vertical sway
 	}
 	
 	Const Lay1 = 2;//Main layer

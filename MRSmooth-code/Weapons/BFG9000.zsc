@@ -205,7 +205,12 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				if(invoker.Muzzle>.1){invoker.Muzzle *= .5;A_OverlayFlags(Lay2, PSPF_INTERPOLATE, !Player.GetPSprite(Lay2).FirstTic);}
 				else {invoker.Muzzle = 0;A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);}
 			}
-			#### # 0 {A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);A_OverlayFlags(Lay2, PSPF_INTERPOLATE, false);invoker.InterpolateMuzzle = true;}
+			#### # 0 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, (MRIntW_WeaponSway && !Player.GetPSprite(Lay1).FirstTic));
+				A_OverlayFlags(Lay2, PSPF_INTERPOLATE, (MRIntW_WeaponSway && !Player.GetPSprite(Lay2).FirstTic));
+				
+				invoker.InterpolateMuzzle = true;
+			}
 			Loop;
 		GunLower:
 			#### # 0 A_ClearOverlays(Lay2, Lay2);

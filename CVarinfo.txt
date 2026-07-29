@@ -24,6 +24,8 @@ nosave bool MRIntW_DamageShake = true;//Shake weapon on receiving damage
 nosave bool MRIntW_BaseOffset = false;
 nosave float MRIntW_BaseOffsetX = 0;
 nosave float MRIntW_BaseOffsetY = 0;
+nosave bool MRIntW_WeaponSway = false;
+nosave int MRIntW_WeaponSwayStyle = 0;//0 - Half Life 2, 1 - SW Battlefront 2015
 
 nosave int MRIntW_SwitchAnims = 2;//0 - Vanilla, 1 - Single variant, 2 - Random variants
 user bool MRIntW_IdleAnims = true;//Idle animations
@@ -135,4 +137,4 @@ nosave string MRIntW_PressetCust1 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;
-server noarchive int MRIntW_Version = 2607260;//DDMMYYI
+server noarchive int MRIntW_Version = 2907260;//DDMMYYI
