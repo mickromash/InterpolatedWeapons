@@ -21,6 +21,9 @@ nosave bool MRIntW_VanillaFireBob = false;
 nosave int MRIntW_Bounce = 1;//Bounce weapon on landing; 0 - None, 1 - Regular, 2 - Clear view
 nosave int MRIntW_RunKey = 0;//0 - Do nothing, 1 - Lowering weapon, 2 - Raising weapon
 nosave bool MRIntW_DamageShake = true;//Shake weapon on receiving damage
+nosave bool MRIntW_BaseOffset = false;
+nosave float MRIntW_BaseOffsetX = 0;
+nosave float MRIntW_BaseOffsetY = 0;
 
 nosave int MRIntW_SwitchAnims = 2;//0 - Vanilla, 1 - Single variant, 2 - Random variants
 user bool MRIntW_IdleAnims = true;//Idle animations
