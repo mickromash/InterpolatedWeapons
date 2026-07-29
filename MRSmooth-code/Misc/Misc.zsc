@@ -17,14 +17,18 @@ Extend Class MRIntWeaps_Fist
 		Let PSP = Owner.Player.GetPSprite(PSP_WEAPON);
 		Bool Allowed = (!InStateSequence(PSP.curState, Weap.GetDownState()) && !InStateSequence(PSP.CurState, Weap.FindState("Select")));
 		
+		Bool OfstAdd = false;
+		
 		Weap.BobStyle = MRIntW_BobStyle;
 		Weap.BobRangeX = MRIntW_BobRangeX;
 		Weap.BobRangeY = MRIntW_BobRangeY;
 		
 		if(MRIntW_VanillaFireBob){
-			if(InStateSequence(PSP.CurState, Weap.FindState("Fire"))|| 
+			if(
+				InStateSequence(PSP.CurState, Weap.FindState("Fire"))||
 				InStateSequence(PSP.CurState, Weap.FindState("Select"))||
-				InStateSequence(PSP.CurState, Weap.FindState("Deselect"))){
+				InStateSequence(PSP.CurState, Weap.FindState("Deselect"))
+			){
 				PSP.X = FireBob.X;
 				if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = -FireBob.X;
 				if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.Y = 32+FireBob.Y;
@@ -34,6 +38,8 @@ Extend Class MRIntWeaps_Fist
 				
 				OldFireBob = FireBob;
 				BobInter = 1;
+				
+				OfstAdd = true;
 			}
 			else {
 				FireBob = PlayerPawn(Owner).BobWeapon(2);
@@ -58,10 +64,28 @@ Extend Class MRIntWeaps_Fist
 							OldFireBob = (0,0);
 							BobInter = 0;
 						}
+						
+						OfstAdd = true;
 					}
 					else OldFireBob = (0,0);
 				}
 				else BobInter = 0;
+			}
+		}
+		
+		if(MRIntW_BaseOffset){
+			if(OfstAdd){
+				PSP.X += MRIntW_BaseOffsetX;
+				PSP.OldX = PSP.X;
+				if(Allowed){
+					PSP.Y += MRIntW_BaseOffsetY;
+					PSP.OldY = PSP.Y;
+				}
+			}
+			else {
+				PSP.OldX = PSP.X = MRIntW_BaseOffsetX;
+				if(Allowed)PSP.OldY = PSP.Y = 32+MRIntW_BaseOffsetY;
+				OfstAdd = true;
 			}
 		}
 		
@@ -71,9 +95,10 @@ Extend Class MRIntWeaps_Fist
 				Double Shake = DamageShake;
 				Shake *= .1;
 				
-				if(BobInter==0){
+				if(!OfstAdd){
 					PSP.X = GetAge()%2==0?Shake:-Shake;
 					if(Allowed)PSP.Y = 32+Shake*CFRandom(0, 1);
+					OfstAdd = true;
 				}
 				else {
 					PSP.X += GetAge()%2==0?Shake:-Shake;
@@ -105,11 +130,12 @@ Extend Class MRIntWeaps_Fist
 					else RunKey = 0;
 				}
 				
-				if(BobInter == 0 && DamageShake <= 0)PSP.Y = 32+RunKey*26;
+				if(!OfstAdd)PSP.OldY = PSP.Y = 32+RunKey*26;
 				else {
 					PSP.Y += RunKey*26;
 					PSP.OldY = PSP.Y;
 				}
+				OfstAdd = true;
 			}
 			else RunKey = 0;
 		}
@@ -150,15 +176,18 @@ Extend Class MRIntWeaps_Fist
 		
 		if(Bouncing && Allowed){
 			if(Clear){
-				if(BobInter==0 && DamageShake<=0 && RunKey == 0)PSP.Y = 32 + CurBounce;
+				if(!OfstAdd)PSP.Y = 32 + CurBounce;
 				else {
 					PSP.Y += CurBounce;
 					PSP.OldY = PSP.Y;
 				}
 			}
 			else {
-				if(BobInter==0 && DamageShake<=0 && RunKey == 0)PSP.Y = 32 + CurBounce*.5;
-				else PSP.Y += CurBounce*.5;
+				if(!OfstAdd)PSP.Y = 32 + CurBounce*.5;
+				else {
+					PSP.Y += CurBounce*.5;
+					PSP.OldY = PSP.Y;
+				}
 			}
 		}
 	}
