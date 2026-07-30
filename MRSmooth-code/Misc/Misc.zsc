@@ -225,7 +225,8 @@ Extend Class MRIntWeaps_Fist
 			Case 0://Half Life 2
 				Target = Sin(Owner.Pitch)*10;
 				
-				Sway *= .7;
+				if(abs(Sway.X)>15 || InStateSequence(PSP.CurState, weap.FindState("Fire")))Sway.X *= .8;
+				Sway.Y *= .8;
 				
 				{
 					Vector2 Add = (Owner.Player.Cmd.Yaw, Owner.Player.Cmd.Pitch)*.005;
