@@ -239,7 +239,7 @@ Extend Class MRIntWeaps_Fist
 					PSP.X += (Sway.X-PSP.X)*.5;
 					PSP.OldX = PSP.X;
 					if(Allowed){
-						PSP.Y += ((CurSway.Y + Sway.Y)-PSP.Y)*.5;
+						PSP.Y += ((CurSway.Y + Sway.Y)-PSP.Y+32)*.5;
 						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y);
 					}
 				}
@@ -266,8 +266,17 @@ Extend Class MRIntWeaps_Fist
 				
 				Target = Owner.Player.Cmd.Yaw*.01;
 				
-				Sway.X += (Target - CurSway.X)*CFRandom(.05, .1);
-				//Sway.X = Clamp(Sway.X, -35, 35);
+				Float Add = (Target - CurSway.X);
+				
+				if(Target==0){
+					if(GoingX<1)GoingX += .05;
+					Add *= GoingX*.25;
+				}
+				else {
+					Add *= .1;
+					GoingX = 0;
+				}
+				Sway.X += Add;
 				
 				if((Sway.X<0 && CurSway.X<Target)||
 					(Sway.X>0 && CurSway.X>Target))Sway.X *= .05;
