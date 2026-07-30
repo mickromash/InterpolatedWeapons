@@ -227,8 +227,19 @@ Extend Class MRIntWeaps_Fist
 				
 				Sway *= .7;
 				
-				Sway += (Owner.Player.Cmd.Yaw, Owner.Player.Cmd.Pitch)*.005;
-				if(abs(Owner.Pitch)>89)Sway.Y -= Owner.Player.Cmd.Pitch*.005;
+				{
+					Vector2 Add = (Owner.Player.Cmd.Yaw, Owner.Player.Cmd.Pitch)*.005;
+					if(abs(Owner.Pitch)>89)Add.Y -= Owner.Player.Cmd.Pitch*.005;
+					
+					if((GoingY>0 && Add.X<0)||
+						(GoingY<0 && Add.X>0))GoingX = 0;
+					else if(GoingX<1)GoingX += .15;
+					
+					if(Add.X>0)GoingY = 1;
+					else GoingY = -1;
+					
+					Sway += Add*GoingX;
+				}
 				
 				Sway.X = Clamp(Sway.X, -50, 50);
 				Sway.Y = Clamp(Sway.Y, -50, 50);
