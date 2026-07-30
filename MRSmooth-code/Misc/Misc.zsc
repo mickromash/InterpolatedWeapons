@@ -219,7 +219,7 @@ Extend Class MRIntWeaps_Fist
 	Float GoingX;
 	Void DoSway(int Style)
 	{
-		Double Target = Sin(Owner.Pitch)*10;
+		Double Target;
 		Switch(Style)
 		{
 			Case 0://Half Life 2
@@ -228,6 +228,7 @@ Extend Class MRIntWeaps_Fist
 				Sway *= .7;
 				
 				Sway += (Owner.Player.Cmd.Yaw, Owner.Player.Cmd.Pitch)*.005;
+				if(abs(Owner.Pitch)>89)Sway.Y -= Owner.Player.Cmd.Pitch*.005;
 				
 				Sway.X = Clamp(Sway.X, -50, 50);
 				Sway.Y = Clamp(Sway.Y, -50, 50);
@@ -252,10 +253,10 @@ Extend Class MRIntWeaps_Fist
 				
 				Break;
 			Case 1://Battlefront 2015
-				Target = -Sin(Owner.Pitch)*10;
+				Target = -Sin(Owner.Pitch)*20;
 
 				Sway.Y += (Target - CurSway.Y)*.1;
-				Sway.Y = Clamp(Sway.Y, -3, 3);
+				Sway.Y = Clamp(Sway.Y, -5, 5);
 				
 				if((Sway.Y<0 && CurSway.Y<Target)||
 					(Sway.Y>0 && CurSway.Y>Target))Sway.Y *= .2;
@@ -265,11 +266,11 @@ Extend Class MRIntWeaps_Fist
 				
 				Target = Owner.Player.Cmd.Yaw*.01;
 				
-				Sway.X += (Target - CurSway.X)*.1;
-				Sway.X = Clamp(Sway.X, -10, 10);
+				Sway.X += (Target - CurSway.X)*CFRandom(.05, .1);
+				//Sway.X = Clamp(Sway.X, -35, 35);
 				
 				if((Sway.X<0 && CurSway.X<Target)||
-					(Sway.X>0 && CurSway.X>Target))Sway.X *= .3;
+					(Sway.X>0 && CurSway.X>Target))Sway.X *= .05;
 				
 				CurSway.X += Sway.X;
 
