@@ -4,6 +4,8 @@
 NoTrim "PUN1F0"
 NoTrim "PUN3F0"
 NoTrim "PUN3G0"
+NoTrim "PUN1H0"
+NoTrim "PUN3H0"
 NoTrim "SH1FA0"
 NoTrim "SH1FB0"
 NoTrim "SH12N0"

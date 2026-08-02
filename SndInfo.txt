@@ -7,6 +7,7 @@ MRIntW/FistPunchFleshKnuckles ""
 MRIntW/FistPunchFlesh ""
 MRIntW/FistPunchWallKnuckles ""
 MRIntW/FistPunchWall ""
+MRIntW/FistPuch dspunch
 
 MRIntW/PistolSelect ""
 MRIntW/PistolReload "Sounds/MRIntW/dsrifclk.wav"

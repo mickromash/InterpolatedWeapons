@@ -30,6 +30,15 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Owner.Player.GetPSprite(Lay2).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay2).Y = Max(Owner.Player.GetPSprite(Lay2).Y, 0);
 		}
+		
+		if(Owner.Player.ReadyWeapon != Self)Return;
+		
+		if(Owner.Player.OldButtons&BT_ALTATTACK){
+			if(Muzzle<1)Muzzle += .2;
+		}
+		else if(Owner.Player.Cmd.Buttons&BT_ALTATTACK){
+			if(Muzzle<2)Muzzle += 1;
+		}
 	}
 
 	action void A_FirePlasma()
@@ -113,10 +122,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			PLSO # 1{
 				if(invoker.InterpolateMuzzle==1){
 					Player.GetPSprite(Lay2).OldX = Player.GetPSprite(Lay1).OldX;
-					Player.GetPSprite(Lay2).OldY = Player.GetPSprite(Lay1).OldY + invoker.Muzzle*3;
+					Player.GetPSprite(Lay2).OldY = Player.GetPSprite(Lay1).OldY + Min(2, invoker.Muzzle)*3;
 					Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X;
-					Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y + invoker.Muzzle*3;
-					Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale + (.01,.01)*invoker.Muzzle;
+					Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y + Min(2, invoker.Muzzle)*3;
+					Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale + (.01,.01)*Min(2, invoker.Muzzle);
 					Player.GetPSprite(Lay2).Scale.X -= invoker.BodyScal;
 					Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
 					Player.GetPSprite(Lay2).Pivot = Player.GetPSprite(Lay1).Pivot;
@@ -302,7 +311,9 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		GunWait:
 			PL1G A 1 {
 				A_IdleAnimation(Lay1);
-				if(invoker.Muzzle>.05)invoker.Muzzle *= invoker.IdleEnd?.9:.5;
+				if(invoker.Muzzle>.05){
+					if(!(Player.Cmd.Buttons&BT_ALTATTACK))invoker.Muzzle *= invoker.IdleEnd?.9:.5;
+				}
 				else invoker.IdleEnd = invoker.Muzzle = 0;
 			}
 			#### # 0 {
