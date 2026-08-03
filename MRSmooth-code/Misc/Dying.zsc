@@ -190,7 +190,7 @@ Extend Class MRIntWeaps_Fist
 	
 	States
 	{
-		RightHandDie:
+		SecndHandDie:
 			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
 			PUN1 A 0 A_SetHandsSprite();
 			#### ### 1 {
@@ -198,8 +198,8 @@ Extend Class MRIntWeaps_Fist
 				A_OverlayScale(SecndLay, .2, .2, WOF_ADD);
 				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
 			}
-			#### # 0 A_Overlay(MainLay, "LeftHandDead");
-		RightHandDead:
+			#### # 0 A_Overlay(MainLay, "MainHandDead");
+		SecndHandDead:
 			#### # 0 {
 				invoker.DeadAngle = Angle;
 			}
@@ -211,7 +211,7 @@ Extend Class MRIntWeaps_Fist
 				A_OverlayScale(SecndLay, 1.1, 1.05);
 			}
 			Wait;
-		RightHandDead1:
+		SecndHandDead1:
 			MRD1 G 1 {
 				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
 				if(GetCVar("MRIntW_RightPunch")){
@@ -228,7 +228,7 @@ Extend Class MRIntWeaps_Fist
 			}
 			Wait;
 			
-		LeftHandDie:
+		MainHandDie:
 			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
 			PUN1 D 0 A_SetHandsSprite();
 			#### ### 1 {
@@ -236,7 +236,7 @@ Extend Class MRIntWeaps_Fist
 				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
 			}
 			#### D 1 A_OverlayOffset(MainLay, -3, Player.ViewZ-FloorZ, WOF_INTERPOLATE);
-		LeftHandDead:
+		MainHandDead:
 			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
 			PUN1 D 1 {
 				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
