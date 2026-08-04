@@ -34,13 +34,15 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 	{
 		Array<String> CVars;
 		
-		foreach( CVa : CVarsId){
+		For(int i=0;i<CVarsId.Size();i++)CVars.Push("");
+		
+		For(int i=0;i<CVarsId.Size();i++){
+			String CVa = CVarsId[i];
 			int Index = CVa.Mid(CVa.IndexOf(" ")+1).ToInt();
 			CVa = CVa.Left(CVa.IndexOf(" "));
-			
-			CVars.Insert(Index, CVa);
+			CVars[Index] = CVa;
 		}
-				
+						
 		String Presset;
 		
 		For(int i=0;i<CVars.Size();i++){
