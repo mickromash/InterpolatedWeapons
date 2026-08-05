@@ -77,3 +77,4 @@ MRIntW/FlyBuzz "Sounds/MRIntW/MRIntFly.wav"
 $limit MRIntW/FlyBuzz 2
 
 MRIntW/Message1 "Sounds/MRIntW/SBNCE1.ogg"
+MRIntW/Crash dssecret
