@@ -248,6 +248,11 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						int Size = CFRandom(.25, 4);
 						MRSpawnParticle(Color(255,Col,int(Col*.5)), ParTex, SPF_FULLBRIGHT, STYLE_Add, CRandom(19, 25), Size, Pos, Vel, (0,0,-Size*.1), SizeStep:-(Size/21));
 					}
+					
+					if(DeathTick==2){
+						int G = CRandom(30, 70);
+						MRSpawnParticle(Color(255,G,CRandom(10, G*.5)), ParTex, SPF_REPLACE|SPF_FULLBRIGHT, STYLE_Add, 8, 20, Master.Pos + (0,0,5), SizeStep: CRandom(25, 30));
+					}
 				}
 				Return;
 			Case 1://Plasma

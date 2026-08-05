@@ -411,7 +411,7 @@ Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 			Double Ang = CRandom(-30,30);
 			MRSpawnParticle(Color(30,30+CRandom(0, 5)*2,30), SmkTex, SPF_ROLL, STYLE_None, CRandom(40, 60)*Min(1, PAmnt), CRandom(32, 35), Master.Pos + (0,0,16), (Actor.AngleToVector(FaceCam(Master)+Ang*2, 2), CFRandom(-.5, 2))+Master.Vel*.25, Alpha: CFRandom(.7, 1), SizeStep: CFRandom(6.3, 7)/PAmnt, Roll: CRandom(0, 360), RollVel: -Ang*.1);
 		}
-		if(DeathTick<7 && DeathTick%2==0){
+		if(DeathTick<8 && DeathTick%2!=0){
 			For(int i=CRandom(0, 10)*PAmnt;i<30*PAmnt;i++){
 				Vector3 Pos = Master.Pos + (CRandom(-4, 4), CRandom(-4, 4), Master.Height*.5);
 				
@@ -425,7 +425,7 @@ Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 				MRSpawnParticle(Color(255,Col,int(Col*.5)), ParTex, SPF_REPLACE|SPF_FULLBRIGHT, STYLE_Add, CRandom(70, 80), Size, Pos, Vel+Master.Vel, (0,0,-Size*.1), SizeStep:-(Size/21));
 			}
 		}
-		if(DeathTick<5 && DeathTick%5==0){
+		if(DeathTick<5){
 			For(int i=CRandom(0, 4)*PAmnt;i<6*PAmnt;i++){
 				Vector3 Pos = Master.Pos + (CRandom(-4, 4), CRandom(-4, 4), 32);
 				
@@ -435,9 +435,14 @@ Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 				
 				int Col = 25*CRandom(2, 5);
 				
-				int Size = CFRandom(2, 7)*2;
+				int Size = CFRandom(1, 4)*2;
 				MRSpawnParticle(Color(Col,255,Col), ParTex, SPF_REPLACE|SPF_FULLBRIGHT, STYLE_Add, 50, Size, Pos, Vel*2+Master.Vel, (0,0,-.5-Size*.05), SizeStep:-(Size/21));
 			}
+		}
+		
+		if(DeathTick==7){
+			int G = CRandom(30, 90);
+			MRSpawnParticle(Color(255,G,CRandom(10, G*.5)), ParTex, SPF_REPLACE|SPF_FULLBRIGHT, STYLE_Add, 8, 20, Master.Pos + (0,0,16), SizeStep: CRandom(24, 30));
 		}
 	}
 	
