@@ -54,7 +54,21 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 	
 	Void SpawnRealCasing()
 	{
-		if(MRIntW_Casings<2)Return;
+		if(MRIntW_Casings<2){
+			Let a = New('MRIntWeaps_CasingSound');
+			a.Buckshot = true;
+			
+			a.Pos = Owner.Pos.XY;
+			
+			a.Direction = AngleToVector(Owner.Angle+90, 8);
+			a.Direction += AngleToVector(Owner.Angle, -6)*Sin(Owner.Pitch);
+			a.Direction *= CFRandom(.5, 1);
+			
+			a.Pos += a.Direction*2;
+			
+			a.Start = Owner.Height/CFRandom(3.6, 4.6);
+			Return;
+		}
 		
 		Vector3 Pos;
 		Pos.XY += AngleToVector(Owner.Angle+90, 7);

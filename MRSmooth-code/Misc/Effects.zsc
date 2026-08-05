@@ -271,6 +271,47 @@ Class MRIntWeaps_Casing: VisualThinker
 	}
 }
 
+Class MRIntWeaps_CasingSound: Thinker
+{
+	Vector2 Pos, Direction;
+	int Age, Start;
+	
+	Bool Buckshot;
+	Float Volume;
+	String BounceSnd, LandSnd;
+	
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		Volume = MRIntW_CasingsVolume*.5;
+		
+		if(BuckShot){
+			BounceSnd = "MRIntW/ShotgunCasingBounce";
+			LandSnd = "MRIntW/ShotgunCasingLand";
+		}
+		else {
+			BounceSnd = LandSnd = "MRIntW/PistolCasing";
+		}
+	}
+	
+	Override Void Tick()
+	{
+		Super.Tick();
+		Age++;
+		
+		Pos += Direction;
+		
+		if(Age%Start==0){
+			Start *= CFRandom(0, .9);
+			Direction *= .8;
+			if(Level.PointInSector(Pos))S_StartSoundAt((Pos, Level.PointInSector(Pos).CenterFloor()), Start>2?BounceSnd:LandSnd, CHAN_AUTO, Volume:Volume, Pitch:CFRandom(.95, 1.05)*i_timescale);
+		}
+		
+		if(Start<3)Destroy();
+	}
+}
+
 Class MRIntWeaps_SmokeContainer: Object play
 {
 	Vector3 Vel;
@@ -387,7 +428,20 @@ Extend Class MRIntWeaps_Pistol
 	
 	Void SpawnRealCasing()
 	{
-		if(MRIntW_Casings<2)Return;
+		if(MRIntW_Casings<2){
+			Let a = New('MRIntWeaps_CasingSound');
+			
+			a.Pos = Owner.Pos.XY;
+			
+			a.Direction = AngleToVector(Owner.Angle-90, 4);
+			a.Direction += AngleToVector(Owner.Angle, -4)*Sin(Owner.Pitch);
+			a.Direction *= CFRandom(.5, 1);
+			
+			a.Pos += a.Direction*2;
+			
+			a.Start = Owner.Height/CFRandom(4, 5);
+			Return;
+		}
 		
 		Vector3 Pos;
 		Pos.XY += AngleToVector(Owner.Angle-90, 5);
@@ -534,7 +588,21 @@ Extend Class MRIntWeaps_Shotgun
 	
 	Void SpawnRealCasing()
 	{
-		if(MRIntW_Casings<2)Return;
+		if(MRIntW_Casings<2){
+			Let a = New('MRIntWeaps_CasingSound');
+			a.Buckshot = true;
+			
+			a.Pos = Owner.Pos.XY;
+			
+			a.Direction = AngleToVector(Owner.Angle-90, 7);
+			a.Direction += AngleToVector(Owner.Angle, -9)*Sin(Owner.Pitch);
+			a.Direction *= CFRandom(.5, 1);
+			
+			a.Pos += a.Direction*2;
+			
+			a.Start = Owner.Height/CFRandom(4, 5);
+			Return;
+		}
 		
 		Vector3 Pos;
 		Pos.XY += AngleToVector(Owner.Angle-90, 7);
@@ -807,7 +875,20 @@ Extend Class MRIntWeaps_Chaingun
 	
 	Void SpawnRealCasing()
 	{
-		if(MRIntW_Casings<2)Return;
+		if(MRIntW_Casings<2){
+			Let a = New('MRIntWeaps_CasingSound');
+			
+			a.Pos = Owner.Pos.XY;
+			
+			a.Direction = AngleToVector(Owner.Angle-90, 5);
+			a.Direction += AngleToVector(Owner.Angle, -5)*Sin(Owner.Pitch);
+			a.Direction *= CFRandom(.5, 1);
+			
+			a.Pos += a.Direction*2;
+			
+			a.Start = Owner.Height/CFRandom(4, 5);
+			Return;
+		}
 		
 		Vector3 Pos;
 		Pos.XY += AngleToVector(Owner.Angle-90, 5);
