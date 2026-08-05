@@ -191,7 +191,7 @@ Class MRIntWeaps_Handler: EventHandler
 	{
 		ReduceCasingsCluster();
 	}
-	
+		
 	Override Void WorldThingDamaged(WorldEvent e)
 	{
 		if(!e.Thing || !e.Inflictor)Return;
@@ -242,6 +242,13 @@ Class MRIntWeaps_Handler: EventHandler
 			Console.Printf("Casings: "..Casings.Size());
 			Return;
 		}
+		if(e.name ~== "MRIntWeaps_ClearCasings")
+		{
+			foreach(Casing : Casings){
+				if(Casing)Casing.Destroy();
+			}
+			Casings.Clear();
+		}
 		if(e.name ~== "MRIntWeaps_RandomGlovesColor"){
 			Color Rand = Color(Random(0,255), Random(0,255), Random(0,255));
 			
@@ -256,19 +263,27 @@ Class MRIntWeaps_Handler: EventHandler
 			Switch(e.Args[0])
 			{
 				Default:
+					Console.Printf("Type \cgMRIntWeaps_Crash #\c- and replace \cg#\c- with followed number:\n(1-4 - \cvVM abort\c-, 5-6 - \crEngine crash\c-)\n1 - reading from null actor\n2 - division by 0\n3 - ThrowAbortException()\n4 - player actor destruction\n5 - infinite loop\n6 - abort_m engine crash");
+					Return;
+				//VM abort
+				Case 1:
 					Actor mo;
 					mo.Target.GetClassName();
 					Return;
-				Case 1:
+				Case 2:
 					int Zero = 0;
 					5/Zero;
 					Return;
-				Case 2:
+				Case 3:
 					ThrowAbortException("Crash.");
 					Return;
-				Case 3:
-					While(true){}
 				Case 4:
+					Players[ConsolePlayer].mo.Destroy();
+					Return;
+				//Engine crash
+				Case 5:
+					While(true){}
+				Case 6:
 					Plr.CurSector = null;
 					Plr.Tick();
 					let a = 'fsdgshrehfgwgfheg';
@@ -279,9 +294,6 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Void UpdateOnStartupParticles()
 	{
-		//For(int i=0;i<PartThinkers.Size();i++){
-		//	if(PartThinkers[i])PartThinkers[i].Destroy();
-		//}
 		foreach(PartThink : PartThinkers)
 			if(PartThink)PartThink.Destroy();
 		PartThinkers.Clear();
@@ -353,11 +365,17 @@ Class MRIntWeaps_Handler: EventHandler
 			if(Decorations)SpawnDecorationParticleEffects(mo);
 		}
 	}
+		
+	Override Void WorldThingDestroyed(WorldEvent e)
+	{
+		if(e.Thing == Players[ConsolePlayer].Camera && GameState != 0)NotCrash = true;
+	}
 	
-	Bool Uninstalled;
+	Bool Uninstalled, NotCrash;
 	Override Void OnDestroy()
 	{
-		if(gameState == GS_FullConsole){
+		if(GameState == GS_FullConsole && !NotCrash){
+			S_StartSound("MRIntW/Crash", CHAN_AUTO, CHANF_UI, pitch:CFRandom(3.8, 4));
 			Console.Printf(StringTable.Localize("$MRIntW_VMAbortMessage"), MRIntW_Version);
 			Return;
 		}
@@ -377,6 +395,8 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Override Void WorldLoaded(WorldEvent e)
 	{
+		NotCrash = false;
+		
 		LoadingDelay = 3;
 		For(int i=0;i<MAXPLAYERS;i++){
 			if(!Players[i].mo)Continue;

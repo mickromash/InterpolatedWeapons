@@ -402,4 +402,5 @@ MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- Это сохранение
 MRIntW_VMAbortMessage = "\n\cdВерсия Interpolated Weapons: \c-%i\n"
 						"\cdInterpolated Weapons:\c- Если текст сообщения ошибки содержит \cg\"MR\" \c-или\cg \"MRIntWeaps_\"\c-\n"
 						"пожалуйста введите screenshot в консоль и отправьте скрин в issues на github Interpolated Weapons\n"
-						"или на страницу мода на doom power.";
+						"или на страницу мода на doom power.\n"
+						"если никакого текста ошибки тут нет, а ну извините тогда";
