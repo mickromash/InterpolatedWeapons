@@ -2,6 +2,7 @@ alias MRIntW_LowerGun "NetEvent MRIntWeaps_LowerGun"
 alias +MRIntW_Slowmo "i_TimeScale .2"
 alias -MRIntW_Slowmo "i_TimeScale 1"
 
+alias MRIntW_ClearCasings "NetEvent MRIntWeaps_ClearCasings"
 alias MRIntW_Take "NetEvent MRIntWeaps_Take"
 alias MRIntW_Give "NetEvent MRIntWeaps_Give"
 alias MRIntW_Uninstall "NetEvent MRIntWeaps_Uninstall"
