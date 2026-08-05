@@ -374,4 +374,16 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	{
 		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
 	}
+	
+	Action Void A_DoVanillaDisplay()
+	{
+		if(!MRIntW_DisplayVanilla)Return;
+		
+		A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+		
+		if(GetRenderStyle()==STYLE_NORMAL){
+			A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
+			Player.GetPSprite(OverlayId()).Alpha = Min(Player.GetPSprite(OverlayId()).Alpha, .5);
+		}
+	}
 }

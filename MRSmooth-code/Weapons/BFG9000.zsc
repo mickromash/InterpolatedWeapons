@@ -552,6 +552,18 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	{
 		if(CountInv("PowerStrength"))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
 	}
+	
+	Action Void A_DoVanillaDisplay()
+	{
+		if(!MRIntW_DisplayVanilla)Return;
+		
+		A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+		
+		if(GetRenderStyle()==STYLE_NORMAL){
+			A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
+			Player.GetPSprite(OverlayId()).Alpha = Min(Player.GetPSprite(OverlayId()).Alpha, .5);
+		}
+	}
 }
 
 Class MRIntWeaps_BFGBall : BFGBall

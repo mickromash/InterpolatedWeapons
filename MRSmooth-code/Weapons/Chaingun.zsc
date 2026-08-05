@@ -270,6 +270,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	States{
 		Muzzle://End of the barrel behind the furthest disk
 			CH1M # 0 {
+				A_DoVanillaDisplay();
 				A_OverlayPivot(OverlayId(), .5, 1);
 			}
 			#### # 1 {
@@ -288,11 +289,17 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Wait;
 		
 		Shadow://Shadow from barrel on the disk
-			#### # 0 A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+			#### # 0 {
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_DoVanillaDisplay();
+			}
 			CH1S A 1 A_BarrelPos(OverlayId()-BarrShadow0, BarrShadow0, false, true);
 			Wait;
 		ShadowOver://Shadow from barrel on the disk and other barrels
-			#### # 0 A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+			#### # 0 {
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_DoVanillaDisplay();
+			}
 			CH1S A 1 A_BarrelOverPos(OverlayId()-BarrShadowOver0, BarrShadowOver0, false);
 			Wait;
 		Reflection:
@@ -300,14 +307,18 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			#### # 1 A_BarrelPos(OverlayId()-BarrReflct0, BarrReflct0, reflection: true);
 			Wait;
 		Barrel://One of the barrels
-			CH1B # 1;
+			CH1B # 1 A_DoVanillaDisplay();
 			#### # 1 A_BarrelPos(OverlayId()-Barrel0);
 			Wait;
 		BarrelOver://In case the barrel must be drawn on top of the other barrel
-			CH1B # 0 A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+			CH1B # 0 {
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_DoVanillaDisplay();
+			}
 			#### # 1 A_BarrelOverPos(OverlayId()-BarrelOver0);
 			Wait;
 		Ring://Front disk
+			CH1R A 0 A_DoVanillaDisplay();
 			CH1R # 1 {
 				Player.GetPSprite(OverlayId()).Frame = Player.GetPSprite(Lay1).Frame;
 				Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
@@ -320,6 +331,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			
 		GunRaise:
 			TNT1 A 3 {
+				A_DoVanillaDisplay();
 				invoker.InterpolateBarrels = true;
 				invoker.HandPos = 1;
 				A_Overlay(Muzzle0, "Muzzle");
@@ -444,6 +456,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Loop;
 		GunLower:
 			CH1G # 1 {
+				A_DoVanillaDisplay();
 				A_ClearOverlays(AnimLay, AnimLay);
 				Double Ofst = 32-Player.GetPSprite(Lay1).Y;
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayPivot(i, .5, 0);
@@ -648,6 +661,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		
 		HandIdle1:
 			CH1H A 1{
+				A_DoVanillaDisplay();
 				invoker.HandPos = 1;
 				A_OverlayPivot(Hand, 1, 0);
 				A_OverlayOffset(Hand, -5*invoker.HandPos, 20*invoker.HandPos);
@@ -853,7 +867,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				
 				if(MRIntW_DisplayVanilla){
 					Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("CHGFA0");
-					Player.GetPSprite(OverlayId()).Frame = 1;
+					Player.GetPSprite(OverlayId()).Frame = Player.GetPSprite(PSP_WEAPON).Frame;
 				}
 			}
 			Goto LightDone;
@@ -898,5 +912,17 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Action Void A_BersShake()
 	{
 		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
+	}
+	
+	Action Void A_DoVanillaDisplay()
+	{
+		if(!MRIntW_DisplayVanilla)Return;
+		
+		A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+		
+		if(GetRenderStyle()==STYLE_NORMAL){
+			A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
+			Player.GetPSprite(OverlayId()).Alpha = Min(Player.GetPSprite(OverlayId()).Alpha, .5);
+		}
 	}
 }
