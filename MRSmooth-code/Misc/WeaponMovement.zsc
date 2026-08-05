@@ -268,23 +268,50 @@ Extend Class MRIntWeaps_Fist
 				
 				Break;
 			Case 1://Battlefront 2015
+				
+				Float Mult = 1;
+				
+				Switch(Owner.Player.ReadyWeapon.GetClassName()){
+					Case 'MRIntWeaps_Fist':
+						Mult = .3;
+						Break;
+					Case 'MRIntWeaps_Pistol':
+						Mult = -.5;
+						Break;
+					Case 'MRIntWeaps_Shotgun':
+					Case 'MRIntWeaps_PlasmaRifle':
+						Mult = .8;
+						Break;
+					Case 'MRIntWeaps_SuperShotgun':
+						Mult = 1;
+						Break;
+					Case 'MRIntWeaps_Chaingun':
+						Mult = .4;
+						Break;
+					Case 'MRIntWeaps_RocketLauncher':
+						Mult = .5;
+						Break;
+					Case 'MRIntWeaps_BFG9000':
+						Mult = .1;
+						Break;
+				}
+				
 				Target = -Sin(Owner.Pitch)*20;
 
 				Sway.Y += (Target - CurSway.Y)*.1;
 				Sway.Y = Clamp(Sway.Y, -5, 5);
 				
 				if((Sway.Y<0 && CurSway.Y<Target)||
-					(Sway.Y>0 && CurSway.Y>Target))Sway.Y *= .2;
+					(Sway.Y>0 && CurSway.Y>Target))Sway.Y *= .2*abs(Mult);
 				
 				CurSway.Y += Sway.Y;
 				
-				
-				Target = Owner.Player.Cmd.Yaw*.01;
+				Target = Owner.Player.Cmd.Yaw*.01*Mult;
 				
 				Float Add = (Target - CurSway.X);
 				
 				if(Target==0){
-					if(GoingX<1)GoingX += .05;
+					if(GoingX<1)GoingX += .1*abs(Mult*.5);
 					Add *= GoingX*.25;
 				}
 				else {
