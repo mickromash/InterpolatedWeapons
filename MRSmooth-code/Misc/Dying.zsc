@@ -191,7 +191,10 @@ Extend Class MRIntWeaps_Fist
 	States
 	{
 		SecndHandDie:
-			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
+			#### # 0 {
+				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
+				A_ClearOverlays(MainLay+1, MainLay+10);
+			}
 			PUN1 A 0 A_SetHandsSprite();
 			#### ### 1 {
 				A_OverlayOffset(SecndLay, 8, 4, WOF_ADD);

@@ -1,6 +1,8 @@
 Extend Class MRIntWeaps_Fist
 {
 	Actor LineTarg;
+	int TargLastHP, TargTargLastHP, Leading, Attacking;
+	Vector2 FigOffset[2];
 	
 	Action Void A_CopyMaster(int Master, int Lay=0, Vector2 AddOffset=(0,0), Double AddAngle=0)
 	{
@@ -27,17 +29,17 @@ Extend Class MRIntWeaps_Fist
 				Player.GetPSprite(OverlayId()).Translation = invoker.GlovesTrans;
 				invoker.SecndHand = (0,0);
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
-				if(Player.FindPSprite(MainLay))Player.SetPsprite(MainLay, invoker.FindState("MainHandCoolIdle"));
-				else Player.SetPsprite(MainLay, invoker.FindState("MainHandCoolIdlePre"));
 				
 				invoker.IdleState = 1;
 			}
 			#### # 0 {
 				if(GetCVar("MRIntW_Braindead") && (Health==67 || (FindInventory("BasicArmor") && FindInventory("BasicArmor").Amount==67) || int(Level.Time/35)%67==0))Return ResolveState("SecndHandCoolIdle666");
 				
-				/*if(Health==69 || Health==169 || (FindInventory("BasicArmor") && (FindInventory("BasicArmor").Amount==69 || FindInventory("BasicArmor").Amount==169)) || int(Level.Time/35)%69==0)Return ResolveState("SecndHandCoolIdleRomero");
+				if(Health==69 || Health==169 || (FindInventory("BasicArmor") && (FindInventory("BasicArmor").Amount==69 || FindInventory("BasicArmor").Amount==169)) || int(Level.Time/35)%69==0)Return ResolveState("SecndHandCoolIdleRomero");
 				
+				A_ClearOverlays(MainLay+1, MainLay+10);
 				invoker.LineTarg = Null;
+				invoker.Leading = invoker.TargLastHP = invoker.TargTargLastHP = invoker.Attacking = 0;
 				FLineTraceData CheckAct;
 				Double PZ = height * .5 - floorclip + Player.mo.AttackZOffset*player.crouchFactor;
 				LineTrace(Angle, 1500, Pitch, 0, PZ, 0, 0, CheckAct);
@@ -46,8 +48,10 @@ Extend Class MRIntWeaps_Fist
 					if(CheckAct.HitActor.Target && CheckAct.HitActor.Target != Self)invoker.LineTarg = CheckAct.HitActor;
 				
 					if(invoker.LineTarg)Return ResolveState("SecndHandInfight");
-				}*/
+				}
 				
+				if(Player.FindPSprite(MainLay))Player.SetPsprite(MainLay, invoker.FindState("MainHandCoolIdle"));
+				else Player.SetPsprite(MainLay, invoker.FindState("MainHandCoolIdlePre"));
 				/*Switch(CRandom(1, 1))
 				{
 					Case 1:
@@ -223,22 +227,47 @@ Extend Class MRIntWeaps_Fist
 		MainHandCoolIdleEnd:
 			#### ###### 1 A_OverlayOffset(OverlayId(), -10, 10, WOF_ADD);
 			Stop;
-			
+		
+		
+		MainHandInfightStart:
+			#### # 1;
+			Wait;
 		SecndHandInfight:
-			PUN1 D 1 {
+			#### # 1 {
+				Player.SetPsprite(MainLay, invoker.FindState("MainHandInfightStart"));
+				A_OverlayOffset(SecndLay, 0, 5, WOF_ADD);
+				A_OverlayOffset(MainLay, 0, 5, WOF_ADD);
+			}
+			#### #### 1 {
+				A_OverlayOffset(SecndLay, 0, 14, WOF_ADD);
+				A_OverlayOffset(MainLay, 0, 14, WOF_ADD);
+			}
+			#### # 2;
+			PUN1 L 1 {
 				A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, GetCVar("MRIntW_RightPunch"));
 				A_SetHandsSprite();
 				Player.GetPSprite(SecndLay).Translation = invoker.GlovesTrans;
 				A_OverlayPivot(OverlayId(), 1, .2);
 				A_OverlayRotate(OverlayId(), 90);
+				A_OverlayScale(OverlayId(), 1.2, 1.2);
+				
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, false);
 			}
-			#### # 0 {
+			#### # 1 {
 				A_Overlay(MainLay+1, "SecndHandInfightOver");
 				A_Overlay(MainLay, "InfightActor");
 				
 				A_Overlay(MainLay+2, "MainHandInfight");
+				Player.GetPSprite(MainLay+2).X = Player.GetPSprite(SecndLay).X;
+				Player.GetPSprite(MainLay+2).Y = Player.GetPSprite(SecndLay).Y;
+				Player.GetPSprite(MainLay+2).OldX = Player.GetPSprite(SecndLay).OldX;
+				Player.GetPSprite(MainLay+2).OldY = Player.GetPSprite(SecndLay).OldY;
 				A_Overlay(MainLay+4, "SecndHandInfightOver");
 				A_Overlay(MainLay+3, "InfightActor");
+			}
+			#### ###### 1 {
+				A_OverlayOffset(SecndLay, 0, -7, WOF_ADD);
+				A_OverlayOffset(MainLay+2, 0, -7, WOF_ADD);
 			}
 			#### # 1 {
 				A_OverlayOffset(SecndLay, 0, -40, WOF_INTERPOLATE);
@@ -246,107 +275,318 @@ Extend Class MRIntWeaps_Fist
 			}
 		SecndHandInfightLoop:
 			#### # 1{
-				if(!invoker.LineTarg || !invoker.LineTarg.Target || invoker.LineTarg.Health<1 || invoker.LineTarg.Target.Health<1){
-					A_Overlay(SecndLay, "SecndHandWait");
-					A_ClearOverlays(MainLay, MainLay+4);
-				}
+				if(!invoker.LineTarg || !invoker.LineTarg.Target || invoker.LineTarg.Health<1 || invoker.LineTarg.Target.Health<1 || !invoker.LineTarg.Target.bIsMonster)
+					Player.SetPsprite(OverlayId(), invoker.FindState("SecndHandInfightEnd"));
 				
-				if(
-					!Player.FindPSprite(OverlayId()+6) && Player.GetPSprite(OverlayId()).Frame != 10 && (
+				if(!Player.FindPSprite(OverlayId()+6) && Player.GetPSprite(OverlayId()).Frame != 10 && invoker.LineTarg.Target &&(
 					InStateSequence(invoker.LineTarg.CurState, invoker.LineTarg.FindState("Missile"))||
 					InStateSequence(invoker.LineTarg.CurState, invoker.LineTarg.FindState("Melee")))
-				)Player.SetPsprite(OverlayId()+6, invoker.FindState("HandInfightAttack"));
+				){
+					Player.SetPsprite(OverlayId()+6, invoker.FindState("HandInfightAttack"));
+					if(invoker.Leading==0)invoker.Leading = 1;
+				}
+				if(!Player.FindPSprite(OverlayId()+6) &&invoker.TargLastHP > invoker.LineTarg.Health)
+				{
+					if(invoker.LineTarg.Health<1)Player.SetPsprite(OverlayId()+6, invoker.FindState("HandInfightDeath"));
+					else Player.SetPsprite(OverlayId()+6, invoker.FindState("HandInfightPain"));
+				}
+				if(!Player.FindPSprite(OverlayId()+6) && invoker.Attacking < 0)
+				{
+					Player.SetPsprite(OverlayId()+6, invoker.FindState("HandInfightDodge"));
+				}
 				
-				if(
-					!Player.FindPSprite(MainLay+2+6) && Player.GetPSprite(MainLay+2).Frame != 10 && (
+				
+				if(!Player.FindPSprite(MainLay+2+6) && Player.GetPSprite(MainLay+2).Frame != 10 && invoker.LineTarg.Target &&
+					invoker.LineTarg.Target.Target == invoker.LineTarg &&(
 					InStateSequence(invoker.LineTarg.Target.CurState, invoker.LineTarg.Target.FindState("Missile"))||
 					InStateSequence(invoker.LineTarg.Target.CurState, invoker.LineTarg.Target.FindState("Melee")))
-				)Player.SetPsprite(MainLay+2+6, invoker.FindState("HandInfightAttack"));
-				
+				){
+					Player.SetPsprite(MainLay+2+6, invoker.FindState("HandInfightAttack"));
+					if(invoker.Leading == 0)invoker.Leading = -1;
+				}
+				if(!Player.FindPSprite(MainLay+2+6) && invoker.TargTargLastHP > invoker.LineTarg.Target.Health)
+				{
+					if(invoker.LineTarg.Target.Health<1)Player.SetPsprite(MainLay+2+6, invoker.FindState("HandInfightDeath"));
+					else Player.SetPsprite(MainLay+2+6, invoker.FindState("HandInfightPain"));
+				}
+				if(!Player.FindPSprite(MainLay+2+6) && invoker.Attacking > 0)
+				{
+					Player.SetPsprite(MainLay+2+6, invoker.FindState("HandInfightDodge"));
+				}
 			}
 			Wait;
+		SecndHandInfightEnd:
+			#### ################################### 1 {
+				if(!Player.FindPSprite(OverlayId()+6)){
+					A_OverlayOffset(SecndLay, 0, 7, WOF_ADD);
+					if(Player.GetPSprite(SecndLay).Y < Player.GetPSprite(MainLay+2).Y)
+						Player.GetPSprite(SecndLay).Y = Player.GetPSprite(MainLay+2).Y+(Player.GetPSprite(SecndLay).Y-Player.GetPSprite(MainLay+2).Y)*.8;
+					if(invoker.LineTarg.Health<1)Player.GetPSprite(SecndLay).X = CFRandom(-4, 4)*(GetAge()%2==0?1:-1);
+				}
+				if(!Player.FindPSprite(MainLay+2+6)){
+					A_OverlayOffset(MainLay+2, 0, 7, WOF_ADD);
+					if(Player.GetPSprite(MainLay+2).Y < Player.GetPSprite(SecndLay).Y)
+						Player.GetPSprite(MainLay+2).Y = Player.GetPSprite(SecndLay).Y+(Player.GetPSprite(MainLay+2).Y-Player.GetPSprite(SecndLay).Y)*.8;
+					
+					if(invoker.LineTarg.Health>0 || (invoker.LineTarg.Target && invoker.LineTarg.Target.Health<1))Player.GetPSprite(MainLay+2).X = CFRandom(-4, 4)*(GetAge()%2==0?1:-1);
+				}
+				
+				A_CopyMaster(OverlayId(), MainLay, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId(), MainLay+1);
+				
+				A_CopyMaster(OverlayId(), MainLay+3, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId(), MainLay+4);
+			}
+			#### # 3 {
+				A_ClearOverlays(MainLay, MainLay+8);
+				A_OverlayScale(OverlayId(), 1, 1);
+			}
+			Goto SecndHandRaise;
+			
 		HandInfightAttack:
+			#### # 0 {
+				if(OverlayId()-6==SecndLay && invoker.LineTarg)A_StartSound(invoker.LineTarg.AttackSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
+				else if(invoker.LineTarg && invoker.LineTarg.Target)A_StartSound(invoker.LineTarg.Target.AttackSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
+			}
 			#### ### 1 {
-				A_OverlayOffset(OverlayId()-6, -4, -15, WOF_ADD);
-				A_OverlayRotate(OverlayId()-6, -4, WOF_ADD);
+				A_OverlayOffset(OverlayId()-6, -20, -10, WOF_ADD);
+				A_OverlayRotate(OverlayId()-6, 1, WOF_ADD);
 				
 				A_OverlayFlags(OverlayId()-6, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-6).FirstTic);
 				A_OverlayFlags(OverlayId()-4, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-4).FirstTic);
-				A_CopyMaster(OverlayId()-6, OverlayId()-5, (90, 190), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
 				A_CopyMaster(OverlayId()-6, OverlayId()-4);
 			}
 			#### # 1 {
-				A_OverlayOffset(OverlayId()-6, -2, -4, WOF_ADD);
-				A_OverlayRotate(OverlayId()-6, -2, WOF_ADD);
-				A_CopyMaster(OverlayId()-6, OverlayId()-5, (90, 190), -90);
+				A_OverlayOffset(OverlayId()-6, -5, -4, WOF_ADD);
+				A_OverlayRotate(OverlayId()-6, .5, WOF_ADD);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
 				A_CopyMaster(OverlayId()-6, OverlayId()-4);
 			}
-			#### # 1;
+			#### # 1 A_StartSound("MRIntW/FistSwing", CHAN_AUTO, CHANF_LOCAL, .4, pitch:CFRandom(2, 2.1)*i_timescale);
 			#### ## 1 {
-				A_OverlayOffset(OverlayId()-6, 50, 20, WOF_ADD);
-				A_OverlayRotate(OverlayId()-6, 10, WOF_ADD);
-				A_CopyMaster(OverlayId()-6, OverlayId()-5, (90, 190), -90);
+				A_OverlayOffset(OverlayId()-6, 90, 10, WOF_ADD);
+				
+				int Other = OverlayId()-6;
+				if(Other==SecndLay)Other = MainLay+2;
+				else Other = SecndLay;
+				if((invoker.Leading<1 && Other==SecndLay) || (invoker.Leading>-1 && Other!=SecndLay)){
+					Player.GetPSprite(OverlayId()-6).Y = Min(Player.GetPSprite(Other).Y, Player.GetPSprite(OverlayId()-6).Y);
+					Player.GetPSprite(OverlayId()-6).X = Min(80-Player.GetPSprite(Other).X, Player.GetPSprite(OverlayId()-6).X);
+				}
+				
+				if(other==SecndLay)invoker.Attacking = -1;
+				else invoker.Attacking = 1;
+				A_OverlayRotate(OverlayId()-6, -3, WOF_ADD);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
 				A_CopyMaster(OverlayId()-6, OverlayId()-4);
 			}
 			#### # 1 {
 				A_OverlayOffset(OverlayId()-6, 5, 8, WOF_ADD);
-				A_OverlayRotate(OverlayId()-6, 3, WOF_ADD);
-				A_CopyMaster(OverlayId()-6, OverlayId()-5, (90, 190), -90);
+				
+				int Other = OverlayId()-6;
+				if(Other==SecndLay)Other = MainLay+2;
+				else Other = SecndLay;
+				if((invoker.Leading<1 && Other==SecndLay) || (invoker.Leading>-1 && Other!=SecndLay)){
+					Player.GetPSprite(OverlayId()-6).Y = Min(Player.GetPSprite(Other).Y, Player.GetPSprite(OverlayId()-6).Y);
+					Player.GetPSprite(OverlayId()-6).X = Min(80-Player.GetPSprite(Other).X, Player.GetPSprite(OverlayId()-6).X);
+				}
+				A_OverlayRotate(OverlayId()-6, -2, WOF_ADD);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
 				A_CopyMaster(OverlayId()-6, OverlayId()-4);
 			}
 			#### # 1 {
+				A_StartSound("MRIntW/FistPuch", CHAN_AUTO, CHANF_LOCAL, CFRandom(.3, .35), pitch: CFRandom(1.2, 1.3)*i_timescale);
 				A_OverlayOffset(OverlayId()-6, 2, 3, WOF_ADD);
+				
+				int Other = OverlayId()-6;
+				if(Other==SecndLay)Other = MainLay+2;
+				else Other = SecndLay;
+				if((invoker.Leading<1 && Other==SecndLay) || (invoker.Leading>-1 && Other!=SecndLay)){
+					Player.GetPSprite(OverlayId()-6).Y = Min(Player.GetPSprite(Other).Y, Player.GetPSprite(OverlayId()-6).Y);
+					Player.GetPSprite(OverlayId()-6).X = Min(80-Player.GetPSprite(Other).X, Player.GetPSprite(OverlayId()-6).X);
+				}
 				A_OverlayRotate(OverlayId()-6, -1, WOF_ADD);
-				A_CopyMaster(OverlayId()-6, OverlayId()-5, (90, 190), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
 				A_CopyMaster(OverlayId()-6, OverlayId()-4);
 			}
 			#### # 1 {
 				A_OverlayOffset(OverlayId()-6, -3, -2, WOF_ADD);
-				A_OverlayRotate(OverlayId()-6, -1, WOF_ADD);
-				A_CopyMaster(OverlayId()-6, OverlayId()-5, (90, 190), -90);
+				A_OverlayRotate(OverlayId()-6, -.1, WOF_ADD);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
 				A_CopyMaster(OverlayId()-6, OverlayId()-4);
 			}
 			#### ##### 1 {
 				Player.GetPSprite(OverlayId()-6).X *= CFRandom(.6, .7);
 				Player.GetPSprite(OverlayId()-6).Y = -40+(Player.GetPSprite(OverlayId()-6).Y+40)*CFRandom(.6, .7);
-				A_OverlayRotate(OverlayId()-6, -1.5, WOF_ADD);
-				A_CopyMaster(OverlayId()-6, OverlayId()-5, (90, 190), -90);
+				A_OverlayRotate(OverlayId()-6, 1, WOF_ADD);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
 				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+				invoker.Leading = invoker.Attacking = 0;
 			}
-			#### # 10 {
-				A_OverlayRotate(OverlayId()-6, .5, WOF_ADD);
+			#### # 6 {
+				A_OverlayRotate(OverlayId()-6, .6, WOF_ADD);
 				A_OverlayOffseT(OverlayId()-6, 0, -40, WOF_INTERPOLATE);
-				A_CopyMaster(OverlayId()-6, OverlayId()-5, (90, 190), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
 				A_CopyMaster(OverlayId()-6, OverlayId()-4);
 			}
 			Stop;
+		HandInfightDodge:
+			#### ## 1 {
+				A_OverlayOffset(OverlayId()-6, 9, CFRandom(13, 18), WOF_ADD);
+				
+				A_OverlayFlags(OverlayId()-6, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-6).FirstTic);
+				A_OverlayFlags(OverlayId()-4, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-4).FirstTic);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+				
+				if(OverlayId()-6==SecndLay && invoker.LineTarg && invoker.LineTarg.Health<invoker.TargLastHP)Player.SetPsprite(OverlayId(), invoker.FindState("HandInfightPain"));
+				if(OverlayId()-6!=SecndLay && invoker.LineTarg && invoker.LineTarg.Target && invoker.LineTarg.Target.Health<invoker.TargTargLastHP)Player.SetPsprite(OverlayId(), invoker.FindState("HandInfightPain"));
+			}
+			#### # 1 {
+				A_OverlayOffset(OverlayId()-6, 4, CFRandom(4, 7), WOF_ADD);
+				
+				A_OverlayFlags(OverlayId()-6, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-6).FirstTic);
+				A_OverlayFlags(OverlayId()-4, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-4).FirstTic);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			
+				if(OverlayId()-6==SecndLay && invoker.LineTarg && invoker.LineTarg.Health<invoker.TargLastHP)Player.SetPsprite(OverlayId(), invoker.FindState("HandInfightPain"));
+				if(OverlayId()-6!=SecndLay && invoker.LineTarg && invoker.LineTarg.Target && invoker.LineTarg.Target.Health<invoker.TargTargLastHP)Player.SetPsprite(OverlayId(), invoker.FindState("HandInfightPain"));
+			}
+			#### #### 1{
+				A_OverlayOffset(OverlayId()-6, CFRandom(-.1, .1), CFRandom(-.1, .1), WOF_ADD);
+				
+				A_OverlayFlags(OverlayId()-6, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-6).FirstTic);
+				A_OverlayFlags(OverlayId()-4, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-4).FirstTic);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			
+				if(OverlayId()-6==SecndLay && invoker.LineTarg && invoker.LineTarg.Health<invoker.TargLastHP)Player.SetPsprite(OverlayId(), invoker.FindState("HandInfightPain"));
+				if(OverlayId()-6!=SecndLay && invoker.LineTarg && invoker.LineTarg.Target && invoker.LineTarg.Target.Health<invoker.TargTargLastHP)Player.SetPsprite(OverlayId(), invoker.FindState("HandInfightPain"));
+			}
+			#### ###### 1 {
+				Player.GetPSprite(OverlayId()-6).X *= CFRandom(.6, .7);
+				Player.GetPSprite(OverlayId()-6).Y = -40+(Player.GetPSprite(OverlayId()-6).Y+40)*CFRandom(.6, .7);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			
+				if(OverlayId()-6==SecndLay && invoker.LineTarg && invoker.LineTarg.Health<invoker.TargLastHP)Player.SetPsprite(OverlayId(), invoker.FindState("HandInfightPain"));
+				if(OverlayId()-6!=SecndLay && invoker.LineTarg && invoker.LineTarg.Target && invoker.LineTarg.Target.Health<invoker.TargTargLastHP)Player.SetPsprite(OverlayId(), invoker.FindState("HandInfightPain"));
+			}
+			#### # 1 {
+				A_OverlayOffseT(OverlayId()-6, 0, -40, WOF_INTERPOLATE);
+				
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			}
+			Stop;
+		HandInfightPain:
+			#### # 0 {
+				//if(CRandom(0, 3)==0)
+				if(OverlayId()-6==SecndLay && invoker.LineTarg)A_StartSound(invoker.LineTarg.PainSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
+				else if(invoker.LineTarg && invoker.LineTarg.Target)A_StartSound(invoker.LineTarg.Target.PainSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
+			}
+			#### ## 1 {
+				A_OverlayOffset(OverlayId()-6, -6, CFRandom(-4, 4), WOF_ADD);
+				
+				A_OverlayFlags(OverlayId()-6, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-6).FirstTic);
+				A_OverlayFlags(OverlayId()-4, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-4).FirstTic);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			}
+			#### # 1 {
+				A_OverlayOffset(OverlayId()-6, -2, CFRandom(-1, 1), WOF_ADD);
+				
+				A_OverlayFlags(OverlayId()-6, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-6).FirstTic);
+				A_OverlayFlags(OverlayId()-4, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-4).FirstTic);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			}
+			#### ## 1 {
+				Player.GetPSprite(OverlayId()-6).X *= CFRandom(.8, .9);
+				Player.GetPSprite(OverlayId()-6).Y = -40+(Player.GetPSprite(OverlayId()-6).Y+40)*CFRandom(.8, .9);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			}
+			#### ### 1 {
+				Player.GetPSprite(OverlayId()-6).X *= CFRandom(.6, .7);
+				Player.GetPSprite(OverlayId()-6).Y = -40+(Player.GetPSprite(OverlayId()-6).Y+40)*CFRandom(.6, .7);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			}
+			#### # 1 {
+				A_OverlayOffseT(OverlayId()-6, 0, -40, WOF_INTERPOLATE);
+				
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			}
+			Stop;
+		HandInfightDeath:
+			#### # 0 {
+				//if(CRandom(0, 3)==0
+				if(OverlayId()-6==SecndLay && invoker.LineTarg)A_StartSound(invoker.LineTarg.DeathSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
+				else if(invoker.LineTarg && invoker.LineTarg.Target)A_StartSound(invoker.LineTarg.Target.DeathSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
+			}
+			#### ## 1 {
+				A_OverlayOffset(OverlayId()-6, -CFRandom(9, 14), -CFRandom(2, 4), WOF_ADD);
+				A_OverlayRotate(OverlayId()-6, CFRandom(1, 2), WOF_ADD);
+				
+				A_OverlayFlags(OverlayId()-6, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-6).FirstTic);
+				A_OverlayFlags(OverlayId()-4, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()-4).FirstTic);
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			}
+			#### ## 1 {
+				A_OverlayOffset(OverlayId()-6, -CFRandom(6, 8), 1, WOF_ADD);
+				A_OverlayRotate(OverlayId()-6, CFRandom(.25, .7), WOF_ADD);
+
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			}
+			#### # 1 {
+				A_OverlayOffset(OverlayId()-6, -CFRandom(6, 8) + (GetAge()%2==0?CFRandom(1, 3):-CFRandom(1, 3)), CFRandom(14, 20), WOF_ADD);
+				A_OverlayRotate(OverlayId()-6, CFRandom(.25, .7), WOF_ADD);
+
+				A_CopyMaster(OverlayId()-6, OverlayId()-5, (75, 165) + (invoker.FigOffset[OverlayId()>SecndLay+6?1:0].X, invoker.FigOffset[OverlayId()>SecndLay+6?1:0].Y*.5), -90);
+				A_CopyMaster(OverlayId()-6, OverlayId()-4);
+			}
+			Wait;
+			
 		SecndHandInfightOver:
-			PUN1 A 0 {
+			TNT1 A 0;
+			#### # 1{
 				Player.GetPSprite(OverlayId()).Sprite = Player.GetPSprite(OverlayId()-2).Sprite;
-				Player.GetPSprite(OverlayId()).Frame = Player.GetPSprite(OverlayId()-2).Frame + 5;
+				Player.GetPSprite(OverlayId()).Frame = Player.GetPSprite(OverlayId()-2).Frame - 3;
 				Player.GetPSprite(OverlayId()).Translation = invoker.GlovesTrans;
 				Player.GetPSprite(OverlayId()).Pivot = Player.GetPSprite(OverlayId()-2).Pivot;
+				
+				A_CopyMaster(OverlayId()-2);
+				Player.GetPSprite(OverlayId()).bMirror = Player.GetPSprite(OverlayId()-2).bMirror;
+				Player.GetPSprite(OverlayId()).bFlip = Player.GetPSprite(OverlayId()-2).bFlip;
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, false);
 			}
 			#### # 1 {
 				int Lay = OverlayId();
 				A_CopyMaster(Lay-2);
 				Player.GetPSprite(Lay).bMirror = Player.GetPSprite(Lay-2).bMirror;
 				Player.GetPSprite(Lay).bFlip = Player.GetPSprite(Lay-2).bFlip;
+				Player.GetPSprite(Lay).Scale = Player.GetPSprite(Lay-2).Scale;
 			}
 			Wait;
 		MainHandInfight:
-			PUN1 E 1 {
+			PUN1 M 0 {
 				A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, !GetCVar("MRIntW_RightPunch"));
 				A_SetHandsSprite();
 				Player.GetPSprite(OverlayId()).Translation = invoker.GlovesTrans;
 				A_OverlayPivot(OverlayId(), 1, .2);
 				A_OverlayRotate(OverlayId(), 90);
+				A_OverlayScale(OverlayId(), 1.2, 1.2);
 			}
 			#### # 1;
 			Wait;
-			
 		InfightActor:
-			TNT1 A 1 {
+			TNT1 A 0 {
 				int Lay = OverlayId();
 				
 				Let Act = invoker.LineTarg;
@@ -360,7 +600,7 @@ Extend Class MRIntWeaps_Fist
 				TextureId Sprit = Stayt.GetSpriteTexture(0);
 				
 				int Akhtung;
-				While(!Sprit.IsValid()){
+				While(!Sprit.IsValid() || Stayt.Sprite == GetSpriteIndex("TNT1A0")){
 					Stayt = Stayt.NextState;
 					Sprit = Stayt.GetSpriteTexture(0);
 					Akhtung++;
@@ -377,34 +617,92 @@ Extend Class MRIntWeaps_Fist
 				Scale.Y = Texman.CheckRealHeight(Sprit);
 				
 				Double Fit;
-				if(Scale.X>Scale.Y)Fit = 55/Scale.X;
-				else Fit = 50/Scale.Y;
+				if(Scale.X*1.25>Scale.Y)Fit = 55/Scale.X;
+				else Fit = 45/Scale.Y;
 				
-				Console.Printf("Scale: "..Fit);
+				Vector2 Offset = Texman.GetScaledOffset(Sprit)*Fit;
 				
+				if(Lay>MainLay+1)invoker.FigOffset[1] = Offset;
+				else invoker.FigOffset[0] = Offset;
+								
 				Player.GetPSprite(Lay).Sprite = Stayt.Sprite;
 				Player.GetPSprite(Lay).Frame = Stayt.Frame;
 				Player.GetPSprite(Lay).Scale *= Fit;
 				A_OverlayPivot(Lay, .5, 1);
 				
-				if(Scale.X>Scale.Y){
+				if(Scale.X*1.25>Scale.Y){
 					A_ClearOverlays(Lay+1, Lay+1);
 					Player.GetPSprite(Lay-1).Frame = 10;
+					Player.GetPSprite(Lay-1).Scale = (1,1);
 				}
+				
+				A_OverlayTranslation(OverlayId(), "MRIntWLowColors");
+			}
+			#### # 1{
+				A_CopyMaster(OverlayId()-1, OverlayId(), (90, 190), -90);
+				Player.GetPSprite(OverlayId()).bMirror = Player.GetPSprite(OverlayId()-1).bMirror;
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, false);
 			}
 			#### # 1{
 				int Lay = OverlayId();
-				A_CopyMaster(Lay-1, Lay, (90, 190), -90);
+				
+				if(Player.GetPSprite(Lay-1).Frame==10){
+					Let Act = invoker.LineTarg;
+					if(Lay>MainLay+1 && Act)Act = invoker.LineTarg.Target;
+					
+					if(!Act || !Act.bIsMonster)Return;
+					
+					if((Act.Target && Act.Target.bIsMonster && InStateSequence(Act.CurState, Act.FindState("Missile"))) || 
+						((Act == invoker.LineTarg && Act.Health<invoker.TargLastHP) || (Act != invoker.LineTarg && Act.Health<invoker.TargTargLastHP)))
+					{
+						if(Act.Tics<=1)A_StartSound(Act.AttackSound, CHAN_VOICE, CHANF_MAYBE_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
+						else if(((Act == invoker.LineTarg && Act.Health<invoker.TargLastHP) || (Act != invoker.LineTarg && Act.Health<invoker.TargTargLastHP)) && Act.Tics<=1)A_StartSound(Act.PainSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
+						Player.GetPSprite(Lay).Sprite = Act.Sprite;
+						Player.GetPSprite(Lay).Frame = Act.Frame;
+						
+						Double Height = CFRandom(-42, -32);
+						Player.GetPSprite(Lay-1).Y = Height+(Player.GetPSprite(Lay-1).Y-Height)*.9;
+						A_OverlayFlags(Lay-1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay-1).FirstTic);
+						
+						Vector2 Offset = Texman.GetScaledOffset(Act.CurState.GetSpriteTexture(0))*Player.GetPSprite(Lay).Scale.X;
+						
+						if(Lay>MainLay+1)invoker.FigOffset[1] = Offset;
+						else invoker.FigOffset[0] = Offset;
+					}
+					else {
+						Let Stayt = Act.FindState("Spawn");
+						
+						int Akhtung;
+						While(!Stayt.GetSpriteTexture(0).IsValid()){
+							Stayt = Stayt.NextState;
+							Akhtung++;
+							
+							if(Akhtung>2500)Break;
+						}
+						
+						if(!Stayt.GetSpriteTexture(0).IsValid())
+						{
+							Return;
+						}
+						
+						Player.GetPSprite(Lay).Sprite = Stayt.Sprite;
+						Player.GetPSprite(Lay).Frame = Stayt.Frame;
+						
+						Player.GetPSprite(Lay-1).Y = -40+(Player.GetPSprite(Lay-1).Y+40)*.9;
+						A_OverlayFlags(Lay-1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay-1).FirstTic);
+						
+						Vector2 Offset = Texman.GetScaledOffset(Stayt.GetSpriteTexture(0))*Player.GetPSprite(Lay).Scale.X;
+						
+						if(Lay>MainLay+1)invoker.FigOffset[1] = Offset;
+						else invoker.FigOffset[0] = Offset;
+					}
+				}
+								
+				A_CopyMaster(Lay-1, Lay, (75, 165) + (invoker.FigOffset[Lay>MainLay+1?1:0].X, invoker.FigOffset[Lay>MainLay+1?1:0].Y*.5), -90);
 				Player.GetPSprite(Lay).bMirror = Player.GetPSprite(Lay-1).bMirror;
 				
-				if(Player.GetPSprite(Lay-1).Frame==10 && GetAge()%10==0){
-					Let Act = invoker.LineTarg;
-					if(Lay>MainLay+1)Act = invoker.LineTarg.Target;
-					
-					Player.GetPSprite(Lay).Sprite = Act.Sprite;
-					Player.GetPSprite(Lay).Frame = Act.Frame;
-				}
-				//Player.GetPSprite(Lay).bFlip = Player.GetPSprite(Lay-1).bFlip;
+				invoker.TargLastHP = invoker.LineTarg.Health;
+				if(invoker.LineTarg.Target)invoker.TargTargLastHP = invoker.LineTarg.Target.Health;
 			}
 			Wait;
 		
