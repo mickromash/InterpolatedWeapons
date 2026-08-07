@@ -16,6 +16,8 @@ Class MRIntWeaps_Handler: EventHandler
 		
 	Override Void CheckReplacement(ReplaceEvent e)
 	{
+		if(!MRIntW_ReplaceWeapon)Return;
+		
 		if(!(e.Replacee is 'DoomWeapon'))Return;
 		
 		String ActName = e.Replacee.GetClassName();
@@ -117,6 +119,21 @@ Class MRIntWeaps_Handler: EventHandler
 		if(Select!="")Plr.A_SelectWeapon(Select);
 	}
 	
+	Void TakeOtherWeapons(Actor Plr)
+	{
+		if(!Plr)Return;
+		
+		Inventory Item = Plr.Inv;
+		while(Item != Null){
+			Let CurItem = Item;
+			Item = Item.Inv;
+			if(Weapon(CurItem)){
+				String Naym = CurItem.GetClassName();
+				if(Naym.IndexOf("MRIntWeaps_")<0)Plr.RemoveInventory(CurItem);
+			}
+		}
+	}
+	
 	Void RemoveWeapons()//Replace mods weapons on the level with vanilla ones
 	{
 		Let iter = ThinkerIterator.Create("DoomWeapon");
@@ -143,9 +160,11 @@ Class MRIntWeaps_Handler: EventHandler
 		//For(int i=0;i<Berserks.Size();i++){if(Berserks[i])Berserks[i].Destroy();}
 		Berserks.Clear();
 	}
-			
+	
 	Override Void PlayerSpawned(PlayerEvent e)
 	{
+		if(!MRIntW_ReplaceWeapon)Return;
+		
 		if(WeaponChecker[e.PlayerNumber])Return;
 
 		GiveWeapons(Players[e.PlayerNumber].mo);
@@ -153,6 +172,8 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Override Void PlayerRespawned(PlayerEvent e)
 	{
+		if(!MRIntW_ReplaceWeapon)Return;
+		
 		if(WeaponChecker[e.PlayerNumber])Return;
 		
 		GiveWeapons(Players[e.PlayerNumber].mo);
@@ -235,6 +256,10 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 		if(e.name ~== "MRIntWeaps_Take"){
 			TakeWeapons(Plr);
+			Return;
+		}
+		if(e.name ~== "MRIntWeaps_TakeOther"){
+			TakeOtherWeapons(Plr);
 			Return;
 		}
 		if(e.Name ~== "MRIntW_Casings")

@@ -1,3 +1,5 @@
+server bool MRIntW_ReplaceWeapon = true;
+
 nosave int MRIntW_Casings = 1;//0 - none, 1 - only visual, 2 - visual + in-game object
 user float MRIntW_CasingsRandom = 1;//Maximum casings speed
 nosave int MRIntW_CasingsAmount = 300;
@@ -139,4 +141,4 @@ nosave string MRIntW_PressetCust1 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;
-server noarchive int MRIntW_Version = 608260;//DDMMYYI
+server noarchive int MRIntW_Version = 708260;//DDMMYYI
