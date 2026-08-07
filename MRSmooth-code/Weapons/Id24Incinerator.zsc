@@ -154,7 +154,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				else if(MRIntW_SwitchAnims>1)invoker.SwitchAnim = CRandom(0, 1);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayPivot(Lay1, .5, .5);
-				A_OverlayOffset(Lay1, 0, 32);
+				A_OverlayOffset(Lay1, Player.GetPSprite(PSP_WEAPON).OldX, invoker.SwitchState<1?Player.GetPSprite(PSP_WEAPON).OldY:32);
 				A_OverlayRotate(Lay1, 0);
 				A_OverlayScale(Lay1, 1, 1);
 			}

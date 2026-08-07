@@ -329,9 +329,9 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				invoker.InterpolateMuzzle = 2;
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
 				A_OverlayFlags(Lay2, PSPF_ADDWEAPON, false);
-				Player.GetPSprite(Lay1).OldX = 0;
-				Player.GetPSprite(Lay2).OldY = Player.GetPSprite(Lay1).OldY = Player.GetPSprite(PSP_WEAPON).Y;
-				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y = Player.GetPSprite(PSP_WEAPON).Y;
+				Player.GetPSprite(Lay1).OldX = Player.GetPSprite(PSP_WEAPON).OldX;
+				Player.GetPSprite(Lay2).OldY = Player.GetPSprite(Lay1).OldY = Player.GetPSprite(PSP_WEAPON).OldY;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y = Player.GetPSprite(PSP_WEAPON).OldY;
 				Player.GetPSprite(Lay2).Y += 1;
 				A_OverlayPivot(Lay1, .5, .5);
 				A_OverlayPivot(Lay2, .5, .5);

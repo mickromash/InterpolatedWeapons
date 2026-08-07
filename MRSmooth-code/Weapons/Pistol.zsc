@@ -338,7 +338,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_GlovesColor();
 				A_OverlayFlags(Lay1, PSPF_MIRROR|PSPF_FLIP, invoker.LeftHanded);//Left or right handed
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
-				A_OverlayOffset(Lay1, 0, 32);
+				A_OverlayOffset(Lay1, Player.GetPSprite(PSP_WEAPON).OldX, invoker.SwitchState<1?Player.GetPSprite(PSP_WEAPON).OldY:32);
 				A_OverlayRotate(Lay1, 0);
 				A_OverlayScale(Lay1, 1, 1);
 				A_OverlayPivot(Lay1, .5, 1);
@@ -704,7 +704,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		SecondHandToMain:
 			MRD1 G 1 {
 				A_OverlayFlags(SHand, PSPF_INTERPOLATE, !Player.GetPSprite(SHand).FirstTic);
-				Player.GetPSprite(SHand).X = -Player.FindPSprite(PSP_WEAPON).X+ Player.GetPSprite(Lay1).X+(Player.GetPSprite(SHand).X-Player.GetPSprite(Lay1).X+Player.FindPSprite(PSP_WEAPON).X)*.6;
+				Player.GetPSprite(SHand).X = 30+Player.GetPSprite(Lay1).X+(Player.GetPSprite(SHand).X-Player.GetPSprite(Lay1).X-30)*.6;
 				Player.GetPSprite(SHand).Y = Player.GetPSprite(Lay1).Y+10+(Player.GetPSprite(SHand).Y-10-Player.GetPSprite(Lay1).Y)*.6;
 				Player.GetPSprite(SHand).Rotation = Player.GetPSprite(Lay1).Rotation-30+(Player.GetPSprite(SHand).Rotation+30-Player.GetPSprite(Lay1).Rotation)*.6;
 				Player.GetPSprite(SHand).Scale = Player.GetPSprite(Lay1).Scale-(.05, .05)+(Player.GetPSprite(SHand).Scale-(Player.GetPSprite(Lay1).Scale-(.05,.05)))*.6;
@@ -714,7 +714,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				if(
 					Player.FindPSprite(PSP_WEAPON) && 
 					(!InStateSequence(Player.FindPSprite(PSP_WEAPON).CurState, invoker.FindState("Select")) || Player.FindPSprite(PSP_WEAPON).Y<=36) &&
-					abs(Player.GetPSprite(Lay1).X - (Player.GetPSprite(SHand).X + Player.GetPSprite(PSP_WEAPON).X))<4 &&
+					abs(Player.GetPSprite(Lay1).X - Player.GetPSprite(SHand).X + 30)<4 &&
 					abs(Player.GetPSprite(Lay1).Y+10 - Player.GetPSprite(SHand).Y)<2 &&
 					abs(Player.GetPSprite(Lay1).Rotation-30 - Player.GetPSprite(SHand).Rotation)<4
 				){
