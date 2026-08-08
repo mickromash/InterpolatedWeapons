@@ -274,7 +274,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayPivot(OverlayId(), .5, 1);
 			}
 			#### # 1 {
+				Bool FirstTic = Player.GetPSprite(OverlayId()).FirstTic;
 				A_BarrelPos(OverlayId()-Muzzle0, Muzzle0, false, DrawFuzz:true);
+				Player.GetPSprite(OverlayId()).FirstTic = FirstTic;
 				Double Scale = (1.-(abs(Player.GetPSprite(OverlayId()).X-Player.GetPSprite(Lay1).X)/120.));
 				int Flag = WOF_INTERPOLATE;
 				if(Player.FindPSprite(Lay2) && Player.FindPSprite(Lay2).Scale.X < .7)Flag = 0;
@@ -413,7 +415,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					Player.GetPSprite(i).X -= Ofst.X;
 					Player.GetPSprite(i).Y -= Ofst.Y;
 				}
-				invoker.SwitchState = 0;
+				invoker.SwitchState = -1;
 			}
 			#### # 0 {if(CRandom(0, 100)<2)invoker.Speed += CRandom(1, 7)*5*GetCVar("MRIntW_ChaingunStopTime");}
 		GunWait:
