@@ -309,8 +309,8 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_GlovesColor(1);
 				A_OverlayPivot(Lay1, .5, .6);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON|PSPF_INTERPOLATE, false);
-				Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay1).OldX = CFRandom(-.5, .5);
-				Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).OldY = 32;
+				Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay1).OldX = CFRandom(-.5, .5) + Player.GetPSprite(PSP_WEAPON).OldX;
+				Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).OldY = (invoker.SwitchState>0)?32:Player.GetPSprite(PSP_WEAPON).OldY;
 				A_OverlayRotate(Lay1, CFRandom(-.5, .5));
 				invoker.SawFrame = 2+CRandom(0, 1)*2;
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
