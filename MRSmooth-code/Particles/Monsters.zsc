@@ -354,7 +354,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					Vector3 Pos = Master.Pos;
 					Float Alpha = 1;
 					if(GotHit){
-						Pos = GotHit.Pos+(GotHit.Radius*CFRandom(-.7, .7), GotHit.Radius*CFRandom(-.7, .7),HitPlace.Z);
+						Pos = GotHit.Pos+(GotHit.Radius*CFRandom(-.7, .7), GotHit.Radius*CFRandom(-.7, .7),GotHit.Height*CFRandom(.2, .8));
 						Alpha = CFRandom(.3, .8);
 						if(GotHit == Players[ConsolePlayer].Camera)AltLightnings = false;
 					}
@@ -461,7 +461,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					Vector3 Pos = Master.Pos;
 					Float Alpha = 1;
 					if(GotHit){
-						Pos = GotHit.Pos+(GotHit.Radius*CFRandom(-.7, .7), GotHit.Radius*CFRandom(-.7, .7),HitPlace.Z);
+						Pos = GotHit.Pos+(GotHit.Radius*CFRandom(-.7, .7), GotHit.Radius*CFRandom(-.7, .7),GotHit.Height*CFRandom(.2, .8));
 						Alpha = CFRandom(.3, .8);
 						if(GotHit == Players[ConsolePlayer].Camera)AltLightnings = false;
 					}
