@@ -1,7 +1,7 @@
 /*
 	Super Shotgun casings, smoke and dying animations
 	
-	Moved from Effects.zsc and Dying.zsc for doom 1 compatibility
+	Moved from Effects.zsc, MuzzleSmoke.zsc and Dying.zsc for Doom 1 compatibility
 */
 
 Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke

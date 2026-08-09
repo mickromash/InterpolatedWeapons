@@ -1,5 +1,5 @@
 /*
-	Weapon casings and smoke layers
+	Weapon casings and smoke
 */
 
 Const MRIntW_CasingDist = 15.;

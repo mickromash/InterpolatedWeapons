@@ -228,7 +228,7 @@ Extend Class MRIntWeaps_Fist
 			#### ###### 1 A_OverlayOffset(OverlayId(), -10, 10, WOF_ADD);
 			Stop;
 		
-		
+		//Playing with demon toys
 		MainHandInfightStart:
 			#### # 1;
 			Wait;
@@ -483,7 +483,6 @@ Extend Class MRIntWeaps_Fist
 			Stop;
 		HandInfightPain:
 			#### # 0 {
-				//if(CRandom(0, 3)==0)
 				if(OverlayId()-6==SecndLay && invoker.LineTarg)A_StartSound(invoker.LineTarg.PainSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
 				else if(invoker.LineTarg && invoker.LineTarg.Target)A_StartSound(invoker.LineTarg.Target.PainSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
 			}
@@ -524,7 +523,6 @@ Extend Class MRIntWeaps_Fist
 			Stop;
 		HandInfightDeath:
 			#### # 0 {
-				//if(CRandom(0, 3)==0
 				if(OverlayId()-6==SecndLay && invoker.LineTarg)A_StartSound(invoker.LineTarg.DeathSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
 				else if(invoker.LineTarg && invoker.LineTarg.Target)A_StartSound(invoker.LineTarg.Target.DeathSound, CHAN_VOICE, CHANF_LOCAL, .3, pitch:CFRandom(1.4, 1.45));
 			}

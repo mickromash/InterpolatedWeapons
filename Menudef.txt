@@ -45,7 +45,6 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	ColorPicker "$MRIntW_GlovesColorLight", "MRIntW_GlovesColorLight"
 	Command "$MRIntW_RandomGlovesColor2", MRIntW_RandomGlovesColor2
 	Command "$MRIntW_RandomGlovesColor1", MRIntW_RandomGlovesColor1
-	//StaticText ""
 	Submenu "", "MRIntWeaps_EasterMenu"
 	SubMenu "$MRIntW_OffsetMenu", "MRIntW_OffsetMenu"
 	SubMenu "$MRIntW_WeaponsMenu", "MRIntW_WeaponsMenu"

@@ -1,5 +1,5 @@
 /*
-	Monsters projectiles particle effects
+	Monster projectile particle effects
 */
 
 enum MRIntWeaps_MonsterParticlesFlags{

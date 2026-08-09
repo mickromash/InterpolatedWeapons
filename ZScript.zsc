@@ -16,18 +16,19 @@ Version "4.10"
 #include "MRSmooth-code/Weapons/Id24incinerator.zsc"
 //#include "MRSmooth-code/Weapons/id24calamityblade.zsc"
 
-#include "MRSmooth-code/Misc/WeaponMovement.zsc"//Landing bounce, damage shake, vanilla firing bob
+#include "MRSmooth-code/Misc/WeaponMovement.zsc"//Landing bounce, damage shake, vanilla firing bob and other weapon offset related stuff
 #include "MRSmooth-code/Misc/FistIdleAnims.zsc"
-#include "MRSmooth-code/Misc/Effects.zsc"//Casings/smoke/particles
+#include "MRSmooth-code/Misc/Effects.zsc"//Casings/smoke/psprite-particles
 #include "MRSmooth-code/Misc/ChainsawBlood.zsc"//Blood on chainsaw
 #include "MRSmooth-code/Misc/MuzzleSmoke.zsc"//Flowing smoke
 #include "MRSmooth-Code/Misc/LongTermSmoke.zsc"//Long term firing smoke
 #include "MRSmooth-code/Misc/Dying.zsc"//First person death animations
+#include "MRSmooth-code/Misc/SSGStuff.zsc"//SSG code for Effects.zsc, MuzzleSmoke.zsc and Dying.zsc
+#include "MRSmooth-code/Misc/GlovesColor.zsc"//Gloves color applying
+
 #include "MRSmooth-code/Particles/Player.zsc"//Player projectile and puff particle effects
 #include "MRSmooth-code/Particles/Monsters.zsc"//Monster particle effects
 #include "MRSmooth-code/Particles/Misc.zsc"//Decoration and other particle effects
-#include "MRSmooth-code/Misc/SSGStuff.zsc"//SSG code for effects.zsc, MuzzleSmoke.zsc and Dying.zsc
-#include "MRSmooth-code/Misc/GlovesColor.zsc"//Gloves color applying
 
 #include "MRSmooth-code/Menus/Main.zsc"//Some little tricks for mods menu
 #include "MRSmooth-code/Menus/Pressets.zsc"//Settings pressets menu

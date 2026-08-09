@@ -1,7 +1,3 @@
-/*
-	
-*/
-
 Extend Class MRIntWeaps_Handler
 {
 	Array<MRIntWeaps_LongTermSmoke> LTSmokes;

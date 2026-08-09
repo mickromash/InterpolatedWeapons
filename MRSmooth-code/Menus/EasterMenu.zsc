@@ -1,5 +1,5 @@
 /*
-	Menu with secret gloves colors
+	Menu with secret glove colors
 */
 
 Class MRIntWeaps_EasterMenu: OptionMenu
