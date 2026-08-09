@@ -32,7 +32,7 @@ Class MRIntWeaps_Smoker: Object play
 	Actor Owner;
 	Vector2 WeapOfst[6];
 	Vector3 Prev[6];
-	Double OldBob, ViewHeight, Bob, Scale[6], Alpha, Speed[6];
+	Double OldBob, ViewHeight, InterFloorZ, Bob, Scale[6], Alpha, Speed[6];
 	Bool PassSpawn, ResetInterpolation, ForceConnect, Bright, Bright1;
 	Weapon LastWeapon;
 	Color Col, Col1;
@@ -60,10 +60,11 @@ Class MRIntWeaps_Smoker: Object play
 	}
 	
 	Virtual Void Update(Bool OldB = false)
-	
 	{
-		ViewHeight = (PlayerPawn(Owner).ViewHeight + Owner.player.crouchviewdelta);
-		Bob = (Owner.Player.ViewZ - Owner.Pos.Z) - ViewHeight;
+		InterFloorZ += (Owner.FloorZ-InterFloorZ)*.05;
+		
+		ViewHeight = PlayerPawn(Owner).ViewHeight + Owner.player.crouchviewdelta;
+		Bob = (Owner.Player.ViewZ - InterFloorZ) - ViewHeight;
 		if(OldB)OldBob = Bob;
 	}
 	
@@ -80,7 +81,7 @@ Class MRIntWeaps_Smoker: Object play
 		Double Step = Step/MRIntW_FlowingSmokePrecision*Scale[Num];
 		Double ZSpeed = ZSpeed*4*Speed[Num];
 		
-		Vector3 Pos = (Owner.Pos.XY, Owner.Pos.Z + ViewHeight + OldBob);
+		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ+(OldBob-Bob));
 		
 		if(Players[ConsolePlayer].Camera != Owner)Pos = Owner.Pos + (0,0,Owner.Height*.65);
 		
@@ -104,7 +105,8 @@ Class MRIntWeaps_Smoker: Object play
 		if(Owner.GetAge()-LastAge>2||Owner.Player.ReadyWeapon!=LastWeapon||Level.Vec2Diff(Pos.XY, Prev[Num].XY).Length()>100)For(int i=0;i<Prev.Size();i++)Prev[i] = Pos;
 		
 		if(ResetInterpolation){
-			For(int i=0;i<Prev.Size();i++)Prev[i] = Pos + Owner.Vel + (0,0,ZSpeed - (Owner.Pos.Z + ViewHeight + OldBob) + Owner.Player.ViewZ);
+			InterFloorZ = Owner.FloorZ;
+			For(int i=0;i<Prev.Size();i++)Prev[i] = Pos + Owner.Vel + (0,0,ZSpeed - (Owner.Player.ViewZ));
 		}
 		
 		
@@ -141,10 +143,6 @@ Class MRIntWeaps_Smoker: Object play
 			if(Bright1)Flags |= SPF_FULLBRIGHT;
 			Double Bobb = Bob-OldBob;
 			Double ZOfst = 0;
-			if(Owner.Vel.Z != 0){
-				ZOfst = -Owner.Vel.Z*1.5;
-				Bobb = Owner.Vel.Z*1.5;
-			}
 
 			For(Double i=0;i<Connect*.5;i+=Step){
 				Vector3 PPos = Diff.Unit()*i;

@@ -133,13 +133,14 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 				Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
 				
 				if(invoker.Smoker){
+					Part.InterFloorZ = invoker.Smoker.InterFloorZ;
 					Part.ViewHeight = invoker.Smoker.ViewHeight;
 					Part.OldBob = invoker.Smoker.OldBob;
 					Part.Bob = invoker.Smoker.Bob;
 				}
 				
 				Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
-				Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
+				Part.Pos = (Pos.XY, Part.InterFloorZ + Part.ViewHeight + Part.OldBob) + Part.Place;
 				Part.Master = Self;
 			}
 		}

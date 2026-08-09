@@ -504,13 +504,14 @@ Extend Class MRIntWeaps_Pistol
 			Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
 			
 			if(invoker.Smoker){
+				Part.InterFloorZ = invoker.Smoker.InterFloorZ;
 				Part.ViewHeight = invoker.Smoker.ViewHeight;
 				Part.OldBob = invoker.Smoker.OldBob;
 				Part.Bob = invoker.Smoker.Bob;
 			}
 			
-			Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
-			Part.Vel = Vel + Part.Move - (0,0,Part.Bob - Part.OldBob);
+			Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
+			Part.Pos = (Pos.XY, Part.InterFloorZ + Part.ViewHeight + Part.OldBob) + Part.Place;
 			Part.Master = Self;
 		}
 	}
@@ -665,13 +666,14 @@ Extend Class MRIntWeaps_Shotgun
 			Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
 			
 			if(invoker.Smoker){
+				Part.InterFloorZ = invoker.Smoker.InterFloorZ;
 				Part.ViewHeight = invoker.Smoker.ViewHeight;
 				Part.OldBob = invoker.Smoker.OldBob;
 				Part.Bob = invoker.Smoker.Bob;
 			}
 			
 			Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
-			Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
+			Part.Pos = (Pos.XY, Part.InterFloorZ + Part.ViewHeight + Part.OldBob) + Part.Place;
 			Part.Master = Self;
 		}
 	}
@@ -956,13 +958,14 @@ Extend Class MRIntWeaps_Chaingun
 			Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
 			
 			if(invoker.Smoker){
+				Part.InterFloorZ = invoker.Smoker.InterFloorZ;
 				Part.ViewHeight = invoker.Smoker.ViewHeight;
 				Part.OldBob = invoker.Smoker.OldBob;
 				Part.Bob = invoker.Smoker.Bob;
 			}
 			
 			Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
-			Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
+			Part.Pos = (Pos.XY, Part.InterFloorZ + Part.ViewHeight + Part.OldBob) + Part.Place;
 			Part.Master = Self;
 		}
 	}
@@ -1031,13 +1034,14 @@ Extend Class MRIntWeaps_RocketLauncher
 			Part.Move.Z -= .05;
 			
 			if(invoker.Smoker){
+				Part.InterFloorZ = invoker.Smoker.InterFloorZ;
 				Part.ViewHeight = invoker.Smoker.ViewHeight;
 				Part.OldBob = invoker.Smoker.OldBob;
 				Part.Bob = invoker.Smoker.Bob;
 			}
 			
 			Part.Vel = Vel + Part.Move + (0,0,Part.Bob - Part.OldBob);
-			Part.Pos = Pos + Part.Place + (0,0,Part.ViewHeight + Part.OldBob);
+			Part.Pos = (Pos.XY, Part.InterFloorZ + Part.ViewHeight + Part.OldBob) + Part.Place;
 			Part.Master = Self;
 		}
 	}
@@ -1297,7 +1301,7 @@ Class MRIntWeaps_SmokeParticle: VisualThinker
 	int Life, Age;
 	Actor Master;
 	Double StartScale, StartGrow, Fade, Grow,
-		OldBob, ViewHeight, Bob;
+		OldBob, ViewHeight, Bob, InterFloorZ;
 	Vector3 Place, Move;
 	Vector2 BaseOffset;
 	
@@ -1328,12 +1332,13 @@ Class MRIntWeaps_SmokeParticle: VisualThinker
 		if(Alpha<=0 || Life<=0){Destroy();Return;}
 		if(!Master)Return;
 		
+		InterFloorZ += (Master.FloorZ - InterFloorZ)*.05;
 		ViewHeight = (PlayerPawn(Master).ViewHeight + Master.player.crouchviewdelta);
-		Bob = (Master.Player.ViewZ - Master.Pos.Z) - ViewHeight;
+		Bob = (Master.Player.ViewZ - InterFloorZ) - ViewHeight;
 		
 		Place += Move;
 		
-		Pos = Master.Pos + (0,0,ViewHeight + Bob);
+		Pos = (Master.Pos.XY, Master.Player.ViewZ);
 		Vel = Master.Vel*2 + Move - (0,0,Bob - OldBob);
 		
 		Pos += Place;
