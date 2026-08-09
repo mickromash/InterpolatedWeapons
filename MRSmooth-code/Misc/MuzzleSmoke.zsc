@@ -5,6 +5,18 @@
 Const MRIntW_MaxSmoke = 35*15;
 Const MRintW_FadeStart = 40;
 
+
+/*
+	Smoker class (one per player)
+	
+	Stores players camera position data used for flowing smoke and firing smoke.
+	
+	Amount of smoke is stored in weapons actors.
+	
+	Each tic, every weapon listed in this zscript file and handled by player lowers its smoke amount, 
+	attaches smoker to the player (if there's no smokers attached already), calls it to update camera position,
+	sends it smokig muzzles data and calls its tick() to spawn the smoke
+*/
 Class MRIntWeaps_Smoker: Object play
 {
 	Static Void MRSpawnParticle(Color Col=Color(0,0,0), int Flags=0, int Style=STYLE_None, int Life=1, double Size=1, double Angle=0, Vector3 Pos=(0,0,0), Vector3 Vel=(0,0,0), Vector3 Accel=(0,0,0), Double Alpha=.1, Double Fade=-1, Double SizeStep=0)
@@ -125,7 +137,6 @@ Class MRIntWeaps_Smoker: Object play
 		Double MaxLength = MRIntW_FlowingSmokeLength;
 		If(MaxLength == 0)Return;
 		
-		//if(Owner.Vel.Length()<=.5){Alpha *= 2;}
 		int Flags = 0;
 		if(Bright)Flags = SPF_FULLBRIGHT;
 		For(Double i=0;i<Connect;i+=Step){
