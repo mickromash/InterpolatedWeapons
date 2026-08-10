@@ -807,25 +807,40 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				else Player.GetPSprite(OverlayId()).Frame = 3;
 			}
 			#### # 1 {//Punch
-				A_OverlayOffset(OverlayId(), CFRandom(77, 82), -CFRandom(73, 76), WOF_ADD);
+				if(CountInv("PowerStrength"))A_OverlayOffset(OverlayId(), CFRandom(97, 120), -CFRandom(83, 86), WOF_ADD);
+				else A_OverlayOffset(OverlayId(), CFRandom(70, 85), -CFRandom(66, 76), WOF_ADD);
 				A_OverlayScale(OverlayId(), .01, -.025, WOF_ADD);
 				
 				if(MRIntW_ScreenShake>1){
 					Float Intens = 1;
 					if(CountInv("PowerStrength"))Intens = 2;
 					Intens *= MRIntW_ScreenShakeAmount;
-					
 					A_QuakeEx(.1*Intens,0,.2*Intens, 6+Intens/MRIntW_ScreenShakeAmount*2, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 10,0,10, rollIntensity: .1*Intens, rollwave: 10);
 				}
 			}
-			#### ## 1 {
-				A_OverlayOffset(OverlayId(), CFRandom(-1, 1), CFRandom(-1, 1), WOF_ADD);
+			#### # 1 {
+				A_OverlayOffset(OverlayId(), 80, -64, WOF_INTERPOLATE);
 				
 				if(invoker.HitWall){
 					A_OverlayOffset(OverlayId(), CFRandom(-8, 0), CFRandom(-3, 3), WOF_ADD);
 					Float Scal = CFRandom(0, .025);
-					A_OverlayScale(OverlayId(), Scal-.03, Scal+.01, WOF_ADD);
-					A_OverlayScale(OverlayId(), CFRandom(-.01, .01), CFRandom(-.02, .02), WOF_ADD);
+					A_OverlayScale(OverlayId(), Scal-.03+CFRandom(-.01, .01), Scal+.01+CFRandom(-.02, .02), WOF_ADD);
+					A_OverlayRotate(OverlayId(), CFRandom(1, 3), WOF_ADD);
+				}
+				else if(invoker.HitActor){
+					A_OverlayScale(OverlayId(), -.05, .012, WOF_ADD);
+					if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), -.005, .012, WOF_ADD);
+				}
+				
+				A_OverlayScale(OverlayId(), 0, -.025, WOF_ADD);
+			}
+			#### # 1 {
+				A_OverlayOffset(OverlayId(), CFRandom(2, 4), 2, WOF_ADD);
+				
+				if(invoker.HitWall){
+					A_OverlayOffset(OverlayId(), CFRandom(-8, 0), CFRandom(-3, 3), WOF_ADD);
+					Float Scal = CFRandom(0, .025);
+					A_OverlayScale(OverlayId(), Scal-.03+CFRandom(-.01, .01), Scal+.01+CFRandom(-.02, .02), WOF_ADD);
 					A_OverlayRotate(OverlayId(), CFRandom(1, 3), WOF_ADD);
 				}
 				else if(invoker.HitActor){
@@ -979,7 +994,8 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			#### # 1 {//Punch
 				if(GetCVar("MRIntW_PunchingFist")>0 && !invoker.SecondFist)Player.GetPSprite(OverlayId()).Frame = 4;
 				
-				A_OverlayOffset(OverlayId(), CFRandom(77, 82), -CFRandom(73, 76), WOF_ADD);
+				if(CountInv("PowerStrength"))A_OverlayOffset(OverlayId(), CFRandom(97, 120), -CFRandom(83, 86), WOF_ADD);
+				else A_OverlayOffset(OverlayId(), CFRandom(74, 85), -CFRandom(66, 76), WOF_ADD);
 				A_OverlayScale(OverlayId(), 0, -.025, WOF_ADD);
 				
 				if(MRIntW_ScreenShake>1){
@@ -990,20 +1006,37 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_QuakeEx(.1*Intens,0,.2*Intens, 6+Intens/MRIntW_ScreenShakeAmount*2, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 10,0,10, rollIntensity: .1*Intens, rollwave: 10);
 				}
 			}
-			#### ## 1 {
-				A_OverlayOffset(OverlayId(), CFRandom(-1, 1), CFRandom(-1, 1), WOF_ADD);
-				A_OverlayScale(OverlayId(), 0, -.025, WOF_ADD);
+			#### # 1 {
+				A_OverlayOffset(OverlayId(), 80, -64, WOF_INTERPOLATE);
 				
 				if(invoker.HitWall){
 					A_OverlayOffset(OverlayId(), CFRandom(-8, 0), CFRandom(-8, 8), WOF_ADD);
 					Float Scal = CFRandom(0, .025);
-					A_OverlayScale(OverlayId(), Scal-.03, Scal+.01, WOF_ADD);
-					A_OverlayRotate(OverlayId(), CFRandom(1, 4), WOF_ADD);
+					A_OverlayScale(OverlayId(), Scal-.03+CFRandom(-.01, .01), Scal+.01+CFRandom(-.02, .02), WOF_ADD);
+					A_OverlayRotate(OverlayId(), CFRandom(1, 3), WOF_ADD);
 				}
 				else if(invoker.HitActor){
 					A_OverlayScale(OverlayId(), -.05, .012, WOF_ADD);
-					if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), CFRandom(-.01, .01), CFRandom(-.01, .01), WOF_ADD);
+					if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), -.005, .012, WOF_ADD);
 				}
+				
+				A_OverlayScale(OverlayId(), 0, -.025, WOF_ADD);
+			}
+			#### # 1 {
+				A_OverlayOffset(OverlayId(), CFRandom(2, 4), 2, WOF_ADD);
+				
+				if(invoker.HitWall){
+					A_OverlayOffset(OverlayId(), CFRandom(-8, 0), CFRandom(-8, 8), WOF_ADD);
+					Float Scal = CFRandom(0, .025);
+					A_OverlayScale(OverlayId(), Scal-.03+CFRandom(-.01, .01), Scal+.01+CFRandom(-.02, .02), WOF_ADD);
+					A_OverlayRotate(OverlayId(), CFRandom(1, 3), WOF_ADD);
+				}
+				else if(invoker.HitActor){
+					A_OverlayScale(OverlayId(), -.05, .012, WOF_ADD);
+					if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), -.005, .012, WOF_ADD);
+				}
+				
+				A_OverlayScale(OverlayId(), 0, -.025, WOF_ADD);
 			}
 			#### # 1 {
 				if(invoker.HitWall)A_SetTics(0);
