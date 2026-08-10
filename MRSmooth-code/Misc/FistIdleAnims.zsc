@@ -504,8 +504,6 @@ Extend Class MRIntWeaps_Fist
 			#### ################################### 1 {
 				if(!Player.FindPSprite(OverlayId()+6)){
 					A_OverlayOffset(SecndLay, 0, 7, WOF_ADD);
-					if(Player.GetPSprite(SecndLay).Y < Player.GetPSprite(MainLay+2).Y)
-						Player.GetPSprite(SecndLay).Y = Player.GetPSprite(MainLay+2).Y+(Player.GetPSprite(SecndLay).Y-Player.GetPSprite(MainLay+2).Y)*.8;
 					if(invoker.LineTarg.Health<1)Player.GetPSprite(SecndLay).X = CFRandom(-4, 4)*(GetAge()%2==0?1:-1);
 				}
 				if(!Player.FindPSprite(MainLay+2+6)){
