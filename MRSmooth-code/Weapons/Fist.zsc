@@ -40,7 +40,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			!InStateSequence(Owner.Player.FindPSprite(SecndLay).CurState, FindState("GunIdle2"))
 		))Return;
 		
-		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK)Owner.Player.SetPsprite(SecndLay, FindState("SecndHandCoolIdle"));
+		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK && !(Owner.Player.OldButtons&BT_ALTATTACK))Owner.Player.SetPsprite(SecndLay, FindState("SecndHandCoolIdle"));
 	}
 	
 	Action Void A_SelectPunchingFist()
