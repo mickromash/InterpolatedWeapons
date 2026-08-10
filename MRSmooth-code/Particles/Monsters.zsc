@@ -325,7 +325,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_FULLBRIGHT, STYLE_Add, CRandom(10, 60), Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
 					}
 				}
-				if(Setting&MRIWMP_ImpBallImpactFire && GotHit){
+				if(Setting&MRIWMP_ImpBallImpactFire && GotHit && !DoomImp(GotHit)){
 					For(int i=CRandom(0, 3)*PAmnt;i<(7-DeathTick*.5)*PAmnt;i++){
 						Float Size = CFRandom(3,5)/((PAmnt-1)*.5+1);
 						int Green = CRandom(70, 240);
@@ -354,6 +354,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					Vector3 Pos = Master.Pos;
 					Float Alpha = 1;
 					if(GotHit){
+						if(Cacodemon(GotHit))Return;
 						Pos = GotHit.Pos+(GotHit.Radius*CFRandom(-.7, .7), GotHit.Radius*CFRandom(-.7, .7),GotHit.Height*CFRandom(.2, .8));
 						Alpha = CFRandom(.3, .8);
 						if(GotHit == Players[ConsolePlayer].Camera)AltLightnings = false;
@@ -431,7 +432,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						MRSpawnParticle(Color(255,CRandom(70, 240),CRandom(0, 30)), ParTex, SPF_FULLBRIGHT, STYLE_Add, CRandom(10, 60), Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
 					}
 				}
-				if(Setting&MRIWMP_FatShotImpactFire && GotHit){
+				if(Setting&MRIWMP_FatShotImpactFire && GotHit && !Fatso(GotHit)){
 					For(int i=CRandom(0, 3)*PAmnt;i<(13-DeathTick*.5)*PAmnt;i++){
 						Float Size = CFRandom(1,6)/((PAmnt-1)*.5+1);
 						int Green = CRandom(70, 240);
@@ -461,6 +462,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 					Vector3 Pos = Master.Pos;
 					Float Alpha = 1;
 					if(GotHit){
+						if(Arachnotron(GotHit))Return;
 						Pos = GotHit.Pos+(GotHit.Radius*CFRandom(-.7, .7), GotHit.Radius*CFRandom(-.7, .7),GotHit.Height*CFRandom(.2, .8));
 						Alpha = CFRandom(.3, .8);
 						if(GotHit == Players[ConsolePlayer].Camera)AltLightnings = false;
@@ -520,7 +522,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 						MRSpawnParticle(Color(CRandom(30, 80),255,CRandom(30, 80)), ParTex, SPF_FULLBRIGHT, STYLE_Add, CRandom(15, 60), Size, Master.Pos, Vel, Accel:(-Vel.XY*.05,-.3), SizeStep:-(Size/60.));
 					}
 				}
-				if(Setting&MRIWMP_BaronBallImpactFire && GotHit){
+				if(Setting&MRIWMP_BaronBallImpactFire && GotHit && !BaronOfHell(GotHit)){
 					For(int i=CRandom(0, 3)*PAmnt;i<(13-DeathTick*.5)*PAmnt;i++){
 						Float Size = CFRandom(1,5)/((PAmnt-1)*.5+1);
 						int Red = CRandom(30, 160);
