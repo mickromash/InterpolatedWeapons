@@ -23,8 +23,6 @@ Rifle - id Software, DrPyspy
 Casings - id Software
 Lowres casings - taken from Hideous Destructor
 
-Smoke graphics was made by me, as well as guns sprites editing
-
 
 ==== SOUNDS ====
 
