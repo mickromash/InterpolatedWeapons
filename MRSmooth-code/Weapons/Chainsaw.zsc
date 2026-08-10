@@ -7,8 +7,8 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	}
 	
 	Const Lay1 = 2;//Main animation layer
-	Const Lay2 = 3;//Starting rope
-	Const Lay3 = 4;//Starting hand
+	Const Lay2 = PSP_FLASH+1;//Starting rope
+	Const Lay3 = Lay2+1;//Starting hand
 	Const LayBlood = 5;//Blood lays start
 	//Const LayBloodDrip = -2;
 	//Const SmokeStart = PSP_FLASH+10;
