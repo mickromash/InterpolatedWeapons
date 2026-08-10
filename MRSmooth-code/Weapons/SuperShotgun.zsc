@@ -100,7 +100,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		if(MRIntW_ReloadAnims>1)Reload = true;
 	}
 	
-	Double SpriteRecoil;
+	Double SpriteRecoil, LoadHandScale, LoadHandRot;
+	Vector2 LoadHandOffset;
 	int SwitchAnim, SwitchState;
 	
 	Bool Reload;
@@ -1009,19 +1010,19 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayOffset(Lay1, -24, -10, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				
-				invoker.MuzzleSmoke((45, 30), (55, 30), 1, 1);
+				invoker.MuzzleSmoke((45, 20), (55, 20), 1, 1);
 			}
 			#### KK 1 {
 				A_OverlayOffset(Lay1, -40, 11, WOF_ADD);
 				A_OverlayRotate(Lay1, 10, WOF_ADD);
 				
-				invoker.MuzzleSmoke((45, 30), (55, 30), 1.1, 1.1);
+				invoker.MuzzleSmoke((45, 0), (55, 0), 1.1, 1.1);
 			}
 			#### K 1 {
 				A_OverlayOffset(Lay1, -22, 8, WOF_ADD);
 				A_OverlayRotate(Lay1, 7, WOF_ADD);
 				
-				invoker.MuzzleSmoke((45, 30), (55, 30), 1.1, 1.1);
+				invoker.MuzzleSmoke((45, -10), (55, -10), 1.1, 1.1);
 				if(MRIntW_ScreenShake>1){
 					Double Amnt = MRIntW_ScreenShakeAmount;
 					A_QuakeEx(.25*Amnt,0,-.15*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 5,0,5, rollIntensity: .05*Amnt, rollwave: 5);
@@ -1065,43 +1066,52 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_DoVanillaDisplay();
 				A_GlovesColor(1);
 				A_OverlayPivot(LeftHand, .5, .5);
-				A_OverlayOffset(LeftHand, -70, 80);
+				A_OverlayOffset(LeftHand, -70 + CRandom(-90, 80), 80+CRandom(0, 20));
 				A_OverlayRotate(LeftHand, -15);
+				
+				invoker.LoadHandOffset = (-48 + CFRandom(-20, 0), -3 + CFRandom(-5, 5));
+				invoker.LoadHandRot = 4 + CFRandom(0, 6);
+				invoker.LoadHandScale = 1.06 + CFRandom(0, .25);
 			}
-			#### GGG 1 {
-				A_OverlayOffset(LeftHand, 10, -26.67, WOF_ADD);
-				A_OverlayRotate(LeftHand, 5, WOF_ADD);
-				A_OverlayScale(LeftHand, .02, .02, WOF_ADD);
+			#### GGGG 1 {
+				Player.GetPSprite(LeftHand).X = invoker.LoadHandOffset.X + (Player.GetPSprite(LeftHand).X - invoker.LoadHandOffset.X)*.6;
+				Player.GetPSprite(LeftHand).Y = invoker.LoadHandOffset.Y + (Player.GetPSprite(LeftHand).Y - invoker.LoadHandOffset.Y)*.6;
+				Player.GetPSprite(LeftHand).Rotation = invoker.LoadHandRot + (Player.GetPSprite(LeftHand).Rotation - invoker.LoadHandRot)*.7;
+				Player.GetPSprite(LeftHand).Scale.Y = Player.GetPSprite(LeftHand).Scale.X = invoker.LoadHandScale + (Player.GetPSprite(LeftHand).Scale.X - invoker.LoadHandScale)*.6;
 				A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			}
 			#### G 1 {
-				A_OverlayRotate(LeftHand, 4, WOF_ADD);
-				A_OverlayOffset(LeftHand, -8, -3, WOF_ADD);
+				A_OverlayRotate(LeftHand, invoker.LoadHandRot, WOF_INTERPOLATE);
+				A_OverlayOffset(LeftHand, invoker.LoadHandOffset.X, invoker.LoadHandOffset.Y, WOF_INTERPOLATE);
+				A_OverlayScale(LeftHand, invoker.LoadHandScale, invoker.LoadHandScale, WOF_INTERPOLATE);
 			}
-			#### GGG 1 {
-				A_OverlayOffset(LeftHand, 19, 2.8, WOF_ADD);
-				A_OverlayRotate(LeftHand, -2, WOF_ADD);
-				A_OverlayScale(LeftHand, -.025, -.025, WOF_ADD);
+			#### GG 1 {
+				Player.GetPSprite(LeftHand).X = 14 + (Player.GetPSprite(LeftHand).X - 14)*.6;
+				Player.GetPSprite(LeftHand).Y = 5.39 + (Player.GetPSprite(LeftHand).Y - 5.39)*.6;
+				Player.GetPSprite(LeftHand).Rotation = -4 + (Player.GetPSprite(LeftHand).Rotation +4)*.7;
+				Player.GetPSprite(LeftHand).Scale = (.96,.96) + (Player.GetPSprite(LeftHand).Scale - (.96,.96))*.6;
 			}
 			#### G 1 {
 				if(MRIntW_ScreenShake>1){
 					Double Amnt = MRIntW_ScreenShakeAmount;
 					A_QuakeEx(.15*Amnt,.25*Amnt,-.1*Amnt, 8, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 13,13,13, rollIntensity: .04*Amnt, rollwave: 13);
 				}
-				A_OverlayOffset(LeftHand, 5, 0, WOF_ADD);
-				A_OverlayRotate(LeftHand, -6, WOF_ADD);
-				A_OverlayScale(LeftHand, -.025, -.025, WOF_ADD);
+				A_OverlayOffset(LeftHand, 14, 5.39, WOF_INTERPOLATE);
+				A_OverlayRotate(LeftHand, -8, WOF_INTERPOLATE);
+				A_OverlayScale(LeftHand, .96, .96, WOF_INTERPOLATE);
 			}
 			#### G 4;
 			#### H 1 {
+				if(CRandom(0,2)==0)Player.GetPSprite(LeftHand).Frame--;
 				Player.GetPSprite(LeftHand).OldX = Player.GetPSprite(LeftHand).X + 8;
 				Player.GetPSprite(LeftHand).OldY = Player.GetPSprite(LeftHand).Y + 3;
 				Player.GetPSprite(LeftHand).X = Player.GetPSprite(LeftHand).OldX + 6;
 				Player.GetPSprite(LeftHand).Y = Player.GetPSprite(LeftHand).OldY + 21;
 				A_OverlayScale(LeftHand, -.025, -.035, WOF_ADD);
 				A_OverlayRotate(LeftHand, -4, WOF_ADD);
+				A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, !Player.GetPSprite(LeftHand).FirstTic);
 			}
-			#### HHHH 1 {
+			#### #### 1 {
 				A_OverlayOffset(LeftHand, 14, 24, WOF_ADD);
 				A_OverlayRotate(LeftHand, -4, WOF_ADD);
 			}
