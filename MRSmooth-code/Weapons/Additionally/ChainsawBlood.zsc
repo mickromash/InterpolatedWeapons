@@ -76,24 +76,29 @@ Extend Class MRIntWeaps_Chainsaw
 		if(Type<1 && (!Victim || !Victim.bShootable || Victim.bNoBlood))Return;
 		if(MRIntW_ChainsawBlood<1)Return;
 		
-		
 		int Trans;
 		if(Victim){
 			if(Victim.BloodTranslation != 0)Trans = Victim.BloodTranslation;
 			else {
+				String Blacklist = "Actor";
+				if(CVar.FindCVar("MRGoreParts_BlackList"))Blacklist = CVar.FindCVar("MRGoreParts_BlackList").GetString().MakeLower();
+				
 				int OldTrans = Player.GetPSprite(Lay1).Translation;
+				String NaymStr = Victim.GetClassName();
+				Name Naym = NaymStr.MakeLower();
 				Switch(Victim.GetClassName())
 				{
-					Case 'LostSoul':
+					Case 'lostsoul':
 						Return;
-					Case 'Cacodemon':
+					Case 'cacodemon':
 						A_OverlayTranslation(Lay1, "MRIntWBldBlue");
 						Break;
-					Case 'HellKnight':
-					Case 'BaronOfHell':
+					Case 'hellknight':
+					Case 'baronofhell':
 						A_OverlayTranslation(Lay1, "MRIntWBldGreen");
 						Break;
 					Default:
+						if(Blacklist.IndexOf(NaymStr.MakeLower().." ")>-1)Return;
 						A_OverlayTranslation(Lay1, "MRIntWBldRed");
 						Break;
 				}
