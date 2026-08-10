@@ -443,7 +443,7 @@ Extend Class MRIntWeaps_Chainsaw
 				if(Player.GetPSprite(Lay1).Frame<6){
 					Player.GetPSprite(PNum).Scale = (.08, .12);
 					Float Down = CRandom(0, 20);
-					A_OverlayOffset(PNum, Player.GetPSprite(Lay1).X + 138 + Down*.3, Player.GetPSprite(Lay1).Y + 62 + Down);
+					A_OverlayOffset(PNum, Player.GetPSprite(Lay1).X + 138 + Down*.3 - Sin(Player.GetPSprite(Lay1).Rotation)*50, Player.GetPSprite(Lay1).Y + 22 + Down + Cos(Player.GetPSprite(Lay1).Rotation)*40);
 					Player.GetPSprite(PNum).bPowDouble = false;
 				}
 				else {
@@ -477,15 +477,16 @@ Extend Class MRIntWeaps_Chainsaw
 				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
 			}
 			NSHS # 1{
-				if(!Player.GetPSprite(OverlayId()).bPowDouble && (Player.GetPSprite(Lay1).Frame>5 || CRandom(0, 20)==0)){
+				if(!Player.GetPSprite(OverlayId()).bPowDouble && (Player.GetPSprite(Lay1).Frame>5 || Player.GetPSprite(Lay1).Y>5 || CRandom(0, 20)==0)){
 					Player.GetPSprite(OverlayId()).bPowDouble = true;
 					Player.GetPSprite(OverlayId()).Rotation += CFRandom(1, 2);
 				}
 				
 				if(Player.GetPSprite(OverlayId()).bPowDouble){
-					A_OverlayOffset(OverlayId(), 0, Player.GetPSprite(OverlayId()).Rotation, WOF_ADD);
+					A_OverlayOffset(OverlayId(), 0, Player.GetPSprite(OverlayId()).Rotation + Max(0, Player.GetPSprite(Lay1).Y-Player.GetPSprite(Lay1).OldY), WOF_ADD);
 					Player.GetPSprite(OverlayId()).Rotation += CFRandom(.25, .5);
 				}
+				else A_OverlayOffset(OverlayId(), Player.GetPSprite(Lay1).X-Player.GetPSprite(Lay1).OldX, Player.GetPSprite(Lay1).Y-Player.GetPSprite(Lay1).OldY, WOF_ADD);
 				
 				if(Player.GetPSprite(OverlayId()).Y>140)A_ClearOverlays(OverlayId(), OverlayId());
 			}
