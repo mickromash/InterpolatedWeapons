@@ -366,13 +366,19 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			
 		GunFire:
 			BFG1 A 1{
-				A_Overlay(Lay2, "GunMuzzle", true);
 				A_OverlayOffset(Lay1, 0, 0);
-				A_OverlayOffset(Lay2, 0, 0);
-				invoker.Muzzle = 0;
 				A_OverlayScale(Lay1, 1, 1);
-				A_OverlayScale(Lay2, 1, 1);
-				invoker.InterpolateMuzzle = false;
+				
+				if(!Player.FindPSprite(Lay2)){
+					A_Overlay(Lay2, "GunMuzzle", true);
+					A_OverlayOffset(Lay2, 0, 0);
+					invoker.Muzzle = 0;
+					A_OverlayScale(Lay2, 1, 1);
+					invoker.InterpolateMuzzle = false;
+				}
+				else {
+					invoker.Muzzle *= .7;
+				}
 				invoker.Power = 0;
 				A_Overlay(Lay3, "GunLEDs");
 				A_OverlayFlags(Lay3, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
@@ -404,8 +410,9 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 					Player.GetPSprite(LED1+i).Y = Player.GetPSprite(Lay1).Y + invoker.LEDs[i].Y;
 				}
 				
-				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X+CFRandom(-1, 1)*invoker.Power;
-				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y+CFRandom(0, 2)*invoker.Power;
+				invoker.Muzzle *= .7;
+				Player.GetPSprite(Lay2).X = Player.GetPSprite(Lay1).X + CFRandom(-1, 1)*invoker.Power;
+				Player.GetPSprite(Lay2).Y = Player.GetPSprite(Lay1).Y + invoker.Muzzle*3 + CFRandom(0, 2)*invoker.Power;
 				invoker.Power+=.1;
 				if(int(invoker.Power*10)%3==0 && MRIntW_ScreenShake>1){
 					Double Pow = invoker.Power;
