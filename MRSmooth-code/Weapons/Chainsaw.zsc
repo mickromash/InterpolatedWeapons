@@ -648,7 +648,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		SawIdleLoop:
 			#### # 0 {
 				invoker.ReadySound = "";
-				A_StartSound(invoker.UpSound, CHAN_5, 0, CFRandom(.7, 1), pitch: CFRandom(.95, 1.05)*i_timescale);
+				A_StartSound(invoker.UpSound, CHAN_5, 0, CFRandom(.7, 1), pitch: CFRandom(.9, 1)*i_timescale);
 				A_Overlay(Lay3, "SawStartHand");
 				A_Overlay(Lay2, "SawStartRope");
 				
