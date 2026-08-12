@@ -30,6 +30,15 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
+		
+		if(Owner.Player.ReadyWeapon != Self || !InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
+		
+		Owner.Player.GetPSprite(Lay1).Frame = Muzzle;
+				
+		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK)Muzzle++;
+		else if(Muzzle>0)Muzzle--;
+		
+		if(Muzzle>2)Muzzle = 2;
 	}
 	
 	Vector2 RecOfst;
@@ -98,9 +107,6 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			MI1G # 1 {
 				A_OverlayPivot(Lay1, .5, 0);
 				A_IdleAnimation(Lay1);
-				Player.GetPSprite(Lay1).Frame = invoker.Muzzle;
-				
-				if(invoker.Muzzle>0)invoker.Muzzle--;
 			}
 			#### # 0 {if(MRIntW_BobRangeZ==0)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
