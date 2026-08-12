@@ -175,8 +175,9 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 					}
 				}
 			}
+			#### # 0 {Player.GetPSprite(Lay1).X = CFRandom(-2, 2);}
 			BFG1 ## 1{
-				A_OverlayOffset(Lay1, CFRandom(-1, 1), 3, WOF_ADD);
+				Player.GetPSprite(Lay1).Y = 39+(Player.GetPSprite(Lay1).Y-39)*.6;
 				A_OverlayScale(Lay1, .08, .08, WOF_ADD);
 				invoker.SwitchState--;
 			}

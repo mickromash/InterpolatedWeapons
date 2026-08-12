@@ -77,15 +77,19 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			}
 			MI1G C 1;
 			MI1G CCCCCCCC 1 {
-				A_OverlayOffset(Lay1, invoker.SwitchAnim?5:-5, -7, WOF_ADD);
+				int XMove = invoker.SwitchAnim?8:-8;
+				Player.GetPSprite(Lay1).X = XMove+(Player.GetPSprite(Lay1).X-XMove)*.8;
+				Player.GetPSprite(Lay1).Y = 32-9+(Player.GetPSprite(Lay1).Y+9-32)*.5;
 				A_OverlayScale(Lay1, .05, .05, WOF_ADD);
-				A_OverlayRotate(Lay1, invoker.SwitchAnim?-1.4:1.4, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.SwitchAnim?-2:2, WOF_ADD);
 				invoker.SwitchState--;
 			}
 			MI1G CCC 1 {
-				A_OverlayOffset(Lay1, invoker.SwitchAnim?6:-6, 4, WOF_ADD);
+				int XMove = invoker.SwitchAnim?3:-3;
+				Player.GetPSprite(Lay1).X = XMove+(Player.GetPSprite(Lay1).X-XMove)*.8;
+				Player.GetPSprite(Lay1).Y = 35+(Player.GetPSprite(Lay1).Y-35)*.5;
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, invoker.SwitchAnim?-4.2:4.2, WOF_ADD);
+				A_OverlayRotate(Lay1, invoker.SwitchAnim?-1.5:1.5, WOF_ADD);
 				invoker.SwitchState--;
 			}
 			MI1G C 1{

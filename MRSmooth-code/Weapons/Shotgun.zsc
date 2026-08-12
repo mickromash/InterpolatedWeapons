@@ -168,11 +168,16 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			}
 			#### ####### 1 {
 				if(invoker.SwitchAnim){
-					A_OverlayOffset(Lay1, -5, -11, WOF_ADD);
+					Player.GetPSprite(Lay1).X = -3+(Player.GetPSprite(Lay1).X+3)*.8;
+					Player.GetPSprite(Lay1).Y = 32-6+(Player.GetPSprite(Lay1).Y+6-32)*.5;
+					
 					A_OverlayRotate(Lay1, 4, WOF_ADD);
 				}
 				else {
-					A_OverlayOffset(Lay1, -7, -9, WOF_ADD);
+					Player.GetPSprite(Lay1).X = -3+(Player.GetPSprite(Lay1).X+3)*.8;
+					Player.GetPSprite(Lay1).Y = 32-6+(Player.GetPSprite(Lay1).Y+6-32)*.5;
+					
+					
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 					A_OverlayRotate(Lay1, 1.2, WOF_ADD);
 				}
@@ -181,11 +186,14 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			}
 			#### # 1 {
 				if(invoker.SwitchAnim){
-					A_OverlayOffset(Lay1, -5, -2, WOF_ADD);
+					Player.GetPSprite(Lay1).X = -1+(Player.GetPSprite(Lay1).X+1)*.7;
+					Player.GetPSprite(Lay1).Y = 32+(Player.GetPSprite(Lay1).Y-32)*.7;
+					
 					A_OverlayRotate(Lay1, .2, WOF_ADD);
 				}
 				else {
-					A_OverlayOffset(Lay1, -4, 4, WOF_ADD);
+					Player.GetPSprite(Lay1).X = -1+(Player.GetPSprite(Lay1).X+1)*.7;
+					Player.GetPSprite(Lay1).Y = 32+(Player.GetPSprite(Lay1).Y-32)*.7;
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 					A_OverlayRotate(Lay1, 1.4, WOF_ADD);
 				}
@@ -692,16 +700,18 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### D 1 {
-				A_OverlayOffset(Lay1, -15, -7, WOF_ADD);
+				Player.GetPSprite(Lay1).X = -75+(Player.GetPSprite(Lay1).X+75)*.8;
+				Player.GetPSprite(Lay1).Y = -44+(Player.GetPSprite(Lay1).Y+44)*.8;
 				A_OverlayRotate(Lay1, Player.GetPSprite(Lay1).Rotation+invoker.PumpRotation*.1);
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			#### EFF 1 {
-				A_OverlayOffset(Lay1, -15, -7, WOF_ADD);
+				Player.GetPSprite(Lay1).X = -80+(Player.GetPSprite(Lay1).X+80)*.7;
+				Player.GetPSprite(Lay1).Y = -44+(Player.GetPSprite(Lay1).Y+44)*.7;
 				A_OverlayRotate(Lay1, invoker.PumpRotation*.1, WOF_ADD);
 			}
 			#### F 1 {
-				A_OverlayOffset(Lay1, -3, -2, WOF_ADD);
+				A_OverlayOffset(Lay1, -71, -42, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, invoker.PumpRotation*.1, WOF_ADD);
 			}
 			#### F 1 {

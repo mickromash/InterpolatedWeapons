@@ -409,7 +409,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					invoker.Reload = false;
 				}
 			}
-			CH1G # 1 {
+			CH1G ## 1 {
 				Vector2 Ofst = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				For(int i=Muzzle0;i<=Ring;i++){
 					Player.GetPSprite(i).X -= Ofst.X*.5;
