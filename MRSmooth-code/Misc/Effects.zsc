@@ -1194,9 +1194,9 @@ Extend Class MRIntWeaps_BFG9000
 	MRIntWeaps_SmokeContainer Particles[50];
 	Const ParLay = -4;
 	
-	Action Void A_FiringParticles(double Chance)
+	Action Void A_FiringParticles(Double Chance, Bool AltFire = false)
 	{
-		if(Players[ConsolePlayer].Camera!=Self && MRIntW_BFGParticles){
+		if(!AltFire && Players[ConsolePlayer].Camera!=Self && MRIntW_BFGParticles){
 			Let Cam = Players[ConsolePlayer].Camera;
 			if(Cam && (abs(DeltaAngle(Cam.Angle, Cam.AngleTo(Self)))<CVar.FindCVar("FOV").GetFloat()||Distance2D(Cam)<Cam.Radius*2) && CheckSight(Cam, SF_IGNOREWATERBOUNDARY|SF_SEEPASTBLOCKEVERYTHING|SF_IGNOREVISIBILITY)){
 				Vector3 BPos;
@@ -1228,7 +1228,7 @@ Extend Class MRIntWeaps_BFG9000
 		}
 		if(Chance>1.8)Return;
 		//Small green plasma particles going into the muzzle
-		For(int i1=Random(0, 4);i1<20*Chance;i1++){
+		For(int i1=Min(20*Chance-1, Random(0, 4));i1<20*Chance;i1++){
 				
 			int Par = -1;
 
@@ -1245,14 +1245,13 @@ Extend Class MRIntWeaps_BFG9000
 			Double Angle = CRandom(-20, 200);
 			Double Vel = CFRandom(1.5, 4.5);
 			
-			invoker.Particles[Par].Age = Random(20, 30)/(Chance+1);
+			invoker.Particles[Par].Age = Random(20, 30)/Abs(Chance+1);
 			invoker.Particles[Par].Vel.XY = (Vel*Cos(Angle), Vel*Sin(Angle))*(Chance+.25);
 			
 			int Lay = ParLay-Par;
 			
 			A_Overlay(Lay, "Particle");
-			Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
-			Bob *= CVar.FindCVar("wbobfire").GetFloat();
+
 			A_OverlayOffset(Lay, 
 				130 - invoker.Particles[Par].Vel.X*invoker.Particles[Par].Age,
 				95 - invoker.Particles[Par].Vel.Y*invoker.Particles[Par].Age
