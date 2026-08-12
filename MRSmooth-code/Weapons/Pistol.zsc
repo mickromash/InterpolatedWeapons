@@ -294,13 +294,19 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			}
 			#### AAAAAAA 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
-				A_OverlayOffset(Lay1, invoker.SwitchAnim?-6:6, -10, WOF_ADD);
-				A_OverlayScale(Lay1, .02, .02, WOF_ADD);
+				int XMove = invoker.SwitchAnim?-3:3;
+				Player.GetPSprite(Lay1).X = XMove+(Player.GetPSprite(Lay1).X-XMove)*.8;
+				Player.GetPSprite(Lay1).Y = 32-5+(Player.GetPSprite(Lay1).Y+5-32)*.5;
+
+				A_OverlayScale(Lay1, .03, .03, WOF_ADD);
 				A_OverlayRotate(Lay1, -2, WOF_ADD);
 				invoker.SwitchState--;
 			}
 			#### AAAA 1 {
-				A_OverlayOffset(Lay1, invoker.SwitchAnim?4:-4, 3, WOF_ADD);
+				int XMove = invoker.SwitchAnim?-1:1;
+				Player.GetPSprite(Lay1).X = XMove+(Player.GetPSprite(Lay1).X-XMove)*.7;
+				Player.GetPSprite(Lay1).Y = 32+(Player.GetPSprite(Lay1).Y-32)*.7;
+
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, .8, WOF_ADD);
 				invoker.SwitchState--;

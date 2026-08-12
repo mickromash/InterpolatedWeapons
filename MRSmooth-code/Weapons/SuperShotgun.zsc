@@ -186,17 +186,22 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				invoker.SwitchState--;
 			}
 			#### # 1{
-				A_OverlayOffset(Lay1, 0, 32, WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, 0, 30, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				invoker.SwitchState = 0;
 			}
-			#### A 1 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### A 1 {
+				if(invoker.SwitchAnim)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+				else Player.GetPSprite(Lay1).Y += CFRandom(.5, 1);
+			}
+			#### A 1 {
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, true);
-				A_OverlayOffset(Lay1, 0, 0);
-				A_OverlayScale(Lay1, 1, 1);
-				A_OverlayRotate(Lay1, 0);
+				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+				Player.GetPSprite(Lay1).OldY -= 32;
 			}
 		GunWait:
 			SH12 A 1 {
