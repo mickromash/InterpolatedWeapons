@@ -79,6 +79,14 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		if(GetCVar("MRIntW_BareHands"))Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("PUN3A0");
 	}
 	
+	Action Void A_OverlayMoveTo(int Lay = -1, Double XTo = 0, Double YTo = 0, Double SpeedX = .8, Double SpeedY = -1)
+	{
+		if(Lay == -1)Lay = OverlayId();
+		if(SpeedY == -1)SpeedY = SpeedX;
+		Player.GetPSprite(Lay).X = XTo + (Player.GetPSprite(Lay).X - XTo)*SpeedX;
+		Player.GetPSprite(Lay).Y = YTo + (Player.GetPSprite(Lay).Y - YTo)*SpeedY;
+	}
+	
 	int BobState, IdleDelay, SwitchAnim, SwitchState;
 	Vector2 SecndHand, MainHand, DeselectOffset;
 	Bool HitWall, HitActor, SecondFist;
@@ -164,21 +172,15 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayFlags(SecndLay, PSPF_INTERPOLATE, false);
 			}
 			#### AAAAAAAA 1 {
-				//int XPos = 40;
 				Float Rot;
-				/*if(invoker.SwitchAnim&SelM)XPos = 0;
-				else if(invoker.SwitchAnim&SelL)XPos = -20;*/
 				
 				A_OverlayFlags(SecndLay, PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
-				//A_OverlayOffset(SecndLay, -XPos*.11, -4.5, WOF_ADD);
-				
 				
 				int XPos = 3;
 				if(invoker.SwitchAnim&SelM)XPos = 0;
 				else if(invoker.SwitchAnim&SelL)XPos = -3;
 				
-				Player.GetPSprite(SecndLay).X = XPos+(Player.GetPSprite(SecndLay).X-XPos)*.7;
-				Player.GetPSprite(SecndLay).Y = 32-3+(Player.GetPSprite(SecndLay).Y+3-32)*.7;
+				A_OverlayMoveTo(SecndLay, XPos, 32-3, .7);
 				
 				Float ScalY = -.08;
 				if(invoker.SwitchAnim&SelGrow)ScalY = -.0125;
@@ -665,8 +667,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				Player.GetPSprite(SecndLay).Translation = invoker.GlovesTrans;
 			}
 			#### AAA 1{
-				Player.GetPSprite(SecndLay).X = -4+(Player.GetPSprite(SecndLay).X+4)*CFRandom(.4, .5);
-				Player.GetPSprite(SecndLay).Y = -2+(Player.GetPSprite(SecndLay).Y+2)*CFRandom(.4, .5);
+				A_OverlayMoveTo(SecndLay, -4, -2, CFRandom(.4, .5));
 				A_OverlayScale(SecndLay, -.05, -.05, WOF_ADD);
 				invoker.SecndHand = (Player.GetPSprite(SecndLay).X, Player.GetPSprite(SecndLay).Y);
 			}
@@ -693,7 +694,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				Player.GetPSprite(MainLay).Translation = invoker.GlovesTrans;
 			}
 			#### BBBBBBB 1 {
-				A_OverlayOffset(MainLay, 10, -10, WOF_ADD);
+				A_OverlayMoveTo(MainLay, 6, -15, .7, .8);
 				A_OverlayScale(MainLay, -.05, -.05, WOF_ADD);
 			}
 			#### B 2 {
@@ -856,7 +857,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayOffset(OverlayId(), CFRandom(-8, 0), CFRandom(-3, 3), WOF_ADD);
 					Float Scal = CFRandom(0, .025);
 					A_OverlayScale(OverlayId(), Scal-.03+CFRandom(-.01, .01), Scal+.01+CFRandom(-.02, .02), WOF_ADD);
-					A_OverlayRotate(OverlayId(), CFRandom(1, 3), WOF_ADD);
+					A_OverlayRotate(OverlayId(), CFRandom(2, 3), WOF_ADD);
 				}
 				else if(invoker.HitActor){
 					A_OverlayScale(OverlayId(), -.05, .012, WOF_ADD);
@@ -872,7 +873,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					Float Scal = CFRandom(.05, .1);
 					A_OverlayScale(OverlayId(), Scal-.03, Scal+.01, WOF_ADD);
 					A_OverlayScale(OverlayId(), CFRandom(-.02, .02), CFRandom(-.02, .02), WOF_ADD);
-					A_OverlayRotate(OverlayId(), CFRandom(2, 4), WOF_ADD);
+					A_OverlayRotate(OverlayId(), CFRandom(5, 7), WOF_ADD);
 				}
 				else if(invoker.HitActor){
 					A_OverlayScale(OverlayId(), .02, -.01, WOF_ADD);
@@ -917,10 +918,9 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				}
 			}
 			#### ## 1 {
-				Player.GetPSprite(OverlayId()).X = -55+(Player.GetPSprite(OverlayId()).X+55)*CFRandom(.8, .9);
-				Player.GetPSprite(OverlayId()).Y = 25+(Player.GetPSprite(OverlayId()).Y-25)*CFRandom(.8, .9);
+				A_OverlayMoveTo(OverlayId(), -55, 25, CFRandom(.8, .9));
 
-				A_OverlayRotate(OverlayId(), 5, WOF_ADD);
+				A_OverlayRotate(OverlayId(), 9, WOF_ADD);
 				A_OverlayScale(OverlayId(), .05, .05, WOF_ADD);
 				if(invoker.HitWall){
 					A_OverlayOffset(OverlayId(), CFRandom(-3, 0), CFRandom(1, 3), WOF_ADD);
@@ -932,10 +932,9 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				if(!invoker.SecondFist)invoker.SecndHand = (Player.GetPSprite(OverlayId()).X, Player.GetPSprite(OverlayId()).Y+32);
 			}
 			#### ### 1 {
-				Player.GetPSprite(OverlayId()).X = -85+(Player.GetPSprite(OverlayId()).X+85)*CFRandom(.7, .8);
-				Player.GetPSprite(OverlayId()).Y = 55+(Player.GetPSprite(OverlayId()).Y-55)*CFRandom(.7, .8);
+				A_OverlayMoveTo(OverlayId(), -85, 55, CFRandom(.7, .8));
 
-				A_OverlayRotate(OverlayId(), 5, WOF_ADD);
+				A_OverlayRotate(OverlayId(), 11, WOF_ADD);
 				A_OverlayScale(OverlayId(), .05, .05, WOF_ADD);
 				if(invoker.HitWall){
 					A_OverlayOffset(OverlayId(), CFRandom(-3, 0), CFRandom(1, 3), WOF_ADD);
@@ -1121,30 +1120,28 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
 			}
 			#### ## 1 {
-				Player.GetPSprite(OverlayId()).X = -55+(Player.GetPSprite(OverlayId()).X+55)*CFRandom(.8, .9);
-				Player.GetPSprite(OverlayId()).Y = 25+(Player.GetPSprite(OverlayId()).Y-25)*CFRandom(.8, .9);
+				A_OverlayMoveTo(OverlayId(), -55, 25, CFRandom(.8, .9));
 
-				A_OverlayRotate(OverlayId(), 4, WOF_ADD);
+				A_OverlayRotate(OverlayId(), 7, WOF_ADD);
 				A_OverlayScale(OverlayId(), .02, .02, WOF_ADD);
 				if(invoker.HitWall){
 					A_OverlayOffset(OverlayId(), CFRandom(-6, -1), CFRandom(-3, 1), WOF_ADD);
 					Float Scal = CFRandom(0, .025);
 					A_OverlayScale(OverlayId(), Scal+.03, Scal, WOF_ADD);
-					A_OverlayRotate(OverlayId(), CFRandom(2, 6), WOF_ADD);
+					A_OverlayRotate(OverlayId(), CFRandom(1, 4), WOF_ADD);
 				}
 				if(GetCVar("MRIntW_PunchingFist")<1||invoker.SecondFist)invoker.MainHand = (Player.GetPSprite(OverlayId()).X, Player.GetPSprite(OverlayId()).Y);
 			}
 			#### ## 1 {
-				Player.GetPSprite(OverlayId()).X = -85+(Player.GetPSprite(OverlayId()).X+85)*CFRandom(.7, .8);
-				Player.GetPSprite(OverlayId()).Y = 55+(Player.GetPSprite(OverlayId()).Y-55)*CFRandom(.7, .8);
+				A_OverlayMoveTo(OverlayId(), -85, 55, CFRandom(.7, .8));
 
-				A_OverlayRotate(OverlayId(), 4, WOF_ADD);
+				A_OverlayRotate(OverlayId(), 11, WOF_ADD);
 				A_OverlayScale(OverlayId(), .02, .02, WOF_ADD);
 				if(invoker.HitWall){
 					A_OverlayOffset(OverlayId(), CFRandom(-6, -1), CFRandom(-3, 1), WOF_ADD);
 					Float Scal = CFRandom(0, .025);
 					A_OverlayScale(OverlayId(), Scal+.03, Scal, WOF_ADD);
-					A_OverlayRotate(OverlayId(), CFRandom(2, 6), WOF_ADD);
+					A_OverlayRotate(OverlayId(), CFRandom(1, 4), WOF_ADD);
 				}
 				if(GetCVar("MRIntW_PunchingFist")<1||invoker.SecondFist)invoker.MainHand = (Player.GetPSprite(OverlayId()).X, Player.GetPSprite(OverlayId()).Y);
 			}
@@ -1259,7 +1256,6 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				}
 				if(MRIntW_SwitchAnims)A_Overlay(SecndLay, "SecndHandLower");
 				else A_Overlay(SecndLay, "SecndHandLowerVanilla");
-				//Player.GetPSprite(PSP_WEAPON).Y = 32;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PUNGA0");
 			}
