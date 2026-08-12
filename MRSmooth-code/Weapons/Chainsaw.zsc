@@ -402,7 +402,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				FLineTraceData Blade;
 				
 				double PZ = height * 0.5 - floorclip + player.mo.AttackZOffset*player.crouchFactor;
-				LineTrace(Angle, 65, Pitch, OffsetZ:PZ, data:Blade);
+				LineTrace(Angle, 100, Pitch, OffsetZ:PZ, data:Blade);
 				if(!Blade.HitActor||!GetCVar("MRIntW_ChainsawCutting")){invoker.SawPos = 1;invoker.CutDir = false;}
 				else invoker.CutDir = !invoker.CutDir;
 				
@@ -414,18 +414,24 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 					
 				double PZ = height * 0.5 - floorclip + player.mo.AttackZOffset*player.crouchFactor;
 				LineTrace(Angle, 65, Pitch, OffsetZ:PZ, data:Blade);
+				Bool InRange = Blade.HitType != TRACE_HitNone;
+				LineTrace(Angle, 145, Pitch, OffsetZ:PZ, data:Blade);
 				
-				if(Blade.HitActor)A_AddBlood(Blade.HitActor);
-				else if(Blade.HitTexture)A_CheckLiquid(Blade.HitTexture);
+				if(InRange){
+					if(Blade.HitActor)A_AddBlood(Blade.HitActor);
+					else if(Blade.HitTexture)A_CheckLiquid(Blade.HitTexture);
+				}
 				
 				Double RandOfst, Distance;
 				if(GetCVar("MRIntW_ChainsawCutting")||GetCVar("MRIntW_ChainsawCuttingWall"))
 				{
 					if(Blade.HitType!=TRACE_HitNone){
-						invoker.SawSpeed = CFRandom(.67, .8);
+						if(InRange)invoker.SawSpeed = CFRandom(.67, .8);
 						if(!Blade.HitActor && GetCVar("MRIntW_ChainsawCuttingWall")){//Cutting a surface
-							RandOfst = .3+1-Blade.Distance/65;
-							invoker.CuttingWay *= .5;
+							if(InRange){
+								RandOfst = .3+1-Blade.Distance/65;
+								invoker.CuttingWay *= .5;
+							}
 						}
 						else if(GetCVar("MRIntW_ChainsawCutting") && Blade.HitActor){//Cutting someone
 
@@ -447,10 +453,12 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 								//Console.Printf("Cutting angle: \cd"..invoker.SawAngle);
 							}
 							
+							if(!InRange)invoker.CuttingWay = -.5;
+							
 							invoker.NoCutting = false;
 							invoker.Cutting = Blade.HitActor;
 						}
-						Distance = (1-Blade.Distance/65) * 2;//Distance to object being cutted
+						if(InRange)Distance = (1-Blade.Distance/65) * 2;//Distance to object being cutted
 					}
 					else if(GetCVar("MRIntW_ChainsawCutting")){
 						if(invoker.Cutting){//Cutted someone in half
