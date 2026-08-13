@@ -87,19 +87,28 @@ Extend Class MRIntWeaps_Fist
 		}
 	}
 	
+	Vector2 BaseOffset;
 	Void DoBaseOffset()
 	{
+		if(!Allowed){
+			BaseOffset *= 0;
+			Return;
+		}
+		
+		BaseOffset.X += (MRIntW_BaseOffsetX - BaseOffset.X)*.2;
+		BaseOffset.Y += (MRIntW_BaseOffsetY - BaseOffset.Y)*.2;
+		
 		if(OfstAdd){
-			PSP.X += MRIntW_BaseOffsetX;
+			PSP.X += BaseOffset.X;
 			PSP.OldX = PSP.X;
 			if(Allowed){
-				PSP.Y += MRIntW_BaseOffsetY;
+				PSP.Y += BaseOffset.Y;
 				PSP.OldY = PSP.Y;
 			}
 		}
 		else {
-			PSP.X = MRIntW_BaseOffsetX;
-			if(Allowed)PSP.Y = 32+MRIntW_BaseOffsetY;
+			PSP.X = BaseOffset.X;
+			if(Allowed)PSP.Y = 32+BaseOffset.Y;
 			OfstAdd = true;
 		}
 	}
@@ -223,22 +232,22 @@ Extend Class MRIntWeaps_Fist
 		Switch(Style)
 		{
 			Case 0://Half Life 2
-				Target = Sin(Owner.Pitch)*10;
+				Target = Sin(Owner.Pitch)*10;//Vecrtical target position
 				
 				if(InStateSequence(PSP.CurState, weap.FindState("Fire")))Sway.X *= .8;
 				
-				Sway.Y *= .8;
+				Sway.Y *= .8;//Temporal vertical position
 				
 				{
-					Vector2 Add = (Owner.Player.Cmd.Yaw, Owner.Player.Cmd.Pitch)*.0025;
-					if(abs(Owner.Pitch)>89)Add.Y -= Owner.Player.Cmd.Pitch*.0025;
+					Vector2 Add = (Owner.Player.Cmd.Yaw, Owner.Player.Cmd.Pitch)*.0025;//Camera rotation to sway
+					if(abs(Owner.Pitch)>89)Add.Y -= Owner.Player.Cmd.Pitch*.0025;//Prevent vertical sway glitching when pitch is at max
 					
 					if((GoingY>0 && Add.X<0)||
-						(GoingY<0 && Add.X>0))GoingX = 0;
-					else if(GoingX<1)GoingX += .3;
+						(GoingY<0 && Add.X>0))GoingX = 0;//Reset speed if starting moving in opposite direction
+					else if(GoingX<1)GoingX += .3;//Increasing speed
 					
-					if((Sway.X<0 && Add.X<0) || (Sway.X>0 && Add.X>0))GoingX = Min(1-Max(0, abs(Sway.X)-10)/31, GoingX);
-										
+					if((Sway.X<0 && Add.X<0) || (Sway.X>0 && Add.X>0))GoingX = Min(1-Max(0, abs(Sway.X)-10)/31, GoingX);//Slowing down as getting close to the max distance
+					//Remember last direction
 					if(Add.X>0)GoingY = 1;
 					else GoingY = -1;
 										
@@ -247,10 +256,10 @@ Extend Class MRIntWeaps_Fist
 				
 				
 				
-				Sway.X = Clamp(Sway.X, -40, 40);
+				Sway.X = Clamp(Sway.X, -40, 40);//Horizontal position
 				Sway.Y = Clamp(Sway.Y, -50, 50);
 				
-				CurSway.Y += (Target - CurSway.Y)*.25;
+				CurSway.Y += (Target - CurSway.Y)*.25;//Vertical position
 				
 				if(!Allowed){
 					Sway.X *= .1;
@@ -277,7 +286,7 @@ Extend Class MRIntWeaps_Fist
 				Break;
 			Case 1://Battlefront 2015
 				
-				Float Mult = 1;
+				Float Mult = 1;//Speed and direction of sway (+1 is moving away from camera direction, -1 is moving with camera direction)
 				
 				Switch(Owner.Player.ReadyWeapon.GetClassName()){
 					Case 'MRIntWeaps_Fist':
@@ -303,39 +312,40 @@ Extend Class MRIntWeaps_Fist
 						Mult = .1;
 						Break;
 				}
-				
-				Target = -Sin(Owner.Pitch)*20;
+				//Y
+				Target = -Sin(Owner.Pitch)*20;//Where to move
 
-				Sway.Y += (Target - CurSway.Y)*.1;
+				Sway.Y += (Target - CurSway.Y)*.1;//Velocity
 				Sway.Y = Clamp(Sway.Y, -5, 5);
 				
 				if((Sway.Y<0 && CurSway.Y<Target)||
-					(Sway.Y>0 && CurSway.Y>Target))Sway.Y *= .2*abs(Mult);
+					(Sway.Y>0 && CurSway.Y>Target))Sway.Y *= .2*abs(Mult);//Wobbling
 				
-				CurSway.Y += Sway.Y;
+				CurSway.Y += Sway.Y;//Current offset
 				
-				Target = Owner.Player.Cmd.Yaw*.01*Mult;
+				//X
+				Target = Owner.Player.Cmd.Yaw*.01*Mult;//Where to move
 				
-				Float Add = (Target - CurSway.X);
+				Float Add = (Target - CurSway.X);//Speed is based on how far the current position is from the target position
 				
-				if(Target==0){
-					if(GoingX<1)GoingX += .1*abs(Mult*.5);
+				if(Target==0){//If camera is not moving
+					if(GoingX<1)GoingX += .1*abs(Mult*.5);//Increasing speed
 					Add *= GoingX*.25;
 				}
-				else {
-					Add *= .1;
-					GoingX = 0;
+				else {//Camera is moving
+					Add *= .1;//Sway speed is lower when camera is moving
+					GoingX = 0;//Speed will be set to zero when camera will stop moving
 				}
 				Sway.X += Add;
 				
 				if((Sway.X<0 && CurSway.X<Target)||
-					(Sway.X>0 && CurSway.X>Target))Sway.X *= .05;
+					(Sway.X>0 && CurSway.X>Target))Sway.X *= .05;//Wobbling
 				
 				CurSway.X += Sway.X;
 				
 				if(!Allowed){
-					CurSway.X *= .5;
-					CurSway.Y *= .5;
+					CurSway.X *= .1;
+					CurSway.Y *= .1;
 				}
 				
 				if(OfstAdd){
