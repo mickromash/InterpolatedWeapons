@@ -3,7 +3,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Default{
 		Weapon.SlotNumber 4;
 		Decal "BulletChip";
-		FloatSpeed 2;//Max sprite vertical sway
+		FloatSpeed 1;//Max sprite vertical sway
 	}
 	
 	Const Muzzle0 = 2;//Muzzle corner behind further disk
@@ -325,7 +325,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Wait;
 			
 		GunRaise:
-			TNT1 A 3 {
+			CH1G A 3 {
 				A_DoVanillaDisplay();
 				invoker.InterpolateBarrels = true;
 				invoker.HandPos = 1;
