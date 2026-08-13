@@ -86,11 +86,11 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 	}
 	
-	Void TakeWeapons(Actor Plr)//Replace player's weapons from the mod with vanilla ones
+	Void TakeWeapons(Actor Plr, Bool Temp = false)//Replace player's weapons from the mod with vanilla ones
 	{
 		if(!Plr)Return;
 		
-		if(WeaponChecker[Plr.PlayerNumber()])WeaponChecker[Plr.PlayerNumber()].Destroy();
+		if(WeaponChecker[Plr.PlayerNumber()] && !Temp)WeaponChecker[Plr.PlayerNumber()].Destroy();
 		
 		String Select;
 		if(Plr.Player.ReadyWeapon)Select = Plr.Player.ReadyWeapon.GetClassName();
@@ -137,13 +137,15 @@ Class MRIntWeaps_Handler: EventHandler
 	Void RemoveWeapons()//Replace mods weapons on the level with vanilla ones
 	{
 		Let iter = ThinkerIterator.Create("DoomWeapon");
-		Actor Weap;
+		Inventory Weap;
 		
 		int Akhtung;
 		While(Weap = Weapon(iter.Next())){
 			Akhtung++;
 			if(Akhtung>2000)Break;
-
+			
+			if(Weap.Owner)Continue;
+			
 			String ClassName = Weap.GetClassName();
 			ClassName = ClassName.MakeLower();
 
@@ -159,6 +161,32 @@ Class MRIntWeaps_Handler: EventHandler
 			if(Bers)Bers.Destroy();
 		//For(int i=0;i<Berserks.Size();i++){if(Berserks[i])Berserks[i].Destroy();}
 		Berserks.Clear();
+	}
+	
+	Void ReplaceWeapons()
+	{
+		Let iter = ThinkerIterator.Create("DoomWeapon");
+		Inventory Weap;
+		
+		int Akhtung;
+		While(Weap = Weapon(iter.Next())){
+			Akhtung++;
+			if(Akhtung>2000)Break;
+			
+			if(Weap.Owner)Continue;
+
+			String ClassName = Weap.GetClassName();
+			ClassName = ClassName.MakeLower();
+			
+			if(ClassName.IndexOf("mrintweaps_")>-1)Continue;
+			
+			Let MRWeap = (Class<Weapon>)("MRIntWeaps_"..ClassName);
+			if(MRWeap){
+				Let a = Weap.Spawn(MRWeap, Weap.Pos);
+				a.Vel = Weap.Vel;
+				Weap.Destroy();
+			}
+		}
 	}
 	
 	Override Void PlayerSpawned(PlayerEvent e)
@@ -251,6 +279,10 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 		
 		if(e.name ~== "MRIntWeaps_Give"){
+			if(e.Args[0]>0){
+				TakeWeapons(Plr, true);
+				Return;
+			}
 			GiveWeapons(Plr);
 			Return;
 		}
@@ -437,6 +469,7 @@ Class MRIntWeaps_Handler: EventHandler
 Class MRIntWeaps_WeaponChecker: Thinker
 {
 	Actor Master;
+	int Delay;
 	
 	Override Void Tick()
 	{

@@ -31,7 +31,7 @@ OptionMenu "MRIntWeaps_Menu"
 	SubMenu "$MRIntWeaps_PressetsMenu", "MRIntWeaps_PressetsMenu"
 	StaticText ""
 	StaticText "$MRIntWeaps_GiveTip", "Fire"
-	Command "$MRIntWeaps_Give", "MRIntW_Give"
+	Command "$MRIntWeaps_Give", "MRIntW_GiveAndReset"
 	//SafeCommand "$MRIntWeaps_Uninstall", MRIntW_Uninstall, "$MRIntWeaps_UninstallPromt"
 }
 
