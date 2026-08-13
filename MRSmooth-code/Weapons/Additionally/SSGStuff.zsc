@@ -309,7 +309,7 @@ Extend Class MRIntWeaps_SuperShotgun//Dying
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("SGN2A0", "MRIntW/SuperShotgunBounce", Pos, Vel, Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("SGN2A0", "MRIntW/SuperShotgunBounce", Pos, Vel, .3, Caller:Self);
 	}
 	
 	States

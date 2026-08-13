@@ -65,7 +65,7 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 			Return;
 		}
 
-		Roll -= Vel.Length()*4;
+		Roll -= Vel.Length()*3;
 		if(Roll<=-360)Roll = abs(Roll)%360*-1;
 		Vel.Z -= Gravity;
 		
@@ -268,7 +268,7 @@ Extend Class MRIntWeaps_Chainsaw
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("CSAWA0", "MRIntW/ChainsawBounce", Pos, Vel, Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("CSAWA0", "MRIntW/ChainsawBounce", Pos, Vel, .5, Caller:Self);
 	}
 	
 	Const DieLay = -2;
@@ -322,7 +322,7 @@ Extend Class MRIntWeaps_Pistol
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw(invoker.IsRifle?"RIFAA0":"PISTA0",invoker.IsRifle? "MRIntW/RifleBounce":"MRIntW/PistolBounce", Pos, Vel, Scale:(.8, .8), Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw(invoker.IsRifle?"RIFAA0":"PISTA0",invoker.IsRifle? "MRIntW/RifleBounce":"MRIntW/PistolBounce", Pos, Vel, invoker.IsRifle?.3:.2, (.8, .8), Caller:Self);
 	}
 
 	States
@@ -355,7 +355,7 @@ Extend Class MRIntWeaps_Shotgun
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("SHOTA0", "MRIntW/ShotgunBounce", Pos, Vel, Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("SHOTA0", "MRIntW/ShotgunBounce", Pos, Vel, .4, Caller:Self);
 	}
 	
 	States
@@ -388,7 +388,7 @@ Extend Class MRIntWeaps_Chaingun
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("MGUNA0", "MRIntW/ChaingunBounce", Pos, Vel, Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("MGUNA0", "MRIntW/ChaingunBounce", Pos, Vel, .7, Caller:Self);
 	}
 	
 	States
@@ -421,7 +421,7 @@ Extend Class MRIntWeaps_RocketLauncher
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("LAUNA0", "MRIntW/RocketLauncherBounce", Pos, Vel, Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("LAUNA0", "MRIntW/RocketLauncherBounce", Pos, Vel, .6, Caller:Self);
 	}
 	
 	States
@@ -451,7 +451,7 @@ Extend Class MRIntWeaps_PlasmaRifle
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("PLASA0", "MRIntW/PlasmaRifleBounce", Pos, Vel, Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("PLASA0", "MRIntW/PlasmaRifleBounce", Pos, Vel, .4, Caller:Self);
 	}
 	
 	States
@@ -516,7 +516,7 @@ Extend Class MRIntWeaps_ID24Incinerator
 		Vel += AngleToVector(Angle, Strn*Cos(abs(Pitch)));
 		Vel.Z -= Strn*Sin(Pitch);
 
-		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("INCNA0", "MRIntW/RocketLauncherBounce", Pos, Vel, Caller:Self);
+		invoker.Dropped = MRIntWeaps_FlyingWeapon.Throw("INCNA0", "MRIntW/RocketLauncherBounce", Pos, Vel, .5, Caller:Self);
 	}
 	
 	States
