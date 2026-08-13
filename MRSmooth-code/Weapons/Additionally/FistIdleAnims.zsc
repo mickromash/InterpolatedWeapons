@@ -579,7 +579,7 @@ Extend Class MRIntWeaps_Fist
 				if(Other==SecndLay)Other = MainLay+2;
 				else Other = SecndLay;
 				if((invoker.Leading<1 && Other==SecndLay) || (invoker.Leading>-1 && Other!=SecndLay)){
-					A_OverlayMoveTo(OverlayId()-6, 90-Player.GetPSprite(Other).X, Player.GetPSprite(Other).Y+5, .6);
+					A_OverlayMoveTo(OverlayId()-6, 140-Player.GetPSprite(Other).X, Player.GetPSprite(Other).Y+5, .6);
 					
 					Player.GetPSprite(OverlayId()-6).Y = Min(Player.GetPSprite(Other).Y, Player.GetPSprite(OverlayId()-6).Y);
 					Player.GetPSprite(OverlayId()-6).X = Min(80-Player.GetPSprite(Other).X, Player.GetPSprite(OverlayId()-6).X);
@@ -596,7 +596,7 @@ Extend Class MRIntWeaps_Fist
 				if(Other==SecndLay)Other = MainLay+2;
 				else Other = SecndLay;
 				if((invoker.Leading<1 && Other==SecndLay) || (invoker.Leading>-1 && Other!=SecndLay)){
-					A_OverlayMoveTo(OverlayId()-6, 85-Player.GetPSprite(Other).X, Player.GetPSprite(Other).Y, .6);
+					A_OverlayMoveTo(OverlayId()-6, 100-Player.GetPSprite(Other).X, Player.GetPSprite(Other).Y, .6);
 					
 					Player.GetPSprite(OverlayId()-6).Y = Min(Player.GetPSprite(Other).Y, Player.GetPSprite(OverlayId()-6).Y);
 					Player.GetPSprite(OverlayId()-6).X = Min(80-Player.GetPSprite(Other).X, Player.GetPSprite(OverlayId()-6).X);
@@ -612,7 +612,7 @@ Extend Class MRIntWeaps_Fist
 				if(Other==SecndLay)Other = MainLay+2;
 				else Other = SecndLay;
 				if((invoker.Leading<1 && Other==SecndLay) || (invoker.Leading>-1 && Other!=SecndLay)){
-					A_OverlayMoveTo(OverlayId()-6, 80-Player.GetPSprite(Other).X, Player.GetPSprite(Other).Y, .6);
+					A_OverlayMoveTo(OverlayId()-6, 90-Player.GetPSprite(Other).X, Player.GetPSprite(Other).Y, .6);
 					
 					Player.GetPSprite(OverlayId()-6).Y = Min(Player.GetPSprite(Other).Y, Player.GetPSprite(OverlayId()-6).Y);
 					Player.GetPSprite(OverlayId()-6).X = Min(80-Player.GetPSprite(Other).X, Player.GetPSprite(OverlayId()-6).X);
