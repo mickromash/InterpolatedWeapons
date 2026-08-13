@@ -73,7 +73,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		
 		MuzzleSmoke();
 		
-		if(Owner.Player.ReadyWeapon!=Self)Return;
+		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self)Return;
 		
 		if(Owner.Health>0){
 			if(Owner.Player.WeaponState&WF_WEAPONREADY  && Owner.Player.Cmd.Buttons&BT_ALTATTACK){//Alt fire
@@ -388,7 +388,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				if(!invoker.Reload && CRandom(0, 1)>0)invoker.Speed = 205.6*GetCVar("MRIntW_ChaingunStopTime");
 			}
 			CH1G ######### 1 {
-				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, MRIntW_SwitchAnims?(invoker.SwitchAnim?4:-4):0, 3, WOF_ADD);
+				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, MRIntW_SwitchAnims?(invoker.SwitchAnim?4:-4):0, 2.5, WOF_ADD);
 				For(int i=Muzzle0;i<=Muzzle5;i++){
 					A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 				}
@@ -398,7 +398,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			
 			CH1G ### 1 {
-				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, MRIntW_SwitchAnims?(invoker.SwitchAnim?4:-4):0, .5, WOF_ADD);
+				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, MRIntW_SwitchAnims?(invoker.SwitchAnim?4:-4):0, 1, WOF_ADD);
 				For(int i=Muzzle0;i<=Muzzle5;i++){
 					A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 				}
@@ -415,6 +415,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					Player.GetPSprite(i).X -= Ofst.X*.5;
 					Player.GetPSprite(i).Y -= Ofst.Y*.5;
 				}
+				For(int i=Muzzle0;i<=Ring;i++){
+					A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
+				}
 				invoker.SwitchState = -1;
 			}
 			CH1G # 1 {
@@ -422,6 +425,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				For(int i=Muzzle0;i<=Ring;i++){
 					Player.GetPSprite(i).X -= Ofst.X;
 					Player.GetPSprite(i).Y -= Ofst.Y;
+				}
+				For(int i=Muzzle0;i<=Muzzle5;i++){
+					A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 				}
 				invoker.SwitchState = -1;
 			}
@@ -470,10 +476,10 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_ClearOverlays(AnimLay, AnimLay);
 				Double Ofst = 32-Player.GetPSprite(Lay1).OldY;
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayPivot(i, .5, 0);
-				For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_ADDWEAPON|PSPF_INTERPOLATE, false);
+				For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_ADDWEAPON, false);
 				For(int i=Muzzle0;i<=Ring;i++){
 					Player.GetPSprite(i).Y += Ofst;
-					Player.GetPSprite(i).OldY = Player.GetPSprite(i).Y;
+					Player.GetPSprite(i).OldY += Ofst;
 					Player.GetPSprite(i).X += Player.GetPSprite(PSP_WEAPON).OldX;
 					Player.GetPSprite(i).OldX = Player.GetPSprite(i).X;
 				}
