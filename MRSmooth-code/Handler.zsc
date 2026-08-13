@@ -440,11 +440,8 @@ Class MRIntWeaps_Handler: EventHandler
 	}
 	
 	Bool DifVersion;
-	int LoadingDelay;//Disabling weapon interpolation while game is loading, otherwise weapon sprite will appear in the middle of the screen
 	Override Void OnRegister()
 	{
-		LoadingDelay = 3;
-		
 		if((MRIntW_Version!=CVar.GetCVar("MRIntW_Version").GetDefaultInt()))New('MRIntW_DifVersionMessage');
 		CVar.GetCVar("MRIntW_Version").SetInt(CVar.GetCVar("MRIntW_Version").GetDefaultInt());
 		//Console.Printf("Register");
@@ -454,7 +451,6 @@ Class MRIntWeaps_Handler: EventHandler
 	{
 		NotCrash = false;
 		
-		LoadingDelay = 3;
 		For(int i=0;i<MAXPLAYERS;i++){
 			if(!Players[i].mo)Continue;
 			

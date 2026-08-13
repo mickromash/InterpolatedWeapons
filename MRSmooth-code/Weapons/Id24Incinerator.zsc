@@ -25,15 +25,6 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		if(Heat>0)Heat -= Min(Heat, .2);
 		
 		MuzzleSmoke();
-		
-		if(!Owner.Player || Owner.Player.ReadyWeapon != Self)Return;
-		
-		//Disabling weapon interpolation while game is loading
-		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
-		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
-			Owner.Player.GetPSprite(Lay1).bInterpolate = false;
-			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
-		}
 	}
 	
 	Override Void PostBeginPlay()
