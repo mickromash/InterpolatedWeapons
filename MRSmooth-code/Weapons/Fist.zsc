@@ -11,29 +11,14 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 	
 	Override Void DoEffect()
 	{
-		if(!Owner.Player);
+		if(!Owner.Player)Return;
 		
 		UpdateGloves();
 		
 		DoMisc();
 		
 		if(Owner.Player.ReadyWeapon != Self)Return;
-		
-		//Disabling weapon interpolation while game is loading
-		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
-		if(!Handler)Return;
-		
-		if(Handler.LoadingDelay>0){
-			if(Owner.Player.FindPSprite(MainLay) && Owner.Player.FindPSprite(MainLay).CurState){
-				Owner.Player.GetPSprite(SecndLay).bInterpolate = Owner.Player.GetPSprite(MainLay).bInterpolate = false;
-				Owner.Player.GetPSprite(SecndLay).FirstTic = Owner.Player.GetPSprite(MainLay).FirstTic = true;
 				
-				Owner.Player.GetPSprite(MainLay).OldY = Owner.Player.GetPSprite(MainLay).Y = 0;
-				Owner.Player.GetPSprite(SecndLay).OldY = Owner.Player.GetPSprite(SecndLay).Y = 0;
-			}
-			Handler.LoadingDelay--;
-		}
-		
 		if(!Owner.Player.FindPSprite(SecndLay) || (
 			!InStateSequence(Owner.Player.FindPSprite(SecndLay).CurState, FindState("SecndHandWaitLoop")) &&
 			!InStateSequence(Owner.Player.FindPSprite(SecndLay).CurState, FindState("GunIdle1")) &&
@@ -285,9 +270,9 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				
 				A_Overlay(SecndLay+2, "MainHandTakingOff");
 				A_Overlay(SecndLay+1, "GloveTakingOff");
-				For(int i=0;i<3;i++)A_OverlayFlags(SecndLay+i, PSPF_ADDWEAPON , false);
 				
 				A_Overlay(-5, "MainHandTakingOffUnder");
+				For(int i=0;i<3;i++)A_OverlayFlags(SecndLay+i, PSPF_ADDWEAPON , false);
 				A_OverlayFlags(-5, PSPF_ADDWEAPON|PSPF_INTERPOLATE, false);
 				A_OverlayFlags(SecndLay, PSPF_INTERPOLATE, false);
 				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(-5, PSPF_MIRROR|PSPF_FLIP, true);
