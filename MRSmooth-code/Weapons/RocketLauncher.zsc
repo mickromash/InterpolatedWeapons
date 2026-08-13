@@ -24,6 +24,8 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		
 		MuzzleSmoke();
 		
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self)Return;
+		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
@@ -31,7 +33,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			Owner.Player.GetPSprite(Lay1).Y = Max(Owner.Player.GetPSprite(Lay1).Y, 0);
 		}
 		
-		if(Owner.Player.ReadyWeapon != Self || !InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
+		if(!Owner.Player.FindPSprite(PSP_WEAPON) || !InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
 		Owner.Player.GetPSprite(Lay1).Frame = Muzzle;
 				
@@ -50,6 +52,14 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		if(!Feest)Return;
 		
 		Player.GetPSprite(OverlayId()).Translation = Feest.GlovesTrans;
+	}
+	
+	Action Void A_OverlayMoveTo(int Lay = -1, Double XTo = 0, Double YTo = 0, Double SpeedX = .8, Double SpeedY = -1)
+	{
+		if(Lay == -1)Lay = OverlayId();
+		if(SpeedY == -1)SpeedY = SpeedX;
+		Player.GetPSprite(Lay).X = XTo + (Player.GetPSprite(Lay).X - XTo)*SpeedX;
+		Player.GetPSprite(Lay).Y = YTo + (Player.GetPSprite(Lay).Y - YTo)*SpeedY;
 	}
 	
 	int SwitchAnim, SwitchState;
@@ -78,16 +88,14 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			MI1G C 1;
 			MI1G CCCCCCCC 1 {
 				int XMove = invoker.SwitchAnim?8:-8;
-				Player.GetPSprite(Lay1).X = XMove+(Player.GetPSprite(Lay1).X-XMove)*.8;
-				Player.GetPSprite(Lay1).Y = 32-9+(Player.GetPSprite(Lay1).Y+9-32)*.5;
+				A_OverlayMoveTo(Lay1, XMove, 32-9, .8, .5);
 				A_OverlayScale(Lay1, .05, .05, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.SwitchAnim?-2:2, WOF_ADD);
 				invoker.SwitchState--;
 			}
 			MI1G CCC 1 {
 				int XMove = invoker.SwitchAnim?3:-3;
-				Player.GetPSprite(Lay1).X = XMove+(Player.GetPSprite(Lay1).X-XMove)*.8;
-				Player.GetPSprite(Lay1).Y = 35+(Player.GetPSprite(Lay1).Y-35)*.5;
+				A_OverlayMoveTo(Lay1, XMove, 35, .8, .5);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, invoker.SwitchAnim?-1.5:1.5, WOF_ADD);
 				invoker.SwitchState--;
@@ -228,15 +236,13 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			MI1G CCCCB 1{
 				invoker.Fire++;
 				Float Recover = CFRandom(.6, .7);
-				Player.GetPSprite(Lay1).X = invoker.RecOfst.X+(Player.GetPSprite(Lay1).X-invoker.RecOfst.X)*Recover;
-				Player.GetPSprite(Lay1).Y = invoker.RecOfst.Y+(Player.GetPSprite(Lay1).Y-invoker.RecOfst.Y)*Recover;
+				A_OverlayMoveTo(Lay1, invoker.RecOfst.X, invoker.RecOfst.Y, Recover);
 				Player.GetPSprite(Lay1).Scale = (invoker.RecScal,invoker.RecScal)+(Player.GetPSprite(Lay1).Scale-(invoker.RecScal,invoker.RecScal))*Recover;
 				Player.GetPSprite(Lay1).Rotation *= Recover;
 			}
 			MI1G AAAA 1{
 				Float Recover = CFRandom(.6, .7);
-				Player.GetPSprite(Lay1).X *= Recover;
-				Player.GetPSprite(Lay1).Y *= Recover;
+				A_OverlayMoveTo(Lay1, 0, 0, Recover);
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
 				Player.GetPSprite(Lay1).Rotation *= Recover;
 			}

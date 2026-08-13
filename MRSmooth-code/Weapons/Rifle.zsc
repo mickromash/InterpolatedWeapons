@@ -216,8 +216,7 @@ Extend Class MRIntWeaps_Pistol
 			}
 			#### AAA 1{
 				Float Recover = CFRandom(.6, .7);
-				Player.GetPSprite(Lay1).X = invoker.RecOfst.X+(Player.GetPSprite(Lay1).X-invoker.RecOfst.X)*Recover;
-				Player.GetPSprite(Lay1).Y = invoker.RecOfst.Y+(Player.GetPSprite(Lay1).Y-invoker.RecOfst.Y)*Recover;
+				A_OverlayMoveTo(Lay1, invoker.RecOfst.X, invoker.RecOfst.Y, Recover);
 				Player.GetPSprite(Lay1).Scale = (invoker.RecScal,invoker.RecScal)+(Player.GetPSprite(Lay1).Scale-(invoker.RecScal,invoker.RecScal))*Recover;
 			
 				invoker.LastPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
@@ -225,8 +224,7 @@ Extend Class MRIntWeaps_Pistol
 			}
 			#### A 1{
 				Float Recover = CFRandom(.8, .9);
-				Player.GetPSprite(Lay1).X = invoker.RecOfst.X+(Player.GetPSprite(Lay1).X-invoker.RecOfst.X)*Recover;
-				Player.GetPSprite(Lay1).Y = invoker.RecOfst.Y+(Player.GetPSprite(Lay1).Y-invoker.RecOfst.Y)*Recover;
+				A_OverlayMoveTo(Lay1, invoker.RecOfst.X, invoker.RecOfst.Y, Recover);
 				Player.GetPSprite(Lay1).Scale = (invoker.RecScal,invoker.RecScal)+(Player.GetPSprite(Lay1).Scale-(invoker.RecScal,invoker.RecScal))*Recover;
 			
 				invoker.LastPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
@@ -234,8 +232,7 @@ Extend Class MRIntWeaps_Pistol
 			}
 			#### AAAA 1{
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.4;
-				Player.GetPSprite(Lay1).X *= .4;
-				Player.GetPSprite(Lay1).Y *= .4;
+				A_OverlayMoveTo(Lay1, 0, 0, .4);
 				Player.GetPSprite(Lay1).Rotation *= .4;
 				
 				invoker.LastPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);

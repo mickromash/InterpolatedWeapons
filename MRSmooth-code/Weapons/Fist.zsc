@@ -11,6 +11,14 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 	
 	Override Void DoEffect()
 	{
+		if(!Owner.Player);
+		
+		UpdateGloves();
+		
+		DoMisc();
+		
+		if(Owner.Player.ReadyWeapon != Self)Return;
+		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 		if(!Handler)Return;
@@ -25,14 +33,6 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			}
 			Handler.LoadingDelay--;
 		}
-		
-		if(!Owner.Player)Return;
-
-		UpdateGloves();
-		
-		DoMisc();
-		
-		if(Owner.Player.ReadyWeapon != Self)Return;
 		
 		if(!Owner.Player.FindPSprite(SecndLay) || (
 			!InStateSequence(Owner.Player.FindPSprite(SecndLay).CurState, FindState("SecndHandWaitLoop")) &&

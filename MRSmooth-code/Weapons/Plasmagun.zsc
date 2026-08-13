@@ -21,6 +21,8 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	{
 		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.25*Owner.GetCVar("MRIntW_RecoilAmount"));}
 		
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self)Return;
+		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
@@ -30,8 +32,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Owner.Player.GetPSprite(Lay2).bInterpolate = false;
 			Owner.Player.GetPSprite(Lay2).Y = Max(Owner.Player.GetPSprite(Lay2).Y, 0);
 		}
-		
-		if(Owner.Player.ReadyWeapon != Self)Return;
 		
 		if(Owner.Player.OldButtons&BT_ALTATTACK){
 			if(Muzzle<1)Muzzle += .2;

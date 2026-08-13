@@ -34,6 +34,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		
 		MuzzleSmoke();
 		
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self)Return;
+		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
@@ -92,6 +94,14 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(OverlayId()).Translation = Feest.PistolGlovesTrans;
 				Break;
 		}
+	}
+	
+	Action Void A_OverlayMoveTo(int Lay = -1, Double XTo = 0, Double YTo = 0, Double SpeedX = .8, Double SpeedY = -1)
+	{
+		if(Lay == -1)Lay = OverlayId();
+		if(SpeedY == -1)SpeedY = SpeedX;
+		Player.GetPSprite(Lay).X = XTo + (Player.GetPSprite(Lay).X - XTo)*SpeedX;
+		Player.GetPSprite(Lay).Y = YTo + (Player.GetPSprite(Lay).Y - YTo)*SpeedY;
 	}
 	
 	Override Void PostBeginPlay()
@@ -163,13 +173,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			}
 			#### ####### 1 {
 				if(invoker.SwitchAnim){
-					Player.GetPSprite(Lay1).X = -3+(Player.GetPSprite(Lay1).X+3)*.8;
-					Player.GetPSprite(Lay1).Y = 32-6+(Player.GetPSprite(Lay1).Y+6-32)*.5;
+					A_OverlayMoveTo(Lay1, -3, 32-6, .8, .5);
 					A_OverlayRotate(Lay1, -4, WOF_ADD);
 				}
 				else {
-					Player.GetPSprite(Lay1).X = -3+(Player.GetPSprite(Lay1).X+3)*.8;
-					Player.GetPSprite(Lay1).Y = 32-6+(Player.GetPSprite(Lay1).Y+6-32)*.5;
+					A_OverlayMoveTo(Lay1, -3, 32-6, .8, .5);
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 					A_OverlayRotate(Lay1, 1.2, WOF_ADD);
 				}
@@ -177,13 +185,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			}
 			#### ## 1 {
 				if(invoker.SwitchAnim){
-					Player.GetPSprite(Lay1).X = -1+(Player.GetPSprite(Lay1).X+1)*.7;
-					Player.GetPSprite(Lay1).Y = 32+(Player.GetPSprite(Lay1).Y-32)*.7;
+					A_OverlayMoveTo(Lay1, -1, 32, .7);
 					A_OverlayRotate(Lay1, -.2, WOF_ADD);
 				}
 				else {
-					Player.GetPSprite(Lay1).X = -1+(Player.GetPSprite(Lay1).X+1)*.7;
-					Player.GetPSprite(Lay1).Y = 32+(Player.GetPSprite(Lay1).Y-32)*.7;
+					A_OverlayMoveTo(Lay1, -1, 32, .7);
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 					A_OverlayRotate(Lay1, 1.4, WOF_ADD);
 				}
@@ -1088,8 +1094,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				invoker.LoadHandScale = 1.06 + CFRandom(0, .25);
 			}
 			#### GGGG 1 {
-				Player.GetPSprite(LeftHand).X = invoker.LoadHandOffset.X + (Player.GetPSprite(LeftHand).X - invoker.LoadHandOffset.X)*.6;
-				Player.GetPSprite(LeftHand).Y = invoker.LoadHandOffset.Y + (Player.GetPSprite(LeftHand).Y - invoker.LoadHandOffset.Y)*.6;
+				A_OverlayMoveTo(LeftHand, invoker.LoadHandOffset.X, invoker.LoadHandOffset.Y, .6);
 				Player.GetPSprite(LeftHand).Rotation = invoker.LoadHandRot + (Player.GetPSprite(LeftHand).Rotation - invoker.LoadHandRot)*.7;
 				Player.GetPSprite(LeftHand).Scale.Y = Player.GetPSprite(LeftHand).Scale.X = invoker.LoadHandScale + (Player.GetPSprite(LeftHand).Scale.X - invoker.LoadHandScale)*.6;
 				A_OverlayFlags(LeftHand, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
@@ -1100,8 +1105,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayScale(LeftHand, invoker.LoadHandScale, invoker.LoadHandScale, WOF_INTERPOLATE);
 			}
 			#### GG 1 {
-				Player.GetPSprite(LeftHand).X = 14 + (Player.GetPSprite(LeftHand).X - 14)*.6;
-				Player.GetPSprite(LeftHand).Y = 5.39 + (Player.GetPSprite(LeftHand).Y - 5.39)*.6;
+				A_OverlayMoveTo(LeftHand, 14, 5.39, .6);
 				Player.GetPSprite(LeftHand).Rotation = -4 + (Player.GetPSprite(LeftHand).Rotation +4)*.7;
 				Player.GetPSprite(LeftHand).Scale = (.96,.96) + (Player.GetPSprite(LeftHand).Scale - (.96,.96))*.6;
 			}

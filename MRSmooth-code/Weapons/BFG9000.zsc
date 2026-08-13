@@ -25,6 +25,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
 		}
 		
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self)Return;
+		
 		//Disabling weapon interpolation while game is loading
 		Let Handler = MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler"));
 		if(Handler && Handler.LoadingDelay>0 && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).CurState){
