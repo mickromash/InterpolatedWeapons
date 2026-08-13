@@ -42,6 +42,10 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 			CVa = CVa.Left(CVa.IndexOf(" "));
 			CVars[Index] = CVa;
 		}
+		
+		if(MRIntW_Debug){
+			For(int i=0;i<CVars.Size();i++)Console.Printf(i..": "..CVars[i]);
+		}
 						
 		String Presset;
 		
@@ -78,14 +82,17 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		
 		Array<String> CVars;
 		
-		foreach( CVa : CVarsId){
+		For(int i=0;i<CVarsId.Size();i++)CVars.Push("");
+		
+		For(int i=0;i<CVarsId.Size();i++){
+			String CVa = CVarsId[i];
 			int Index = CVa.Mid(CVa.IndexOf(" ")+1).ToInt();
 			CVa = CVa.Left(CVa.IndexOf(" "));
-			
-			CVars.Insert(Index, CVa);
+			CVars[Index] = CVa;
 		}
 		
 		Array<String> PresCVars;
+		For(int i=0;i<CVarsId.Size();i++)PresCVars.Push("");
 		
 		String Presset = CVar.FindCVar("MRIntW_PressetCust1").GetString();
 		
@@ -95,11 +102,11 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 			int Index = CVa.Left(CVa.IndexOf("]")).ToInt();
 			String Value = CVa.Mid(CVa.IndexOf("] ")+2);
 			
-			PresCVars.Insert(Index, Value);
+			PresCVars[Index] = Value;
 			
 			Presset = Presset.Mid(Presset.IndexOf(",")+1);
 		}
-		
+				
 		For(int i=0;i<PresCVars.Size();i++){
 			Let CVa = CVar.FindCVar(CVars[i]);
 			if(PresCVars[i]=="" || !CVa)Continue;
