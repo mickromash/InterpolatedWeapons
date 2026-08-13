@@ -64,7 +64,7 @@ OptionMenu "MRIntW_OffsetMenu"
 	Slider "$MRIntW_BobRangeY", "MRIntW_BobRangeY", 0, 3, .1
 	Slider "$MRIntW_BobRangeZ", "MRIntW_BobRangeZ", 0, 3, .1
 	Slider "$DSPLYMNU_BOBSPEED", "wbobspeed", 0, 3, .1
-	Option "$MRIntW_VanillaFireBob", "MRIntW_VanillaFireBob", "YesNo"
+	MRIntWeaps_VanillaBobOption "$MRIntW_VanillaFireBob", "MRIntW_VanillaFireBob", "YesNo"
 	StaticText ""
 	Option "$MRIntW_SwitchAnims", "MRIntW_SwitchAnims", "MRIntW_SwitchAnimsValues"
 	StaticText ""

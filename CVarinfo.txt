@@ -20,6 +20,7 @@ nosave float MRIntW_BobRangeX = 1;
 nosave float MRIntW_BobRangeY = 1;
 nosave float MRIntW_BobRangeZ = .2;
 nosave bool MRIntW_VanillaFireBob = false;
+nosave float MRIntW_SavedWbobFire = 0;
 nosave int MRIntW_Bounce = 1;//Bounce weapon on landing; 0 - None, 1 - Regular, 2 - Clear view
 nosave int MRIntW_RunKey = 0;//0 - Do nothing, 1 - Lowering weapon, 2 - Raising weapon
 nosave bool MRIntW_DamageShake = true;//Shake weapon on receiving damage

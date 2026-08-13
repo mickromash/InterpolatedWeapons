@@ -1,13 +1,5 @@
 Class MRIntWeaps_AnimMenu: OptionMenu
 {
-	//if vanilla firing bob is turned on, set ZDoom firing bob setting to 0
-	Override Bool MenuEvent(int mkey, bool fromcontroller)
-	{
-		Bool Ret = Super.MenuEvent(mkey, fromcontroller);
-		if(MRIntW_VanillaFireBob)CVar.FindCVar("wbobfire").SetFloat(0);
-		Return Ret;
-	}
-	
 	Static String MRLocalize(String Str)
 	{
 		String Temp = Str;
@@ -27,6 +19,34 @@ Class MRIntWeaps_AnimMenu: OptionMenu
 		}
 			
 		Return Str;
+	}
+}
+
+Class OptionMenuItemMRIntWeaps_VanillaBobOption: OptionMenuItemOption
+{
+	override void SetSelection(int Selection)
+	{
+		int cnt = OptionValues.GetCount(mValues);
+		if (cnt > 0 && mCVar != null)
+		{
+			if (OptionValues.GetTextValue(mValues, 0).Length() == 0)
+			{
+				mCVar.SetFloat(OptionValues.GetValue(mValues, Selection));
+			}
+			else
+			{
+				mCVar.SetString(OptionValues.GetTextValue(mValues, Selection));
+			}
+		}
+		
+		//if vanilla firing bob is turned on, set ZDoom firing bob setting to 0
+		if(mCVar.GetBool()){
+			CVar.FindCVar("MRIntW_SavedWbobFire").SetFloat(CVar.FindCVar("wbobfire").GetFloat());
+			CVar.FindCVar("wbobfire").SetFloat(0);
+		}
+		else {
+			CVar.FindCVar("wbobfire").SetFloat(MRIntW_SavedWbobFire);
+		}
 	}
 }
 
