@@ -37,8 +37,6 @@ Extend Class MRIntWeaps_Fist
 				invoker.IdleState = 1;
 			}
 			#### # 0 {
-				if(GetCVar("MRIntW_Braindead") && (Health==67 || (FindInventory("BasicArmor") && FindInventory("BasicArmor").Amount==67) || int(Level.Time/35)%67==0))Return ResolveState("SecndHandCoolIdle666");
-								
 				A_ClearOverlays(MainLay+1, MainLay+10);
 				invoker.LineTarg = Null;
 				invoker.Leading = invoker.TargLastHP = invoker.TargTargLastHP = invoker.Attacking = 0;
@@ -51,6 +49,8 @@ Extend Class MRIntWeaps_Fist
 				
 					if(invoker.LineTarg)Return ResolveState("SecndHandInfight");
 				}
+				
+				if(GetCVar("MRIntW_Braindead") && (Health==67 || (FindInventory("BasicArmor") && FindInventory("BasicArmor").Amount==67) || int(Level.Time/35)%67==0))Return ResolveState("SecndHandCoolIdle666");
 				
 				if(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake")))Player.SetPsprite(MainLay, invoker.FindState("MainHandCoolIdle"));
 				else Player.SetPsprite(MainLay, invoker.FindState("MainHandCoolIdlePre"));
