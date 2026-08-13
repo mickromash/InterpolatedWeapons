@@ -235,9 +235,9 @@ Extend Class MRIntWeaps_Fist
 					
 					if((GoingY>0 && Add.X<0)||
 						(GoingY<0 && Add.X>0))GoingX = 0;
-					else GoingX += .15;
+					else if(GoingX<1)GoingX += .3;
 					
-					GoingX = Min(1-Max(0, abs(Sway.X)-10)/31, GoingX);
+					if((Sway.X<0 && Add.X<0) || (Sway.X>0 && Add.X>0))GoingX = Min(1-Max(0, abs(Sway.X)-10)/31, GoingX);
 										
 					if(Add.X>0)GoingY = 1;
 					else GoingY = -1;
@@ -245,11 +245,19 @@ Extend Class MRIntWeaps_Fist
 					Sway += Add*GoingX;
 				}
 				
+				
+				
 				Sway.X = Clamp(Sway.X, -40, 40);
 				Sway.Y = Clamp(Sway.Y, -50, 50);
 				
 				CurSway.Y += (Target - CurSway.Y)*.25;
-								
+				
+				if(!Allowed){
+					Sway.X *= .1;
+					CurSway.Y *= .1;
+					Sway.Y *= .1;
+				}
+				
 				if(OfstAdd){
 					PSP.X += (Sway.X-PSP.X)*.5;
 					PSP.OldX = PSP.X;
@@ -324,7 +332,11 @@ Extend Class MRIntWeaps_Fist
 					(Sway.X>0 && CurSway.X>Target))Sway.X *= .05;
 				
 				CurSway.X += Sway.X;
-
+				
+				if(!Allowed){
+					CurSway.X *= .5;
+					CurSway.Y *= .5;
+				}
 				
 				if(OfstAdd){
 					PSP.X += (CurSway.X - PSP.X)*.5;
