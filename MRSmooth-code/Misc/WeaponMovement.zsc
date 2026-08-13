@@ -126,10 +126,10 @@ Extend Class MRIntWeaps_Fist
 		}
 		
 		if(Owner.Health<PlrLastHealth){
-			DamageShake = PlrLastHealth - Owner.Health;
+			DamageShake = PlrLastHealth - Max(0, Owner.Health);
 		}
 		
-		PlrLastHealth = Owner.Health;
+		PlrLastHealth = Max(0, Owner.Health);
 	}
 	
 	Bool LowerGun;
