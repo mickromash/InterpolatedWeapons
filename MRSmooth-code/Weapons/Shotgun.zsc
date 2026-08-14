@@ -700,6 +700,10 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+				if(!Player.GetPSprite(Lay1).bAddWeapon){
+					Player.GetPSprite(Lay1).bAddWeapon = true;
+					Player.GetPSprite(Lay1).OldY -= 32;
+				}
 			}
 			#### B 1 {//Raise
 				invoker.PumpRotation = 0;
