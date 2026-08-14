@@ -27,6 +27,13 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		}
 		
 		MuzzleSmoke();
+		
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || !InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
+		
+		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK && !Catch){
+			Catch = true;
+			Owner.Player.SetPsprite(Lay1, FindState("Pump"));
+		}
 	}
 	
 	Bool CustomSound;
@@ -117,7 +124,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		if(MRIntW_ReloadAnims>1)Reload = true;
 	}
 	
-	Bool Reload;
+	Bool Reload, Catch;
 	Double PumpRotation, SpriteRecoil;
 	int SwitchAnim, SwitchState;
 	Vector2 SelPos;
@@ -231,6 +238,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### ## 1 {Player.GetPSprite(Lay1).Y *= .8;}
 		GunWait:
 			SH1G A 1 {
+				invoker.Catch = false;
 				A_OverlayPivot(Lay1, .5, 0);
 				A_GlovesColor();
 				A_IdleAnimation(Lay1);
@@ -594,6 +602,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			
 		GunFire:
 			SH1G # 0 {
+				invoker.Catch = false;
 				A_DoVanillaDisplay();
 				if(Player.FindPSprite(LHand)){
 					Player.GetPSprite(Lay1).Frame = 25;
@@ -685,7 +694,9 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				}
 			}
 			#### A 1 {if(!GetCVar("MRIntW_InstantFire"))A_SetTics(0);A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);}
+		Pump:
 			#### A 1{
+				invoker.CustomSound = CVar.GetCVar("MRIntW_ShotgunSound", players[ConsolePlayer]) && CVar.GetCVar("MRIntW_ShotgunSound", players[ConsolePlayer]).GetBool();
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
@@ -718,9 +729,11 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayOffset(Lay1, -71, -42, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, invoker.PumpRotation*.1, WOF_ADD);
 			}
+		Pumping:
 			#### F 1 {
 				A_OverlayOffset(Lay1, 3, 8, WOF_ADD);
 				if(invoker.CustomSound)A_StartSound("MRIntW/ShotgunPumpDown", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale);
+				else if(invoker.Catch)A_StartSound("MRIntW/ShotgunFire", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale, startTime:.5);
 				
 				if(MRIntW_ScreenShake>1){
 					Double Amnt = MRIntW_ScreenShakeAmount;
@@ -746,6 +759,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					if(MRIntW_Debug)Console.Printf("Casing Vel: ("..invoker.CasingDir[index]..", "..invoker.CasingZMult[index]..")");
 				}
 			}
+			#### # 0 A_JumpIf(invoker.Catch, "GunCoolIdle");
 			#### H 1 {
 				A_OverlayOffset(Lay1, 5, 17.*CFRandom(.9, 1.2), WOF_ADD);//Pump
 				
@@ -876,6 +890,160 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### # 1 BRIGHT{
 				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
 				A_OverlayScale(OverlayId(), .5, .5, WOF_INTERPOLATE);
+			}
+			Stop;
+		
+		GunCoolIdle:
+			#### H 1 {
+				A_OverlayOffset(Lay1, 5, 17.*CFRandom(.9, 1.2), WOF_ADD);//Pump
+				
+				A_OverlayScale(Lay1, 1, 1);
+				
+				A_Overlay(PSP_FLASH+34, "GunCoolIdleHand");
+			}
+			#### H 1 {
+				A_OverlayOffset(Lay1, 5, 17.*CFRandom(.9, 1.2), WOF_ADD);
+				A_OverlayScale(Lay1, 1.05, .95, WOF_INTERPOLATE);
+			}
+			#### H 1 {
+				A_OverlayOffset(Lay1, 4, 9.*CFRandom(.9, 1.2), WOF_ADD);
+				A_OverlayScale(Lay1, 1.07, .94, WOF_INTERPOLATE);
+			}
+			#### H 1 {
+				A_OverlayOffset(Lay1, -4, -6.*CFRandom(.9, 1.2), WOF_ADD);
+				A_OverlayScale(Lay1, 1.05, .95, WOF_INTERPOLATE);
+			}
+			#### G 1 {
+				A_OverlayOffset(Lay1, -2, -(Player.GetPSprite(Lay1).Y+36)*.6, WOF_ADD);
+				A_OverlayScale(Lay1, 1.02, .94, WOF_INTERPOLATE);
+			}
+			#### F 1 {
+				A_OverlayOffset(Lay1, Player.GetPSprite(Lay1).X-5, -36, WOF_INTERPOLATE);
+				if(invoker.CustomSound)A_StartSound("MRIntW/ShotgunPumpUp", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale);
+				A_OverlayScale(Lay1, 1, .96, WOF_INTERPOLATE);
+			}
+			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
+			#### FF 1 {
+				A_OverlayOffset(Lay1, 1, -5, WOF_ADD);
+				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+			}
+			#### FFFF 1 A_OverlayMoveTo(Lay1, -71, -42, CFRandom(.65, .8));
+			#### ############### 1 A_JumpIf(Player.Cmd.Buttons&BT_ALTATTACK && !(Player.OldButtons&BT_ALTATTACK), "Pumping");
+			#### FEEDD 1 {//Lower
+				A_OverlayOffset(Lay1, 11, 6, WOF_ADD);
+				A_OverlayRotate(Lay1, -invoker.PumpRotation*.1, WOF_ADD);
+			}
+			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+			#### C 1 {
+				A_OverlayOffset(Lay1, 3, 6, WOF_ADD);
+				A_OverlayRotate(Lay1, Player.GetPSprite(Lay1).Rotation-invoker.PumpRotation*.1);
+			}
+			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
+			#### C 1 {
+				A_OverlayOffset(Lay1, 10, 24, WOF_ADD);
+				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+			}
+			#### A 1{
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+				A_OverlayPivot(Lay1, .5, 0);
+				Float Scal = CFRandom(.95, 1.1);
+				A_OverlayScale(Lay1, Scal, Scal);
+				A_OverlayOffset(Lay1, CFRandom(-4, 4), CFRandom(1, 6), WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, CFRandom(-.5, .5));
+			}
+			#### AA 1{
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
+				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.4;
+				Player.GetPSprite(Lay1).X *= .4;
+				Player.GetPSprite(Lay1).Y *= .4;
+				Player.GetPSprite(Lay1).Rotation *= .4;
+			}
+			#### A 4{
+				A_OverlayPivot(Lay1, .5, 0);
+				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+			}
+			Goto GunWait;
+		GunCoolIdleHand:
+			MRD1 I 2 {
+				A_OverlayPivot(1, 0);
+				A_GlovesColor();
+				A_OverlayOffset(OverlayId(), 300, 230);
+			}
+			#### # 1 {
+				int Casing = -1;
+				For(int i=0;i<2;i++){
+					if(Player.FindPSprite(PSP_FLASH+30+i))Casing = PSP_FLASH+30+i;
+				}
+				
+				if(Casing<0){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+								
+				A_OverlayMoveTo(OverlayId(), Player.GetPSprite(Casing).X + (Player.GetPSprite(Casing).X-invoker.OldCasingPos[Casing-PSP_FLASH-30].X)*4,
+					Player.GetPSprite(Casing).Y-32 + (Player.GetPSprite(Casing).Y-invoker.OldCasingPos[Casing-PSP_FLASH-30].Y), .5);
+				
+				Player.GetPSprite(OverlayId()).Scale.Y = Player.GetPSprite(OverlayId()).Scale.X = Clamp(Player.GetPSprite(Casing).Scale.X, .85, 2);
+				
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, true);
+			}
+			#### # 1 {
+				int Casing = -1;
+				For(int i=0;i<2;i++){
+					if(Player.FindPSprite(PSP_FLASH+30+i))Casing = PSP_FLASH+30+i;
+				}
+				
+				if(Casing<0){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+								
+				A_OverlayMoveTo(OverlayId(), Player.GetPSprite(Casing).X + (Player.GetPSprite(Casing).X-invoker.OldCasingPos[Casing-PSP_FLASH-30].X)*3,
+					Player.GetPSprite(Casing).Y-32 + (Player.GetPSprite(Casing).Y-invoker.OldCasingPos[Casing-PSP_FLASH-30].Y), .3);
+					
+				Player.GetPSprite(OverlayId()).Scale.Y = Player.GetPSprite(OverlayId()).Scale.X = Clamp(Player.GetPSprite(Casing).Scale.X, .85, 2);
+			}
+			#### # 1 {
+				int Casing = -1;
+				For(int i=0;i<2;i++){
+					if(Player.FindPSprite(PSP_FLASH+30+i))Casing = PSP_FLASH+30+i;
+				}
+				
+				if(Casing<0){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+				
+				A_OverlayMoveTo(OverlayId(), Player.GetPSprite(Casing).X + (Player.GetPSprite(Casing).X-invoker.OldCasingPos[Casing-PSP_FLASH-30].X),
+					Player.GetPSprite(Casing).Y-32 + (Player.GetPSprite(Casing).Y-invoker.OldCasingPos[Casing-PSP_FLASH-30].Y), .1);
+					
+				Player.GetPSprite(OverlayId()).Scale.Y = Player.GetPSprite(OverlayId()).Scale.X = Clamp(Player.GetPSprite(Casing).Scale.X, .85, 2);
+			}
+			#### # 1 {
+				int Casing = -1;
+				For(int i=0;i<2;i++){
+					if(Player.FindPSprite(PSP_FLASH+30+i))Casing = PSP_FLASH+30+i;
+				}
+				
+				if(Casing<0){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+				
+				A_OverlayMoveTo(OverlayId(), Player.GetPSprite(Casing).X + (Player.GetPSprite(Casing).X-invoker.OldCasingPos[Casing-PSP_FLASH-30].X),
+					Player.GetPSprite(Casing).Y-32 + (Player.GetPSprite(Casing).Y-invoker.OldCasingPos[Casing-PSP_FLASH-30].Y), .1);
+									
+				Player.GetPSprite(OverlayId()).Scale.Y = Player.GetPSprite(OverlayId()).Scale.X = Clamp(Player.GetPSprite(Casing).Scale.X, .85, 2);
+				
+				A_ClearOverlays(Casing, Casing);
+				invoker.Casings[Casing-PSP_FLASH-30] = false;
+			}
+			#### J 1;
+			#### ########### 1 {
+				A_OverlayMoveTo(OverlayId(), 140, 230, .7);
+				Player.GetPSprite(OverlayId()).Scale = (1,1) + (Player.GetPSprite(OverlayId()).Scale-(1,1))*.8;
 			}
 			Stop;
 		
