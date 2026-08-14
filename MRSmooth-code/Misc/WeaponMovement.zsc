@@ -287,25 +287,41 @@ Extend Class MRIntWeaps_Fist
 			Case 1://Battlefront 2015
 				
 				Float Mult = 1;//Speed and direction of sway (+1 is moving away from camera direction, -1 is moving with camera direction)
+				Float MultRot = 0;
 				
 				Switch(Owner.Player.ReadyWeapon.GetClassName()){
 					Case 'MRIntWeaps_Fist':
-						Mult = .3;
+						Mult = -.6;
+						MultRot = .3;
+						Break;
+					Case 'MRIntWeaps_Chainsaw':
+						Mult = .6;
+						MultRot = .15;
 						Break;
 					Case 'MRIntWeaps_Pistol':
-						Mult = -.5;
+						if(MRIntWeaps_Pistol(Owner.Player.ReadyWeapon).IsRifle){
+							Mult = .9;
+							MultRot = .1;
+						}
+						else {
+							Mult = -.5;
+							MultRot = .2;
+						}
 						Break;
 					Case 'MRIntWeaps_Shotgun':
+						MultRot = .1;
 					Case 'MRIntWeaps_PlasmaRifle':
 						Mult = .8;
 						Break;
 					Case 'MRIntWeaps_SuperShotgun':
 						Mult = 1;
+						MultRot = .1;
 						Break;
 					Case 'MRIntWeaps_Chaingun':
 						Mult = .4;
 						Break;
 					Case 'MRIntWeaps_RocketLauncher':
+						MultRot = .1;
 						Mult = .5;
 						Break;
 					Case 'MRIntWeaps_BFG9000':
@@ -354,6 +370,10 @@ Extend Class MRIntWeaps_Fist
 					if(Allowed){
 						PSP.Y += (CurSway.Y - PSP.Y +32)*.5;
 						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y);
+					}
+					if(MultRot!=0 && Owner.Player.FindPSprite(2)){
+						Owner.Player.GetPSprite(2).Rotation += (-PSP.X*MultRot-Owner.Player.GetPSprite(2).Rotation)*.5;
+						if(MultRot>.2 && Owner.Player.FindPSprite(MainLay))Owner.Player.GetPSprite(MainLay).Rotation += (-PSP.X*MultRot-Owner.Player.GetPSprite(MainLay).Rotation)*.5;
 					}
 				}
 				else {
