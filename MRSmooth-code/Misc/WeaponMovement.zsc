@@ -315,7 +315,7 @@ Extend Class MRIntWeaps_Fist
 						Break;
 					Case 'MRIntWeaps_SuperShotgun':
 						Mult = 1;
-						MultRot = .1;
+						MultRot = .11;
 						Break;
 					Case 'MRIntWeaps_Chaingun':
 						Mult = .4;
@@ -374,6 +374,9 @@ Extend Class MRIntWeaps_Fist
 					if(MultRot!=0 && Owner.Player.FindPSprite(2)){
 						Owner.Player.GetPSprite(2).Rotation += (-PSP.X*MultRot-Owner.Player.GetPSprite(2).Rotation)*.5;
 						if(MultRot>.2 && Owner.Player.FindPSprite(MainLay))Owner.Player.GetPSprite(MainLay).Rotation += (-PSP.X*MultRot-Owner.Player.GetPSprite(MainLay).Rotation)*.5;
+						else if(MultRot==.11){
+							if(Owner.Player.FindPSprite(1500))Owner.Player.GetPSprite(1500).Rotation = Owner.Player.GetPSprite(2).Rotation;
+						}
 					}
 				}
 				else {
