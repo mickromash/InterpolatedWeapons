@@ -548,12 +548,21 @@ Extend Class MRIntWeaps_Shotgun
 	Const CaseLife = 20;
 	Bool Casings[2];
 	Float CasingDir[2], CasingSpeed, CasingZMult[2];
+	Vector2 OldCasingPos[2];
 	Void DoCasing(int index)
 	{
 		int Lay = index+CaseStart;
 		Let PSP = Owner.Player.GetPSprite(Lay);
 		if(!PSP)Return;
 		int Age = PSP.Tics;
+		if(MRINtW_Debug)Console.Printf("Age: "..Age);
+		
+		if(Age<0){
+			Owner.Player.SetPsprite(Lay, Null);//Make it stop
+			Casings[index] = false;//I'm begging
+			PSP.Destroy();//youuuu
+		}
+		
 		if(Age<2||Age>=CaseLife)Return;
 		
 		if(PSP.Y>280+32){
@@ -563,6 +572,8 @@ Extend Class MRIntWeaps_Shotgun
 			Return;
 		}
 		if(Age==CaseLife-10)SpawnRealCasing();
+		
+		OldCasingPos[index] = (PSP.X, PSP.Y);
 		
 		//if(Age<CaseLife)PSP.bInterpolate = true;//interpolates casings rotation but causes wobble
 		Double VelZ = ((Age-(CaseLife-5-Min(2, 1-CasingSpeed)))+CasingZMult[index])/2;
@@ -718,7 +729,7 @@ Extend Class MRIntWeaps_Shotgun
 			Stop;
 		
 		CasingLay:
-			SHTC A 0 {
+			SHTC A 20 {
 				A_OverlayFlags(Overlayid(), PSPF_ADDWEAPON, false);
 				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
 				A_OverlayRenderStyle(OverlayID(), STYLE_NORMAL);
@@ -728,10 +739,12 @@ Extend Class MRIntWeaps_Shotgun
 				A_OverlayOffset(OverlayId(), 105+Player.GetPSprite(PSP_WEAPON).X, 200+Player.GetPSprite(PSP_WEAPON).Y);
 				A_OverlayRotate(OverlayId(), 160);
 				invoker.CasingSpeed = GetCVar("MRIntW_CasingsRandom");
+				
+				A_SetTics(CaseLife);
 			}
-			SHTC A 15 A_SetTics(CaseLife);
 			TNT1 A 0 {
 				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;
+				invoker.SpawnRealCasing();
 			}
 			Stop;
 		

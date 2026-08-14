@@ -19,6 +19,13 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 		Let PSP = Owner.Player.GetPSprite(Lay);
 		if(!PSP)Return;
 		int Age = PSP.Tics;
+		
+		if(Age<0){
+			Owner.Player.SetPsprite(Lay, Null);
+			Casings[index] = false;
+			PSP.Destroy();
+		}
+		
 		if(Age<2||Age>=CaseLife)Return;
 		
 		if(PSP.Y>280+32){
@@ -205,6 +212,7 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 			SHTC A 20 A_SetTics(CaseLife);
 			TNT1 A 0 {
 				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-CaseStart]=false;
+				invoker.SpawnRealCasing();
 			}
 			Stop;
 	}
