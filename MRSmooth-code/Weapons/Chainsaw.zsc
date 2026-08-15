@@ -312,7 +312,6 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				For(int i=LayBlood;i<LayBlood+40;i++){
 					if(Player.FindPSprite(i)){
 						A_BloodLayTick(i-LayBlood);
-						//Player.GetPSprite(i).Y = Player.GetPSprite(i).OldY = Player.GetPSprite(Lay1).Y + 32;
 						Player.GetPSprite(i).FirstTic = true;
 					}
 				}
