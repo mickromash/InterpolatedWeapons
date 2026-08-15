@@ -59,19 +59,6 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		}
 	}
 	
-	Action Void A_SetHandsSprite()
-	{
-		if(GetCVar("MRIntW_BareHands"))Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("PUN3A0");
-	}
-	
-	Action Void A_OverlayMoveTo(int Lay = -1, Double XTo = 0, Double YTo = 0, Double SpeedX = .8, Double SpeedY = -1)
-	{
-		if(Lay == -1)Lay = OverlayId();
-		if(SpeedY == -1)SpeedY = SpeedX;
-		Player.GetPSprite(Lay).X = XTo + (Player.GetPSprite(Lay).X - XTo)*SpeedX;
-		Player.GetPSprite(Lay).Y = YTo + (Player.GetPSprite(Lay).Y - YTo)*SpeedY;
-	}
-	
 	int BobState, IdleDelay, SwitchAnim, SwitchState;
 	Vector2 SecndHand, MainHand, DeselectOffset;
 	Bool HitWall, HitActor, SecondFist;
@@ -1405,6 +1392,19 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 	Action Void A_BersShake()
 	{
 		if((CountInv("PowerStrength") && GetCVar("MRIntW_BersShake"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(SecndLay, CFRandom(-.5, .5), CFRandom(-.5, .5), WOF_ADD);
+	}
+	
+	Action Void A_SetHandsSprite()
+	{
+		if(GetCVar("MRIntW_BareHands"))Player.GetPSprite(OverlayId()).Sprite = GetSpriteIndex("PUN3A0");
+	}
+	
+	Action Void A_OverlayMoveTo(int Lay = -1, Double XTo = 0, Double YTo = 0, Double SpeedX = .8, Double SpeedY = -1)
+	{
+		if(Lay == -1)Lay = OverlayId();
+		if(SpeedY == -1)SpeedY = SpeedX;
+		Player.GetPSprite(Lay).X = XTo + (Player.GetPSprite(Lay).X - XTo)*SpeedX;
+		Player.GetPSprite(Lay).Y = YTo + (Player.GetPSprite(Lay).Y - YTo)*SpeedY;
 	}
 	
 	Action Void A_DoVanillaDisplay()
