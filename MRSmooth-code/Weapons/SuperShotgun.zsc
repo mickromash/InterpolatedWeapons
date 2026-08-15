@@ -831,8 +831,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				}
 			}
 			#### # 1 {
-				A_OverlayRotate(Lay1, -25, WOF_ADD);
-				A_OverlayRotate(Lay3, -25, WOF_ADD);
+				A_OverlayRotate(Lay1, -30, WOF_ADD);
+				A_OverlayRotate(Lay3, -30, WOF_ADD);
 				A_OverlayOffset(Lay1, -25, -25, WOF_ADD);
 				A_OverlayOffset(Lay3, -25, -25, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
@@ -842,8 +842,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			}
 			SH12 # 1 {
 				invoker.FloatSpeed = 3;
-				A_OverlayRotate(Lay1, -25, WOF_ADD);
-				A_OverlayRotate(Lay3, -25, WOF_ADD);
+				A_OverlayRotate(Lay1, -20, WOF_ADD);
+				A_OverlayRotate(Lay3, -20, WOF_ADD);
 				A_OverlayOffset(Lay1, -25, -25, WOF_ADD);
 				A_OverlayOffset(Lay3, -25, -25, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
