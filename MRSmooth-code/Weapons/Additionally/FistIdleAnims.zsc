@@ -1032,13 +1032,16 @@ Extend Class MRIntWeaps_Fist
 		
 		
 		//Nobody will like this one
+		MainCoolIdle666Static:
+			#### # 1;
+			Wait;
 		SecndHandCoolIdle666:
 			#### # 0{
-				if(Player.FindPSprite(MainLay))Player.SetPsprite(MainLay, invoker.FindState("MainHandWait"));
+				if(Player.FindPSprite(MainLay))Player.SetPsprite(MainLay, invoker.FindState("MainCoolIdle666Static"));
 			}
 			#### ######### 1 {
-				A_OverlayOffset(SecndLay, -2, 5, WOF_ADD);
-				A_OverlayOffset(MainLay, 2, 5, WOF_ADD);
+				A_OverlayOffset(SecndLay, -2, 7, WOF_ADD);
+				A_OverlayOffset(MainLay, 2, 7, WOF_ADD);
 			}
 			TNT1 A 10 A_SetTics(CRandom(35, 40));
 			MRD1 G 1 {
