@@ -1051,6 +1051,13 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				invoker.Casings[Casing-PSP_FLASH-30] = false;
 			}
 			#### J 1{Player.GetPSprite(OverlayId()).Rotation *= .6;}
+			#### ### 1 {
+				Float Mult = .7;
+				if(Player.GetPSprite(Lay1).Frame>6)Mult = .85;
+				A_OverlayMoveTo(OverlayId(), 140, 230, Mult);
+				Player.GetPSprite(OverlayId()).Scale = (1,1) + (Player.GetPSprite(OverlayId()).Scale-(1,1))*(Mult+.1);
+				Player.GetPSprite(OverlayId()).Rotation -= (Player.GetPSprite(OverlayId()).X-Player.GetPSprite(OverlayId()).OldX)*.25;
+			}
 			#### ########### 1 {
 				A_OverlayMoveTo(OverlayId(), 140, 230, .7);
 				Player.GetPSprite(OverlayId()).Scale = (1,1) + (Player.GetPSprite(OverlayId()).Scale-(1,1))*.8;
