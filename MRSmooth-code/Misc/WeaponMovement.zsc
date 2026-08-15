@@ -328,6 +328,8 @@ Extend Class MRIntWeaps_Fist
 						Mult = .1;
 						Break;
 				}
+				if(InStateSequence(PSP.CurState, weap.FindState("Fire")))MultRot = 0;
+				
 				//Y
 				Target = -Sin(Owner.Pitch)*20;//Where to move
 
