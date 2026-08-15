@@ -13,6 +13,7 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 	Const CaseLife = 20;
 	Bool Casings[4];
 	Float CasingDir[4], CasingSpeed;
+	Vector2 OldCasingPos[4];
 	Void DoCasing(int index)
 	{
 		int Lay = index+CaseStart;
@@ -25,6 +26,8 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 			Casings[index] = false;
 			PSP.Destroy();
 		}
+		
+		OldCasingPos[index] = (PSP.X, PSP.Y);
 		
 		if(Age<2||Age>=CaseLife)Return;
 		
@@ -42,6 +45,7 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 		if(VelZ==0)VelZ = -.01;
 		
 		Double VelMult = CFRandom(1, 2*CasingSpeed);
+		
 		
 		if(Age<CaseLife-5)PSP.Y += Owner.Player.Cmd.Pitch*.005;
 		PSP.Y += Owner.Vel.Z;
