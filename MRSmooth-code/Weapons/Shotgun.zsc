@@ -369,6 +369,9 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			}
 			SH1G F 1 {
 				A_OverlayOffset(Lay1, 6, -8, WOF_ADD);
+				
+				invoker.CustomSound = CVar.GetCVar("MRIntW_ShotgunSound", players[ConsolePlayer]) && CVar.GetCVar("MRIntW_ShotgunSound", players[ConsolePlayer]).GetBool();
+				
 				if(invoker.CustomSound)A_StartSound("MRIntW/ShotgunPumpDown", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale);
 				else A_StartSound("weapons/shotgr", CHAN_WEAPON, pitch:CFRandom(.97, 1.02)*i_timescale);
 				
@@ -728,8 +731,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		Pumping:
 			#### F 1 {
 				A_OverlayOffset(Lay1, 3, 8, WOF_ADD);
-				if(invoker.CustomSound)A_StartSound("MRIntW/ShotgunPumpDown", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale);
-				else if(invoker.Catch)A_StartSound("MRIntW/ShotgunFire", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale, startTime:.5);
+				if(invoker.CustomSound)A_StartSound("MRIntW/ShotgunPumpDown", CHAN_AUTO, invoker.Catch?CHANF_MAYBE_LOCAL:0, pitch:CFRandom(.97, 1.02)*i_timescale);
+				else if(invoker.Catch)A_StartSound("MRIntW/ShotgunFire", CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:CFRandom(.97, 1.02)*i_timescale, startTime:.5);
 				
 				if(MRIntW_ScreenShake>1){
 					Double Amnt = MRIntW_ScreenShakeAmount;
@@ -918,7 +921,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			}
 			#### F 1 {
 				A_OverlayOffset(Lay1, Player.GetPSprite(Lay1).X-5, -36, WOF_INTERPOLATE);
-				if(invoker.CustomSound)A_StartSound("MRIntW/ShotgunPumpUp", CHAN_AUTO, pitch:CFRandom(.97, 1.02)*i_timescale);
+				if(invoker.CustomSound)A_StartSound("MRIntW/ShotgunPumpUp", CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:CFRandom(.97, 1.02)*i_timescale);
 				A_OverlayScale(Lay1, 1, .96, WOF_INTERPOLATE);
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
@@ -1047,10 +1050,21 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				
 				Player.GetPSprite(OverlayId()).Rotation *= .6;
 				
+				invoker.CasingSpeed = .3;
+			}
+			#### J 1{
+				Player.GetPSprite(OverlayId()).Rotation *= .6;
+				
+				int Casing = -1;
+				For(int i=0;i<2;i++){
+					if(Player.FindPSprite(PSP_FLASH+30+i))Casing = PSP_FLASH+30+i;
+				}
+				
+				if(Casing<0)Return;
+				
 				A_ClearOverlays(Casing, Casing);
 				invoker.Casings[Casing-PSP_FLASH-30] = false;
 			}
-			#### J 1{Player.GetPSprite(OverlayId()).Rotation *= .6;}
 			#### ### 1 {
 				Float Mult = .7;
 				if(Player.GetPSprite(Lay1).Frame>6)Mult = .85;
