@@ -548,6 +548,27 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 			Loop;
 		SawStopCut://Transition back to ready
+			#### # 1 {
+				Player.GetPSprite(Lay1).X *= .7;
+				Player.GetPSprite(Lay1).Y *= .7;
+				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.7;
+				Player.GetPSprite(Lay1).Rotation *= .7;
+				
+				if(invoker.SawSpeed<.7 || (GetAge()%3==0 && CRandom(0, 1)==1) || i_timescale<.8){
+					int Frame = Player.GetPSprite(Lay1).Frame-6;
+					int ChainSpeed = Clamp(Min(2, invoker.SawSpeed)+GetAge()%2+int(CFRandomPick(0,.01,.02,.03,.04, 1)), 0, 2);
+					Frame += ChainSpeed;
+					
+					if(Frame>3)Frame = Frame%3;
+					
+					Player.GetPSprite(Lay1).Frame = Frame+6;
+				}
+				else Player.GetPSprite(Lay1).Frame = 10+GetAge()%2;
+				
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
+			}
+			#### # 0 A_JumpIf(abs(Player.GetPSprite(Lay1).Scale.X-1) < .1 && abs(Player.GetPSprite(Lay1).Y) < 5 && abs(Player.GetPSprite(Lay1).X)<5 && abs(Player.GetPSprite(Lay1).Rotation)<2, 1);
+			Loop;
 			#### G 1 {
 				A_GlovesColor(1);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
