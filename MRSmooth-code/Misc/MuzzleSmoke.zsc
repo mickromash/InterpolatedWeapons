@@ -32,7 +32,7 @@ Class MRIntWeaps_Smoker: Object play
 		p.sizeStep = SizeStep;
 		p.startalpha = Alpha;
 		p.fadestep = Fade;
-		if(Fade==-1)p.FadeStep = Alpha/Max(1, Life);
+		if(Fade==-1)p.FadeStep = Alpha/Max(1, Life-1);
 		
 		p.Flags = Flags;
 		p.Style = Style;
@@ -146,7 +146,7 @@ Class MRIntWeaps_Smoker: Object play
 			if(Owner.Pos == Owner.Prev)Curve = 1;
 			PPos.Z *= Curve;
 			if(PPos != PPos)PPos = (0,0,0);
-			MRSpawnParticle(Col, Flags, STYLE_None, Life/Max(1, Diff.Length()*.5/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength));
+			MRSpawnParticle(Col, Flags, STYLE_None, Life/*/Max(1, Diff.Length()*.5/MaxLength)*/, BaseScale*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength));
 		}
 		
 		if(Owner.Vel.XY.Length()>0 || ForceConnect){
@@ -201,7 +201,7 @@ Extend Class MRIntWeaps_Pistol
 		
 		Double Scale = 1;
 		Vector2 Ofst;
-		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).OldX, Owner.Player.FindPSprite(PSP_WEAPON).OldY);
 		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
 		
 		if(IsRifle)
@@ -287,7 +287,7 @@ Extend Class MRIntWeaps_Shotgun
 		}
 			
 		Vector2 Ofst;
-		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).OldX, Owner.Player.FindPSprite(PSP_WEAPON).OldY);
 		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
 		
 		Double Scale = 1;
@@ -376,7 +376,7 @@ Extend Class MRIntWeaps_Chaingun
 		Vector2 Ofst[6];
 		For(int i=0;i<LastShoted.Size();i++)
 		{
-			if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst[i] = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+			if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst[i] = (Owner.Player.FindPSprite(PSP_WEAPON).OldX, Owner.Player.FindPSprite(PSP_WEAPON).OldY);
 			Ofst[i] += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
 			
 			if(InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready"))){
@@ -460,7 +460,7 @@ Extend Class MRIntWeaps_RocketLauncher
 		}
 			
 		Vector2 Ofst;
-		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).OldX, Owner.Player.FindPSprite(PSP_WEAPON).OldY);
 		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
 		
 		Double Scale = 5;
@@ -548,7 +548,7 @@ Extend Class MRIntWeaps_ID24Incinerator
 		}
 		
 		Vector2 Ofst;
-		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+		if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst = (Owner.Player.FindPSprite(PSP_WEAPON).OldX, Owner.Player.FindPSprite(PSP_WEAPON).OldY);
 		Ofst += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
 		Ofst.Y += 10;
 		if(Owner.Player.WeaponState&WF_WEAPONBOBBING){
