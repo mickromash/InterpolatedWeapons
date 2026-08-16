@@ -243,7 +243,7 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 			Return;
 		}
 		
-		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self)?.028:.014;
+		if(Smoke>=1)Smoke -= (Owner.Player.ReadyWeapon==Self)?.03:.015;
 		if(Owner.Player.ReadyWeapon != Self || !Owner.Player.FindPSprite(PSP_WEAPON) || !Owner.player.FindPSprite(Lay1))Return;
 		
 		Smoker.Update();
@@ -256,7 +256,7 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 			
 		Vector2 Ofst[2];
 		For(int i=0;i<2;i++){
-			if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst[i] = (Owner.Player.FindPSprite(PSP_WEAPON).X, Owner.Player.FindPSprite(PSP_WEAPON).Y);
+			if(Owner.Player.FindPSprite(Lay1).bAddWeapon)Ofst[i] = (Owner.Player.FindPSprite(PSP_WEAPON).OldX, Owner.Player.FindPSprite(PSP_WEAPON).OldY);
 			Ofst[i] += (Owner.Player.FindPSprite(Lay1).X, Owner.Player.FindPSprite(Lay1).Y);
 		}
 		
@@ -274,16 +274,7 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 			}
 		}
 		
-		
-		/*Double Angle = Owner.Player.FindPSprite(Lay1).Rotation;
-		For(int i=0;i<2;i++){
-			Ofst[i].X *= 2-Owner.Player.FindPSprite(Lay1).Scale.X;
-			Ofst[i].Y *= 2-Owner.player.FindPSprite(Lay1).Scale.Y;
-			
-			Ofst[i] = (Ofst[i].X*Cos(Angle) + Ofst[i].Y*Sin(Angle),
-				Ofst[i].X*Cos(Angle+90) + Ofst[i].Y*Sin(Angle+90));
-		}*/
-		
+				
 		For(int i=0;i<2;i++)Ofst[i] *= .032;
 		
 		Smoker.Smokes = 2;
@@ -301,7 +292,7 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<MRIntW_MaxSmoke*.2)Smoke += CRandom(2, 3);
+		if(Smoke<MRIntW_MaxSmoke*.2)Smoke += CRandom(2, 2.2);
 	}
 }
 
