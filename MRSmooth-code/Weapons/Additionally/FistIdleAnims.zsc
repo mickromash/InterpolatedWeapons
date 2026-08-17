@@ -70,7 +70,7 @@ Extend Class MRIntWeaps_Fist
 				invoker.Power2 = false;
 			}
 			#### # 1 {
-				A_StartSound("MRIntW/FistSwing", CHAN_AUTO, CHANF_LOCAL, .5, pitch:CFRandom(.9, 1.1)*i_timescale);
+				A_StartSound("MRIntW/FistSwing", CHAN_AUTO, CHANF_LOCAL, .7, pitch:CFRandom(.9, 1.1)*i_timescale);
 				A_OverlayOffset(OverlayId(), 265+20, -10+CFRandom(-4, 4), WOF_INTERPOLATE);
 				A_OverlayScale(OverlayId(), 1.31, 1.35, WOF_INTERPOLATE);
 			}
@@ -80,7 +80,7 @@ Extend Class MRIntWeaps_Fist
 			}
 			#### # 0 A_JumpIf(!(Player.Cmd.Buttons&BT_ALTATTACK), "SecndHandCoolIdleAltEnd");
 			#### # 1 {
-				A_StartSound("MRIntW/FistPuch", CHAN_AUTO, CHANF_LOCAL, CFRandom(.5, .55), pitch: CFRandom(1.45, 1.55)*i_timescale);
+				A_StartSound("MRIntW/FistPuch", CHAN_AUTO, CHANF_LOCAL, CFRandom(.8, .85), pitch: CFRandom(1.45, 1.55)*i_timescale);
 				A_OverlayOffset(OverlayId(), 265 -50, -10+CFRandom(-2, 2), WOF_INTERPOLATE);
 				A_OverlayScale(OverlayId(), 1.1, CFRandom(1.4, 1.45), WOF_INTERPOLATE);
 			}
@@ -110,7 +110,7 @@ Extend Class MRIntWeaps_Fist
 				A_OverlayRotate(OverlayId(), 2, WOF_ADD);
 			}
 			#### # 2 {
-				A_StartSound("MRIntW/FistSwing", CHAN_AUTO, CHANF_LOCAL, .5, pitch:CFRandom(.9, 1.1)*i_timescale);
+				A_StartSound("MRIntW/FistSwing", CHAN_AUTO, CHANF_LOCAL, .7, pitch:CFRandom(.9, 1.1)*i_timescale);
 				A_OverlayOffset(OverlayId(), 265+CFRandom(50, 63), -10-9, WOF_INTERPOLATE);
 			}
 			#### # 1 {
@@ -120,7 +120,7 @@ Extend Class MRIntWeaps_Fist
 			}
 			#### # 0 A_JumpIf(Player.Cmd.Buttons&BT_ALTATTACK, "SecndHandCoolIdleAltEnd");
 			#### # 1 {
-				A_StartSound("MRIntW/FistPuch", CHAN_AUTO, CHANF_Local, CFRandom(.5, .55), pitch: CFRandom(1.45, 1.55)*i_timescale);
+				A_StartSound("MRIntW/FistPuch", CHAN_AUTO, CHANF_Local, CFRandom(.8, .85), pitch: CFRandom(1.45, 1.55)*i_timescale);
 				A_OverlayOffset(OverlayId(), 265 -50, -10+CFRandom(-3, 3), WOF_INTERPOLATE);
 				A_OverlayScale(OverlayId(), 1.08, 1.37, WOF_INTERPOLATE);
 			}
@@ -151,7 +151,7 @@ Extend Class MRIntWeaps_Fist
 		SecndHandCoolIdleAltEnd:
 			#### # 1 {
 				Player.SetPsprite(MainLay, invoker.FindState("MainHandCoolIdleAltEnd"));
-				A_StartSound("MRIntW/FistPuch", CHAN_AUTO, CHANF_Local, CFRandom(.5, .55), pitch: CFRandom(1.45, 1.55)*i_timescale);
+				A_StartSound("MRIntW/FistPuch", CHAN_AUTO, CHANF_Local, CFRandom(.8, .85), pitch: CFRandom(1.45, 1.55)*i_timescale);
 				A_OverlayOffset(OverlayId(), 265 -55, -10+CFRandom(-3, 3), WOF_INTERPOLATE);
 				A_OverlayScale(OverlayId(), 1.08, 1.37, WOF_INTERPOLATE);
 			}
