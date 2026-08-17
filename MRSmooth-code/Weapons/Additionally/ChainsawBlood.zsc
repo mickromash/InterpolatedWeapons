@@ -461,7 +461,7 @@ Extend Class MRIntWeaps_Chainsaw
 		}
 		
 		if(!MRIntW_ChainsawBlood){
-			invoker.Dripping[Num] = 0;
+			if(Num<6)invoker.Dripping[Num] = 0;
 			if(invoker.BldAlpha[Num]>0)invoker.BldAlpha[Num] -= .1;
 			else {
 				invoker.BldAlpha[Num] = invoker.BldFrame[Num] = 0;
