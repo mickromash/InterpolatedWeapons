@@ -139,6 +139,7 @@ Class MRIntWeaps_Smoker: Object play
 		
 		int Flags = 0;
 		if(Bright)Flags = SPF_FULLBRIGHT;
+
 		For(Double i=0;i<Connect;i+=Step){
 			Vector3 PPos = Diff.Unit()*i;
 			Double Curve = i/(Connect+Step);
@@ -146,7 +147,7 @@ Class MRIntWeaps_Smoker: Object play
 			if(Owner.Pos == Owner.Prev)Curve = 1;
 			PPos.Z *= Curve;
 			if(PPos != PPos)PPos = (0,0,0);
-			MRSpawnParticle(Col, Flags, STYLE_None, Life/*/Max(1, Diff.Length()*.5/MaxLength)*/, BaseScale*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength));
+			MRSpawnParticle(Col, Flags, STYLE_None, Life/Max(1, Diff.Length()*.15/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength));
 		}
 		
 		if(Owner.Vel.XY.Length()>0 || ForceConnect){
