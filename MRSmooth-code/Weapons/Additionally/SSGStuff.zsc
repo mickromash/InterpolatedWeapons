@@ -292,7 +292,7 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<MRIntW_MaxSmoke*.2)Smoke += CRandom(2, 2.2);
+		if(Smoke<MRIntW_MaxSmoke*.2)Smoke += CFRandom(2, 2.3);
 	}
 }
 
