@@ -27,7 +27,7 @@ Extend Class MRIntWeaps_Fist
 		
 		if(MRIntW_DamageShake)DoDamageShake();
 		
-		if(LowerGun || MRIntW_RunKey>0)DoGunLower();
+		if(LowerGun || RunKey>0 || MRIntW_RunKey>0)DoGunLower();
 		
 		if(MRIntW_Bounce)DoBounce();
 		
