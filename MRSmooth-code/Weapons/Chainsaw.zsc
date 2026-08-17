@@ -305,9 +305,27 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay1).OldX = CFRandom(-.5, .5) + Player.GetPSprite(PSP_WEAPON).OldX;
 				Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).OldY = (invoker.SwitchState>0)?32:Player.GetPSprite(PSP_WEAPON).OldY;
 				A_OverlayRotate(Lay1, CFRandom(-.5, .5));
-				invoker.SawFrame = 2+CRandom(0, 1)*2;
-				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
-				A_OverlayScale(Lay1, CFRandom(1, 1.05), CFRandom(1, 1.05));
+				
+				if(Player.GetPSprite(Lay1).Frame>5){
+					if(invoker.SawSpeed<.7 || (GetAge()%3==0 && CRandom(0, 1)==1) || i_timescale<.8){
+						int Frame = Player.GetPSprite(Lay1).Frame-6;
+						int ChainSpeed = Clamp(Min(2, invoker.SawSpeed)+GetAge()%2+int(CFRandomPick(0,.01,.02,.03,.04, 1)), 0, 2);
+						Frame += ChainSpeed;
+						
+						if(Frame>3)Frame = Frame%3;
+						
+						Player.GetPSprite(Lay1).Frame = Frame+6;
+					}
+					else Player.GetPSprite(Lay1).Frame = 10+GetAge()%2;
+					
+					invoker.SawSpeed *= .5;
+				}
+				
+				else {
+					invoker.SawFrame = 2+CRandom(0, 1)*2;
+					Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
+					A_OverlayScale(Lay1, CFRandom(1, 1.05), CFRandom(1, 1.05));
+				}
 				
 				For(int i=LayBlood;i<LayBlood+40;i++){
 					if(Player.FindPSprite(i)){
@@ -326,6 +344,27 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay1, 2, 2, WOF_ADD);
 				A_OverlayRotate(Lay1, -1, WOF_ADD);
 				A_OverlayScale(Lay1, -.03, -.1, WOF_ADD);
+				
+				if(Player.GetPSprite(Lay1).Frame>5){
+					if(invoker.SawSpeed<.7 || (GetAge()%3==0 && CRandom(0, 1)==1) || i_timescale<.8){
+						int Frame = Player.GetPSprite(Lay1).Frame-6;
+						int ChainSpeed = Clamp(Min(2, invoker.SawSpeed)+GetAge()%2+int(CFRandomPick(0,.01,.02,.03,.04, 1)), 0, 2);
+						Frame += ChainSpeed;
+						
+						if(Frame>3)Frame = Frame%3;
+						
+						Player.GetPSprite(Lay1).Frame = Frame+6;
+					}
+					else Player.GetPSprite(Lay1).Frame = 10+GetAge()%2;
+					
+					invoker.SawSpeed *= .5;
+				}
+				
+				else {
+					invoker.SawFrame = 2+CRandom(0, 1)*2;
+					Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
+				}
+				
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 				else {
 					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
@@ -337,6 +376,22 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay1, -2, 3, WOF_ADD);
 				A_OverlayRotate(Lay1, 1, WOF_ADD);
 				A_OverlayScale(Lay1, -.04, -.09, WOF_ADD);
+				
+				if(Player.GetPSprite(Lay1).Frame>5){
+					if(invoker.SawSpeed<.7 || (GetAge()%3==0 && CRandom(0, 1)==1) || i_timescale<.8){
+						int Frame = Player.GetPSprite(Lay1).Frame-6;
+						int ChainSpeed = Clamp(Min(2, invoker.SawSpeed)+GetAge()%2+int(CFRandomPick(0,.01,.02,.03,.04, 1)), 0, 2);
+						Frame += ChainSpeed;
+						
+						if(Frame>3)Frame = Frame%3;
+						
+						Player.GetPSprite(Lay1).Frame = Frame+6;
+					}
+					else Player.GetPSprite(Lay1).Frame = 10+GetAge()%2;
+					
+					invoker.SawSpeed *= .5;
+				}
+				
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 				else {
 					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
@@ -348,6 +403,22 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay1, -1, 4.4, WOF_ADD);
 				A_OverlayRotate(Lay1, 1, WOF_ADD);
 				A_OverlayScale(Lay1, -.015, -.022, WOF_ADD);
+				
+				if(Player.GetPSprite(Lay1).Frame>5){
+					if(invoker.SawSpeed<.7 || (GetAge()%3==0 && CRandom(0, 1)==1) || i_timescale<.8){
+						int Frame = Player.GetPSprite(Lay1).Frame-6;
+						int ChainSpeed = Clamp(Min(2, invoker.SawSpeed)+GetAge()%2+int(CFRandomPick(0,.01,.02,.03,.04, 1)), 0, 2);
+						Frame += ChainSpeed;
+						
+						if(Frame>3)Frame = Frame%3;
+						
+						Player.GetPSprite(Lay1).Frame = Frame+6;
+					}
+					else Player.GetPSprite(Lay1).Frame = 10+GetAge()%2;
+					
+					invoker.SawSpeed *= .5;
+				}
+				
 				if(invoker.SwitchState>0){invoker.SwitchState--;A_SetTics(0);A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 				else {
 					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
@@ -761,7 +832,9 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		Deselect:
 			TNT1 A 0 {
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				if(MRIntW_SwitchAnims)A_Overlay(Lay1, "SawLower");
+				if(MRIntW_SwitchAnims){
+					Player.SetPsprite(Lay1, invoker.FindState("SawLower"));
+				}
 				else A_Overlay(Lay1, "SawLowerVanilla");
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SAWGA0");
