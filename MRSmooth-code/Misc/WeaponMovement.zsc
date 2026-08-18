@@ -302,7 +302,7 @@ Extend Class MRIntWeaps_Fist
 					Case 'MRIntWeaps_Chainsaw':
 						Mult = .6;
 						if(Owner.Player.FindPSprite(2) && !InStateSequence(Owner.Player.FindPSprite(2).CurState, weap.FindState("SawReady")))MultRot = 0;
-						else MultRot = .15;
+						else MultRot = -.15;
 						Break;
 					Case 'MRIntWeaps_Pistol':
 						if(MRIntWeaps_Pistol(Owner.Player.ReadyWeapon).IsRifle){
@@ -318,14 +318,14 @@ Extend Class MRIntWeaps_Fist
 						Break;
 					Case 'MRIntWeaps_Shotgun':
 						if(Owner.Player.FindPSprite(2) && !InStateSequence(Owner.Player.FindPSprite(2).CurState, weap.FindState("GunWait")))MultRot = 0;
-						else MultRot = .1;
+						else MultRot = -.1;
 					Case 'MRIntWeaps_PlasmaRifle':
 						Mult = .8;
 						Break;
 					Case 'MRIntWeaps_SuperShotgun':
 						Mult = 1;
 						if(Owner.Player.FindPSprite(2) && !InStateSequence(Owner.Player.FindPSprite(2).CurState, weap.FindState("GunWait")))MultRot = 0;
-						else MultRot = .11;
+						else MultRot = -.11;
 						Break;
 					Case 'MRIntWeaps_Chaingun':
 						Mult = .4;
@@ -333,7 +333,7 @@ Extend Class MRIntWeaps_Fist
 					Case 'MRIntWeaps_RocketLauncher':
 						Mult = .5;
 						if(Owner.Player.FindPSprite(2) && !InStateSequence(Owner.Player.FindPSprite(2).CurState, weap.FindState("GunWait")))MultRot = 0;
-						else MultRot = .1;
+						else MultRot = -.1;
 						Break;
 					Case 'MRIntWeaps_BFG9000':
 						Mult = .1;
