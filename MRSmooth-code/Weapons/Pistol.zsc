@@ -804,9 +804,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay1).Rotation = 20+(Player.GetPSprite(Lay1).Rotation-20)*.8;
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.8;
 			}
-			#### #### 1 A_OverlayMoveTo(Lay1, 29, 10, .9);
+			#### ### 1 A_OverlayMoveTo(Lay1, 29, 10, .9);
+			#### ## 1 A_OverlayMoveTo(Lay1, 25, 5, .5);
 			#### BC 1{
-				A_OverlayMoveTo(Lay1, 25, 24, .9);
+				A_OverlayMoveTo(Lay1, 29, 40, .5);
 			}
 			#### # 0{
 				A_StartSound("MRIntW/PistolReload", CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:.75*i_timescale);
@@ -821,16 +822,21 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 					A_Overlay(PSP_FLASH+10+index, "CasingLay");
 
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
-					A_OverlayOffset(PSP_FLASH+10+index, 180+Player.GetPSprite(PSP_WEAPON).X, 135+Player.GetPSprite(PSP_WEAPON).Y);
+					A_OverlayOffset(PSP_FLASH+10+index, 175+Player.GetPSprite(PSP_WEAPON).X, 133+Player.GetPSprite(PSP_WEAPON).Y);
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
 				}
 			}
-			#### JJJ 1{
-				A_OverlayMoveTo(Lay1, 25, 24, .9);
+			#### J 1{
+				A_OverlayMoveTo(Lay1, 29, 40, .5);
+			}
+			#### JJ 1{
+				A_OverlayMoveTo(Lay1, 20, 0, .7);
+				Player.GetPSprite(Lay1).Rotation *= .8;
+				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.8;
 			}
 			#### GEDIBA 1 {
 				if(Player.GetPSprite(Lay1).Frame==3)A_StartSound("MRIntW/PistolReload", CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:i_timescale);
-				A_OverlayMoveTo(Lay1, 0, 0, .8);
+				A_OverlayMoveTo(Lay1, 0, 0, .7);
 				Player.GetPSprite(Lay1).Rotation *= .8;
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.8;
 			}
@@ -843,40 +849,51 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Goto GunWait;
 		
 		GunCoolIdleHand:
-			MRD1 K 1{
+			CH1H A 1{
 				A_GlovesColor();
-				A_OverlayPivot(CtchHand, .75, .1);
-				A_OverlayOffset(CtchHand, -60, 90);
-				A_OverlayRotate(CtchHand, 30);
+				A_OverlayPivot(CtchHand, .5, .5);
+				A_OverlayOffset(CtchHand, -30, 60);
+				A_OverlayRotate(CtchHand, 60);
 				A_OverlayScale(CtchHand, .7, .7);
 			}
 			#### ###### 1{
-				A_OverlayMoveTo(CtchHand, -5, -10, .7);
+				A_OverlayMoveTo(CtchHand, 55, -50, .7);
 				Player.GetPSprite(CtchHand).Rotation = 5+(Player.GetPSprite(CtchHand).Rotation-5)*.7;
-				Player.GetPSprite(CtchHand).Scale = (1,1)+(Player.GetPSprite(CtchHand).Scale-(1,1))*.7;
+				Player.GetPSprite(CtchHand).Scale = (.9,.9)+(Player.GetPSprite(CtchHand).Scale-(.9,.9))*.7;
 				A_OverlayFlags(CtchHand, PSPF_INTERPOLATE, !Player.GetPSprite(CtchHand).FirstTic);
 			}
-			#### #### 1{
-				A_OverlayMoveTo(CtchHand, 2, 0, .7);
+			P1SH A 1{
+				A_OverlayFlags(CtchHand, PSPF_INTERPOLATE, false);
+				Player.GetPSprite(CtchHand).OldX -= 30;
+				Player.GetPSprite(CtchHand).OldY += 20;
+				Player.GetPSprite(CTchHand).X = Player.GetPSprite(CtchHand).OldX;
+				Player.GetPSprite(CTchHand).Y = Player.GetPSprite(CtchHand).OldY;
 				Player.GetPSprite(CtchHand).Rotation *= .7;
-				Player.GetPSprite(CtchHand).Scale = (.8,.9)+(Player.GetPSprite(CtchHand).Scale-(.8,.9))*.6;
+				Player.GetPSprite(CtchHand).Scale = (1,1)+(Player.GetPSprite(CtchHand).Scale-(1,1))*.6;
+			}
+			#### AAA 1{
+				A_OverlayMoveTo(CtchHand, 15, -20, .8);
+				Player.GetPSprite(CtchHand).Rotation *= .7;
+				Player.GetPSprite(CtchHand).Scale = (1,1)+(Player.GetPSprite(CtchHand).Scale-(1,1))*.6;
+				A_OverlayFlags(CtchHand, PSPF_INTERPOLATE, !Player.GetPSprite(CtchHand).FirstTic);
 			}
 			#### ## 1{
-				A_OverlayMoveTo(CtchHand, 14, 20, .5);
-				Player.GetPSprite(CtchHand).Rotation = -10+(Player.GetPSprite(CtchHand).Rotation+10)*.5;
-				Player.GetPSprite(CtchHand).Scale = (.8,.98)+(Player.GetPSprite(CtchHand).Scale-(.8,.98))*.9;
+				A_OverlayMoveTo(CtchHand, 20, 20, .5);
+				//Player.GetPSprite(CtchHand).Rotation = -10+(Player.GetPSprite(CtchHand).Rotation+10)*.5;
+				Player.GetPSprite(CtchHand).Scale = (1.05,1.05)+(Player.GetPSprite(CtchHand).Scale-(1.05,1.05))*.9;
 			}
-			#### # 1{
+			CH1H A 1{
 				A_OverlayMoveTo(CtchHand, 55, 90, .7);
 				Player.GetPSprite(CtchHand).Rotation = -30+(Player.GetPSprite(CtchHand).Rotation+30)*.7;
 				Player.GetPSprite(CtchHand).Scale = (1,1)+(Player.GetPSprite(CtchHand).Scale-(1,1))*.6;
 			}
-			#### H 1{
+			MRD1 H 1{
+				A_OverlayPivot(CtchHand, .5, .5);
 				A_OverlayFlags(CtchHand, PSPF_INTERPOLATE, false);
 				A_OverlayOffset(CtchHand, 0, 90);
 				A_OverlayRotate(CtchHand, 0);
 			}
-			#### #### 1{
+			#### ##### 1{
 				int Casing = -1;
 				For(int i=0;i<invoker.Casings.Size();i++){
 					if(Player.FindPSprite(PSP_FLASH+10+i))Casing = PSP_FLASH+10+i;
@@ -889,7 +906,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 								
 				A_OverlayMoveTo(OverlayId(), Player.GetPSprite(Casing).X -95, 20, .6);
 					
-				Player.GetPSprite(OverlayId()).Scale.Y = Player.GetPSprite(OverlayId()).Scale.X = Clamp(Player.GetPSprite(Casing).Scale.X, .85, 2);
+				Player.GetPSprite(OverlayId()).Scale.Y = Player.GetPSprite(OverlayId()).Scale.X = Clamp(Player.GetPSprite(Casing).Scale.X, .1, 2);
 				
 				A_OverlayFlags(CtchHand, PSPF_INTERPOLATE, !Player.GetPSprite(CtchHand).FirstTic);
 			}
