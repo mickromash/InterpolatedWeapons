@@ -37,7 +37,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		
 		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || !InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
-		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK && !Catch && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).bAddWeapon){
+		if((Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD) && !Catch && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).bAddWeapon){
 			Catch = true;
 			Handless = true;
 			Owner.Player.SetPsprite(Lay1, FindState("GunReload"));

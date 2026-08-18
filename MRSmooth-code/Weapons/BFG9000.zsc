@@ -202,7 +202,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				
 				invoker.InterpolateMuzzle = true;
 				
-				if(!(Player.Cmd.Buttons&BT_ALTATTACK))Return;
+				if(!(Player.Cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD))Return;
 				
 				if(GetAge()%2==0){
 					Player.GetPSprite(Lay2).X = CFRandom(-.5, .5);

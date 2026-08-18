@@ -23,10 +23,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		
 		if(!Owner.Player || Owner.Player.ReadyWeapon != Self)Return;
 		
-		if(Owner.Player.OldButtons&BT_ALTATTACK){
+		if(Owner.Player.OldButtons&BT_ALTATTACK || Owner.Player.OldButtons&BT_RELOAD){
 			if(Muzzle<1)Muzzle += .2;
 		}
-		else if(Owner.Player.Cmd.Buttons&BT_ALTATTACK){
+		else if(Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD){
 			if(Muzzle<2)Muzzle += 1;
 		}
 	}
@@ -304,7 +304,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			PL1G A 1 {
 				A_IdleAnimation(Lay1);
 				if(invoker.Muzzle>.05){
-					if(!(Player.Cmd.Buttons&BT_ALTATTACK))invoker.Muzzle *= invoker.IdleEnd?.9:.5;
+					if(!(Player.Cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD))invoker.Muzzle *= invoker.IdleEnd?.9:.5;
 				}
 				else invoker.IdleEnd = invoker.Muzzle = 0;
 			}

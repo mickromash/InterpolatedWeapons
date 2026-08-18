@@ -36,7 +36,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				
 		if(!Owner.Player.FindPSprite(Lay1) || !InStateSequence(Owner.Player.FindPSprite(Lay1).CurState, FindState("SawReady")))Return;
 		
-		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK)Owner.Player.SetPsprite(Lay1, FindState("SawIdle"));
+		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD)Owner.Player.SetPsprite(Lay1, FindState("SawIdle"));
 	}
 	
 	Action Void A_GlovesColor(int Trans=0)//Applying custom gloves color

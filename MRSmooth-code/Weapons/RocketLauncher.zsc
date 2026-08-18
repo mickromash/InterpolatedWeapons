@@ -30,7 +30,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		
 		Owner.Player.GetPSprite(Lay1).Frame = Muzzle;
 				
-		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK)Muzzle++;
+		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD)Muzzle++;
 		else if(Muzzle>0)Muzzle--;
 		
 		if(Muzzle>2)Muzzle = 2;

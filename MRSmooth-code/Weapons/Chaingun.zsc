@@ -76,7 +76,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self)Return;
 		
 		if(Owner.Health>0){
-			if(Owner.Player.WeaponState&WF_WEAPONREADY  && Owner.Player.Cmd.Buttons&BT_ALTATTACK){//Alt fire
+			if(Owner.Player.WeaponState&WF_WEAPONREADY && (Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD)){//Alt fire
 				if(abs(Speed)<10)Speed--;
 				
 				For(int i=Muzzle0;i<=Muzzle5;i++){
@@ -439,7 +439,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				if(!InStateSequence(Player.GetPSprite(PSP_WEAPON).CurState, invoker.FindState("Ready")))Return;
 				if(Player.FindPSprite(Hand))Return;
 				
-				if(Player.cmd.Buttons&BT_ALTATTACK)Return;
+				if(Player.cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD)Return;
 				
 				if(!GetCVar("MRIntW_ChaingunFixed"))Return;
 				

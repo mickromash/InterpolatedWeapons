@@ -30,7 +30,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		
 		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || !InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
-		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK && !Catch){
+		if((Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD) && !Catch){
 			Catch = true;
 			Owner.Player.SetPsprite(Lay1, FindState("Pump"));
 		}
@@ -908,7 +908,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayMoveTo(Lay1, -51, 10, .7);
 				A_OverlayScale(Lay1, 1.07, .94, WOF_INTERPOLATE);
 				
-				if(!(Player.OldButtons&BT_ALTATTACK))Player.GetPSprite(Lay1).SetState(Player.GetPSprite(Lay1).CurState+1);
+				if(!(Player.OldButtons&BT_ALTATTACK || Player.OldButtons&BT_RELOAD))Player.GetPSprite(Lay1).SetState(Player.GetPSprite(Lay1).CurState+1);
 			}
 			Wait;
 			#### H 1 {
@@ -932,7 +932,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			#### ######################## 1{
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayMoveTo(Lay1, -71, -42, CFRandom(.65, .8));
-				if(Player.Cmd.Buttons&BT_ALTATTACK)Player.GetPSprite(Lay1).SetState(invoker.FindState("Pumping"));
+				if(Player.Cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD)Player.GetPSprite(Lay1).SetState(invoker.FindState("Pumping"));
 			}
 			#### FEEDD 1 {//Lower
 				A_OverlayOffset(Lay1, 11, 6, WOF_ADD);
