@@ -785,7 +785,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayScale(Lay1, -.05, -.05, WOF_ADD);
 				A_OverlayOffset(Lay1, 30, 8, WOF_ADD);
 				
-				invoker.MuzzleSmoke((-25*Scal-Rot*2, 5/Scal-Rot), (-15*Scal-Rot*2, 1/Scal-Rot), Scal+.3, Scal+.3);
+				invoker.MuzzleSmoke((-25*Scal-Rot*2, 5/Scal-Rot), (-15*Scal-Rot*2, 1/Scal-Rot), Scal+.3, Scal+.3, true);
 			}
 			#### D 1 {
 				Double Rot = Player.GetPSprite(Lay1).Rotation*2;
@@ -795,7 +795,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayScale(Lay1, -.1, -.1, WOF_ADD);
 				A_OverlayOffset(Lay1, 70, 20, WOF_ADD);
 				
-				invoker.MuzzleSmoke((-25*Scal-Rot*2 + 20, 5/Scal-Rot - 10), (-15*Scal-Rot*2 + 20, 1/Scal-Rot - 10), Scal+.3, Scal+.3);
+				invoker.MuzzleSmoke((-25*Scal-Rot*2 + 20, 5/Scal-Rot - 10), (-15*Scal-Rot*2 + 20, 1/Scal-Rot - 10), Scal+.3, Scal+.3, true);
 			}
 			#### # 0 A_JumpIf(invoker.ReloadVar<1, 2);
 			#### D 1 {
@@ -806,7 +806,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayScale(Lay1, -.0125, -.0125, WOF_ADD);
 				A_OverlayOffset(Lay1, 30, 8, WOF_ADD);
 				
-				invoker.MuzzleSmoke((-25*Scal-Rot*2, 5/Scal-Rot - 10), (-15*Scal-Rot*2, 1/Scal-Rot - 10), Scal+.3, Scal+.3);
+				invoker.MuzzleSmoke((-25*Scal-Rot*2, 5/Scal-Rot - 10), (-15*Scal-Rot*2, 1/Scal-Rot - 10), Scal+.3, Scal+.3, true);
 			}
 			#### D 1 {
 				Float Mult = 1;
@@ -822,7 +822,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				
 				if(MRIntW_ScreenShake>1){
 					Double Amnt = MRIntW_ScreenShakeAmount;
-					A_QuakeEx(.25*Amnt,0,-.15*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 5,0,5, rollIntensity: .05*Amnt, rollwave: 5);
+					A_QuakeEx(.25*Amnt,0,-.15*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 5,0,5, rollIntensity: .05*Amnt, rollwave: 5, true);
 				}
 				
 				invoker.FloatSpeed = 0;
