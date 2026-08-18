@@ -415,7 +415,7 @@ Extend Class MRIntWeaps_Pistol
 		PSP.Y += Owner.Vel.Z;
 		PSP.Y -= VelZ*100*VelMult*PSP.Scale.X;
 		if(Age<CaseLife-5)PSP.X += Owner.Player.Cmd.Yaw*.0025;
-		if(Catch)VelMult *= -.5;
+		if(Catch && !IsRifle)VelMult *= -.5;
 		PSP.X += 16*VelMult*PSP.Scale.X;
 		PSP.Scale *= 1+.05*CasingDir[index]*CasingSpeed;
 		PSP.Scale.X += (Owner.Vel.X*Cos(Owner.Angle) + Owner.Vel.Y*Sin(Owner.Angle))*.005*Cos(Owner.Pitch);
