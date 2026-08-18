@@ -44,7 +44,7 @@ Class MRIntWeaps_Smoker: Object play
 	Actor Owner;
 	Vector2 WeapOfst[6];
 	Vector3 Prev[6];
-	Double OldBob, ViewHeight, InterFloorZ, Bob, Scale[6], Alpha, Speed[6];
+	Double OldBob, ViewHeight, InterFloorZ, Bob, Scale[6], Alpha, Speed[6], MaxLength;
 	Bool PassSpawn, ResetInterpolation, ForceConnect, Bright, Bright1;
 	Weapon LastWeapon;
 	Color Col, Col1;
@@ -69,6 +69,7 @@ Class MRIntWeaps_Smoker: Object play
 		Alpha = MRIntW_FlowingSmokeAlpha;
 		Bright = Bright1 = ForceConnect = ResetInterpolation = false;
 		Col1 = Col = Color(Brightness,Brightness,Brightness);
+		MaxLength = MRIntW_FlowingSmokeLength;
 	}
 	
 	Virtual Void Update(Bool OldB = false)
@@ -83,6 +84,8 @@ Class MRIntWeaps_Smoker: Object play
 	Void SpawnSmoke(int Num=0)
 	{
 		if(Scale[Num]==0)Return;
+		
+		if(MaxLength<=0)Return;
 				
 		if(Players[ConsolePlayer].Camera != Owner)Scale[Num] *= 2;
 		
@@ -133,9 +136,6 @@ Class MRIntWeaps_Smoker: Object play
 		if(Diff.Length()<=Step*1.5 && abs(Diff.Z)<1)Connect = Step;
 		Float Life = 25;
 		if(Owner.Pos == Owner.Prev)ZSpeed*=.25;
-		
-		Double MaxLength = MRIntW_FlowingSmokeLength;
-		If(MaxLength == 0)Return;
 		
 		int Flags = 0;
 		if(Bright)Flags = SPF_FULLBRIGHT;
@@ -404,6 +404,8 @@ Extend Class MRIntWeaps_Chaingun
 			Double Alpha = Smoke;
 			Smoker.Alpha *= Alpha/MRintW_FadeStart;
 		}
+		
+		Smoker.MaxLength /= Max(1, LastShoted.Size()*.25);
 		Smoker.Tick();
 	}
 	
