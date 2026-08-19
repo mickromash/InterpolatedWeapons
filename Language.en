@@ -169,7 +169,7 @@ MRIntW_FinishPunch3 = "Yes";
 
 MRIntW_FinishPunchChance = "Finish punch chance";
 MRIntW_MissPunch = "Miss animation";
-MRIntW_SurfacePunchRecoil = "\cv⊛\c- Kick back from punching surface with berserk";
+MRIntW_SurfacePunchRecoil = "Kick back from punching surface with berserk";
 
 MRIntW_ChainsawStart = "Starting animation";
 MRIntW_ChainsawCutting = "Improved chainsaw cutting animation";

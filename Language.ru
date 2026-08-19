@@ -170,7 +170,7 @@ MRIntW_FinishPunch3 = "Да";
 
 MRIntW_FinishPunchChance = "Шанс добивающего удара";
 MRIntW_MissPunch = "Анимация промаха";
-MRIntW_SurfacePunchRecoil = "\cv⊛\c- Отдача при ударе стены с берсерком";
+MRIntW_SurfacePunchRecoil = "Отдача при ударе стены с берсерком";
 
 MRIntW_ChainsawStart = "Анимация включения";
 MRIntW_ChainsawCutting = "Улучшенная анимация распиливания";
@@ -190,7 +190,7 @@ MRIntW_Rifle = "Заменить пистолет на винтовку";
 MRIntW_ShotgunSmoke = "Дым из патронника";
 MRIntW_ShotgunPumpAngle = "Наклон во время перезарядки";
 MRIntW_ShotgunPumpRandom = "Случайный наклон";
-MRIntW_ShotgunPumpRandRotation = "Радиус случайного наклона";
+MRIntW_ShotgunPumpRandRotation = "Диапазон случайного наклона";
 MRIntW_ShotgunSparks = "Искры при выстреле";
 
 MRIntW_SSGHandless = "Держать цевьё во время перезарядки";
