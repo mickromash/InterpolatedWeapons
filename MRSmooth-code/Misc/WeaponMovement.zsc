@@ -284,6 +284,7 @@ Extend Class MRIntWeaps_Fist
 				if(!Allowed)CurSway.Y = 0;
 				
 				Break;
+			Case 2:
 			Case 1://Battlefront 2015
 				
 				Float Mult = 1;//Speed and direction of sway (+1 is moving away from camera direction, -1 is moving with camera direction)
@@ -308,7 +309,7 @@ Extend Class MRIntWeaps_Fist
 						if(MRIntWeaps_Pistol(Owner.Player.ReadyWeapon).IsRifle){
 							Mult = .9;
 							if(Owner.Player.FindPSprite(2) && !InStateSequence(Owner.Player.FindPSprite(2).CurState, weap.FindState("RifleWait")))MultRot = 0;
-							else MultRot = .1;
+							else MultRot = -.1;
 						}
 						else {
 							Mult = -.5;
@@ -339,7 +340,8 @@ Extend Class MRIntWeaps_Fist
 						Mult = .1;
 						Break;
 				}
-				
+				if(Style==2)MultRot *= 2;
+			
 				//Y
 				Target = -Sin(Owner.Pitch)*20;//Where to move
 
@@ -394,7 +396,7 @@ Extend Class MRIntWeaps_Fist
 				
 				if(MultRot!=0 && Owner.Player.FindPSprite(2)){
 					Float OldRot = Owner.Player.GetPSprite(2).Rotation;
-					Owner.Player.GetPSprite(2).Rotation += (-PSP.X*MultRot-Owner.Player.GetPSprite(2).Rotation)*.5;
+					Owner.Player.GetPSprite(2).Rotation += (-(PSP.X-BaseOffset.X)*MultRot-Owner.Player.GetPSprite(2).Rotation)*.5;
 					if(MRIntWeaps_Chainsaw(Owner.Player.ReadyWeapon)){
 						Let Saw = MRIntWeaps_Chainsaw(Owner.Player.ReadyWeapon);
 						For(int i=Saw.LayBlood;i<Saw.LayBlood+40;i++){
@@ -405,8 +407,8 @@ Extend Class MRIntWeaps_Fist
 							}
 						}
 					}
-					if(MultRot>.2 && Owner.Player.FindPSprite(MainLay))Owner.Player.GetPSprite(MainLay).Rotation += (-PSP.X*MultRot-Owner.Player.GetPSprite(MainLay).Rotation)*.5;
-					else if(MultRot==.11){
+					if((MultRot == .3 || MultRot == .6) && Owner.Player.FindPSprite(MainLay))Owner.Player.GetPSprite(MainLay).Rotation += (-(PSP.X-BaseOffset.X)*MultRot-Owner.Player.GetPSprite(MainLay).Rotation)*.5;
+					else if(MultRot==.11 || MultRot==.22){
 						if(Owner.Player.FindPSprite(1500))Owner.Player.GetPSprite(1500).Rotation = Owner.Player.GetPSprite(2).Rotation;
 					}
 				}
