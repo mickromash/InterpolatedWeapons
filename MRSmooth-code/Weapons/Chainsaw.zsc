@@ -714,6 +714,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 						A_OverlayAlpha(SmokeStart+index, CFRandom(.01, .08)*4);
 					}
 				}
+				
+				For(int i=LayBlood;i<LayBlood+40;i++){
+					if(Player.FindPSprite(i))A_BloodLayTick(i-LayBlood);
+				}
 			}
 			#### ### 1 {
 				A_OverlayOffset(Lay1, -7, 8, WOF_ADD);
@@ -747,24 +751,89 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			#### # 2;
 			#### # 1 {
 				invoker.IdlePower = CFRandomPick(-CFRandom(1, 3), CFRandom(1, 3));
-				A_OverlayOffset(Lay1, -4*abs(invoker.IdlePower), 12*abs(invoker.IdlePower), WOF_ADD);
+				A_OverlayOffset(Lay1, -4*abs(invoker.IdlePower), 12*abs(invoker.IdlePower)*Cos(Min(0, Pitch)), WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.IdlePower*2, WOF_ADD);
+				
+				if(MRIntW_ChainsawSmoke){
+					For(int i=CRandom(0, 2)*6;i<12;i++){
+						int index;
+						For(index=0;index<invoker.Smokes.Size()+1;index++){
+							if(index>=invoker.Smokes.Size()){index=-1;Break;}
+							if(!invoker.Smokes[index])Break;
+						}
+						
+						if(index<invoker.Smokes.Size() && index>-1){
+							MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
+							a.Vel = (CFRandom(5, 6)*Cos(invoker.SawCurAngle), -CFRandom(.6, 1.2) + Sin(invoker.SawCurAngle), CFRandom(1.6, 2));
+							invoker.Smokes[index] = a;
+													
+							A_Overlay(SmokeStart+index, "SmokeLay");
+							A_OverlayOffset(SmokeStart+index, 200+Player.GetPSprite(Lay1).X-20*Cos(invoker.SawCurAngle), 140+Player.GetPSprite(Lay1).Y-20*Sin(invoker.SawCurAngle));
+							Player.GetPSprite(SmokeStart+index).Scale = (1,1)*CFRandom(.3, .4);
+							A_OverlayAlpha(SmokeStart+index, CFRandom(.01, .08)*3);
+						}
+					}
+				}
+				
+				Player.GetPSprite(Lay1).Scale -= (1,1)*abs(invoker.IdlePower*Sin(Pitch));
 			}
 			#### # 1 {
-				A_OverlayOffset(Lay1, -4*abs(invoker.IdlePower)*.5, 12*abs(invoker.IdlePower)*.5, WOF_ADD);
+				A_OverlayOffset(Lay1, -4*abs(invoker.IdlePower)*.5, 12*abs(invoker.IdlePower)*.5*Cos(Min(0, Pitch)), WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.IdlePower, WOF_ADD);
+				
+				if(MRIntW_ChainsawSmoke && CRandom(0, 3)==0){
+					int index;
+					For(index=0;index<invoker.Smokes.Size()+1;index++){
+						if(index>=invoker.Smokes.Size()){index=-1;Break;}
+						if(!invoker.Smokes[index])Break;
+					}
+					
+					if(index<invoker.Smokes.Size() && index>-1){
+						MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
+						a.Vel = (CFRandom(5, 6)*Cos(invoker.SawCurAngle), -CFRandom(.6, 1.2) + Sin(invoker.SawCurAngle), CFRandom(1, 1.2));
+						invoker.Smokes[index] = a;
+												
+						A_Overlay(SmokeStart+index, "SmokeLay");
+						A_OverlayOffset(SmokeStart+index, 200+Player.GetPSprite(Lay1).X-20*Cos(invoker.SawCurAngle), 140+Player.GetPSprite(Lay1).Y-20*Sin(invoker.SawCurAngle));
+						Player.GetPSprite(SmokeStart+index).Scale = (1,1)*CFRandom(.3, .4);
+						A_OverlayAlpha(SmokeStart+index, CFRandom(.01, .08)*3);
+					}
+				}
+				
+				Player.GetPSprite(Lay1).Scale -= (1,1)*abs(invoker.IdlePower*Sin(Pitch))*.5;
 			}
 			#### ######## 1 {
 				Player.GetPSprite(Lay1).X = -26+(Player.GetPSprite(Lay1).X+26)*.7;
 				Player.GetPSprite(Lay1).Y = 26+(Player.GetPSprite(Lay1).Y-26)*.7;
 				Player.GetPSprite(Lay1).Rotation = 11+(Player.GetPSprite(Lay1).Rotation-11)*.7;
+				Player.GetPSprite(Lay1).Scale = (.99,.8)+(Player.GetPSprite(Lay1).Scale-(.99,.8))*.6;
 				
 				invoker.SawFrame++;
 				if(invoker.SawFrame>5)invoker.SawFrame = 2;
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
+				
+				if(MRIntW_ChainsawSmoke && CRandom(0, 3)==0){
+					int index;
+					For(index=0;index<invoker.Smokes.Size()+1;index++){
+						if(index>=invoker.Smokes.Size()){index=-1;Break;}
+						if(!invoker.Smokes[index])Break;
+					}
+					
+					if(index<invoker.Smokes.Size() && index>-1){
+						MRIntWeaps_SmokeContainer a = New('MRIntWeaps_SmokeContainer');
+						a.Vel = (CFRandom(5, 6)*Cos(invoker.SawCurAngle), -CFRandom(.6, 1.2) + Sin(invoker.SawCurAngle), CFRandom(1, 1.2));
+						invoker.Smokes[index] = a;
+												
+						A_Overlay(SmokeStart+index, "SmokeLay");
+						A_OverlayOffset(SmokeStart+index, 200+Player.GetPSprite(Lay1).X-20*Cos(invoker.SawCurAngle), 140+Player.GetPSprite(Lay1).Y-20*Sin(invoker.SawCurAngle));
+						Player.GetPSprite(SmokeStart+index).Scale = (1,1)*CFRandom(.3, .4);
+						A_OverlayAlpha(SmokeStart+index, CFRandom(.01, .08)*3);
+					}
+				}
 			}
 			#### # 1 {
 				A_OverlayOffset(Lay1, -CFRandom(28, 30), CFRandom(27, 29), WOF_INTERPOLATE);
+				A_OverlayScale(Lay1, .99, .8, WOF_INTERPOLATE);
 				
 				if(GetAge()%2==0)invoker.SawFrame++;
 				if(invoker.SawFrame>5)invoker.SawFrame = 2;
