@@ -64,6 +64,7 @@ Extend Class MRIntWeaps_Pistol
 			}
 		RifleWait:
 			R1FG A 1 {
+				invoker.Catch = false;
 				A_OverlayPivot(Lay1, .5, 0);
 				A_GlovesColor(1);
 				A_IdleAnimation(Lay1);
@@ -331,7 +332,7 @@ Extend Class MRIntWeaps_Pistol
 			R1FG A 1 {
 				invoker.spriteAngle = CFRandom(5, 20);
 				A_OverlayMoveTo(Lay1, CFRandom(-2, 2), CFRandom(3, 5), .7);
-				A_StartSound("*usefail", CHAN_WEAPON, CHANF_MAYBE_LOCAL, 1, pitch:CFRandom(.95, 1));
+				A_StartSound("*usefail", CHAN_WEAPON, CHANF_MAYBE_LOCAL, pitch:CFRandom(.95, 1));
 			}
 			#### ########### 1 {
 				A_OverlayMoveTo(Lay1, -invoker.SpriteAngle*.5, -invoker.SpriteAngle, .7);
@@ -361,7 +362,7 @@ Extend Class MRIntWeaps_Pistol
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
 				}
 				
-				A_StartSound("weapons/bfgx", CHAN_AUTO, CHANF_MAYBE_LOCAL, .6, pitch:CFRandom(1.5, 2));
+				A_StartSound("weapons/bfgx", CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:CFRandom(1.5, 2));
 			}
 			#### # 1 {
 				A_OverlayMoveTo(Lay1, 0, 0, .95);
