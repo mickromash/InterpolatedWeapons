@@ -371,7 +371,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		if(GetCVar("MRIntW_IdleAnims")){
 			if(MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist"))){
 				if(MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist")).CurSway.X==0)invoker.IdleDelay++;
-				else invoker.IdleDelay = Min(20, invoker.IdleDelay);
+				else invoker.IdleDelay = Min(0, invoker.IdleDelay);
 			}
 		}
 	}

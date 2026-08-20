@@ -1369,7 +1369,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			}
 			if(GetCVar("MRIntW_IdleAnims")){
 				if(invoker.CurSway.X==0)invoker.IdleDelay++;
-				else invoker.IdleDelay = Min(20, invoker.IdleDelay);
+				else invoker.IdleDelay = Min(0, invoker.IdleDelay);
 			}
 		}
 		
