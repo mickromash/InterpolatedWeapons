@@ -610,7 +610,12 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
 		}
 		
-		if(GetCVar("MRIntW_IdleAnims"))invoker.IdleDelay++;
+		if(GetCVar("MRIntW_IdleAnims")){
+			if(MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist"))){
+				if(MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist")).CurSway.X==0)invoker.IdleDelay++;
+				else invoker.IdleDelay = Min(20, invoker.IdleDelay);
+			}
+		}
 	}
 	
 	Action Void A_BersShake()

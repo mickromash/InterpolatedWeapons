@@ -1367,7 +1367,10 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
 				Player.GetPSprite(Lay).Rotation = CFRandom(-.1, .1);
 			}
-			if(GetCVar("MRIntW_IdleAnims"))invoker.IdleDelay++;
+			if(GetCVar("MRIntW_IdleAnims")){
+				if(invoker.CurSway.X==0)invoker.IdleDelay++;
+				else invoker.IdleDelay = Min(20, invoker.IdleDelay);
+			}
 		}
 		
 		else {
