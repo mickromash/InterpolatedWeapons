@@ -298,6 +298,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		SawLower:
 			SAW1 # 1 {
 				invoker.FloatSpeed = 0;
+				Player.GetPSprite(Lay1).FirstTic = true;
 				A_DoVanillaDisplay();
 				A_GlovesColor(1);
 				A_OverlayPivot(Lay1, .5, .6);
