@@ -936,6 +936,81 @@ Class MRIntWeaps_TeleportParticles: MRIntWeaps_ActorEffects
 	}
 }
 
+Class MRIntWeaps_RespawnParticles: MRIntWeaps_ActorEffects
+{
+	Actor Target;
+	Override Void PostBeginPlay()
+	{
+		if(!Master || !Players[ConsolePlayer].Camera){
+			Destroy();
+			Return;
+		}
+		
+		Master.A_SetRenderStyle(Master.Alpha, STYLE_None);
+		
+		FLineTraceData data;
+
+		Master.LineTrace(0, 1, 0, TRF_ALLACTORS, 0, 0, 0, data);
+		
+		if(Inventory(Data.HitActor))Target = Data.HitActor;
+		
+		SmkTex = SetTexture(true);
+		ParTex = SetTexture(true);
+		
+		if(Target){
+			Double Ang = Players[ConsolePlayer].Camera.Angle+180;
+			TextureId Sprit = Target.CurState.GetSpriteTexture(0);
+			Vector2 Size = Texman.GetScaledSize(Sprit);
+			Size.Y = Texman.CheckRealHeight(Sprit);
+			Size = (Size.X*Target.Scale.X, Size.Y*Target.Scale.Y);
+			Vector2 Offset = Texman.GetScaledOffset(Sprit);
+			Offset *= Target.Scale.X;
+			
+			
+			Switch(MRIntW_RespawnParticles)
+			{
+				Case 1:
+					Float Amnt = Size.X/Size.Y*CRandom(3, 4);
+					
+					For(float i=0;i<Amnt;i++){
+						int Bright = 60*(1-abs(i-Amnt*.5)/(Amnt*.5));
+
+						MRSpawnParticle(Color(Bright,Bright,80+int(Bright*.5)), SmkTex, SPF_FullBright|SPF_NoTimeFreeze, STYLE_None, 20, Size.Y*3, 
+							Target.Pos + (Actor.AngleToVector(Ang+90, -Offset.X + Size.X*(i/Amnt)) + Actor.AngleToVector(Ang, 1), Size.Y*.5), (CFRandom(-.1, .1), CFRandom(-.1, .1), 0), (0,0,.1), 1, -1, -Size.X/20);
+					}
+					Break;
+				Case 2:
+					{
+						int Bright = CRandom(0, 60);
+						For(int i=0;i<72;i++){
+							if(Bright>60)Bright -= 2;
+							else if(Bright<1)Bright += 2;
+							else Bright += CRandom(-2, 2);
+
+							MRSpawnParticle(Color(Bright,Bright,80+int(Bright*.5)), ParTex, SPF_FullBright|SPF_NoTimeFreeze, STYLE_None, 40, Size.Y, 
+								Target.Pos + (0,0,Size.Y*.5), (Actor.AngleToVector(i*5, Size.X*.05), 0), (Actor.AngleToVector(i*5, -Size.X*.05)*.02, 0), (Bright*.5+30)/60, -1, -Size.X/40);
+						}
+					}
+					Break;
+				Case 3:
+					{
+						For(int i=0;i<Size.Length();i++){
+							int Bright = CRandom(0, 150);
+							
+							Vector3 Pos = (CFRandom(Size.X*.1, Size.X*.5)*CRandomPick(-1, 1), CFRandom(Size.X*.1, Size.X*.5)*CRandomPick(-1, 1), Size.Y*CFRandom(.25, 1));
+							
+							MRSpawnParticle(Color(Bright,Bright,80+int(Bright*.7)), ParTex, SPF_FullBright|SPF_NoTimeFreeze, STYLE_None, 50, CFRandom(3, 6), 
+								Target.Pos + Pos, Pos*CFRandom(0, .001), (CFRandom(-.001, .001), CFRandom(-.001, .001), CFRandom(-.001, .001)), 1, -1, -4.5/49.);
+						}
+					}
+					Break;
+			}
+		}
+		
+		Destroy();
+	}
+}
+
 Class MRIntW_ParticleFly: VisualThinker
 {
 	Const Pit = 2.3;

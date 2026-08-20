@@ -10,8 +10,8 @@ nosave bool MRIntW_CasingsClusteringReduce = true;//Casings optimization
 nosave bool MRIntW_Smoke = true;//Firing smoke
 nosave bool MRIntW_LongTermSmoke = false;//Long term firing smoke
 nosave bool MRIntW_FlowingSmoke = false;//Smoke from barrels after firing
-nosave float MRIntW_FlowingSmokeLength = 1;
-nosave float MRIntW_FlowingSmokeAlpha = .1;
+nosave float MRIntW_FlowingSmokeLength = .6;
+nosave float MRIntW_FlowingSmokeAlpha = .2;
 nosave float MRIntW_FlowingSmokeMaxTime = 1;
 nosave float MRIntW_FlowingSmokePrecision = 1;
 
@@ -127,6 +127,8 @@ nosave bool MRIntW_TeleportParticles = false;
 nosave int MRIntW_TeleportParticlesStyle = 6;
 nosave int MRIntW_TeleportParticlesStyleMonsters = 2;
 
+nosave int MRIntW_RespawnParticles = 0;
+
 nosave bool MRIntW_AltLightnings = false;
 
 nosave bool MRIntW_ParticleFlies = false;
@@ -138,7 +140,10 @@ nosave int MRIntW_ParticleSmokeTexture = -1;
 
 user bool MRIntW_Braindead = false;
 
+nosave int MRIntW_WhichPresset = 0;
 nosave string MRIntW_PressetCust1 = "";
+nosave string MRIntW_PressetCust2 = "";
+nosave string MRIntW_PressetCust3 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;
