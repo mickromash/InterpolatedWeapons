@@ -271,8 +271,7 @@ Extend Class MRIntWeaps_Fist
 					PSP.X += (Sway.X-PSP.X)*.5;
 					PSP.OldX = PSP.X;
 					if(Allowed){
-						PSP.Y += ((CurSway.Y + Sway.Y)-PSP.Y+32)*.5;
-						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y);
+						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y + CurSway.Y + Sway.Y);
 					}
 				}
 				else {
@@ -382,8 +381,7 @@ Extend Class MRIntWeaps_Fist
 					PSP.X += (CurSway.X - PSP.X)*.5;
 					PSP.OldX = PSP.X;
 					if(Allowed){
-						PSP.Y += (CurSway.Y - PSP.Y +32)*.5;
-						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y);
+						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y + CurSway.Y);
 					}
 				}
 				else {
@@ -395,7 +393,6 @@ Extend Class MRIntWeaps_Fist
 				
 				
 				if(MultRot!=0 && Owner.Player.FindPSprite(2)){
-					Float OldRot = Owner.Player.GetPSprite(2).Rotation;
 					Owner.Player.GetPSprite(2).Rotation += (-(PSP.X-BaseOffset.X)*MultRot-Owner.Player.GetPSprite(2).Rotation)*.5;
 					if(MRIntWeaps_Chainsaw(Owner.Player.ReadyWeapon)){
 						Let Saw = MRIntWeaps_Chainsaw(Owner.Player.ReadyWeapon);
