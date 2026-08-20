@@ -236,10 +236,15 @@
      * Half Life 1-2
      * Power Slave
      * Quake 1, 2, 4
+     * Unreal Tournament 3
+     * Star Wars Battlefront 2015
+     * Soldier of Fortune
      * Doom 3
+     * Doom Retro
      * Аниме Black Lagoon
      * Видео с youtube канала C&Rsenal (а точнее переводами с канала C&Rsenal rus)
      * Импакт шутера - Kefir succerland на youtube
+     * DOOM's pistol is kinda LAME... but it doesn't have to be! - Doomkid на youtube
 * Отдельная благодарность
      * Patis
      * RastamanGames
