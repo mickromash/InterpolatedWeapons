@@ -26,7 +26,7 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		"MRIntW_ChainsawVolume 86", "MRIntW_ChainsawRandomPitch 87", "MRIntW_ParticleFlies 89", "MRIntW_ParticleFliesVolume 90", "MRIntW_SSGHandless 92", 
 		"MRIntW_LongTermSmoke 93", "MRIntW_LoRWeaps 94", "MRIntW_InciniSmoke 95", "MRIntW_ParticleTexture 96", "MRIntW_ParticleSmokeTexture 97", "MRIntW_SwitchAnims 98",
 		"MRIntW_RunKey 101", "MRIntW_BaseOffset 102", "MRIntW_BaseOffsetX 103", "MRIntW_BaseOffsetY 104", "MRIntW_WeaponSway 105", "MRIntW_WeaponSwayStyle 106",
-		"MRIntW_SavedWbobFire 107"
+		"MRIntW_SavedWbobFire 107", "MRIntW_RespawnParticles 108"
 	};
 	
 	//Presset CVar syntax: "[Index] Value,[Index] Value,"
@@ -74,12 +74,12 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 			Presset = Presset..Write;
 		}
 		
-		if(CVar.FindCVar("MRIntW_PressetCust1"))CVar.FindCVar("MRIntW_PressetCust1").SetString(Presset);
+		if(CVar.FindCVar("MRIntW_PressetCust"..MRIntW_WhichPresset))CVar.FindCVar("MRIntW_PressetCust"..MRIntW_WhichPresset).SetString(Presset);
 	}
 	
 	Void ApplySettingsPresset()
 	{
-		if(!CVar.FindCVar("MRIntW_PressetCust1") || CVar.FindCVar("MRIntW_PressetCust1").GetString()=="")Return;
+		if(!CVar.FindCVar("MRIntW_PressetCust"..MRIntW_WhichPresset) || CVar.FindCVar("MRIntW_PressetCust"..MRIntW_WhichPresset).GetString()=="")Return;
 		
 		Array<String> CVars;
 		
@@ -95,7 +95,7 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		Array<String> PresCVars;
 		For(int i=0;i<CVarsId.Size();i++)PresCVars.Push("");
 		
-		String Presset = CVar.FindCVar("MRIntW_PressetCust1").GetString();
+		String Presset = CVar.FindCVar("MRIntW_PressetCust"..MRIntW_WhichPresset).GetString();
 		
 		While(Presset.IndexOf(",")>-1){
 			String CVa = Presset.Mid(Presset.IndexOf("[")+1);
@@ -135,39 +135,6 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 					CVa.SetInt(Color(Cols[0],Cols[1],Cols[2]));
 					Break;
 			}
-		}
-	}
-	
-	Override Bool MenuEvent(int mkey, bool fromcontroller)
-	{
-		Bool Ret = Super.MenuEvent(mkey, fromcontroller);
-		
-		AddApplyButton();
-		
-		Return Ret;
-	}
-	
-	Override Void Init(Menu parent, OptionMenuDescriptor desc)
-	{
-		Super.Init(Parent, Desc);
-		
-		AddApplyButton();
-	}
-	
-	Void AddApplyButton()
-	{
-		if(!(mDesc.mItems[mDesc.mItems.Size()-1] is 'OptionMenuItemMRIntWeaps_ReadPresset') && 
-			CVar.FindCVar("MRIntW_PressetCust1") && CVar.FindCVar("MRIntW_PressetCust1").GetString()!=""){
-			Let a = New('OptionMenuItemMRIntWeaps_ReadPresset');
-			a.mLabel = "$MRIntW_ApplyPresset";
-			a.mPrompt = "$MRIntW_ApplyPressetPrompt";
-			mDesc.mItems.Push(a);
-			if(OptionMenuItemMRIntWeaps_WritePresset(mDesc.mItems[mDesc.mItems.Size()-2])){
-				OptionMenuItemMRIntWeaps_WritePresset(mDesc.mItems[mDesc.mItems.Size()-2]).mPrompt = "$MRIntW_WritePressetPrompt2";
-			}
-		}
-		else if(OptionMenuItemMRIntWeaps_WritePresset(mDesc.mItems[mDesc.mItems.Size()-1])){
-			OptionMenuItemMRIntWeaps_WritePresset(mDesc.mItems[mDesc.mItems.Size()-1]).mPrompt = "$MRIntW_WritePressetPrompt";
 		}
 	}
 }
@@ -220,5 +187,103 @@ Class OptionMenuItemMRIntWeaps_ReadPresset: OptionMenuItemMRIntWeaps_WritePresse
 		if(!MRIntWeaps_PressetsMenu(Menu.GetCurrentMenu().mParentMenu))Return;
 
 		MRIntWeaps_PressetsMenu(Menu.GetCurrentMenu().mParentMenu).ApplySettingsPresset();
+	}
+}
+
+Class MRIntWeaps_ViewPressetMenu: MRIntWeaps_PressetsMenu
+{
+	Override Void Init(Menu Parent, OptionMenuDescriptor Desc)
+	{
+		Super.Init(Parent, Desc);
+		
+		Desc.mTitle = String.Format(StringTable.Localize("$MRIntW_ViewingPresset"), MRIntW_WhichPresset);
+		
+		FillMenu(MRIntW_WhichPresset);
+	}
+	
+	Void FillMenu(int Which)
+	{
+		mDesc.mItems.Clear();
+		mDesc.mItems.Push(New('OptionMenuItemStaticText'));
+				
+		if(!CVar.FindCVar("MRIntW_PressetCust"..Which) || CVar.FindCVar("MRIntW_PressetCust"..Which).GetString()==""){
+						
+			Let Temp = New('OptionMenuItemStaticText');
+			Temp.mLabel = "$MRIntW_EmptyPresset";
+			Temp.mCentered = true;
+			Temp.mColor = Color(255,255,0);
+			
+			mDesc.mItems.Push(Temp);
+			Return;
+		}
+		
+		Array<String> CVars;
+		
+		For(int i=0;i<CVarsId.Size();i++)CVars.Push("");
+		
+		For(int i=0;i<CVarsId.Size();i++){
+			String CVa = CVarsId[i];
+			int Index = CVa.Mid(CVa.IndexOf(" ")+1).ToInt();
+			CVa = CVa.Left(CVa.IndexOf(" "));
+			CVars[Index] = CVa;
+		}
+		
+		Array<String> PresCVars;
+		For(int i=0;i<CVarsId.Size();i++)PresCVars.Push("");
+		
+		String Presset = CVar.FindCVar("MRIntW_PressetCust"..MRIntW_WhichPresset).GetString();
+		
+		While(Presset.IndexOf(",")>-1){
+			String CVa = Presset.Mid(Presset.IndexOf("[")+1);
+			CVa = CVa.Left(CVa.IndexOf(","));
+			int Index = CVa.Left(CVa.IndexOf("]")).ToInt();
+			String Value = CVa.Mid(CVa.IndexOf("] ")+2);
+			
+			PresCVars[Index] = Value;
+			
+			Presset = Presset.Mid(Presset.IndexOf(",")+1);
+		}
+		
+		int SpaceLeng = 0;
+		For(int i=0;i<PresCVars.Size();i++){
+			Let CVa = CVar.FindCVar(CVars[i]);
+			if(PresCVars[i]=="" || !CVa)Continue;
+			
+			String Compare = StringTable.Localize("$"..CVars[i]).."  ";
+			if(CVa.GetRealType()==CVar.CVar_Bool)Compare = Compare..(PresCVars[i].ToInt()?StringTable.Localize("$TXT_YES"):StringTable.Localize("$TXT_NO"));
+			else if(StringTable.Localize("$"..CVars[i]..PresCVars[i]) != CVars[i]..PresCVars[i])Compare = Compare..StringTable.Localize("$"..CVars[i]..PresCVars[i]);
+			else Compare = Compare..PresCVars[i];
+			While(Compare.IndexOf("\c")>-1){
+				Compare.Remove(Compare.IndexOf("\c"), 2);
+			}
+			if(SpaceLeng<Compare.CodePointCount())SpaceLeng = Compare.CodePointCount();
+		}
+		
+		For(int i=0;i<PresCVars.Size();i++){
+			Let CVa = CVar.FindCVar(CVars[i]);
+			if(PresCVars[i]=="" || !CVa)Continue;
+			
+			Let Temp = New('OptionMenuItemCommand');
+			Temp.mLabel = "\cg"..StringTable.Localize("$"..CVars[i])..": \c-";
+			Temp.mLabel.Replace("\c-", "\cg");
+			
+			String Value;
+			if(CVa.GetRealType()==CVar.CVar_Bool)Value = (PresCVars[i].ToInt()?StringTable.Localize("$TXT_YES"):StringTable.Localize("$TXT_NO"));
+			else if(StringTable.Localize("$"..CVars[i]..PresCVars[i]) != CVars[i]..PresCVars[i])Value = StringTable.Localize("$"..CVars[i]..PresCVars[i]);
+			else Value = PresCVars[i];
+			
+			String Len = Temp.mLabel..Value;
+			While(Len.IndexOf("\c")>-1){
+				Len.Remove(Len.IndexOf("\c"), 2);
+			}
+			For(int i1=Len.CodePointCount();i1<SpaceLeng;i1++){
+				Temp.mLabel = Temp.mLabel.." ";
+			}
+			Temp.mLabel = Temp.mLabel.."\c-"..Value;
+			
+			Temp.mCentered = true;
+			
+			mDesc.mItems.Push(Temp);
+		}
 	}
 }

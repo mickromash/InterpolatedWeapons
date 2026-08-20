@@ -366,6 +366,11 @@ MRIntW_TeleportParticlesStyle5 = "Странное облако";
 MRIntW_TeleportParticlesStyle6 = "Волна";
 MRIntW_TeleportParticlesStyleMonsters = "Стиль телепортации монстра";
 
+MRIntW_RespawnParticles = "Эффект возрождения предметов";
+MRIntW_RespawnParticles1 = "Облако";
+MRIntW_RespawnParticles2 = "Волна";
+MRIntW_RespawnParticles3 = "Точки";
+
 MRIntW_ApplyParticles = "Применить настройки частиц";
 
 
@@ -388,12 +393,19 @@ MRIntW_PressetMaximum = "Максимальный прессет";
 MRIntW_PressetMaximumPrompt = "Прессет включает максимальное количество фишек мода.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
 MRIntW_PressetNoGameplay = "Классический геймплей";
 MRIntW_PressetNoGameplayPrompt = "Прессет выключает все геймплейные опции мода, без изменения остальных.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+
+MRIntW_WhichPresset = "Свой прессет";
+MRIntW_WhichPresset1 = "#1";
+MRIntW_WhichPresset2 = "#2";
+MRIntW_WhichPresset3 = "#3";
 MRIntW_WritePresset = "Сохранить текущие настройки";
 MRIntW_WritePressetPrompt = "Сохранить текущие настройки в прессет?";
 MRIntW_WritePressetPrompt2 = "Сохранить текущие настройки в прессет?\n\nНастройки сохранённые до этого будут перезаписаны.";
 MRIntW_ApplyPresset = "Загрузить сохранённые настройки";
 MRIntW_ApplyPressetPrompt = "Загрузить прежде сохранённые настройки?\nЭтот прессет не будет удалён.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
-
+MRIntW_ViewPresset = "Просмотреть прессет";
+MRIntW_ViewingPresset = "Свой прессет #%i";
+MRIntW_EmptyPresset = "Этот прессет пуст";
 
 TAG_RIFLE = "Винтовка";
 

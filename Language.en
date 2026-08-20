@@ -365,6 +365,11 @@ MRIntW_TeleportParticlesStyle5 = "Weird cloud";
 MRIntW_TeleportParticlesStyle6 = "Wave";
 MRIntW_TeleportParticlesStyleMonsters = "Monster teleport style";
 
+MRIntW_RespawnParticles = "Items respawn particles";
+MRIntW_RespawnParticles1 = "Cloud";
+MRIntW_RespawnParticles2 = "Wave";
+MRIntW_RespawnParticles3 = "Dots";
+
 MRIntW_ApplyParticles = "Apply particles settings";
 
 
@@ -387,11 +392,19 @@ MRIntW_PressetMaximum = "Advanced presset";
 MRIntW_PressetMaximumPrompt = "Presset that turns on as much mods features as possible.\n\nAll changes will be applied as soon as you press Yes.";
 MRIntW_PressetNoGameplay = "Vanilla gameplay";
 MRIntW_PressetNoGameplayPrompt = "Presset that turns off all gameplay options. Any visual-only settings will not be changed.\n\nAll changes will be applied as soon as you press Yes.";
+
+MRIntW_WhichPresset = "Custom presset";
+MRIntW_WhichPresset1 = "#1";
+MRIntW_WhichPresset2 = "#2";
+MRIntW_WhichPresset3 = "#3";
 MRIntW_WritePresset = "Save current settings";
-MRIntW_WritePressetPrompt = "Save current settings into a presset?";
-MRIntW_WritePressetPrompt2 = "Save current settings into a presset?\n\nThe previous saved presset will be rewritten.";
+MRIntW_WritePressetPrompt = "Save current settings into this presset?";
+MRIntW_WritePressetPrompt2 = "Save current settings into this presset?\n\nPreviously saved settings will be rewritten.";
 MRIntW_ApplyPresset = "Load saved settings";
 MRIntW_ApplyPressetPrompt = "Load previously saved settings?\nThis presset won't be deleted.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_ViewPresset = "View presset";
+MRIntW_ViewingPresset = "Custom presset #%i";
+MRIntW_EmptyPresset = "This presset is empty";
 
 
 TAG_RIFLE = "Rifle";

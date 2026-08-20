@@ -190,6 +190,8 @@ OptionMenu "MRIntWeaps_ParticlesMenu"
 	Option "$MRIntW_TeleportParticlesStyle", "MRIntW_TeleportParticlesStyle", "MRIntW_TeleportParticlesStyleValues", "MRIntW_TeleportParticles"
 	Option "$MRIntW_TeleportParticlesStyleMonsters", "MRIntW_TeleportParticlesStyleMonsters", "MRIntW_TeleportParticlesStyleValues", "MRIntW_TeleportParticles"
 	StaticText ""
+	Option "$MRIntW_RespawnParticles", "MRIntW_RespawnParticles", "MRIntW_RespawnParticlesValues"
+	StaticText ""
 	StaticText ""
 	Command "$MRIntW_ApplyParticles", "MRIntW_ApplyParticles"
 }
@@ -385,7 +387,15 @@ OptionMenu "MRIntWeaps_PressetsMenu"
 	SafeCommand "$MRIntW_PressetNoGameplay", "MRIntW_PressetNoGameplay", "$MRIntW_PressetNoGameplayPrompt"
 	StaticText ""
 	StaticText ""
+	Option "$MRIntW_WhichPresset", "MRIntW_WhichPresset", "MRIntW_WhichPressetValues"
+	MRIntWeaps_ReadPresset "$MRIntW_ApplyPresset", "$MRIntW_ApplyPressetPrompt"
 	MRIntWeaps_WritePresset "$MRIntW_WritePresset", "$MRIntW_WritePressetPrompt"
+	SubMenu "$MRIntW_ViewPresset", "MRIntWeaps_ViewPressetMenu"
+}
+
+OptionMenu "MRIntWeaps_ViewPressetMenu"
+{
+	Class MRIntWeaps_ViewPressetMenu
 }
 
 OptionMenu "MRIntWeaps_EasterMenu"
@@ -563,4 +573,19 @@ OptionValue "MRIntW_TeleportParticlesStyleValues"
 	4, "$MRIntW_TeleportParticlesStyle4"
 	5, "$MRIntW_TeleportParticlesStyle5"
 	6, "$MRIntW_TeleportParticlesStyle6"
+}
+
+OptionValue "MRIntW_RespawnParticlesValues"
+{
+	0, "$TXT_NO"
+	1, "$MRIntW_RespawnParticles1"
+	2, "$MRIntW_RespawnParticles2"
+	3, "$MRIntW_RespawnParticles3"
+}
+
+OptionValue "MRIntW_WhichPressetValues"
+{
+	1, "$MRIntW_WhichPresset1"
+	2, "$MRIntW_WhichPresset2"
+	3, "$MRIntW_WhichPresset3"
 }
