@@ -74,7 +74,7 @@ Extend Class MRIntWeaps_Handler
 {
 	Array<Object> PartThinkers;
 	
-	Void SpawnMonsterParticleEffects(Actor Thing)
+	Bool SpawnMonsterParticleEffects(Actor Thing)
 	{
 		if((Thing.bIsMonster && (Thing is 'LostSoul' || Thing is 'PainElemental' || Thing is 'CyberDemon' || Thing is 'SpiderMasterMind'))||
 			Thing is 'DoomImpBall' || Thing is 'CacodemonBall' || Thing is 'RevenantTracer' || Thing is 'FatShot' ||
@@ -86,7 +86,7 @@ Extend Class MRIntWeaps_Handler
 				a.Master = Thing;
 				a.Type = 0;
 				a.Monster = true;
-				Return;
+				Return true;
 			}
 			
 			Name ActName = Thing.GetClassName();
@@ -116,7 +116,7 @@ Extend Class MRIntWeaps_Handler
 						Setting&MRIWMP_ImpBallImpactSmoke||
 						Setting&MRIWMP_ImpBallImpactSplash||
 						Setting&MRIWMP_ImpBallImpactFire)
-					)Return;
+					)Return true;
 					Type = 0;
 					Break;
 				Case 'CacodemonBall':
@@ -126,7 +126,7 @@ Extend Class MRIntWeaps_Handler
 						Setting&MRIWMP_CacoBallImpactSmoke||
 						Setting&MRIWMP_CacoBallImpactSplash||
 						Setting&MRIWMP_CacoBallImpactLightnings)
-					)Return;
+					)Return true;
 					Type = 1;
 					Break;
 				Case 'RevenantTracer':
@@ -134,7 +134,7 @@ Extend Class MRIntWeaps_Handler
 						Setting&MRIWMP_RevenantTracerFire||
 						Setting&MRIWMP_RevenantImpactTracerSmoke||
 						Setting&MRIWMP_RevenantImpactTracerSplash)
-					)Return;
+					)Return true;
 					Type = 2;
 					Break;
 				Case 'FatShot'://Mancubus
@@ -144,7 +144,7 @@ Extend Class MRIntWeaps_Handler
 						Setting&MRIWMP_FatShotImpactSmoke||
 						Setting&MRIWMP_FatShotImpactSplash||
 						Setting&MRIWMP_FatShotImpactFire)
-					)Return;
+					)Return true;
 					Type = 3;
 					Break;
 				Case 'ArachnotronPlasma':
@@ -153,7 +153,7 @@ Extend Class MRIntWeaps_Handler
 						Setting&MRIWMP_ArachnoBallImpactSmoke||
 						Setting&MRIWMP_ArachnoBallImpactSplash||
 						Setting&MRIWMP_ArachnoBallImpactLightnings)
-					)Return;
+					)Return true;
 					Type = 4;
 					Break;
 				Case 'BaronBall':
@@ -162,7 +162,7 @@ Extend Class MRIntWeaps_Handler
 						Setting2&MRIWMP_BaronBallImpactSmoke||
 						Setting2&MRIWMP_BaronBallImpactSplash||
 						Setting2&MRIWMP_BaronBallImpactFire)
-					)Return;
+					)Return true;
 					Type = 5;
 					Break;
 				Case 'ArchvileFire':
@@ -170,34 +170,34 @@ Extend Class MRIntWeaps_Handler
 						Setting2&MRIWMP_ArchFlameSparks||
 						Setting2&MRIWMP_ArchFlameSplash||
 						Setting2&MRIWMP_ArchFlameHide)
-					)Return;
+					)Return true;
 					Type = 6;
 					Break;
 				Case 'LostSoul':
 					if(!(Setting2&MRIWMP_SoulSmoke||
 						Setting2&MRIWMP_SoulFire||
 						Setting2&MRIWMP_SoulSplash)
-					)Return;
+					)Return true;
 					Type = 7;
 					Break;
 				Case 'PainElemental':
-					if(!(Setting2&MRIWMP_PainSplash))Return;
+					if(!(Setting2&MRIWMP_PainSplash))Return true;
 					Type = 8;
 					Break;
 				Case 'CyberDemon':
 					if(!(Setting2&MRIWMP_CyberSplash||
 						Setting2&MRIWMP_CyberBlood)
-					)Return;
+					)Return true;
 					Type = 9;
 					Break;
 				Case 'SpiderMastermind':
 					if(!(Setting2&MRIWMP_SpiderSplash||
 						Setting2&MRIWMP_SpiderBlood)
-					)Return;
+					)Return true;
 					Type = 10;
 					Break;
 					
-				Default: Return;
+				Default: Return false;
 			}
 			
 			Let a = New('MRIntWeaps_MonsterProjectileParticles');
@@ -205,7 +205,7 @@ Extend Class MRIntWeaps_Handler
 			a.Type = Type;
 			if(a.Type>6)PartThinkers.Push(a);
 			
-			Return;
+			Return true;
 		}
 		
 		if(Thing is 'RevenantTracerSmoke'){
@@ -214,7 +214,11 @@ Extend Class MRIntWeaps_Handler
 				Thing.A_SpawnParticle(Color(255,CRandom(140, 255),40), SPF_FULLBRIGHT, 4, CRandom(13, 16), zoff:3, StartAlphaf:.7, SizeStep:30);
 				Thing.A_SetRenderStyle(Thing.Alpha, STYLE_None);
 			}
+			
+			Return true;
 		}
+		
+		Return false;
 	}
 }
 
