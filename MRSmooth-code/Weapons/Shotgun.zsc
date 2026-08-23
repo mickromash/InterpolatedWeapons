@@ -34,6 +34,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		if((Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD) && !Catch){
 			Catch = true;
 			Owner.Player.SetPsprite(Lay1, FindState("Pump"));
+			if(Owner.Player.FindPSprite(LHand))Owner.Player.GetPSprite(LHand).Destroy();
 		}
 	}
 	
