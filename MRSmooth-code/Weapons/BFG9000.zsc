@@ -529,7 +529,6 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 		
 		Select:
 			TNT1 A 0 {
-				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
 				if(invoker.Dropped)invoker.Dropped.Destroy();
 				if(MRIntW_SwitchAnims || invoker.Reload)A_Overlay(Lay1, "GunRaise");
 				else A_Overlay(Lay1, "GunRaiseVanilla");

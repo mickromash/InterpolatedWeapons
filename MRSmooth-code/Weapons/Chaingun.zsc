@@ -903,7 +903,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		
 		Select:
 			TNT1 A 0 {
-				EventHandler.SendInterfaceEvent(PlayerNumber(), "MRIntW_BobZ", 0, 5);
 				if(invoker.Dropped)invoker.Dropped.Destroy();
 				A_Overlay(Lay1, "GunRaise");
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
