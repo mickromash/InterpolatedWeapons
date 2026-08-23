@@ -562,6 +562,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			TNT1 A 20 {
 				A_StartSound("MRIntW/BFGFireStart", CHAN_WEAPON, pitch:i_timescale);
 				Player.SetPsprite(Lay1, invoker.FindState("GunFire"));
+				if(Player.FindPSprite(LayHand))Player.SetPsprite(LayHand, invoker.FindState("HandBackoff"));
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("BFGGA0");
 			}

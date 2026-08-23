@@ -29,7 +29,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		
 		if(!Owner.Player.FindPSprite(PSP_WEAPON) || !InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
-		if(Owner.Player.Cmd.Buttons&BT_RELOAD && !Owner.Player.FindPSprite(LayHand))Owner.Player.SetPsprite(Lay1, FIndState("GunShowingHand"));
+		if(Owner.Player.Cmd.Buttons&BT_RELOAD && !Owner.Player.FindPSprite(LayHand))Owner.Player.SetPsprite(Lay1, FindState("GunShowingHand"));
 		
 		Owner.Player.GetPSprite(Lay1).Frame = Muzzle;
 				
