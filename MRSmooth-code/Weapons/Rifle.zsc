@@ -71,7 +71,7 @@ Extend Class MRIntWeaps_Pistol
 			}
 			#### # 0 A_JumpIf(invoker.IsRifle!=GetCVar("MRIntW_Rifle"), "RifleLower");
 			#### # 0 {if(MRIntW_BobRangeZ==0)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
-			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
+			#### # 0 A_JumpIf(invoker.IdleDelay>35 && GetCVar("MRIntW_IdleAnims")>1 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		RifleLower:
 			R1FG A 1 {

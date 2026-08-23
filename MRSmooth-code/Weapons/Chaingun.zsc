@@ -76,14 +76,19 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self)Return;
 		
 		if(Owner.Health>0){
-			if(Owner.Player.WeaponState&WF_WEAPONREADY && (Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD)){//Alt fire
-				if(abs(Speed)<10)Speed--;
-				
-				For(int i=Muzzle0;i<=Muzzle5;i++){
-					if(Owner.Player.FindPSprite(i))Owner.Player.GetPSprite(i).bInterpolate = true;
+			if(Owner.Player.WeaponState&WF_WEAPONREADY){
+				if(Owner.Player.Cmd.Buttons&BT_ALTATTACK){//Rotating barrels (Alt fire)
+					if(abs(Speed)<10)Speed--;
+					
+					For(int i=Muzzle0;i<=Muzzle5;i++){
+						if(Owner.Player.FindPSprite(i))Owner.Player.GetPSprite(i).bInterpolate = true;
+					}
+					
+					DontStop = true;
 				}
-				
-				DontStop = true;
+				if(Owner.Player.Cmd.Buttons&BT_RELOAD && !Owner.Player.FindPSprite(AnimLay) && !Owner.Player.FindPSprite(Hand)){//Showing hand (Reload)
+					Owner.Player.SetPsprite(AnimLay, FindState("GunShowingHand"));
+				}
 			}
 			
 			if(abs(Speed)>0){
@@ -462,7 +467,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				else if(invoker.Speed<=ToDiff*StopPower)invoker.Speed = Max(Diff*StopPower, ToDiff*StopPower);
 				invoker.DontStop = true;
 			}
-			#### # 0 {if(invoker.IdleDelay>35 && abs(invoker.BobState)<2)A_Overlay(Hand, "HandIdle1");}
+			#### # 0 {if(invoker.IdleDelay>35 && GetCVar("MRIntW_IdleAnims")>1 && abs(invoker.BobState)<2)A_Overlay(Hand, "HandIdle1");}
 			Loop;
 		GunLower:
 			CH1G # 1 {
@@ -818,6 +823,82 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			TNT1 A 0 A_Overlay(Hand, "HandIdleEnd");
 			Stop;
 			
+		
+		GunShowingHand:
+			TNT1 A 0 A_Overlay(Hand, "HandShowing");
+			TNT1 A 1 {
+				Vector2 Move = A_OverlayMoveTo(Lay1, 80, 20, .9);
+				
+				For(int i=Muzzle0;i<=Muzzle5;i++){
+					Player.GetPSprite(i).X += Move.X;
+					Player.GetPSprite(i).Y += Move.Y;
+				}
+				For(int i=Lay1+1;i<=Ring;i++){
+					Player.GetPSprite(i).X += Move.X;
+					Player.GetPSprite(i).Y += Move.Y;
+				}
+			}
+			TNT1 A 0 A_JumpIf(abs(Player.GetPSprite(Lay1).X - 80)<1 && abs(Player.GetPSprite(Lay1).Y - 20)<1, 1);
+			Goto GunShowingHand+1;
+			TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 {
+				Vector2 Move = A_OverlayMoveTo(Lay1, 80+CFRandom(-1, 2), 20+CFRandom(0, 3), .95);
+				
+				For(int i=Muzzle0;i<=Muzzle5;i++){
+					Player.GetPSprite(i).X += Move.X;
+					Player.GetPSprite(i).Y += Move.Y;
+				}
+				For(int i=Lay1+1;i<=Ring;i++){
+					Player.GetPSprite(i).X += Move.X;
+					Player.GetPSprite(i).Y += Move.Y;
+				}
+			}
+		GunUnshowingHand:
+			TNT1 A 1 {
+				Vector2 Move = A_OverlayMoveTo(Lay1, 0, 0, .95);
+				
+				For(int i=Muzzle0;i<=Muzzle5;i++){
+					Player.GetPSprite(i).X += Move.X;
+					Player.GetPSprite(i).Y += Move.Y;
+				}
+				For(int i=Lay1+1;i<=Ring;i++){
+					Player.GetPSprite(i).X += Move.X;
+					Player.GetPSprite(i).Y += Move.Y;
+				}
+			}
+			TNT1 A 0 A_JumpIf(abs(Player.GetPSprite(Lay1).X)<1 && abs(Player.GetPSprite(Lay1).Y)<1, 1);
+			Loop;
+			TNT1 A 0;
+			Stop;
+			
+		HandShowing:
+			MRD1 G 1 {
+				A_DoVanillaDisplay();
+				A_GlovesColor();
+				A_OverlayFlags(Hand, PSPF_MIRROR, true);
+				A_OverlayPivot(Hand, 1, 1);
+				Player.GetPSprite(Hand).X = 180;
+				Player.GetPSprite(Hand).Y = 80;
+				A_OverlayRotate(Hand, -30);
+				A_OverlayScale(Hand, .9, .9);
+			}
+			#### ####################################################### 1 {
+				Player.GetPSprite(Hand).Rotation *= .95;
+				A_OverlayMoveTo(Hand, 240, -10, .95);
+				A_OverlayFlags(Hand, PSPF_INTERPOLATE, !Player.GetPSprite(Hand).FirstTic);
+			}
+		HandBackoff:
+			#### ################################ 1 {
+				if(Player.Cmd.Buttons&BT_ATTACK){
+					Player.GetPSprite(Hand).Rotation = 30 + (Player.GetPSprite(Hand).Rotation-30)*.8;
+					A_OverlayMoveTo(Hand, 240, 120, .8);
+				}
+				else {
+					Player.GetPSprite(Hand).Rotation = -60 + (Player.GetPSprite(Hand).Rotation+60)*.98;
+					A_OverlayMoveTo(Hand, 180, 120, .98);
+				}
+			}
+			Stop;
+			
 		//Default states
 		
 		Select:
@@ -852,7 +933,10 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			
 		Fire:
 			TNT1 A 0 {
-				if(Player.FindPSprite(Hand))A_Overlay(Hand, "HandIdleBreak");
+				if(Player.FindPSprite(Hand)){
+					if(Player.GetPSprite(Hand).Frame>0)Player.SetPsprite(Hand, invoker.FindState("HandBackoff"));
+					else A_Overlay(Hand, "HandIdleBreak");
+				}
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("CHGGA0");
 			}
@@ -910,36 +994,52 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	
 	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
 	{
-		Bool Bers = (GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake"));
-		Float Mult = (Bers?2:1);
-		if(invoker.BobState>=0){
-			For(int i=Muzzle0;i<=Ring;i++){
-				A_OverlayOffset(i, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
+		int CVa = GetCVar("MRIntW_IdleAnims");
+		
+		if(CVa%2==1){
+			Bool Bers = (GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake"));
+			Float Mult = (Bers?2:1);
+			if(invoker.BobState>=0){
+				For(int i=Muzzle0;i<=Ring;i++){
+					A_OverlayOffset(i, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
+				}
+				if(invoker.BobState>90||Player.GetPSprite(Lay).Y>1.35){invoker.BobState = -invoker.BobState;}
+				else invoker.BobState+=Mult;
 			}
-			if(invoker.BobState>90||Player.GetPSprite(Lay).Y>1.35){invoker.BobState = -invoker.BobState;}
-			else invoker.BobState+=Mult;
-		}
-		else {
-			For(int i=Muzzle0;i<=Ring;i++){
-				A_OverlayOffset(i, -CFRandom(-.005, .015)*Mult, -CFRandom(.01, .02)*Mult, WOF_ADD);
+			else {
+				For(int i=Muzzle0;i<=Ring;i++){
+					A_OverlayOffset(i, -CFRandom(-.005, .015)*Mult, -CFRandom(.01, .02)*Mult, WOF_ADD);
+				}
+				
+				if(Player.GetPSprite(Lay).Y<0){A_OverlayOffset(Lay, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
+				else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay).Y>0))invoker.BobState+=Mult;
 			}
-			
-			if(Player.GetPSprite(Lay).Y<0){A_OverlayOffset(Lay, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
-			else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay).Y>0))invoker.BobState+=Mult;
-		}
-		if(Bers && GetAge()%2==0){//Shaking hand if got berserk
-			A_OverlayOffset(Lay, CFRandom(-.25, .25), 0, WOF_INTERPOLATE|WOF_KEEPY);
-			Player.GetPSprite(Lay).Y += CFRandom(-.25, .25);
-			if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
-			if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
+			if(Bers && GetAge()%2==0){//Shaking hand if got berserk
+				A_OverlayOffset(Lay, CFRandom(-.25, .25), 0, WOF_INTERPOLATE|WOF_KEEPY);
+				Player.GetPSprite(Lay).Y += CFRandom(-.25, .25);
+				if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
+				if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
+			}
 		}
 		
-		if(GetCVar("MRIntW_IdleAnims"))invoker.IdleDelay++;
+		if(CVa>1)invoker.IdleDelay++;
 	}
 	
 	Action Void A_BersShake()
 	{
 		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
+	}
+	
+	Action Vector2 A_OverlayMoveTo(int Lay, Double XTo = 0, Double YTo = 0, Double SpeedX = .8, Double SpeedY = -1)
+	{
+		if(SpeedY == -1)SpeedY = SpeedX;
+		
+		Vector2 Old = (Player.GetPSprite(Lay).X, Player.GetPSprite(Lay).Y);
+		
+		Player.GetPSprite(Lay).X = XTo+(Player.GetPSprite(Lay).X-XTo)*SpeedX;
+		Player.GetPSprite(Lay).Y = YTo+(Player.GetPSprite(Lay).Y-YTo)*SpeedY;
+		
+		Return (Player.GetPSprite(Lay).X, Player.GetPSprite(Lay).Y) - Old;
 	}
 	
 	Action Void A_DoVanillaDisplay()

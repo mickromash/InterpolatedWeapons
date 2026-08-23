@@ -9,6 +9,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	Const Lay2 = PSP_FLASH+1;//Gun flash
 	Const Lay3 = -2;//Gun flash (explosion, behind the barrel)
 	Const LightLay = PSP_FLASH+2;
+	Const LayHand = -3;
 	
 	int BobState, IdleDelay, Muzzle, Explosions;
 	Double RecoilDir;
@@ -28,9 +29,11 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		
 		if(!Owner.Player.FindPSprite(PSP_WEAPON) || !InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
+		if(Owner.Player.Cmd.Buttons&BT_RELOAD && !Owner.Player.FindPSprite(LayHand))Owner.Player.SetPsprite(Lay1, FIndState("GunShowingHand"));
+		
 		Owner.Player.GetPSprite(Lay1).Frame = Muzzle;
 				
-		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD)Muzzle++;
+		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK)Muzzle++;
 		else if(Muzzle>0)Muzzle--;
 		
 		if(Muzzle>2)Muzzle = 2;
@@ -114,7 +117,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				A_IdleAnimation(Lay1);
 			}
 			#### # 0 {if(MRIntW_BobRangeZ==0)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
-			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
+			#### # 0 A_JumpIf(invoker.IdleDelay>35 && GetCVar("MRIntW_IdleAnims")>1 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		GunLower:
 			#### # 0 A_JumpIf(invoker.SwitchAnim>1, "GunLowerReload");
@@ -234,7 +237,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			Goto GunWait;
 			
 		GunFire:
-			MI1G A 0 {A_OverlayOffset(Lay1, 0, 0);A_OverlayPivot(Lay1, .5, .5);}
+			MI1G A 0 A_OverlayPivot(Lay1, .5, .5);
 			#### # 0 A_JumpIf(GetCVar("MRIntW_InstantFire"), 7);
 			MI1G AAABBCC 1 {A_OverlayOffset(Lay1, 0, .5, WOF_ADD);A_OverlayScale(Lay1, .01, .01, WOF_ADD);}
 			#### # 0 A_Overlay(Lay2, "GunFlash");
@@ -335,6 +338,56 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			#### # 0 {invoker.Explosions--;}
 			Stop;
 		
+		
+		GunShowingHand:
+			MI1G A 0 A_Overlay(LayHand, "HandShowing");
+			MI1G # 1 {
+				A_OverlayMoveTo(Lay1, 50, 20, .9);
+				Player.GetPSprite(Lay1).Rotation = 10 + (Player.GetPSprite(Lay1).Rotation-10)*.9;
+			}
+			#### # 0 A_JumpIf(abs(Player.GetPSprite(Lay1).X - 50)<1 && abs(Player.GetPSprite(Lay1).Y - 20)<1, 1);
+			Goto GunShowingHand+1;
+			#### ################################ 1 {
+				A_OverlayMoveTo(Lay1, 50+CFRandom(-1, 2), 20+CFRandom(0, 3), .95);
+			}
+		GunUnshowingHand:
+			#### # 1 {
+				A_OverlayMoveTo(Lay1, 0, 0, .95);
+				Player.GetPSprite(Lay1).Rotation *= .95;
+			}
+			#### # 0 A_JumpIf(abs(Player.GetPSprite(Lay1).X)<1 && abs(Player.GetPSprite(Lay1).Y)<1, "GunWait");
+			Loop;
+			
+		HandShowing:
+			MRD1 G 1 {
+				A_DoVanillaDisplay();
+				A_GlovesColor();
+				A_OverlayFlags(LayHand, PSPF_MIRROR, true);
+				A_OverlayPivot(LayHand, 1, 1);
+				Player.GetPSprite(LayHand).X = 180;
+				Player.GetPSprite(LayHand).Y = 80;
+				A_OverlayRotate(LayHand, -30);
+				A_OverlayScale(LayHand, .9, .9);
+			}
+			#### ####################################################### 1 {
+				Player.GetPSprite(LayHand).Rotation *= .95;
+				A_OverlayMoveTo(LayHand, 240, -10, .95);
+				A_OverlayFlags(LayHand, PSPF_INTERPOLATE, !Player.GetPSprite(LayHand).FirstTic);
+			}
+		HandBackoff:
+			#### ################################ 1 {
+				if(InStateSequence(Player.GetPSprite(Lay1).CurState, invoker.FindState("GunFire"))){
+					Player.GetPSprite(LayHand).Rotation = 30 + (Player.GetPSprite(LayHand).Rotation-30)*.8;
+					A_OverlayMoveTo(LayHand, 240, 120, .8);
+				}
+				else {
+					Player.GetPSprite(LayHand).Rotation = -60 + (Player.GetPSprite(LayHand).Rotation+60)*.98;
+					A_OverlayMoveTo(LayHand, 180, 120, .98);
+				}
+			}
+			Stop;
+			
+		
 		//Default states
 		
 		Select:
@@ -382,7 +435,8 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		Fire:
 			TNT1 B 8 {
 				if(!MRIntW_Lighting)A_GunFlash("Flash");
-				A_Overlay(Lay1, "GunFire");
+				Player.SetPsprite(Lay1, invoker.FindState("GunFire"));
+				if(Player.FindPSprite(LayHand))Player.SetPsprite(LayHand, invoker.FindState("HandBackoff"));
 				if(GetCVar("MRIntW_InstantFire"))A_SetTics(2);
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("MISGA0");
@@ -418,26 +472,30 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	
 	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
 	{
-		Bool Bers = (GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake"));
-		Float Mult = (Bers?2:1);
-		if(invoker.BobState>=0){
-			A_OverlayOffset(Lay, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
-			if(invoker.BobState>90||Player.GetPSprite(Lay).Y>1.35){invoker.BobState = -invoker.BobState;}
-			else invoker.BobState+=Mult;
-		}
-		else {
-			A_OverlayOffset(Lay, -CFRandom(-.005, .015)*Mult, -CFRandom(.01, .02)*Mult, WOF_ADD);
-			if(Player.GetPSprite(Lay).Y<0){A_OverlayOffset(Lay, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
-			else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay).Y>0))invoker.BobState+=Mult;
-		}
-		if(Bers && GetAge()%2==0){//Shaking hand if got berserk
-			A_OverlayOffset(Lay, CFRandom(-.25, .25), 0, WOF_INTERPOLATE|WOF_KEEPY);
-			Player.GetPSprite(Lay).Y += CFRandom(-.25, .25);
-			if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
-			if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
+		int CVa = GetCVar("MRIntW_IdleAnims");
+		
+		if(CVa%2==1){
+			Bool Bers = (GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake"));
+			Float Mult = (Bers?2:1);
+			if(invoker.BobState>=0){
+				A_OverlayOffset(Lay, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
+				if(invoker.BobState>90||Player.GetPSprite(Lay).Y>1.35){invoker.BobState = -invoker.BobState;}
+				else invoker.BobState+=Mult;
+			}
+			else {
+				A_OverlayOffset(Lay, -CFRandom(-.005, .015)*Mult, -CFRandom(.01, .02)*Mult, WOF_ADD);
+				if(Player.GetPSprite(Lay).Y<0){A_OverlayOffset(Lay, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
+				else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay).Y>0))invoker.BobState+=Mult;
+			}
+			if(Bers && GetAge()%2==0){//Shaking hand if got berserk
+				A_OverlayOffset(Lay, CFRandom(-.25, .25), 0, WOF_INTERPOLATE|WOF_KEEPY);
+				Player.GetPSprite(Lay).Y += CFRandom(-.25, .25);
+				if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
+				if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
+			}
 		}
 		
-		if(GetCVar("MRIntW_IdleAnims")){
+		if(CVa>1){
 			if(MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist"))){
 				if(MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist")).CurSway.X==0)invoker.IdleDelay++;
 				else invoker.IdleDelay = Min(0, invoker.IdleDelay);

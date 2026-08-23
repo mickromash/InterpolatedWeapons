@@ -1066,7 +1066,7 @@ Extend Class MRIntWeaps_RocketLauncher
 Extend Class MRIntWeaps_PlasmaRifle
 {
 	MRIntWeaps_SmokeContainer Particles[30];
-	Const ParLay = -5;
+	Const ParLay = -6;
 	
 	Action Void A_FiringParticles()
 	{

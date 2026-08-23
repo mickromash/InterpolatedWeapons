@@ -6,8 +6,9 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	
 	Const Lay1 = 2;//Main frame (body)
 	Const Lay2 = -2;//Muzzle
-	Const Lay3 = -3;//Muzzle flash
-	Const Lay4 = -4;//Muzzle flash flare
+	Const Lay3 = -4;//Muzzle flash
+	Const Lay4 = -5;//Muzzle flash flare
+	Const LayHand = -3;
 	
 	int BobState, Idle, animation, InterpolateMuzzle;
 	Double Muzzle,//Muzzle position
@@ -23,10 +24,12 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		
 		if(!Owner.Player || Owner.Player.ReadyWeapon != Self)Return;
 		
-		if(Owner.Player.OldButtons&BT_ALTATTACK || Owner.Player.OldButtons&BT_RELOAD){
+		if(InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready")) && Owner.Player.Cmd.Buttons&BT_RELOAD && !Owner.Player.FindPSprite(LayHand))Owner.Player.SetPsprite(Lay1, FIndState("GunShowingHand"));
+		
+		if(Owner.Player.OldButtons&BT_ALTATTACK){
 			if(Muzzle<1)Muzzle += .2;
 		}
-		else if(Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD){
+		else if(Owner.Player.Cmd.Buttons&BT_ALTATTACK){
 			if(Muzzle<2)Muzzle += 1;
 		}
 	}
@@ -556,6 +559,62 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 			}
 			Goto GunWait;
+			
+		
+		GunShowingHand:
+			PL1G A 0 A_Overlay(LayHand, "HandShowing");
+			PL1G A 1 {
+				Vector2 Move = A_OverlayMoveTo(Lay1, 40, 20, .9);
+				
+				Player.GetPSprite(Lay2).X += Move.X;
+				Player.GetPSprite(Lay2).Y += Move.Y;
+			}
+			PL1G A 0 A_JumpIf(abs(Player.GetPSprite(Lay1).X - 40)<1 && abs(Player.GetPSprite(Lay1).Y - 20)<1, 1);
+			Goto GunShowingHand+1;
+			PL1G AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 {
+				Vector2 Move = A_OverlayMoveTo(Lay1, 40+CFRandom(-1, 2), 20+CFRandom(0, 3), .95);
+				
+				Player.GetPSprite(Lay2).X += Move.X;
+				Player.GetPSprite(Lay2).Y += Move.Y;
+			}
+		GunUnshowingHand:
+			PL1G A 1 {
+				Vector2 Move = A_OverlayMoveTo(Lay1, 0, 0, .95);
+				
+				Player.GetPSprite(Lay2).X += Move.X;
+				Player.GetPSprite(Lay2).Y += Move.Y;
+			}
+			PL1G A 0 A_JumpIf(abs(Player.GetPSprite(Lay1).X)<1 && abs(Player.GetPSprite(Lay1).Y)<1, "GunWait");
+			Loop;
+			
+		HandShowing:
+			MRD1 G 1 {
+				A_DoVanillaDisplay();
+				A_GlovesColor();
+				A_OverlayFlags(LayHand, PSPF_MIRROR, true);
+				A_OverlayPivot(LayHand, 1, 1);
+				Player.GetPSprite(LayHand).X = 180;
+				Player.GetPSprite(LayHand).Y = 80;
+				A_OverlayRotate(LayHand, -30);
+				A_OverlayScale(LayHand, .9, .9);
+			}
+			#### ####################################################### 1 {
+				Player.GetPSprite(LayHand).Rotation *= .95;
+				A_OverlayMoveTo(LayHand, 240, -10, .95);
+				A_OverlayFlags(LayHand, PSPF_INTERPOLATE, !Player.GetPSprite(LayHand).FirstTic);
+			}
+		HandBackoff:
+			#### ################################ 1 {
+				if(Player.Cmd.Buttons&BT_ATTACK){
+					Player.GetPSprite(LayHand).Rotation = 30 + (Player.GetPSprite(LayHand).Rotation-30)*.8;
+					A_OverlayMoveTo(LayHand, 240, 120, .8);
+				}
+				else {
+					Player.GetPSprite(LayHand).Rotation = -60 + (Player.GetPSprite(LayHand).Rotation+60)*.98;
+					A_OverlayMoveTo(LayHand, 180, 120, .98);
+				}
+			}
+			Stop;
 		
 		//Default states
 			
@@ -592,6 +651,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		Fire:
 			TNT1 A 0 {
 				Player.SetPsprite(Lay1, invoker.FindState("GunFire"));
+				if(Player.FindPSprite(LayHand))Player.SetPsprite(LayHand, invoker.FindState("HandBackoff"));
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
 			}
@@ -621,26 +681,30 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		
 	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
 	{
-		Bool Bers = GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength");
-		Float Mult = (Bers?2:1);
-		if(invoker.BobState>=0){
-			A_OverlayOffset(Lay, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
-			if(invoker.BobState>90||Player.GetPSprite(Lay).Y>1.35){invoker.BobState = -invoker.BobState;}
-			else invoker.BobState+=Mult;
-		}
-		else {
-			A_OverlayOffset(Lay, -CFRandom(-.005, .015)*Mult, -CFRandom(.01, .02)*Mult, WOF_ADD);
-			if(Player.GetPSprite(Lay).Y<0){A_OverlayOffset(Lay, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
-			else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay).Y>0))invoker.BobState+=Mult;
-		}
-		if(Bers && GetAge()%2==0){//Shaking hand if got berserk
-			A_OverlayOffset(Lay, CFRandom(-.25, .25), 0, WOF_INTERPOLATE|WOF_KEEPY);
-			Player.GetPSprite(Lay).Y += CFRandom(-.25, .25);
-			if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
-			if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
+		int CVa = GetCVar("MRIntW_IdleAnims");
+		
+		if(CVa%2==1){
+			Bool Bers = GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength");
+			Float Mult = (Bers?2:1);
+			if(invoker.BobState>=0){
+				A_OverlayOffset(Lay, CFRandom(-.005, .015)*Mult, CFRandom(.01, .02)*Mult, WOF_ADD);
+				if(invoker.BobState>90||Player.GetPSprite(Lay).Y>1.35){invoker.BobState = -invoker.BobState;}
+				else invoker.BobState+=Mult;
+			}
+			else {
+				A_OverlayOffset(Lay, -CFRandom(-.005, .015)*Mult, -CFRandom(.01, .02)*Mult, WOF_ADD);
+				if(Player.GetPSprite(Lay).Y<0){A_OverlayOffset(Lay, 0, 0, WOF_INTERPOLATE);invoker.BobState = 0;}
+				else if(!(invoker.BobState>=-1&&Player.GetPSprite(Lay).Y>0))invoker.BobState+=Mult;
+			}
+			if(Bers && GetAge()%2==0){//Shaking hand if got berserk
+				A_OverlayOffset(Lay, CFRandom(-.25, .25), 0, WOF_INTERPOLATE|WOF_KEEPY);
+				Player.GetPSprite(Lay).Y += CFRandom(-.25, .25);
+				if(Player.GetPSprite(Lay).Y<0){Player.GetPSprite(Lay).Y = 0;invoker.BobState = 0;}
+				if(Player.GetPSprite(Lay).Y>1.35){Player.GetPSprite(Lay).Y = 1.35;invoker.BobState = -90;}
+			}
 		}
 		
-		if(!GetCVar("MRIntW_IdleAnims"))Return;
+		if(CVa<2)Return;
 		
 		invoker.Idle++;
 		if(invoker.Idle<35)Return;
@@ -651,7 +715,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				if(invoker.Idle>35 && invoker.Idle<39)invoker.Muzzle+=CFRandom(.3, .6);
 				if(invoker.Idle>45 && invoker.Idle<48)invoker.Muzzle+=CFRandom(.4, .7);
 				if(invoker.Idle>48)StopIdleAnimation();
-				Break;
+				Return;
 			Case 1://Pull
 				Muzle = invoker.Idle-35;
 				
@@ -661,7 +725,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 					StopIdleAnimation();
 					invoker.Muzzle = -.2;
 				}
-				Break;
+				Return;
 			Case 2://Pull-push-pull-push
 				Float Round = 100*invoker.IdleDur;
 				Muzle = (invoker.Idle-(35-Round*.5))%Round;
@@ -671,7 +735,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				if(invoker.Idle-35>Round*3){
 					if(CRandom(0, Round)==1)StopIdleAnimation();
 				}
-				
 				Return;
 		}
 	}
@@ -687,6 +750,18 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	Action Void A_BersShake()
 	{
 		if(CountInv("PowerStrength"))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
+	}
+	
+	Action Vector2 A_OverlayMoveTo(int Lay, Double XTo = 0, Double YTo = 0, Double SpeedX = .8, Double SpeedY = -1)
+	{
+		if(SpeedY == -1)SpeedY = SpeedX;
+		
+		Vector2 Old = (Player.GetPSprite(Lay).X, Player.GetPSprite(Lay).Y);
+		
+		Player.GetPSprite(Lay).X = XTo+(Player.GetPSprite(Lay).X-XTo)*SpeedX;
+		Player.GetPSprite(Lay).Y = YTo+(Player.GetPSprite(Lay).Y-YTo)*SpeedY;
+		
+		Return (Player.GetPSprite(Lay).X, Player.GetPSprite(Lay).Y) - Old;
 	}
 	
 	Action Void A_DoVanillaDisplay()
