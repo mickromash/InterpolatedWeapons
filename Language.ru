@@ -120,6 +120,9 @@ MRIntW_SwitchAnims1 = "Одна вариация";
 MRIntW_SwitchAnims2 = "Случайные вариации";
 
 MRIntW_IdleAnims = "Анимации покоя";
+MRIntW_IdleAnims1 = "Только дыхание";
+MRIntW_IdleAnims2 = "Только встряска";
+MRIntW_IdleAnims3 = "Все";
 
 MRIntW_ReloadAnims = "Анимации подбора и перезарядки";
 MRIntW_ReloadAnims0 = "Нет";

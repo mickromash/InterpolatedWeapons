@@ -75,7 +75,7 @@ OptionMenu "MRIntW_OffsetMenu"
 	Option "$MRIntW_WeaponSway", "MRIntW_WeaponSway", "YesNo"
 	Option "$MRIntW_WeaponSwayStyle", "MRIntW_WeaponSwayStyle", "MRIntW_WeaponSwayStyleValues", "MRIntW_WeaponSway"
 	StaticText ""
-	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "YesNo"
+	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "MRIntW_IdleAnimsValues"
 	Option "$MRIntW_DamageShake", "MRIntW_DamageShake", "YesNo"
 	Option "$MRIntW_LowHealthShake", "MRIntW_LowHealthShake", "YesNo"
 	StaticText ""
@@ -502,6 +502,14 @@ OptionValue "MRIntW_WeaponSwayStyleValues"
 {
 	0, "$MRIntW_WeaponSwayStyle0"
 	1, "$MRIntW_WeaponSwayStyle1"
+}
+
+OptionValue "MRIntW_IdleAnimsValues"
+{
+	0, "$TXT_NO"
+	1, "$MRIntW_IdleAnims1"
+	2, "$MRIntW_IdleAnims2"
+	3, "$MRIntW_IdleAnims3"
 }
 
 OptionValue "MRIntW_ReloadAnimsValues"

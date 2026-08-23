@@ -119,6 +119,9 @@ MRIntW_SwitchAnims1 = "Single variant";
 MRIntW_SwitchAnims2 = "Random variants";
 
 MRIntW_IdleAnims = "Idle animations";
+MRIntW_IdleAnims1 = "Only breathing";
+MRIntW_IdleAnims2 = "Only shake up";
+MRIntW_IdleAnims3 = "Both";
 
 MRIntW_ReloadAnims = "Pickup and reload anmations";
 MRIntW_ReloadAnims0 = "No";

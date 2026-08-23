@@ -31,7 +31,7 @@ nosave bool MRIntW_WeaponSway = false;
 nosave int MRIntW_WeaponSwayStyle = 0;//0 - Half Life 2, 1 - SW Battlefront 2015
 
 nosave int MRIntW_SwitchAnims = 2;//0 - Vanilla, 1 - Single variant, 2 - Random variants
-user bool MRIntW_IdleAnims = true;//Idle animations
+user int MRIntW_IdleAnims = 3;//Idle animations
 nosave int MRIntW_ReloadAnims = 1;//Alternative select animations after wasting all ammo or on first pickup; 0 - None, 1 - Reload only, 2 - First only, 3 - Both
 
 user bool MRIntW_Recoil = false;//Visual recoil and screen shaking
