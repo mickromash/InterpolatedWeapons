@@ -259,6 +259,11 @@ Extend Class MRIntWeaps_Pistol
 		
 		RifleCoolIdle:
 			R1FG A 0{
+				if(!Player.GetPSprite(Lay1).bAddWeapon){
+					Player.GetPSprite(Lay1).bAddWeapon = true;
+					Player.GetPSprite(Lay1).Y -= 32;
+					Player.GetPSprite(Lay1).OldY -= 32;
+				}
 				A_OverlayPivot(Lay1, .7, 0);
 				Switch(CRandom(0, 10))
 				{
