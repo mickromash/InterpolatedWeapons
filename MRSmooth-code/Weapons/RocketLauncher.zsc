@@ -344,6 +344,11 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 			MI1G # 1 {
 				A_OverlayMoveTo(Lay1, 50, 20, .9);
 				Player.GetPSprite(Lay1).Rotation = 10 + (Player.GetPSprite(Lay1).Rotation-10)*.9;
+				if(!Player.GetPSprite(Lay1).bAddWeapon){
+					Player.GetPSprite(Lay1).bAddWeapon = true;
+					Player.GetPSprite(Lay1).Y -= 32;
+					PlayeR.GetPSprite(Lay1).OldY -= 32;
+				}
 			}
 			#### # 0 A_JumpIf(abs(Player.GetPSprite(Lay1).X - 50)<1 && abs(Player.GetPSprite(Lay1).Y - 20)<1, 1);
 			Goto GunShowingHand+1;
