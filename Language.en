@@ -34,6 +34,7 @@ MRIntW_ScreenShake3 = "Full";
 MRIntW_ScreenShakeAmount = "Screen shake amount";
 MRIntW_InstantFire = "Instant firing";
 MRIntW_FastPistol = "\cv⊛\c- Faster pistol";
+MRIntW_QuickSwitch = "\cv⊛\c- Quick switching";
 MRIntW_BetterAlert = "\cv⊛\c- Better monster alerting";
 
 

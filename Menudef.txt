@@ -23,6 +23,7 @@ OptionMenu "MRIntWeaps_Menu"
 	StaticText ""
 	Option "$MRIntW_InstantFire", "MRIntW_InstantFire", "YesNo"//User
 	Option "$MRIntW_FastPistol", "MRIntW_FastPistol", "YesNo"//Server
+	Option "$MRIntW_QuickSwitch", "MRIntW_QuickSwitch", "YesNo"
 	StaticText ""
 	SubMenu "$MRIntWeaps_AnimMenu", "MRIntWeaps_AnimMenu"
 	SubMenu "$MRIntWeaps_ParticlesMenu", "MRIntWeaps_ParticlesMenu"

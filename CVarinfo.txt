@@ -44,6 +44,7 @@ nosave float MRIntW_ScreenShakeAmount = 1;
 server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting
 user bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
+server bool MRIntW_QuickSwitch = false;
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
 server noarchive bool MRIntW_LoRWeaps = false;
 

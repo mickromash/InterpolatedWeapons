@@ -26,7 +26,7 @@ Class MRIntWeaps_PressetsMenu: OptionMenu
 		"MRIntW_ChainsawVolume 86", "MRIntW_ChainsawRandomPitch 87", "MRIntW_ParticleFlies 89", "MRIntW_ParticleFliesVolume 90", "MRIntW_SSGHandless 92", 
 		"MRIntW_LongTermSmoke 93", "MRIntW_LoRWeaps 94", "MRIntW_InciniSmoke 95", "MRIntW_ParticleTexture 96", "MRIntW_ParticleSmokeTexture 97", "MRIntW_SwitchAnims 98",
 		"MRIntW_RunKey 101", "MRIntW_BaseOffset 102", "MRIntW_BaseOffsetX 103", "MRIntW_BaseOffsetY 104", "MRIntW_WeaponSway 105", "MRIntW_WeaponSwayStyle 106",
-		"MRIntW_SavedWbobFire 107", "MRIntW_RespawnParticles 108"
+		"MRIntW_SavedWbobFire 107", "MRIntW_RespawnParticles 108", "MRIntW_QuickSwitch 109"
 	};
 	
 	//Presset CVar syntax: "[Index] Value,[Index] Value,"
