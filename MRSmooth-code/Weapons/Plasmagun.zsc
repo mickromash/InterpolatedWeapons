@@ -84,10 +84,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	
 	int LowerDir;
 	
-	Vector2 SelPos;
-	Double SelRot;
-	Double SelScale;
-	int SelFrame;
 	Bool Reload;
 	
 	Override Void PostBeginPlay()
@@ -180,10 +176,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_GlovesColor();
 				invoker.FloatSpeed = 2;
 				invoker.IdleEnd = false;
-				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
-				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
-				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
-				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			PLSR C 1{invoker.Selecting = true;}
 			#### CC 1 {
@@ -191,10 +183,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayOffset(Lay1, 15, -23, WOF_ADD);
 				A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 				A_OverlayRotate(Lay1, -.9, WOF_ADD);
-				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
-				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
-				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
-				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 				
 				if(invoker.Reload){
 					A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.97, 1.02));
@@ -205,19 +193,11 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayOffset(Lay1, 11, -9, WOF_ADD);
 				A_OverlayRotate(Lay1, -.6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
-				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
-				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
-				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
-				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### C 1 {
 				A_OverlayScale(Lay1, -.025, -.025, WOF_ADD);
 				A_OverlayOffset(Lay1, 9, -6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
-				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
-				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
-				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
-				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 				
 				if(invoker.Reload)A_StartSound("MRIntW/PlasmaReload", CHAN_AUTO, pitch:i_timescale*CFRandom(2.9, 3.1));
 				invoker.Reload = false;
@@ -231,18 +211,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).OldY;
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				A_OverlayOffset(Lay1, 8, -3, WOF_ADD);
-				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
-				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
-				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
-				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### B 1 {
 				A_OverlayScale(Lay1, -.03, -.03, WOF_ADD);
 				A_OverlayOffset(Lay1, 7, 0, WOF_ADD);
-				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
-				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
-				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
-				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			}
 			#### A 1 {
@@ -253,10 +225,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).OldY;
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				A_OverlayOffset(Lay1, 6, 4, WOF_ADD);
-				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
-				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
-				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
-				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### A 1 {
 				invoker.InterpolateMuzzle = -1;
@@ -265,10 +233,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayScale(Lay1, -.05, -.08, WOF_ADD);
 				A_OverlayOffset(Lay1, 4, 2, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
-				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
-				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
-				invoker.SelScale = Player.GetPSprite(Lay1).Scale.X;
-				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
 			#### A 0 {
 				A_OverlayFlags(Lay2, PSPF_ADDWEAPON , false);
@@ -318,7 +282,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			}
 			Loop;
 		GunLower:
-			#### # 0 A_JumpIf(!Player.FindPSprite(Lay2), "GunLowerAlt");
+			#### # 0 A_JumpIf(!Player.FindPSprite(Lay2) || Player.FindPSprite(Lay2).Frame>7, "GunLowerAlt");
 			PL1G A 1 {
 				invoker.IdleEnd = false;
 				if(MRIntW_SwitchAnims>1)invoker.LowerDir = CRandomPick(-1, 1);
@@ -372,20 +336,17 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			}
 			Stop;
 		GunLowerAlt:
-			PLSR C 1 {
+			#### # 1 {
 				invoker.IdleEnd = false;
 				A_GlovesColor();
-				A_OverlayPivot(Lay1, .5, 0);
-				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, false);
-				A_OverlayOffset(Lay1, invoker.SelPos.X, invoker.SelPos.Y);
-				A_OverlayRotate(Lay1, invoker.SelRot);
-				A_OverlayScale(Lay1, invoker.SelScale, invoker.SelScale);
-				Player.GetPSprite(Lay1).Frame = invoker.SelFrame;
 			}
 			#### # 1 {
 				A_OverlayOffset(Lay1, -4, 10, WOF_ADD);
 				A_OverlayRotate(Lay1, 1, WOF_ADD);
 				A_OverlayScale(Lay1, .01, .01, WOF_ADD);
+				A_OverlayOffset(Lay2, -4, 10, WOF_ADD);
+				A_OverlayRotate(Lay2, 1, WOF_ADD);
+				A_OverlayScale(Lay2, .01, .01, WOF_ADD);
 			}
 			Wait;
 		
@@ -634,7 +595,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		Deselect:
 			TNT1 A 0 {
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				A_Overlay(Lay1, "GunLower");
+				Player.SetPsprite(Lay1, invoker.FindState("GunLower"));
 				//Player.GetPSprite(PSP_WEAPON).Y = 32;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
@@ -659,7 +620,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_FirePlasma();
 				if(GetCVar("MRIntW_Recoil")){invoker.Recoil+=1;A_SetPitch(Pitch-.5*GetCVar("MRIntW_RecoilAmount"));}//Recoil
 			}
-			#### B 20 A_ReFire();
+			#### B 20 {
+				if(MRIntW_QuickSwitch)A_WeaponReady(WRF_NOFIRE);
+				A_ReFire();
+			}
 			Goto Ready;
 		Flash:
 			TNT1 A 4 {
