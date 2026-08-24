@@ -649,6 +649,9 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 
 Class MRIntWeaps_BFGBall : BFGBall
 {
+	Default {
+		Decal "BFGLightning";
+	}
 	States
 	{
 	Spawn:
