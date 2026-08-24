@@ -113,7 +113,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		Super.PostBeginPlay();
 		IdleDelay = -35*4;
 		Rotation = 30;
-		if(MRIntW_ReloadAnims>1)Reload = true;
+		if(Level.Time<2 && MRIntW_ReloadAnims>1)Reload = true;
 	}
 	
 	action void A_FireCGun()
