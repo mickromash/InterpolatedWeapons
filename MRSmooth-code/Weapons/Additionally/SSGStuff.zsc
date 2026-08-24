@@ -123,6 +123,14 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 		}
 		
 		else{
+			Vector2 WOfst;
+			if(Player.FindPSprite(Lay1)){
+				WOfst += (Player.FindPSprite(Lay1).X, Player.FindPSprite(Lay1).Y - 32);
+			
+				if(Player.FindPSprite(Lay1).bAddWeapon)WOfst += (Player.FindPSprite(PSP_WEAPON).OldX, Player.FindPSprite(PSP_WEAPON).OldY);
+			}
+			WOfst *= .032;
+			
 			For(Float i=-.25;i<.5;i+=.5){
 				Let Part = MRIntWeaps_SmokeParticle(Level.SpawnVisualThinker('MRIntWeaps_SmokeParticle'));
 				
@@ -138,6 +146,10 @@ Extend Class MRIntWeaps_SuperShotgun//Casings and firing smoke
 				Part.Place.Z += -1.5*Cos(Abs(Pitch));
 				Part.Place += AngleToVector(Angle, -1.5*2)*Sin(Pitch);
 				Part.Place += AngleToVector(Angle-90, i);
+				
+				Part.Place.XY += AngleToVector(Angle-90, WOfst.X);
+				Part.Place.XY -= AngleToVector(Angle, WOfst.Y*2)*Sin(Pitch);
+				Part.Place.Z -= WOfst.Y*Cos(Abs(Pitch));
 				
 				Part.Move = (AngleToVector(Angle, .2)*Cos(Abs(Pitch)), -.2*Sin(Pitch));
 				Part.Move.Z += .005;

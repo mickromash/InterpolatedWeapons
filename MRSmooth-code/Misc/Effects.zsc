@@ -500,6 +500,18 @@ Extend Class MRIntWeaps_Pistol
 			Part.Place.Z += (-1+Offset)*Cos(Abs(Pitch));//Lower down to sprite
 			Part.Place += AngleToVector(Angle, (-1+Offset)*2)*Sin(Pitch);//Lower down to sprite
 			
+			Vector2 WOfst;
+			if(Player.FindPSprite(Lay1)){
+				WOfst += (Player.FindPSprite(Lay1).X, Player.FindPSprite(Lay1).Y - 32);
+			
+				if(Player.FindPSprite(Lay1).bAddWeapon)WOfst += (Player.FindPSprite(PSP_WEAPON).OldX, Player.FindPSprite(PSP_WEAPON).OldY);
+			}
+			WOfst *= .032;
+			
+			Part.Place.XY += AngleToVector(Angle-90, WOfst.X);
+			Part.Place.XY -= AngleToVector(Angle, WOfst.Y*2)*Sin(Pitch);
+			Part.Place.Z -= WOfst.Y*Cos(Abs(Pitch));
+			
 			Part.Move = (AngleToVector(Angle, .2)*Cos(Abs(Pitch)), -.2*Sin(Pitch));
 			Part.Move.Z += .005*Cos(Abs(Pitch));
 			Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
@@ -674,6 +686,18 @@ Extend Class MRIntWeaps_Shotgun
 			Part.Place = (AngleToVector(Angle, 5)*Cos(Abs(Pitch)), -5*Sin(Pitch));
 			Part.Place.Z += -1.5*Cos(Abs(Pitch));
 			Part.Place += AngleToVector(Angle, -1.5*2)*Sin(Pitch);
+			
+			Vector2 WOfst;
+			if(Player.FindPSprite(Lay1)){
+				WOfst += (Player.FindPSprite(Lay1).X, Player.FindPSprite(Lay1).Y - 32);
+			
+				if(Player.FindPSprite(Lay1).bAddWeapon)WOfst += (Player.FindPSprite(PSP_WEAPON).OldX, Player.FindPSprite(PSP_WEAPON).OldY);
+			}
+			WOfst *= .032;
+			
+			Part.Place.XY += AngleToVector(Angle-90, WOfst.X);
+			Part.Place.XY -= AngleToVector(Angle, WOfst.Y*2)*Sin(Pitch);
+			Part.Place.Z -= WOfst.Y*Cos(Abs(Pitch));
 			
 			Part.Move = (AngleToVector(Angle, .2)*Cos(Abs(Pitch)), -.2*Sin(Pitch));
 			Part.Move.Z += .005;
@@ -964,6 +988,18 @@ Extend Class MRIntWeaps_Chaingun
 			Part.Place.Z += -1.6*Cos(Abs(Pitch));//Lower down to sprite
 			Part.Place += AngleToVector(Angle, -1.6*2)*Sin(Pitch);//Lower down to sprite
 			
+			Vector2 WOfst;
+			if(Player.FindPSprite(Lay1)){
+				WOfst += (Player.FindPSprite(Lay1).X, Player.FindPSprite(Lay1).Y - 32);
+			
+				if(Player.FindPSprite(Lay1).bAddWeapon)WOfst += (Player.FindPSprite(PSP_WEAPON).OldX, Player.FindPSprite(PSP_WEAPON).OldY);
+			}
+			WOfst *= .032;
+			
+			Part.Place.XY += AngleToVector(Angle-90, WOfst.X);
+			Part.Place.XY -= AngleToVector(Angle, WOfst.Y*2)*Sin(Pitch);
+			Part.Place.Z -= WOfst.Y*Cos(Abs(Pitch));
+			
 			Float Rot = (invoker.Rotation%120-60)*.02;
 			Part.Place += AngleToVector(Angle-90, Rot);
 			Part.Place.Z -= Abs(Rot)*.5*Cos(Abs(Pitch));
@@ -1044,6 +1080,18 @@ Extend Class MRIntWeaps_RocketLauncher
 			Part.Place = (AngleToVector(Angle, 5)*Cos(Abs(Pitch)), -5*Sin(Pitch));//Forward from player
 			Part.Place.Z += (-1.6-Player.GetPSprite(Lay1).Y*.05)*Cos(Abs(Pitch));//Lower down to sprite
 			Part.Place += AngleToVector(Angle, (-1.6*2-Player.GetPSprite(Lay1).Y*.05))*Sin(Pitch);//Lower down to sprite
+			
+			Vector2 WOfst;
+			if(Player.FindPSprite(Lay1)){
+				WOfst += (Player.FindPSprite(Lay1).X, Player.FindPSprite(Lay1).Y - 32);
+			
+				if(Player.FindPSprite(Lay1).bAddWeapon)WOfst += (Player.FindPSprite(PSP_WEAPON).OldX, Player.FindPSprite(PSP_WEAPON).OldY);
+			}
+			WOfst *= .032;
+			
+			Part.Place.XY += AngleToVector(Angle-90, WOfst.X);
+			Part.Place.XY -= AngleToVector(Angle, WOfst.Y*2)*Sin(Pitch);
+			Part.Place.Z -= WOfst.Y*Cos(Abs(Pitch));
 			
 			Part.Move = (AngleToVector(Angle, .2)*Cos(Abs(Pitch)), -.2*Sin(Pitch));
 			Part.Move += AngleToVector(Angle+90, CFRandom(-.01, .01));
