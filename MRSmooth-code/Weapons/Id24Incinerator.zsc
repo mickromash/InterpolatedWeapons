@@ -24,7 +24,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 	{
 		MuzzleSmoke();
 		
-		if(Owner.Player.ReadyWeapon != Self)Return;
+		if(Owner.Player.ReadyWeapon != Self || Health<1)Return;
 		
 		
 		if(LEDs>0)LEDs -= .05;

@@ -23,7 +23,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	{
 		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.25*Owner.GetCVar("MRIntW_RecoilAmount"));}
 		
-		if(!Owner.Player || Owner.Player.ReadyWeapon != Self)Return;
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Health<1)Return;
 		
 		if(InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready")) && Owner.Player.Cmd.Buttons&BT_RELOAD && !Owner.Player.FindPSprite(LayHand))Owner.Player.SetPsprite(Lay1, FIndState("GunShowingHand"));
 		

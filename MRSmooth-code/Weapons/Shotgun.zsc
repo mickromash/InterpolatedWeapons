@@ -29,7 +29,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 		
 		MuzzleSmoke();
 		
-		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || !InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Health<1 || !InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
 		if((Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD) && !Catch){
 			Catch = true;
