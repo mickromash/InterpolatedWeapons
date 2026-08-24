@@ -138,7 +138,7 @@ nosave float MRIntW_ParticleFliesVolume = .4;
 nosave int MRIntW_ParticleTexture = -1;
 nosave int MRIntW_ParticleSmokeTexture = -1;
 
-user bool MRIntW_Braindead = false;
+user string MRIntW_Braindead = "";
 
 nosave int MRIntW_WhichPresset = 0;
 nosave string MRIntW_PressetCust1 = "";

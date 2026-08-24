@@ -78,3 +78,5 @@ $limit MRIntW/FlyBuzz 1
 
 MRIntW/Message1 "Sounds/MRIntW/SBNCE1.ogg"
 MRIntW/Crash dssecret
+MRIntW/Braindead1 DSCACSIT
+MRIntW/Braindead2 DSBOSSIT

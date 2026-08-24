@@ -50,7 +50,7 @@ Extend Class MRIntWeaps_Fist
 					if(invoker.LineTarg)Return ResolveState("SecndHandInfight");
 				}
 				
-				if(GetCVar("MRIntW_Braindead") && (Health==67 || (FindInventory("BasicArmor") && FindInventory("BasicArmor").Amount==67)))Return ResolveState("SecndHandCoolIdle666");
+				if(CVar.GetCVar("MRIntW_Braindead", Player).GetString()=="yes" && (Health==67 || (FindInventory("BasicArmor") && FindInventory("BasicArmor").Amount==67)))Return ResolveState("SecndHandCoolIdle666");
 				
 				if(GetCVar("MRIntW_SecondFist")||(CountInv("PowerStrength") && GetCVar("MRIntW_BersShake")))Player.SetPsprite(MainLay, invoker.FindState("MainHandCoolIdle"));
 				else Player.SetPsprite(MainLay, invoker.FindState("MainHandCoolIdlePre"));

@@ -385,6 +385,8 @@ MRIntW_ChainsawRandomPitch = "Рандомизация высоты звука �
 MRIntW_ShotgunSound = "Звуки дробовика из аддона";
 MRIntW_ChaingunSound = "Звуки пулемёта из аддона";
 
+MRIntW_Braindead = "Склько вам лет";
+MRIntW_Braindead4 = "You are the youngest person ever!";
 
 MRIntWeaps_PressetsMenu = "Прессеты настроек";
 

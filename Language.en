@@ -384,6 +384,8 @@ MRIntW_ChainsawRandomPitch = "Chainsaw idle pitch randomness";
 MRIntW_ShotgunSound = "Shotgun custom firing sound";
 MRIntW_ChaingunSound = "Chaingun custom firing sound";
 
+MRIntW_Braindead = "How old are you";
+MRIntW_Braindead4 = "You are the youngest person ever!";
 
 MRIntWeaps_PressetsMenu = "Settings pressets";
 
