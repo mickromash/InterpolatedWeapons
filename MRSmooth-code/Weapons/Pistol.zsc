@@ -24,9 +24,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Override Void DoEffect()
 	{
 		if(Recoil>0){
-			Double Recover = .25*Owner.GetCVar("MRIntW_RecoilRecover");
+			Double Recover = .125*Owner.GetCVar("MRIntW_RecoilRecover");
 			Recoil -= Recover;
-			Owner.A_SetPitch(Owner.Pitch+Recover*GetCVar("MRIntW_RecoilAmount"));
+			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
 		}
 
 		For(int i=0;i<Casings.Size();i++){
@@ -1009,7 +1009,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_FirePistol();
 				A_Overlay(Lay2, "GunFlash");
 				A_Overlay(Lay3, "GunMuzzleFlashFlare");
-				if(GetCVar("MRIntW_Recoil")){invoker.Recoil=2;A_SetPitch(Pitch-2*GetCVar("MRIntW_RecoilAmount"), GetCVar("MRIntW_RecoilRecover")?0:SPF_INTERPOLATE);}//Recoil
+				if(GetCVar("MRIntW_Recoil")){invoker.Recoil=1.25;A_SetPitch(Pitch-1.25*GetCVar("MRIntW_RecoilAmount"), GetCVar("MRIntW_RecoilRecover")?0:SPF_INTERPOLATE);}//Recoil
 			}
 			#### C 4 {invoker.IncreaseSmoke();}
 			#### B 4 {if(!GetCVar("MRIntW_InstantFire")||MRIntW_FastPistol)A_SetTics(0);else if(Player.GetPSprite(Lay1).Tics<4)A_WeaponReady(WRF_NOFIRE);}
