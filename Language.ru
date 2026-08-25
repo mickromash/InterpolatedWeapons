@@ -86,7 +86,7 @@ MRIntW_EpilepsyDesc2 = "и могут вызвать приступ эпилеп
 MRIntW_EpilepsyDesc3 = "Если вы уверены что не страдаете эпилепсией,";
 MRIntW_EpilepsyDesc4 = "откройте консоль и впишите MRIntW_Epilepsy 0";
 
-MRIntW_OffsetMenu = "Настройки движений оружия";
+MRIntWeaps_OffsetMenu = "Общие настройки оружия";
 
 MRIntW_Bounce = "Подпрыгивание оружия при приземлении";
 MRIntW_Bounce0 = "Нет";
@@ -146,7 +146,7 @@ MRIntW_WeaponSwayStyle = "Стиль инерции рук";
 MRIntW_WeaponSwayStyle0 = "Half Life 2";
 MRIntW_WeaponSwayStyle1 = "Battlefront 2015";
 
-MRIntW_WeaponsMenu = "Настройки оружия";
+MRIntWeaps_WeaponsMenu = "Настроить каждое оружие";
 
 MRIntW_BersShake = "Тряска рук при берсерке";
 MRIntW_BersShake0 = "Нет";

@@ -85,7 +85,7 @@ MRIntW_EpilepsyDesc2 = "and even cause an epileptic seizure.";
 MRIntW_EpilepsyDesc3 = "If you are sure you don't have epilepsy, type MRIntW_Epilepsy 0 into the console";
 MRIntW_EpilepsyDesc4 = "";
 
-MRIntW_OffsetMenu = "Weapon movement settings";
+MRIntWeaps_OffsetMenu = "General weapon settings";
 
 MRIntW_Bounce = "Bounce on land";
 MRIntW_Bounce0 = "No";
@@ -139,7 +139,7 @@ MRIntW_WeaponSwayStyle = "Weapon sway style";
 MRIntW_WeaponSwayStyle0 = "Half Life 2";
 MRIntW_WeaponSwayStyle1 = "Battlefront 2015";
 
-MRIntW_WeaponsMenu = "Weapons settings";
+MRIntWeaps_WeaponsMenu = "Customize weapons";
 
 MRIntW_BersShake = "Hands shaking on berserk";
 MRIntW_BersShake0 = "No";
