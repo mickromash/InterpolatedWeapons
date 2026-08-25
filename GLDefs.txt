@@ -1,3 +1,7 @@
+/*
+	BRIGHTMAPS
+*/
+
 //Rifle
 Brightmap Sprite R1FGA0
 {
@@ -68,4 +72,33 @@ brightmap Sprite PLSOG0
 brightmap Sprite PLSOH0
 {
 	map "Brightmaps/Auto/PLSOC0.png"
+}
+
+/*
+	DYNAMIC LIGHTS
+*/
+
+object MRIntWeaps_PlasmaBall
+{
+    frame PLSSA { light PLASMABALL }
+    frame PLSSB { light PLASMABALL }
+
+    frame PLSEA { light PLASMA_X1 }
+    frame PLSEB { light PLASMA_X2 }
+    frame PLSEC { light PLASMA_X2 }
+    frame PLSED { light PLASMA_X3 }
+    frame PLSEE { light PLASMA_X4 }
+}
+
+object MRIntWeaps_BFGBall
+{
+    frame BFS1A { light BFGBALL }
+    frame BFS1B { light BFGBALL }
+
+    frame BFE1A { light BFGBALL_X1 }
+    frame BFE1B { light BFGBALL_X2 }
+    frame BFE1C { light BFGBALL_X3 }
+    frame BFE1D { light BFGBALL_X1 }
+    frame BFE1E { light BFGBALL_X4 }
+    frame BFE1F { light BFGBALL_X5 }
 }
