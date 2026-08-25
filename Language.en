@@ -216,6 +216,8 @@ MRIntW_PlasmaParticles0 = "None";
 MRIntW_PlasmaParticles1 = "Only muzzle flare";
 MRIntW_PlasmaParticles2 = "Flare + particles";
 
+MRIntW_PlasmaSkipLight = "Disable dyn. lighting for every second projectile";
+
 MRIntW_BFGParticles = "Firing particles";
 
 

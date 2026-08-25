@@ -105,6 +105,7 @@ nosave int MRIntW_ChaingunMaxSmokes = 3;//Maximum smoking barrels
 nosave float MRIntW_RocketSmoke = 1;//Smoke from muzzle
 //Plasmagun
 nosave int MRIntW_PlasmaParticles = 1;//0 - None, 1 - Flare only, 2 - Flare and particles
+nosave bool MRIntW_PlasmaSkipLight = false;//Disable dynamic lights for every second projectile
 //BFG 9000
 nosave bool MRIntW_BFGParticles = true;//Fancy ahh firing animation
 //id24 Incinerator
@@ -148,4 +149,4 @@ nosave string MRIntW_PressetCust3 = "";
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;
-server noarchive int MRIntW_Version = 2508260;//DDMMYYI
+server noarchive int MRIntW_Version = 2508261;//DDMMYYI

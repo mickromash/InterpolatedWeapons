@@ -11,7 +11,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	Const Lay4 = -5;//Muzzle flash flare
 	Const LayHand = -3;
 	
-	int BobState, Idle, animation, InterpolateMuzzle;
+	int BobState, Idle, animation, InterpolateMuzzle, CountLights;
 	Double Muzzle,//Muzzle position
 			BodyScal,//Rifle body sqiush during firing
 			IdleDur;
@@ -53,17 +53,23 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			
 		}
 		
-		Actor a = SpawnPlayerMissile("MRIntWeaps_PlasmaBall");
+		MRIntWeaps_PlasmaBall a = MRIntWeaps_PlasmaBall(SpawnPlayerMissile("MRIntWeaps_PlasmaBall"));
 		if(a){
 			a.A_StopSound();
 			Let b = New('MRIntWeaps_PlayerProjectileParticles');
 			b.Master = a;
 			b.Type = 1;
+			if(invoker.CountLights>0){
+				a.NoLight = true;
+			}
 		}
 		A_StartSound("MRIntW/PlasmaFire", CHAN_AUTO, pitch:i_timescale);
 		invoker.Shots++;
 		
 		if(CountInv(invoker.AmmoType1)<1 && MRIntW_ReloadAnims%2==1)invoker.Reload = true;
+		
+		invoker.CountLights++;
+		if(invoker.CountLights>1 || !MRIntW_PlasmaSkipLight)invoker.CountLights = 0;
 	}
 	
 	Action Void A_GlovesColor(bool Clear = false, int Lay = 0)
@@ -625,8 +631,10 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				if(GetCVar("MRIntW_Recoil")){invoker.Recoil+=1;A_SetPitch(Pitch-.5*GetCVar("MRIntW_RecoilAmount"));}//Recoil
 			}
 			#### B 20 {
-				if(MRIntW_QuickSwitch)A_WeaponReady(WRF_NOFIRE);
 				A_ReFire();
+				if(Player.Cmd.Buttons&BT_ATTACK)Return;
+				invoker.CountLights = 0;
+				if(MRIntW_QuickSwitch)A_WeaponReady(WRF_NOFIRE);
 			}
 			Goto Ready;
 		Flash:
@@ -750,9 +758,18 @@ Class MRIntWeaps_PlasmaBall: PlasmaBall
 	Default{
 		Decal "MRIntWPlasmaScorch";
 	}
+	
 	Override int SpecialMissileHit(Actor Victim)
 	{
 		if(Victim && Victim!=Target && Victim.bShootable)Master = Victim;
 		Return Super.SpecialMissileHit(Victim);
+	}
+	
+	Bool NoLight;
+	Override Void Tick()
+	{
+		Super.Tick();
+		if(NoLight && Frame<5)Frame = Frame+5;
+		//Console.Printf("\nFrame: "..Frame);
 	}
 }
