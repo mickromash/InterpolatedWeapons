@@ -75,8 +75,6 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		invoker.ShotPower /= 255-145;
 		if(MRIntW_Debug)Console.Printf("\cgMRIntW:\c- Shot power\cd "..invoker.ShotPower);
 		
-		if(CountInv(invoker.AmmoType1)<2 && MRIntW_ReloadAnims%2==1)invoker.Reload = true;
-		
 		A_FiringParticles();
 	}
 	
@@ -925,7 +923,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 					}
 				}
 				
-				invoker.Reload = false;
+				if(CountInv(invoker.AmmoType1)<1 && MRIntW_ReloadAnims%2==1)invoker.Reload = 1;
+				else invoker.Reload = 0;
 				
 				//Casings
 				if(!GetCVar("MRIntW_Casings"))Return;
