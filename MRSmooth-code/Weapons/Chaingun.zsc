@@ -432,7 +432,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			#### # 0 {if(CRandom(0, 100)<2)invoker.Speed += CRandom(1, 7)*5*GetCVar("MRIntW_ChaingunStopTime");}
 		GunWait:
-			#### # 1 {if(!(Player.Cmd.Buttons&BT_ATTACK))A_IdleAnimation(Lay1);}
+			#### # 1 {if(!(Player.Cmd.Buttons&BT_ATTACK) && !Player.FindPSprite(AnimLay))A_IdleAnimation(Lay1);}
 			#### # 0 {
 				invoker.InterpolateBarrels = true;
 				Bool Sway = MRIntW_WeaponSway;
@@ -851,7 +851,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 		GunUnshowingHand:
 			TNT1 A 1 {
-				Vector2 Move = A_OverlayMoveTo(Lay1, 0, 0, .95);
+				Vector2 Move = A_OverlayMoveTo(Lay1, -1, -1, .95);
 				
 				For(int i=Muzzle0;i<=Muzzle5;i++){
 					Player.GetPSprite(i).X += Move.X;
@@ -1019,11 +1019,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		}
 		
 		if(CVa>1)invoker.IdleDelay++;
-	}
-	
-	Action Void A_BersShake()
-	{
-		if((GetCVar("MRIntW_BersShake")>1 && FindInventory("PowerStrength"))||(Health<20 && GetCVar("MRIntW_LowHealthShake")))A_OverlayOffset(Lay1, CFRandom(-.25, .25), CFRandom(-.25, .25), WOF_ADD);
 	}
 	
 	Action Vector2 A_OverlayMoveTo(int Lay, Double XTo = 0, Double YTo = 0, Double SpeedX = .8, Double SpeedY = -1)
