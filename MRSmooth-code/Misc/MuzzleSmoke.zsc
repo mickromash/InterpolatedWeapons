@@ -19,7 +19,7 @@ Const MRintW_FadeStart = 40;
 */
 Class MRIntWeaps_Smoker: Object play
 {
-	Static Void MRSpawnParticle(Color Col=Color(0,0,0), int Flags=0, int Style=STYLE_None, int Life=1, double Size=1, double Angle=0, Vector3 Pos=(0,0,0), Vector3 Vel=(0,0,0), Vector3 Accel=(0,0,0), Double Alpha=.1, Double Fade=-1, Double SizeStep=0)
+	Static Void MRSpawnParticle(Color Col, TextureId Texture, int Flags=0, int Style=STYLE_None, int Life=1, double Size=1, double Angle=0, Vector3 Pos=(0,0,0), Vector3 Vel=(0,0,0), Vector3 Accel=(0,0,0), Double Alpha=.1, Double Fade=-1, Double SizeStep=0, Double Roll=0)
 	{
 		FSpawnParticleParams p;
 		p.Accel = Accel;
@@ -33,23 +33,25 @@ Class MRIntWeaps_Smoker: Object play
 		p.startalpha = Alpha;
 		p.fadestep = Fade;
 		if(Fade==-1)p.FadeStep = Alpha/Max(1, Life-1);
+		p.StartRoll = - Roll;
 		
 		p.Flags = Flags;
 		p.Style = Style;
+		p.Texture = Texture;
 		
 		Level.SpawnParticle(p);
 	}
 	
 	int Smokes, LastAge;
 	Actor Owner;
-	Vector2 WeapOfst[6];
+	Vector2 WeapOfst[6], Wind;
 	Vector3 Prev[6];
 	Double OldBob, ViewHeight, InterFloorZ, Bob, Scale[6], Alpha, Speed[6], MaxLength;
 	Bool PassSpawn, ResetInterpolation, ForceConnect, Bright, Bright1;
 	Weapon LastWeapon;
 	Color Col, Col1;
 	Const Dist = 10.;//.5
-	Const BaseScale = 1;//.6
+	Const BaseScale = 1.3;//.6
 	Const ZSpeed = .2;
 	Const Step = .25;
 	Const Brightness = 130;
@@ -70,6 +72,16 @@ Class MRIntWeaps_Smoker: Object play
 		Bright = Bright1 = ForceConnect = ResetInterpolation = false;
 		Col1 = Col = Color(Brightness,Brightness,Brightness);
 		MaxLength = MRIntW_FlowingSmokeLength;
+		
+		if(Owner.GetAge()%2==0){
+			if(Wind.X > .5)Wind.X -= CFRandom(0, .01);
+			else if(Wind.X<-.5)Wind.X += CFRandom(0, .01);
+			else Wind.X += CFRandom(-.01, .01);
+			
+			if(Wind.Y > .5)Wind.Y -= CFRandom(0, .01);
+			else if(Wind.Y<-.5)Wind.Y += CFRandom(0, .01);
+			else Wind.Y += CFRandom(-.01, .01);
+		}
 	}
 	
 	Virtual Void Update(Bool OldB = false)
@@ -95,6 +107,7 @@ Class MRIntWeaps_Smoker: Object play
 		
 		Double Step = Step/MRIntW_FlowingSmokePrecision*Scale[Num];
 		Double ZSpeed = ZSpeed*4*Speed[Num];
+		Vector2 Wind = Wind*4*Speed[Num];
 		
 		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ+(OldBob-Bob));
 		
@@ -121,7 +134,7 @@ Class MRIntWeaps_Smoker: Object play
 		
 		if(ResetInterpolation){
 			InterFloorZ = Owner.FloorZ;
-			For(int i=0;i<Prev.Size();i++)Prev[i] = Pos + Owner.Vel + (0,0,ZSpeed - (Owner.Player.ViewZ));
+			For(int i=0;i<Prev.Size();i++)Prev[i] = Pos + Owner.Vel + (Wind.X,Wind.Y,ZSpeed - (Owner.Player.ViewZ));
 		}
 		
 		
@@ -135,11 +148,18 @@ Class MRIntWeaps_Smoker: Object play
 		
 		if(Diff.Length()<=Step*1.5 && abs(Diff.Z)<1)Connect = Step;
 		Float Life = 25;
-		if(Owner.Pos == Owner.Prev)ZSpeed*=.25;
+		if(Owner.Pos == Owner.Prev){
+			ZSpeed*=.25;
+			Wind*=.25;
+		}
 		
-		int Flags = 0;
+		int Flags = SPF_ROLL;
 		if(Bright)Flags = SPF_FULLBRIGHT;
-
+		Float Ang = Players[ConsolePlayer].Camera.Angle-90;
+		Float Pit = Players[ConsolePlayer].Camera.Pitch;
+		Float Roll = VectorAngle(Diff.X*Cos(Ang) + Diff.Y*Sin(Ang), -Diff.Z/**Cos(Pit) + abs(Diff.X*Cos(Ang+90) + Diff.Y*Sin(Ang+90)*Sin(Pit))*/);
+		TextureId Texture = Texman.CheckForTexture("NSHSH0");
+		
 		For(Double i=0;i<Connect;i+=Step){
 			Vector3 PPos = Diff.Unit()*i;
 			Double Curve = i/(Connect+Step);
@@ -147,11 +167,11 @@ Class MRIntWeaps_Smoker: Object play
 			if(Owner.Pos == Owner.Prev)Curve = 1;
 			PPos.Z *= Curve;
 			if(PPos != PPos)PPos = (0,0,0);
-			MRSpawnParticle(Col, Flags, STYLE_None, Life/Max(1, Diff.Length()*.15/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength));
+			MRSpawnParticle(Col, Texture, Flags, STYLE_None, Life/Max(1, Diff.Length()*.15/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:Roll);
 		}
 		
 		if(Owner.Vel.XY.Length()>0 || ForceConnect){
-			Flags = SPF_NOTIMEFREEZE;
+			Flags = SPF_NOTIMEFREEZE|SPF_ROLL;
 			if(Bright1)Flags |= SPF_FULLBRIGHT;
 			Double Bobb = Bob-OldBob;
 			Double ZOfst = 0;
@@ -162,11 +182,11 @@ Class MRIntWeaps_Smoker: Object play
 				PPos.Z *= Curve;
 				PPos.XY *= Curve;
 				if(PPos!=PPos)PPos = (0,0,0);
-				MRSpawnParticle(Col1, Flags, STYLE_None, 1, BaseScale*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (0,0,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength));
+				MRSpawnParticle(Col1, Texture, Flags, STYLE_None, 1, BaseScale*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:Roll);
 			}
 		}
 		
-		Prev[Num] = Pos + (0,0,ZSpeed);
+		Prev[Num] = Pos + (Wind.X,Wind.Y,ZSpeed);
 		
 		Speed[Num] = 1;
 	}
