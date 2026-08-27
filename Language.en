@@ -9,6 +9,7 @@ MRIntW_FlowingSmokeLength = "Flowing smoke length";
 MRIntW_FlowingSmokeAlpha = "Flowing smoke opacity";
 MRIntW_FlowingSmokeMaxTime = "Max. smoke time";
 MRIntW_FlowingSmokePrecision = "Flowing smoke particles amount";
+MRIntW_FlowingSmokeBioTexture = "Flowing smoke experimental texture";
 MRIntW_LongTermSmoke = "Long term smoke";
 
 MRIntW_Casings = "Casings";

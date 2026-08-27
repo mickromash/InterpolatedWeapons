@@ -9,6 +9,7 @@ MRIntW_FlowingSmokeLength = "Длина струящегося дыма";
 MRIntW_FlowingSmokeAlpha = "Непрозрачность струящегося дыма";
 MRIntW_FlowingSmokeMaxTime = "Макс. время дыма";
 MRIntW_FlowingSmokePrecision = "Количество частиц в дыме";
+MRIntW_FlowingSmokeBioTexture = "Экспериментальная текстура струящегося дыма";
 MRIntW_LongTermSmoke = "Задымление помещений";
 
 MRIntW_Casings = "Гильзы";

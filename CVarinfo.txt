@@ -14,6 +14,7 @@ nosave float MRIntW_FlowingSmokeLength = .6;
 nosave float MRIntW_FlowingSmokeAlpha = .2;
 nosave float MRIntW_FlowingSmokeMaxTime = 1;
 nosave float MRIntW_FlowingSmokePrecision = 1;
+nosave bool MRIntW_FlowingSmokeBioTexture = false;
 
 nosave int MRIntW_BobStyle = 4;//0 - Normal, 1 - Alpha jumpy, 2 - Alpha, 3 - Jumpy, 4 - Smooth, 5 - Alpha smooth, 6 - None
 nosave float MRIntW_BobRangeX = 1;
