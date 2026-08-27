@@ -46,7 +46,7 @@ Class MRIntWeaps_Smoker: Object play
 	Actor Owner;
 	Vector2 WeapOfst[6], Wind;
 	Vector3 Prev[6];
-	Double OldBob, ViewHeight, InterFloorZ, Bob, Scale[6], Alpha, Speed[6], MaxLength;
+	Double OldBob, ViewHeight, InterFloorZ, Bob, Scale[6], Alpha, Speed[6], MaxLength, LastRoll[6];
 	Bool PassSpawn, ResetInterpolation, ForceConnect, Bright, Bright1;
 	Weapon LastWeapon;
 	Color Col, Col1;
@@ -134,13 +134,19 @@ Class MRIntWeaps_Smoker: Object play
 		
 		if(ResetInterpolation){
 			InterFloorZ = Owner.FloorZ;
-			For(int i=0;i<Prev.Size();i++)Prev[i] = Pos + Owner.Vel + (Wind.X,Wind.Y,ZSpeed - (Owner.Player.ViewZ));
+			For(int i=0;i<Prev.Size();i++){
+				Prev[i] = Pos + Owner.Vel + (Wind.X,Wind.Y,ZSpeed - (Owner.Player.ViewZ));
+				LastRoll[i] = -90;
+			}
 		}
 		
 		
 		if(!PassSpawn){
 			PassSpawn = true;
-			For(int i=0;i<Prev.Size();i++)Prev[i] = Pos;
+			For(int i=0;i<Prev.Size();i++){
+				Prev[i] = Pos;
+				LastRoll[i] = -90;
+			}
 		}
 		
 		Vector3 Diff = Level.Vec3Diff(Pos, Prev[Num]);
@@ -153,12 +159,24 @@ Class MRIntWeaps_Smoker: Object play
 			Wind*=.25;
 		}
 		
-		int Flags = SPF_ROLL;
+		int Flags = 0;
 		if(Bright)Flags = SPF_FULLBRIGHT;
-		Float Ang = Players[ConsolePlayer].Camera.Angle-90;
-		Float Pit = Players[ConsolePlayer].Camera.Pitch;
-		Float Roll = VectorAngle(Diff.X*Cos(Ang) + Diff.Y*Sin(Ang), -Diff.Z/**Cos(Pit) + abs(Diff.X*Cos(Ang+90) + Diff.Y*Sin(Ang+90)*Sin(Pit))*/);
-		TextureId Texture = Texman.CheckForTexture("NSHSH0");
+		
+		Float Roll = 0;
+		Float ActRoll = 0;
+		
+		TextureId Texture;
+		if(MRIntW_FlowingSmokeBioTexture){
+			Texture = Texman.CheckForTexture("NSHSH0");
+			Float Ang = Players[ConsolePlayer].Camera.Angle-90;
+			Float Pit = Players[ConsolePlayer].Camera.Pitch;
+			Float ToSide = Diff.X*Cos(Ang) + Diff.Y*Sin(Ang);
+			Float ToForw = Diff.X*Cos(Ang+90) + Diff.Y*Sin(Ang+90);
+			ActRoll = Roll = VectorAngle(ToSide*Cos(Pit*2)*(1.-Min(1, ToForw*.05/Max(.1, ToSide))), -Diff.Z*Cos(Pit) + ToForw*Sin(Pit));
+			Roll = Actor.DeltaAngle(LastRoll[Num], Roll);
+			Flags |= SPF_Roll;
+		}
+		TextureId Texture2 = Texman.CheckForTexture("None");
 		
 		For(Double i=0;i<Connect;i+=Step){
 			Vector3 PPos = Diff.Unit()*i;
@@ -167,12 +185,13 @@ Class MRIntWeaps_Smoker: Object play
 			if(Owner.Pos == Owner.Prev)Curve = 1;
 			PPos.Z *= Curve;
 			if(PPos != PPos)PPos = (0,0,0);
-			MRSpawnParticle(Col, Texture, Flags, STYLE_None, Life/Max(1, Diff.Length()*.15/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:Roll);
+			MRSpawnParticle(Col, Texture, Flags, STYLE_None, Life/Max(1, Diff.Length()*.15/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:LastRoll[Num] + Roll*(i/Connect));
 		}
 		
 		if(Owner.Vel.XY.Length()>0 || ForceConnect){
-			Flags = SPF_NOTIMEFREEZE|SPF_ROLL;
+			Flags = SPF_NOTIMEFREEZE;
 			if(Bright1)Flags |= SPF_FULLBRIGHT;
+			if(ActRoll!=0)Flags |= SPF_ROLL;
 			Double Bobb = Bob-OldBob;
 			Double ZOfst = 0;
 
@@ -182,10 +201,11 @@ Class MRIntWeaps_Smoker: Object play
 				PPos.Z *= Curve;
 				PPos.XY *= Curve;
 				if(PPos!=PPos)PPos = (0,0,0);
-				MRSpawnParticle(Col1, Texture, Flags, STYLE_None, 1, BaseScale*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:Roll);
+				MRSpawnParticle(Col1, Texture2, Flags, STYLE_None, 1, 1*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:LastRoll[Num] + Roll*(i/Connect));
 			}
 		}
 		
+		LastRoll[Num] = ActRoll;
 		Prev[Num] = Pos + (Wind.X,Wind.Y,ZSpeed);
 		
 		Speed[Num] = 1;
@@ -275,7 +295,8 @@ Extend Class MRIntWeaps_Pistol
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<MRIntW_MaxSmoke*MRIntW_FlowingSmokeMaxTime)Smoke += CRandom(1, 2);
+		Float CVa = MRIntW_FlowingSmokeMaxTime;
+		if(Smoke<MRIntW_MaxSmoke*CVa)Smoke += CRandom(1, 2)*CVa;
 	}
 }
 
@@ -360,7 +381,8 @@ Extend Class MRIntWeaps_Shotgun
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<MRIntW_MaxSmoke*.4*MRIntW_FlowingSmokeMaxTime)Smoke += CRandom(2, 3);
+		Float CVa = MRIntW_FlowingSmokeMaxTime;
+		if(Smoke<MRIntW_MaxSmoke*.4*CVa)Smoke += CRandom(2, 3)*CVa;
 	}
 }
 
@@ -444,7 +466,8 @@ Extend Class MRIntWeaps_Chaingun
 			}
 		}
 		
-		if(Smoke<MRIntW_MaxSmoke*MRIntW_FlowingSmokeMaxTime)Smoke += CFRandom(1, 1.1);
+		Float CVa = MRIntW_FlowingSmokeMaxTime;
+		if(Smoke<MRIntW_MaxSmoke*CVa)Smoke += CFRandom(1, 1.1)*CVa;
 	}
 }
 
@@ -535,7 +558,8 @@ Extend Class MRIntWeaps_RocketLauncher
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<35*MRIntW_FlowingSmokeMaxTime)Smoke += CRandom(7, 9)*MRIntW_RocketSmoke;
+		Float CVa = MRIntW_FlowingSmokeMaxTime;
+		if(Smoke<35*CVa)Smoke += CRandom(7, 9)*MRIntW_RocketSmoke*CVa;
 	}
 }
 
@@ -590,6 +614,7 @@ Extend Class MRIntWeaps_ID24Incinerator
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<10*MRIntW_FlowingSmokeMaxTime)Smoke += CFRandom(.1, .25);
+		Float CVa = MRIntW_FlowingSmokeMaxTime;
+		if(Smoke<10*CVa)Smoke += CFRandom(.1, .25)*CVa;
 	}
 }

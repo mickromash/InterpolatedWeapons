@@ -305,7 +305,8 @@ Extend Class MRIntWeaps_SuperShotgun//Muzzle smoke
 	
 	Void IncreaseSmoke()
 	{
-		if(Smoke<MRIntW_MaxSmoke*.2)Smoke += CFRandom(2, 2.3);
+		Float CVa = MRIntW_FlowingSmokeMaxTime;
+		if(Smoke<MRIntW_MaxSmoke*.2*CVa)Smoke += CFRandom(2, 2.3)*CVa;
 	}
 }
 
