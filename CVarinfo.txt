@@ -141,6 +141,9 @@ nosave float MRIntW_ParticleFliesVolume = .4;
 nosave int MRIntW_ParticleTexture = -1;
 nosave int MRIntW_ParticleSmokeTexture = -1;
 
+nosave bool MRIntW_SmoothUi = true;
+nosave bool MRIntW_SmoothUiTransitions = true;
+
 user string MRIntW_Braindead = "";
 
 nosave int MRIntW_WhichPresset = 0;

@@ -2,7 +2,7 @@
 	Menu with secret glove colors
 */
 
-Class MRIntWeaps_EasterMenu: OptionMenu
+Class MRIntWeaps_EasterMenu: MRIntWeaps_OptionMenu
 {
 	int Mus;
 	Override Void Init(Menu parent, OptionMenuDescriptor desc){
@@ -17,9 +17,9 @@ Class MRIntWeaps_EasterMenu: OptionMenu
 	Double Alpha;
 	Bool Flip;
 	
-	Override Void Drawer()//At Fist's Gate intro
+	Override Void Ticker()//At Fist's Gate intro
 	{
-		Super.Drawer();
+		Super.Ticker();
 		
 		if(Mus>69+60)Return;
 		
@@ -212,6 +212,11 @@ Class MRIntWeaps_EasterMenu: OptionMenu
 		}
 		Mus++;
 		
+	}
+	Override Void Drawer()
+	{
+		Super.Drawer();
+		
 		Screen.DrawTexture(Sprite, false, Pos.X, Pos.Y,
 				DTA_DestWidthF, Scale.X,
 				DTA_DestHeightF, Scale.Y,
@@ -219,6 +224,7 @@ Class MRIntWeaps_EasterMenu: OptionMenu
 				DTA_Alpha, Alpha
 		);
 	}
+	
 	Const EpilepsyIndex = 5;
 	//Show epilepsy message if gloves color is set to "Fast Rainbow" or "Epilepsy"
 	Override Bool MenuEvent(int mkey, bool fromcontroller)

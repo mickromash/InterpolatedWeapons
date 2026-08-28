@@ -416,6 +416,11 @@ MRIntW_ViewPresset = "Просмотреть прессет";
 MRIntW_ViewingPresset = "Свой прессет #%i";
 MRIntW_EmptyPresset = "Этот прессет пуст";
 
+MRIntWeaps_UiMenu = "Настройки интерфейса";
+MRIntW_SmoothUi = "Плавное меню";
+MRIntW_SmoothUiTransitions = "Плавные переходы в меню";
+
+
 TAG_RIFLE = "Винтовка";
 
 MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- Это сохранение было сделано с другой версией мода\n"

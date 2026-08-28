@@ -1,0 +1,182 @@
+Class MRIntWeaps_OptionMenu: OptionMenu
+{
+	Bool Interpolate;
+	int LastScroll;
+	Double DiffY;
+	
+	Override Void Init(Menu parent, OptionMenuDescriptor desc)
+	{
+		Super.Init(parent, desc);
+		Interpolate = MRIntW_SmoothUi;
+		
+		if(Interpolate){
+			Animated = true;
+		}
+		else Animated = false;
+		
+		AnimatedTransition = MRIntW_SmoothUiTransitions;
+	}
+	
+	override void Drawer ()
+	{
+		//Back button
+		if (self == GetCurrentMenu() && BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
+		{
+			let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
+			if (tex.IsValid())
+			{
+				Vector2 v = TexMan.GetScaledSize(tex);
+				int w = int(v.X + 0.5) * CleanXfac;
+				int h = int(v.Y + 0.5) * CleanYfac;
+				int x = (!(m_show_backbutton&1))? 0:screen.GetWidth() - w;
+				int y = (!(m_show_backbutton&2))? 0:screen.GetHeight() - h;
+				if (mBackbuttonSelected && (mMouseCapture || m_use_mouse == 1))
+				{
+					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_ColorOverlay, Color(40, 255,255,255), DTA_NOOFFSET, true);
+				}
+				else
+				{
+					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_Alpha, BackbuttonAlpha, DTA_NOOFFSET, true);
+				}
+			}
+		}
+		
+		int fontheight = OptionMenuSettings.mLinespacing * CleanYfac_1;
+		
+		DiffY *= .7;
+		
+		if(LastScroll != mDesc.mScrollPos){
+			DiffY += (mDesc.mScrollPos - LastScroll)*fontheight;
+			LastScroll = mDesc.mScrollPos;
+		}
+		
+		if(!Interpolate)DiffY = 0;
+		
+		Double Y = mDesc.mPosition;
+		
+		if(Y <= 0)
+		{
+			Y = DrawCaption(mDesc.mTitle, -Y, true);
+		}
+		
+		int StaticY = Y;
+		
+		Y += DiffY;
+		
+		mDesc.mDrawTop = Y / CleanYfac_1; // mouse checks are done in clean space.
+
+		int indent = GetIndent();
+
+		Double ytop = StaticY + mDesc.mScrollTop * 8 * CleanYfac_1;
+		int lastrow = screen.GetHeight() - OptionHeight() * CleanYfac_1;
+		
+		Vector2 OldClip, OldClipW;
+		[OldClip.X, OldClip.Y, OldClipW.X, OldClipW.Y] = Screen.GetClipRect();
+		Screen.SetClipRect(0, StaticY, Screen.GetWidth(), Screen.GetHeight());
+		
+		int i;
+		for (i = 0; i < mDesc.mItems.Size() && Y <= lastrow; i++)
+		{
+			// Don't scroll the uppermost items
+			if (i == mDesc.mScrollTop)
+			{
+				i += mDesc.mScrollPos;
+				if (i >= mDesc.mItems.Size()) break;	// skipped beyond end of menu 
+			}
+			bool isSelected = mDesc.mSelectedItem == i;
+			int cur_indent = mDesc.mItems[i].Draw(mDesc, Y, indent, isSelected);
+			if (cur_indent >= 0 && isSelected && mDesc.mItems[i].Selectable())
+			{
+				if (((MenuTime() % 8) < 6) || GetCurrentMenu() != self)
+				{
+					DrawOptionText(cur_indent + 3 * CleanXfac_1, Y, OptionMenuSettings.mFontColorSelection, "◄");
+				}
+			}
+			Y += fontheight;
+		}
+		Screen.SetClipRect(OldClip.X, OldClip.Y, OldClipW.X, OldClipW.Y);
+
+		CanScrollUp = (mDesc.mScrollPos > 0);
+		CanScrollDown = (i < mDesc.mItems.Size());
+		VisBottom = i - 1;
+
+		if (CanScrollUp)
+		{
+			DrawOptionText(screen.GetWidth() - 11 * CleanXfac_1, ytop, OptionMenuSettings.mFontColorSelection, "▲");
+		}
+		if (CanScrollDown)
+		{
+			DrawOptionText(screen.GetWidth() - 11 * CleanXfac_1 , StaticY - 8*CleanYfac_1, OptionMenuSettings.mFontColorSelection, "▼");
+		}
+	}
+}
+
+Class MRIntWeaps_ListMenu: ListMenu
+{
+	Bool Interpolate;
+	Vector2 Selector;
+	int LastSelected;
+	
+	Override void Init(Menu parent, ListMenuDescriptor desc)
+	{
+		Super.Init(parent, desc);
+		
+		LastSelected = mDesc.mSelectedItem;
+		Selector.X = -4000;
+		
+		interpolate = MRIntW_SmoothUi;
+		
+		if(Interpolate){
+			Animated = true;
+		}
+		else Animated = false;
+		
+		AnimatedTransition = MRIntW_SmoothUiTransitions;
+	}
+	
+	Override Void Drawer()
+	{
+		//Back button
+		if (self == GetCurrentMenu() && BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
+		{
+			let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
+			if (tex.IsValid())
+			{
+				Vector2 v = TexMan.GetScaledSize(tex);
+				int w = int(v.X + 0.5) * CleanXfac;
+				int h = int(v.Y + 0.5) * CleanYfac;
+				int x = (!(m_show_backbutton&1))? 0:screen.GetWidth() - w;
+				int y = (!(m_show_backbutton&2))? 0:screen.GetHeight() - h;
+				if (mBackbuttonSelected && (mMouseCapture || m_use_mouse == 1))
+				{
+					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_ColorOverlay, Color(40, 255,255,255), DTA_NOOFFSET, true);
+				}
+				else
+				{
+					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_Alpha, BackbuttonAlpha, DTA_NOOFFSET, true);
+				}
+			}
+		}
+
+		Selector.Y *= .7;
+		Selector.X *= .35;
+		
+		if(LastSelected != mDesc.mSelectedItem && LastSelected > -1 && mDesc.mSelectedItem > -1){
+			if(LastSelected>mDesc.mSelectedItem)Selector.Y -= (mDesc.mItems[LastSelected].GetY()-mDesc.mItems[mDesc.mSelectedItem].GetY()+mDesc.mSelectOfsY);
+			else Selector.Y += (mDesc.mItems[mDesc.mSelectedItem].GetY()-mDesc.mItems[LastSelected].GetY()+mDesc.mSelectOfsY);
+			LastSelected = mDesc.mSelectedItem;
+		}
+		
+		if(!interpolate)Selector *= 0;
+		
+		for(int i=0;i<mDesc.mItems.Size(); i++)
+		{
+			if (mDesc.mItems[i].mEnabled) mDesc.mItems[i].Draw(mDesc.mSelectedItem == i, mDesc);
+		}
+		if (mDesc.mSelectedItem >= 0 && mDesc.mSelectedItem < mDesc.mItems.Size())
+		{
+			if (!menuDelegate.DrawSelector(mDesc))
+				mDesc.mItems[mDesc.mSelectedItem].DrawSelector(mDesc.mSelectOfsX + Selector.X, mDesc.mSelectOfsY - Selector.Y, mDesc.mSelector, mDesc);
+		}
+	}
+}

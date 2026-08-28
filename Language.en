@@ -415,6 +415,10 @@ MRIntW_ViewPresset = "View presset";
 MRIntW_ViewingPresset = "Custom presset #%i";
 MRIntW_EmptyPresset = "This presset is empty";
 
+MRIntWeaps_UiMenu = "Ui settings";
+MRIntW_SmoothUi = "Smooth menus";
+MRIntW_SmoothUiTransitions = "Smooth menu transitions";
+
 
 TAG_RIFLE = "Rifle";
 

@@ -1,5 +1,27 @@
+AddListMenu "MainMenu"
+{
+	Class MRIntWeaps_ListMenu
+	Animated
+	AnimatedTransition
+}
+AddListMenu "EpisodeMenu"
+{
+	Class MRIntWeaps_ListMenu
+	Animated
+	AnimatedTransition
+}
+AddListMenu "SkillMenu"
+{
+	Class MRIntWeaps_ListMenu
+	Animated
+	AnimatedTransition
+}
+
 AddOptionMenu "OptionsMenu"
 {
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 	StaticText "Interpolated weapons"
 	SubMenu "$MRIntWeaps_Menu", "MRIntWeaps_Menu"
 	StaticText ""
@@ -7,6 +29,9 @@ AddOptionMenu "OptionsMenu"
 
 OptionMenu "MRIntWeaps_Menu"
 {
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 	Title "$MRIntWeaps_Menu"
 	StaticText ""
 	//Server
@@ -28,6 +53,7 @@ OptionMenu "MRIntWeaps_Menu"
 	SubMenu "$MRIntWeaps_AnimMenu", "MRIntWeaps_AnimMenu"
 	SubMenu "$MRIntWeaps_ParticlesMenu", "MRIntWeaps_ParticlesMenu"
 	SubMenu "$MRIntWeaps_SoundMenu", "MRIntWeaps_SoundMenu"
+	SubMenu "$MRIntWeaps_UiMenu", "MRIntWeaps_UiMenu"
 	StaticText ""
 	SubMenu "$MRIntWeaps_PressetsMenu", "MRIntWeaps_PressetsMenu"
 	StaticText ""
@@ -40,6 +66,8 @@ OptionMenu "MRIntWeaps_Menu"
 
 OptionMenu "MRIntWeaps_AnimMenu"
 {
+	Animated
+	AnimatedTransition
 	Class MRIntWeaps_AnimMenu
 	Title "$MRIntWeaps_AnimMenu"
 	StaticText ""
@@ -60,6 +88,9 @@ OptionMenu "MRIntWeaps_AnimMenu"
 
 OptionMenu "MRIntWeaps_OffsetMenu"
 {
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 	Title "$MRIntWeaps_OffsetMenu"
 	StaticText ""
 	Option "$MRIntW_BobStyle", "MRIntW_BobStyle", "MRIntW_BobStyleValues"
@@ -89,6 +120,9 @@ OptionMenu "MRIntWeaps_OffsetMenu"
 
 OptionMenu "MRIntWeaps_WeaponsMenu"
 {
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 	Title "$MRIntWeaps_WeaponsMenu"
 	StaticText ""
 	StaticText "$TAG_FIST", "Fire"
@@ -151,6 +185,9 @@ OptionMenu "MRIntWeaps_WeaponsMenu"
 
 OptionMenu "MRIntWeaps_ParticlesMenu"
 {
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 	Title "$MRIntWeaps_ParticlesMenu"
 	StaticText ""
 	Option "$MRIntW_Casings", "MRIntW_Casings", "MRIntW_CasingsValues"
@@ -202,6 +239,9 @@ OptionMenu "MRIntWeaps_ParticlesMenu"
 }
 OptionMenu "MRIntWeaps_PlayerParticlesMenu"
 {
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 	Title "$MRIntWeaps_PlayerParticlesMenu"
 	StaticText ""
 	FlagOption "$MRIntW_PlrParticles_Puff", "MRIntW_PlayerWhichParticles", "YesNo", 23, "MRIntW_PlayerParticles"
@@ -250,6 +290,9 @@ OptionMenu "MRIntWeaps_PlayerParticlesMenu"
 }
 OptionMenu "MRIntWeaps_MonsterParticlesMenu"
 {
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 	Title "$MRIntWeaps_MonsterParticlesMenu"
 	StaticText ""
 	StaticText "$FN_IMP", "Fire"
@@ -347,6 +390,9 @@ OptionMenu "MRIntWeaps_MonsterParticlesMenu"
 }
 OptionMenu "MRIntWeaps_DecorationParticlesMenu"
 {
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 	Title "$MRIntWeaps_DecorationParticlesMenu"
 	StaticText ""
 	FlagOption "$MRIntW_DecorParticles_Bloom", "MRIntW_DecorationWhichParticles", "YesNo", 6, "MRIntW_DecorationParticles"
@@ -370,6 +416,9 @@ OptionMenu "MRIntWeaps_DecorationParticlesMenu"
 
 OptionMenu "MRIntWeaps_SoundMenu"
 {
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 	Title "$MRIntWeaps_SoundMenu"
 	StaticText ""
 	Slider "$MRIntW_ChainsawVolume", "MRIntW_ChainsawVolume", 0, 1, .1
@@ -380,8 +429,21 @@ OptionMenu "MRIntWeaps_SoundMenu"
 	Option "$MRIntW_ChaingunSound", "MRIntW_ChaingunSound", "YesNo"
 }
 
+OptionMenu "MRIntWeaps_UiMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+	Title "$MRIntWeaps_UiMenu"
+	StaticText ""
+	Option "$MRIntW_SmoothUi", "MRIntW_SmoothUi", "YesNo"
+	Option "$MRIntW_SmoothUiTransitions", "MRIntW_SmoothUiTransitions", "YesNo"
+}
+
 OptionMenu "MRIntWeaps_PressetsMenu"
 {
+	Animated
+	AnimatedTransition
 	Class MRIntWeaps_PressetsMenu
 	Title "$MRIntWeaps_PressetsMenu"
 	StaticText ""
@@ -400,11 +462,14 @@ OptionMenu "MRIntWeaps_PressetsMenu"
 
 OptionMenu "MRIntWeaps_ViewPressetMenu"
 {
+	Animated
+	AnimatedTransition
 	Class MRIntWeaps_ViewPressetMenu
 }
 
 OptionMenu "MRIntWeaps_EasterMenu"
 {
+	Animated
 	Class MRIntWeaps_EasterMenu
 	
 	Title "SAS"

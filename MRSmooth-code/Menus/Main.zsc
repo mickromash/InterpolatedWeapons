@@ -1,4 +1,4 @@
-Class MRIntWeaps_AnimMenu: OptionMenu
+Class MRIntWeaps_AnimMenu: MRIntWeaps_OptionMenu
 {
 	Static String MRLocalize(String Str)
 	{
