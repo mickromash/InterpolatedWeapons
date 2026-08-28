@@ -14,7 +14,7 @@ Version "4.10"
 #include "MRSmooth-code/Weapons/Plasmagun.zsc"
 #include "MRSmooth-code/Weapons/BFG9000.zsc"
 #include "MRSmooth-code/Weapons/Id24incinerator.zsc"
-//#include "MRSmooth-code/Weapons/id24calamityblade.zsc"
+#include "MRSmooth-code/Weapons/id24calamityblade.zsc"
 
 #include "MRSmooth-code/Weapons/Additionally/FistIdleAnims.zsc"
 #include "MRSmooth-code/Weapons/Additionally/ChainsawBlood.zsc"//Blood on chainsaw
@@ -32,7 +32,8 @@ Version "4.10"
 #include "MRSmooth-code/Particles/Misc.zsc"//Decoration and other particle effects
 
 #include "MRSmooth-code/Menus/MenuInterpolation.zsc"
-#include "MRSmooth-code/Menus/Main.zsc"//Some little tricks for mod's menu
+#include "MRSmooth-code/Menus/MainMenuEffects.zsc"
+#include "MRSmooth-code/Menus/SomeTricks.zsc"//Some little tricks for mod's menu
 #include "MRSmooth-code/Menus/Pressets.zsc"//Settings pressets menu
 #include "MRSmooth-code/Menus/EasterMenu.zsc"//Secret glove colors menu
 

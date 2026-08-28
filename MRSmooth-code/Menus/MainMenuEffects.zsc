@@ -1,0 +1,100 @@
+Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenu
+{
+	Override void Init(Menu parent, ListMenuDescriptor desc)
+	{
+		Super.Init(parent, desc);
+		
+		For(int i=0;i<mDesc.mItems.Size();i++)
+		{
+			Let Item = ListMenuItemStaticPatch(mDesc.mItems[i]);
+			if(!Item || Texman.GetName(Item.mTexture) != "M_DOOM")Continue;
+			
+			mDesc.mItems[i] = New('ListMenuItemMR_Doom');
+			ListMenuItemMR_Doom(mDesc.mItems[i]).Init(mDesc, 94, 2, Texman.CheckForTexture("M_DOOM"));
+		}
+	}
+}
+
+Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
+{
+	Const DefScale = 3;
+	int Stayt;
+	Double Scale, Scale2, SubY;
+	
+	Override Void OnMenuCreated()
+	{
+		Stayt = 0;
+		Scale = 1;
+	}
+	
+	override void Draw(bool selected, ListMenuDescriptor desc)
+	{
+		if (!mTexture.Exists())
+		{
+			return;
+		}
+
+		Vector2 vec = TexMan.GetScaledSize(mTexture);
+		
+		if(Stayt<4+18){
+			Switch(Stayt){
+				Default:
+					Stayt++;
+					Break;
+				Case 3:
+					Scale = (DefScale*1.4)+(Scale-(DefScale*1.4))*.5;
+					if(abs(Scale-(DefScale*1.4))<.2)Stayt++;
+					Break;
+				Case 4:
+					Scale = DefScale+(Scale-DefScale)*.7;
+					if(abs(Scale-DefScale)<.01)Stayt++;
+					Break;
+			}
+		}
+		
+		Screen.DrawTexture(mTexture, true, Screen.GetWidth()*.5 -vec.X*Scale*.5, Screen.GetHeight()*.5 -vec.Y*Scale*.5 - vec.Y*DefScale*1.2
+			,DTA_FullscreenScale, true
+			,DTA_DestWidthF, vec.X*Scale
+			,DTA_DestHeightF, vec.Y*Scale
+		);
+		
+		if(Stayt>3+18 && Stayt<60*19){
+			Float Rot = 25;
+			
+			if(Stayt<3+21){
+				Switch(Stayt){
+					Case 3+19:
+						Scale2 = 2;
+						Stayt++;
+						Break;
+					Case 3+20:
+						Scale2 = 1+(Scale2-1)*.4;
+						if(abs(Scale2-1)<.01)Stayt++;
+						Break;
+				}
+			}
+			else {
+				Stayt++;
+				
+				if(Stayt>60*10){
+					if(Stayt<60*12)Rot += CFRandom(-.01, .01)*(Stayt-60*10);
+					else {
+						Rot = 25 - (Stayt-60*12)*4;
+						SubY += 1+SubY*.5;
+					}
+				}
+			}
+			
+			TextureId SubTex = Texman.CheckForTexture("MR_DOOM");
+			
+			Vector2 SubSize = Texman.GetScaledSize(SubTex);
+			
+			Screen.DrawTexture(SubTex, true, Screen.GetWidth()*.5 + Vec.X -SubSize.X*.5*Scale2, Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5*Scale2 + SubY
+				,DTA_FullscreenScale, true
+				,DTA_DestWidthF, SubSize.X*DefScale*.85*Scale2
+				,DTA_DestHeightF, SubSize.Y*DefScale*.85*Scale2
+				,DTA_Rotate, Rot
+			);
+		}
+	}
+}

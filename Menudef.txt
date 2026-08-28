@@ -1,6 +1,12 @@
 AddListMenu "MainMenu"
 {
-	Class MRIntWeaps_ListMenu
+	Class MRIntWeaps_MainMenu
+	Animated
+	AnimatedTransition
+}
+AddListMenu "MainMenuTextOnly"
+{
+	Class MRIntWeaps_MainMenu
 	Animated
 	AnimatedTransition
 }
