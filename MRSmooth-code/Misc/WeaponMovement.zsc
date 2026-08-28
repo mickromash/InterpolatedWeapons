@@ -338,6 +338,12 @@ Extend Class MRIntWeaps_Fist
 					Case 'MRIntWeaps_BFG9000':
 						Mult = .1;
 						Break;
+					Case 'MRIntWeaps_ID24Incinerator':
+						Mult = .6;
+						Break;
+					Case 'MRIntWeaps_ID24CalamityBlade':
+						Mult = .5;
+						Break;
 				}
 				if(Style==2)MultRot *= 2;
 			
