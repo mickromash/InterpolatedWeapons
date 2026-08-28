@@ -71,7 +71,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				}
 			}
 			else {//If second hand is off screen
-				if(SHandState==1 && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bADDWEAPON){
+				if(SHandState==1 && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bAddWeapon && !InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
 					Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
 					HandTime = 35*20;
 				}
@@ -81,7 +81,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 		
 		if(EnableSecondHand>1){
-			if(!SecondHand && !Owner.Player.FindPSprite(SHand)){
+			if(!SecondHand && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bAddWeapon && !InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
 					Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
 			}
 		}
@@ -792,7 +792,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay1).Rotation = 20+(Player.GetPSprite(Lay1).Rotation-20)*.9;
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.9;
 				
-				invoker.SHandState = -1;
+				if(Player.FindPSprite(SHand2))A_Overlay(SHand, "SecondHandLower");
 			}
 			#### ### 1 {
 				A_OverlayMoveTo(Lay1, 36, 15, .8);
