@@ -261,7 +261,14 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				if(invoker.Heat<.8)invoker.Heat += Min(.8-invoker.Heat, .35);
 				if(invoker.AnimRec<1)invoker.AnimRec += Min(1-invoker.AnimRec, .5);
 				
-				if(!(Player.Cmd.Buttons&BT_ATTACK)){Player.SetPsprite(Lay1, invoker.FindState("GunWait"));Return;}
+				if(
+					!InStateSequence(Player.GetPSprite(PSP_WEAPON).CurState, invoker.FindState("DoFire"))&&
+					!InStateSequence(Player.GetPSprite(PSP_WEAPON).CurState, invoker.FindState("Fire"))&&
+					!InStateSequence(Player.GetPSprite(PSP_WEAPON).CurState, invoker.FindState("FireLoop"))
+				){
+					Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
+					Return;
+				}
 				
 				A_OverlayOffset(Lay1, CFRandom(-2, 2)*invoker.AnimRec, Min(CFRandom(.5, 1), invoker.AnimRec)*4, WOF_INTERPOLATE);
 				Player.GetPSprite(Lay1).Rotation *= .5;
@@ -462,6 +469,15 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayFlags(OverlayId(), PSPF_FLIP|PSPF_MIRROR, CRandom(0, 1));
 				
 				A_SyncWithLay();
+				
+				if(Player.GetPSprite(OverlayId()).bFlip){
+					Player.GetPSprite(OverlayId()).X = -Player.GetPSprite(PSP_WEAPON).X*2 -Player.GetPSprite(Lay1).X;
+					Player.GetPSprite(OverlayId()).OldX = -Player.GetPSprite(PSP_WEAPON).OldX*2 -Player.GetPSprite(Lay1).OldX;
+				}
+				else {
+					Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
+					Player.GetPSprite(OverlayId()).OldX = Player.GetPSprite(Lay1).OldX;
+				}
 				
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, Inter);
 				if(Inter && invoker.Heat<=0)A_ClearOverlays(OverlayId(), OverlayId());
@@ -701,7 +717,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		
 		if(CVa>1){
 			if(MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist"))){
-				if(MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist")).CurSway.X==0)invoker.IdleDelay++;
+				if(abs(MRIntWeaps_Fist(FindInventory("MRIntWeaps_Fist")).CurSway.X)<.0001)invoker.IdleDelay++;
 				else invoker.IdleDelay = Min(0, invoker.IdleDelay);
 			}
 		}
