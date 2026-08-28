@@ -52,7 +52,7 @@ Class MRIntWeaps_Smoker: Object play
 	Color Col, Col1;
 	Const Dist = 10.;//.5
 	Const BaseScale = 1.3;//.6
-	Const ZSpeed = .2;
+	Const ZSpeed = .15;//.2
 	Const Step = .25;
 	Const Brightness = 130;
 	
