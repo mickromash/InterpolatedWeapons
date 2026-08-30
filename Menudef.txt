@@ -188,12 +188,12 @@ AddOptionMenu "AltHUDOptions"
 	Animated
 	AnimatedTransition
 }
-AddOptionMenu "HapticsOptions"
+/*AddOptionMenu "HapticsOptions"
 {
 	Class MRIntWeaps_OptionMenu
 	Animated
 	AnimatedTransition
-}
+}*/
 AddOptionMenu "MiscOptions"
 {
 	Class MRIntWeaps_OptionMenu
@@ -318,12 +318,12 @@ AddOptionMenu "SoundOptions"
 	Animated
 	AnimatedTransition
 }
-AddOptionMenu "MidiDevicesMenu"
+/*AddOptionMenu "MidiDevicesMenu"
 {
 	Class MRIntWeaps_OptionMenu
 	Animated
 	AnimatedTransition
-}
+}*/
 AddOptionMenu "GusConfigMenu"
 {
 	Class MRIntWeaps_OptionMenu
@@ -450,12 +450,12 @@ AddOptionMenu "ReverbSave"
 	Animated
 	AnimatedTransition
 }
-AddOptionMenu "AccessibilityOptions"
+/*AddOptionMenu "AccessibilityOptions"
 {
 	Class MRIntWeaps_OptionMenu
 	Animated
 	AnimatedTransition
-}
+}*/
 AddOptionMenu "NetworkOptions"
 {
 	Class MRIntWeaps_OptionMenu
@@ -1111,7 +1111,7 @@ OptionValue "MRIntW_RespawnParticlesValues"
 	3, "$MRIntW_RespawnParticles3"
 }
 
-OptionValue "MRIntW_SmoothUiTransitions"
+OptionValue "MRIntW_SmoothUiTransitionsValues"
 {
 	0, "$TXT_NO"
 	1, "$MRIntW_SmoothUiTransitions1"
