@@ -418,6 +418,9 @@ MRIntW_EmptyPresset = "This presset is empty";
 MRIntWeaps_UiMenu = "Ui settings";
 MRIntW_SmoothUi = "Smooth menus";
 MRIntW_SmoothUiTransitions = "Smooth menu transitions";
+MRIntW_SmoothUiTransitions1 = "Except settings";
+MRIntW_SmoothUiTransitions2 = "For all";
+MRIntW_SmoothUiLogo = "Animated logo";
 
 
 TAG_RIFLE = "Rifle";

@@ -1,6 +1,6 @@
 Class MRIntWeaps_OptionMenu: OptionMenu
 {
-	Bool Interpolate;
+	Bool Interpolate, UZDoom;
 	int LastScroll;
 	Double DiffY;
 	
@@ -14,10 +14,10 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		}
 		else Animated = false;
 		
-		AnimatedTransition = MRIntW_SmoothUiTransitions;
+		AnimatedTransition = MRIntW_SmoothUiTransitions>1;
 	}
 	
-	override void Drawer ()
+	override void Drawer()
 	{
 		//Back button
 		if (self == GetCurrentMenu() && BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
@@ -121,8 +121,8 @@ Class MRIntWeaps_ListMenu: ListMenu
 	{
 		Super.Init(parent, desc);
 		
+		Selector.X = -Screen.GetWidth()*.5;
 		LastSelected = mDesc.mSelectedItem;
-		Selector.X = -4000;
 		
 		interpolate = MRIntW_SmoothUi;
 		
@@ -131,7 +131,7 @@ Class MRIntWeaps_ListMenu: ListMenu
 		}
 		else Animated = false;
 		
-		AnimatedTransition = MRIntW_SmoothUiTransitions;
+		AnimatedTransition = MRIntW_SmoothUiTransitions>1;
 	}
 	
 	Override Void Drawer()
@@ -178,5 +178,420 @@ Class MRIntWeaps_ListMenu: ListMenu
 			if (!menuDelegate.DrawSelector(mDesc))
 				mDesc.mItems[mDesc.mSelectedItem].DrawSelector(mDesc.mSelectOfsX + Selector.X, mDesc.mSelectOfsY - Selector.Y, mDesc.mSelector, mDesc);
 		}
+	}
+}
+
+Class MRIntWeaps_OptionsMenu: MRIntWeaps_OptionMenu
+{
+	Override Void Init(Menu parent, OptionMenuDescriptor desc)
+	{
+		Super.Init(parent, desc);
+
+		AnimatedTransition = MRIntW_SmoothUiTransitions>0;
+	}
+}
+
+Class MRIntWeaps_ListMenuMain: MRIntWeaps_ListMenu
+{
+	Override void Init(Menu parent, ListMenuDescriptor desc)
+	{
+		Super.Init(parent, desc);
+
+		AnimatedTransition = MRIntW_SmoothUiTransitions>0;
+	}
+}
+
+Class MRIntWeaps_LoadSaveMenu: LoadSaveMenu
+{
+	Bool Interpolate;
+	int LastTopItem;
+	Double DiffY;
+	
+	override void Init(Menu parent, ListMenuDescriptor desc)
+	{
+		Super.Init(parent, desc);
+		
+		interpolate = MRIntW_SmoothUi;
+		
+		if(Interpolate){
+			Animated = true;
+		}
+		else Animated = false;
+		
+		AnimatedTransition = MRIntW_SmoothUiTransitions>0;
+	}
+	
+	Void SetWindows()
+	{
+		int Width43 = screen.GetHeight() * 4 / 3;
+		int Left43 = (screen.GetWidth() - Width43) / 2;
+
+		double wScale = Width43 / 640.;
+
+		savepicLeft = Left43 + int(20 * wScale);
+		savepicTop = int(mDesc.mYpos * screen.GetHeight() / 200);
+		savepicWidth = int(240 * wScale);
+		savepicHeight = int(180 * wScale);
+
+		FontScale = max(screen.GetHeight() / 480, 1);
+		rowHeight = int(max((NewConsoleFont.GetHeight() + 1) * FontScale, 1));
+
+		listboxLeft = savepicLeft + savepicWidth + int(20*wScale);
+		listboxTop = savepicTop;
+		listboxWidth = Width43 + Left43 - listboxLeft - int(30 * wScale);
+		int listboxHeight1 = screen.GetHeight() - listboxTop - int(20*wScale);
+		listboxRows = (listboxHeight1 - 1) / rowHeight;
+		listboxHeight = listboxRows * rowHeight + 1;
+		listboxRight = listboxLeft + listboxWidth;
+
+		commentLeft = savepicLeft;
+		commentTop = savepicTop + savepicHeight + int(16 * wScale);
+		commentWidth = savepicWidth;
+		commentHeight = listboxHeight - savepicHeight - int(16 * wScale);
+		commentRows = commentHeight / rowHeight;
+	}
+	
+	Override Void Drawer()
+	{
+		//Back button
+		if (BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
+		{
+			let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
+			if (tex.IsValid())
+			{
+				Vector2 v = TexMan.GetScaledSize(tex);
+				int w = int(v.X + 0.5) * CleanXfac;
+				int h = int(v.Y + 0.5) * CleanYfac;
+				int x = (!(m_show_backbutton&1))? 0:screen.GetWidth() - w;
+				int y = (!(m_show_backbutton&2))? 0:screen.GetHeight() - h;
+				if (mBackbuttonSelected && (mMouseCapture || m_use_mouse == 1))
+				{
+					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_ColorOverlay, Color(40, 255,255,255), DTA_NOOFFSET, true);
+				}
+				else
+				{
+					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_Alpha, BackbuttonAlpha, DTA_NOOFFSET, true);
+				}
+			}
+		}
+
+		SaveGameNode node;
+		int i, j;
+		bool didSeeSelected = false;
+
+		// Draw picture area
+		if (gameaction == ga_loadgame || gameaction == ga_loadgamehidecon || gameaction == ga_savegame)return;
+
+		SetWindows();
+		DrawFrame(savepicLeft, savepicTop, savepicWidth, savepicHeight);
+		if (!manager.DrawSavePic(savepicLeft, savepicTop, savepicWidth, savepicHeight))
+		{
+			screen.Dim(0, 0.6, savepicLeft, savepicTop, savepicWidth, savepicHeight);
+
+			if (manager.SavegameCount() > 0)
+			{
+				if (Selected >= manager.SavegameCount()) Selected = 0;
+				String text = (Selected == -1 || !manager.GetSavegame(Selected).bOldVersion)? Stringtable.Localize("$MNU_NOPICTURE") : Stringtable.Localize("$MNU_DIFFVERSION");
+				int textlen = NewSmallFont.StringWidth(text);
+
+				screen.DrawText (NewSmallFont, Font.CR_GOLD, (savepicLeft + savepicWidth / 2) / FontScale - textlen/2,
+					(savepicTop+(savepicHeight-rowHeight)/2) / FontScale, text, DTA_VirtualWidthF, screen.GetWidth() / FontScale, DTA_VirtualHeightF, screen.GetHeight() / FontScale, DTA_KeepRatio, true);
+			}
+		}
+
+		// Draw comment area
+		DrawFrame (commentLeft, commentTop, commentWidth, commentHeight);
+		screen.Dim(0, 0.6, commentLeft, commentTop, commentWidth, commentHeight);
+
+		int numlinestoprint = min(commentRows, BrokenSaveComment? BrokenSaveComment.Count() : 0);
+		for(int i = 0; i < numlinestoprint; i++)
+		{
+			screen.DrawText(NewConsoleFont, Font.CR_ORANGE, commentLeft / FontScale, (commentTop + rowHeight * i) / FontScale, BrokenSaveComment.StringAt(i),
+				DTA_VirtualWidthF, screen.GetWidth() / FontScale, DTA_VirtualHeightF, screen.GetHeight() / FontScale, DTA_KeepRatio, true);
+		}
+
+		// Draw file area
+		DrawFrame (listboxLeft, listboxTop, listboxWidth, listboxHeight);
+		screen.Dim(0, 0.6, listboxLeft, listboxTop, listboxWidth, listboxHeight);
+		screen.SetClipRect(listboxLeft, listboxTop, listboxWidth, listboxHeight);
+		
+		if (manager.SavegameCount() == 0)
+		{
+			String text = Stringtable.Localize("$MNU_NOFILES");
+			int textlen = int(NewConsoleFont.StringWidth(text) * FontScale);
+
+			screen.DrawText (NewConsoleFont, Font.CR_GOLD, (listboxLeft+(listboxWidth-textlen)/2) / FontScale, (listboxTop+(listboxHeight-rowHeight)/2) / FontScale, text,
+				DTA_VirtualWidthF, screen.GetWidth() / FontScale, DTA_VirtualHeightF, screen.GetHeight() / FontScale, DTA_KeepRatio, true);
+			return;
+		}
+		
+		DiffY *= .7;
+		
+		if(LastTopItem != TopItem){
+			DiffY += (TopItem - LastTopItem)*rowHeight;
+			LastTopItem = TopItem;
+		}
+		
+		if(!Interpolate)DiffY = 0;
+		
+
+		j = TopItem;
+		for (i = 0; i < listboxRows && j < manager.SavegameCount(); i++)
+		{
+			int colr;
+			node = manager.GetSavegame(j);
+			if (node.bOldVersion)
+			{
+				colr = Font.CR_RED;
+			}
+			else if (node.bMissingWads)
+			{
+				colr = Font.CR_YELLOW;
+			}
+			else if (j == Selected)
+			{
+				colr = Font.CR_WHITE;
+			}
+			else
+			{
+				colr = Font.CR_TAN;
+			}
+			if (j == Selected)
+			{
+				screen.Clear (listboxLeft, listboxTop+rowHeight*i+DiffY, listboxRight, listboxTop+rowHeight*(i+1)+DiffY, mEntering ? Color(255,255,0,0) : Color(255,0,0,255));
+				didSeeSelected = true;
+				if (!mEntering)
+				{
+					screen.DrawText (NewConsoleFont, colr, (listboxLeft+1) / FontScale, (listboxTop+rowHeight*i + FontScale + DiffY) / FontScale, node.SaveTitle,
+						DTA_VirtualWidthF, screen.GetWidth() / FontScale, DTA_VirtualHeightF, screen.GetHeight() / FontScale, DTA_KeepRatio, true);
+				}
+				else
+				{
+					String s = mInput.GetText() .. NewConsoleFont.GetCursor();
+					int length = int(NewConsoleFont.StringWidth(s) * FontScale);
+					int displacement = min(0, listboxWidth - 2 - length);
+					screen.DrawText (NewConsoleFont, Font.CR_WHITE, (listboxLeft + 1 + displacement) / FontScale, (listboxTop+rowHeight*i + FontScale + DiffY) / FontScale, s,
+						DTA_VirtualWidthF, screen.GetWidth() / FontScale, DTA_VirtualHeightF, screen.GetHeight() / FontScale, DTA_KeepRatio, true);
+				}
+			}
+			else
+			{
+				screen.DrawText (NewConsoleFont, colr, (listboxLeft+1) / FontScale, (listboxTop+rowHeight*i + FontScale + DiffY) / FontScale, node.SaveTitle,
+					DTA_VirtualWidthF, screen.GetWidth() / FontScale, DTA_VirtualHeightF, screen.GetHeight() / FontScale, DTA_KeepRatio, true);
+			}
+			j++;
+		}
+	}
+}
+class MRIntWeaps_SaveMenu: MRIntWeaps_LoadSaveMenu
+{
+	String mSaveName;
+
+	override void Init(Menu parent, ListMenuDescriptor desc)
+	{
+		Super.Init(parent, desc);
+		manager.InsertNewSaveNode();
+		Selected = manager.ExtractSaveData (-1);
+		TopItem = MAX(0, Selected - listboxRows + 1);
+		UpdateSaveComment();
+	}
+	override void OnDestroy()
+	{
+		if (manager.RemoveNewSaveNode())Selected--;
+		Super.OnDestroy();
+	}
+	override void TryDeleteMessage()
+	{
+		if (Selected == 0)return;
+
+		super.TryDeleteMessage();
+	}
+	override bool MenuEvent (int mkey, bool fromcontroller)
+	{
+		if (Super.MenuEvent(mkey, fromcontroller))return true;
+
+		if (Selected == -1)return false;
+
+		if (mkey == MKEY_Enter)
+		{
+			String SavegameString = (Selected != 0)? manager.GetSavegame(Selected).SaveTitle : "";
+			mInput = TextEnterMenu.OpenTextEnter(self, Menu.OptionFont(), SavegameString, -1, fromcontroller);
+			mInput.ActivateMenu();
+			mEntering = true;
+		}
+		else if (mkey == MKEY_Input)
+		{
+			mEntering = false;
+			mSaveName = mInput.GetText();
+			mInput = null;
+		}
+		else if (mkey == MKEY_Abort)
+		{
+			mEntering = false;
+			mInput = null;
+		}
+		return false;
+	}
+	override bool MouseEvent(int type, int x, int y)
+	{
+		if (mSaveName.Length() > 0)return true;
+
+		return Super.MouseEvent(type, x, y);
+	}
+	override bool OnUIEvent(UIEvent ev)
+	{
+		if (ev.Type == UIEvent.Type_KeyDown)
+		{
+			if (Selected != -1)
+			{
+				switch (ev.KeyChar)
+				{
+				case 78://'N':
+					Selected = TopItem = 0;
+					manager.UnloadSaveData ();
+					return true;
+				}
+			}
+		}
+		return Super.OnUIEvent(ev);
+	}
+	override void Ticker()
+	{
+		if (mSaveName.Length() > 0)
+		{
+			manager.DoSave(Selected, mSaveName);
+			mSaveName = "";
+		}
+	}
+}
+class MRIntWeaps_LoadMenu: MRIntWeaps_LoadSaveMenu
+{
+	override void Init(Menu parent, ListMenuDescriptor desc)
+	{
+		Super.Init(parent, desc);
+		Selected = manager.ExtractSaveData (-1);
+		TopItem = MAX(0, Selected - listboxRows + 1);
+		UpdateSaveComment();
+	}
+	override bool MenuEvent (int mkey, bool fromcontroller)
+	{
+		if (Super.MenuEvent(mkey, fromcontroller))return true;
+
+		if (Selected == -1 || manager.SavegameCount() == 0)return false;
+
+		if (mkey == MKEY_Enter)
+		{
+			manager.LoadSavegame(Selected);
+			return true;
+		}
+		return false;
+	}
+}
+
+Class MRIntWeaps_NewPlayerMenu: NewPlayerMenu
+{
+	Bool Interpolate;
+	int LastSelected;
+	
+	override void Init(Menu parent, OptionMenuDescriptor desc)
+	{
+		Super.Init(parent, desc);
+		
+		LastSelected = mDesc.mSelectedItem;
+		
+		interpolate = MRIntW_SmoothUi;
+		
+		if(Interpolate){
+			Animated = true;
+		}
+		else Animated = false;
+		
+		AnimatedTransition = MRIntW_SmoothUiTransitions>1;
+	}
+}
+
+Class MRIntWeaps_GameplayMenu: MRIntWeaps_OptionMenu
+{
+	override void Drawer ()
+	{
+		Super.Drawer();
+
+		String s = String.Format("dmflags = %d  dmflags2 = %d  dmflags3 = %d", dmflags, dmflags2, dmflags3);
+		screen.DrawText (OptionFont(), OptionMenuSettings.mFontColorValue,
+			(screen.GetWidth() - OptionWidth (s) * CleanXfac_1) / 2, 35 * CleanXfac_1, s,
+			DTA_CleanNoMove_1, true);
+	}
+}
+
+Class MRIntWeaps_CompatibilityMenu: MRIntWeaps_OptionMenu
+{
+	override void Drawer ()
+	{
+		Super.Drawer();
+
+		String s = String.Format("compatflags = %d  compatflags2 = %d", compatflags, compatflags2);
+		screen.DrawText (OptionFont(), OptionMenuSettings.mFontColorValue,
+			(screen.GetWidth() - OptionWidth (s) * CleanXfac_1) / 2, 35 * CleanXfac_1, s,
+			DTA_CleanNoMove_1, true);
+	}
+}
+
+class MRIntWeaps_ReverbEdit: MRIntWeaps_OptionMenu
+{
+	override void Init(Menu parent, OptionMenuDescriptor desc)
+	{
+		super.Init(parent, desc);
+		OnReturn();
+	}
+
+	override void OnReturn()
+	{
+		string env;
+		int id;
+
+		[env, id] = ReverbEdit.GetSelectedEnvironment();
+
+		let li = GetItem('EnvironmentName');
+		if (li != NULL)
+		{
+			if (id != -1)
+			{
+				li.SetValue(0, 1);
+				li.SetString(0, env);
+			}
+			else
+			{
+				li.SetValue(0, 0);
+			}
+		}
+		li = GetItem('EnvironmentID');
+		if (li != NULL)
+		{
+			if (id != -1)
+			{
+				li.SetValue(0, 1);
+				li.SetString(0, String.Format("%d, %d", (id >> 8) & 255, id & 255));
+			}
+			else
+			{
+				li.SetValue(0, 0);
+			}
+		}
+	}
+}
+class MRIntWeaps_ReverbSelect: MRIntWeaps_OptionMenu
+{
+	override void Init(Menu parent, OptionMenuDescriptor desc)
+	{
+		ReverbEdit.FillSelectMenu("selectenvironment", desc);
+		super.Init(parent, desc);
+	}
+}
+class MRIntWeaps_ReverbSave: MRIntWeaps_OptionMenu
+{
+	override void Init(Menu parent, OptionMenuDescriptor desc)
+	{
+		ReverbEdit.FillSaveMenu(desc);
+		super.Init(parent, desc);
 	}
 }

@@ -142,7 +142,8 @@ nosave int MRIntW_ParticleTexture = -1;
 nosave int MRIntW_ParticleSmokeTexture = -1;
 
 nosave bool MRIntW_SmoothUi = true;
-nosave bool MRIntW_SmoothUiTransitions = true;
+nosave int MRIntW_SmoothUiTransitions = 2;
+nosave bool MRIntW_SmoothUiLogo = true;
 
 user string MRIntW_Braindead = "";
 
@@ -150,6 +151,8 @@ nosave int MRIntW_WhichPresset = 0;
 nosave string MRIntW_PressetCust1 = "";
 nosave string MRIntW_PressetCust2 = "";
 nosave string MRIntW_PressetCust3 = "";
+
+nosave noarchive int MRIntW_MenuState = 0;
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;

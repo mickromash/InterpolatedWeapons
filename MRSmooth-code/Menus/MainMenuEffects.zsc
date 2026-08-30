@@ -4,6 +4,10 @@ Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenu
 	{
 		Super.Init(parent, desc);
 		
+		AnimatedTransition = MRIntW_SmoothUiTransitions>0;
+		
+		if(!MRIntW_SmoothUiLogo || !Interpolate)Return;
+		
 		For(int i=0;i<mDesc.mItems.Size();i++)
 		{
 			Let Item = ListMenuItemStaticPatch(mDesc.mItems[i]);
@@ -18,13 +22,47 @@ Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenu
 Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 {
 	Const DefScale = 3;
-	int Stayt;
-	Double Scale, Scale2, SubY;
+	Bool Tick;
+	int Stayt, IntroVar;
+	Double Scale, Scale2, SubVel, SubAccel, SubRot;
+	Vector2 M_DoomPos, SubPos;
+	Array<MRIntWeaps_MainMenuActor> Actors;
+	MRIntWeaps_MainMenuHand Hand;
 	
-	Override Void OnMenuCreated()
+	void Init(ListMenuDescriptor desc, double x, double y, TextureID patch, bool centered = false, String substitute = "")
 	{
-		Stayt = 0;
-		Scale = 1;
+		Super.Init(desc, x, y, patch);
+		
+		IntroVar = CRandom(0, 2);
+		SubRot = 25;
+
+		Switch(IntroVar){
+			Case 0:
+				Scale = 1;
+				Break;
+			Case 1:
+				Scale = DefScale;
+				M_DoomPos = (Screen.GetWidth()*.6, 0);
+				Break;
+			Case 2:
+				Scale = DefScale;
+				M_DoomPos = (0, -Screen.GetHeight()*.5);
+				Break;
+		}
+		
+		Tick = true;
+		
+		if(MRIntW_MenuState>1)CVar.FindCVar("MRIntW_MenuState").SetInt(0);
+		
+		if(Hand)Hand.Destroy();
+	}
+	
+	Override Void Ticker()
+	{
+		Super.Ticker();
+		
+		if(Tick)Stayt++;
+		Tick = false;
 	}
 	
 	override void Draw(bool selected, ListMenuDescriptor desc)
@@ -33,68 +71,273 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 		{
 			return;
 		}
-
+		
 		Vector2 vec = TexMan.GetScaledSize(mTexture);
 		
-		if(Stayt<4+18){
+		if(Stayt<2+18){
 			Switch(Stayt){
 				Default:
-					Stayt++;
+					Tick = True;
+					Break;
+				Case 2:
+					Tick = false;
+					if(M_DoomPos.Length()<40)Scale = (DefScale*1.4)+(Scale-(DefScale*1.4))*.5;
+					M_DoomPos *= .6;
+					if(abs(Scale-(DefScale*1.4))<.2 && M_DoomPos.Length()<3)Stayt++;
 					Break;
 				Case 3:
-					Scale = (DefScale*1.4)+(Scale-(DefScale*1.4))*.5;
-					if(abs(Scale-(DefScale*1.4))<.2)Stayt++;
-					Break;
-				Case 4:
+					Tick = false;
+					M_DoomPos = (0, 0);
 					Scale = DefScale+(Scale-DefScale)*.7;
-					if(abs(Scale-DefScale)<.01)Stayt++;
+					if(abs(Scale-DefScale)<.01){
+						IntroVar = CRandom(0, 1);
+						Stayt++;
+					}
 					Break;
 			}
 		}
 		
-		Screen.DrawTexture(mTexture, true, Screen.GetWidth()*.5 -vec.X*Scale*.5, Screen.GetHeight()*.5 -vec.Y*Scale*.5 - vec.Y*DefScale*1.2
+		Screen.DrawTexture(mTexture, true, Screen.GetWidth()*.5 -vec.X*Scale*.5 + M_DoomPos.X, Screen.GetHeight()*.5 -vec.Y*Scale*.5 - vec.Y*DefScale*1.2 + M_DoomPos.Y
 			,DTA_FullscreenScale, true
 			,DTA_DestWidthF, vec.X*Scale
 			,DTA_DestHeightF, vec.Y*Scale
 		);
 		
-		if(Stayt>3+18 && Stayt<60*19){
-			Float Rot = 25;
-			
-			if(Stayt<3+21){
-				Switch(Stayt){
-					Case 3+19:
-						Scale2 = 2;
-						Stayt++;
-						Break;
-					Case 3+20:
-						Scale2 = 1+(Scale2-1)*.4;
-						if(abs(Scale2-1)<.01)Stayt++;
-						Break;
-				}
-			}
-			else {
-				Stayt++;
-				
-				if(Stayt>60*10){
-					if(Stayt<60*12)Rot += CFRandom(-.01, .01)*(Stayt-60*10);
-					else {
-						Rot = 25 - (Stayt-60*12)*4;
-						SubY += 1+SubY*.5;
-					}
-				}
-			}
-			
+		if(Stayt>=2+18 || MRIntW_MenuState>1){
 			TextureId SubTex = Texman.CheckForTexture("MR_DOOM");
 			
 			Vector2 SubSize = Texman.GetScaledSize(SubTex);
 			
-			Screen.DrawTexture(SubTex, true, Screen.GetWidth()*.5 + Vec.X -SubSize.X*.5*Scale2, Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5*Scale2 + SubY
-				,DTA_FullscreenScale, true
-				,DTA_DestWidthF, SubSize.X*DefScale*.85*Scale2
-				,DTA_DestHeightF, SubSize.Y*DefScale*.85*Scale2
-				,DTA_Rotate, Rot
+			Bool SubFlipX, SubFlipY;
+			
+			
+			
+			Switch(MRIntW_MenuState){
+				Case 0:
+				{
+					if(Stayt<2+21){
+						Switch(Stayt){
+							Default:
+								Tick = true;
+								Break;
+							Case 2+19:
+								Tick = false;
+								Scale2 = 2;
+								Stayt++;
+								Break;
+							Case 2+20:
+								Scale2 = 1+(Scale2-1)*.4;
+								if(abs(Scale2-1)<.01)Stayt++;
+								Break;
+						}
+					}
+					else {
+						Tick = true;
+						if(IntroVar){
+							if(Stayt>35*10){
+								if(Stayt<35*10.5){
+									Float Add = (-90 - SubRot);//Speed is based on how far the current position is from the target position
+						
+									if(SubAccel<1)SubAccel += .1*.5;//Increasing speed
+									Add *= SubAccel*.25;
+									SubVel += Add;
+									
+									if((SubVel<0 && SubRot<-90)||
+										(SubVel>0 && SubRot>-90))SubVel *= .05;//Wobbling
+										
+									SubRot += SubVel;
+								}
+								else {
+									SubRot -= SubPos.Y*.01;
+									SubPos.Y += 1+SubPos.Y*.5;
+								}
+							}
+						}
+						else {
+							if(Stayt>35*10){
+								if(Stayt<35*11)SubRot = 25+CFRandom(-.01, .01)*(Stayt-60*10);
+								else {
+									if(Stayt==60*12)SubRot -= 20;
+									SubRot -= SubPos.Y*.1;
+									SubPos.Y += 1+SubPos.Y*.5;
+								}
+							}
+						}
+						
+						if(SubPos.Y>Screen.GetHeight()*.8){
+							CVar.FindCVar("MRIntW_MenuState").SetInt(1);
+							Stayt = 3+19;
+							IntroVar = CRandom(0, 1);
+						}
+					}
+				}
+				Break;
+				Case 1:
+				{
+					if(!IntroVar){
+						if(Stayt<36)Switch(Stayt){
+							Default:
+								Tick = true;
+								Break;
+							Case 35:
+								Tick = false;
+								if(!Hand){
+									Hand = New('MRIntWeaps_MainMenuHand');
+									Hand.Pos = (0, -Screen.GetHeight()*.8);
+									SubRot = 25;
+									Scale2 = 1;
+								}
+								
+								else {
+									Hand.Tick();
+									
+									if(!Hand){
+										SubPos *= 0;
+										Stayt++;
+										CVar.FindCVar("MRIntW_MenuState").SetInt(2);
+									}
+									else if(Hand.Stayt<1)SubPos.Y = Hand.Pos.Y;
+								}
+								Break;
+						}
+					}
+					else {
+						Float Targ;
+						Switch(Stayt){
+							Default:
+								if(Stayt>48){
+									SubFlipX = true;
+									SubFlipY = true;
+								}
+								Tick = true;
+								Break;
+							Case 35:
+								SubRot = 90 - 20;
+								SubPos = (Screen.GetWidth()*CFRandom(-.3, .3), -(Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Screen.GetHeight() + SubSize.Y*40);
+								Stayt++;
+								Break;
+							Case 36:
+								Tick = false;
+								Targ = -(Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Screen.GetHeight();
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.6;
+								if(abs(SubPos.Y-Targ)<1)Stayt++;
+								Break;
+							Case 37:
+								Targ = -(Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Screen.GetHeight() + SubSize.Y*4;
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.9;
+								if(abs(SubPos.Y-Targ)<1)Stayt++;
+								Break;
+							Case 47:
+								Targ = -(Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Screen.GetHeight() + SubSize.Y*40;
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.7;
+								if(abs(SubPos.Y-Targ)<1){
+									Stayt++;
+									if(CRandom(0, 3)==0){
+										Stayt = 25;
+										IntroVar = 0;
+										SubPos.X = 0;
+									}
+									else SubPos.X = Screen.GetWidth()*CFRandom(-.4, .4);
+								}
+								Break;
+							Case 48:
+								SubFlipX = true;
+								SubRot = 90 + 20;
+								Targ = -(Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Screen.GetHeight() + SubSize.Y*4;
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.9;
+								if(abs(SubPos.Y-Targ)<3)Stayt++;
+								Break;
+							Case 60:
+								SubFlipX = true;
+								Tick = false;
+								Targ = -(Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Screen.GetHeight() + SubSize.Y*40;
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.7;
+								if(abs(SubPos.Y-Targ)<1){
+									Stayt = 25;
+									SubPos.X = 0;
+									SubPos.Y = -(Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Screen.GetHeight() + SubSize.Y*40;
+									IntroVar = 0;
+								}
+								Break;
+								
+						}
+					}
+				}
+				Break;
+				Case 2:
+				{
+					Scale2 = 1;
+					SubRot = 25;
+					SubPos = (0,0);
+					if(Stayt>22)Tick = false;
+				}
+				Break;
+			}
+			
+			Screen.DrawTexture(SubTex, true, Screen.GetWidth()*.5 + Vec.X -SubSize.X*.5*Scale2 + SubPos.X + M_DoomPos.X, Screen.GetHeight()*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5*Scale2 + SubPos.Y + M_DoomPos.Y
+				,DTA_DestWidthF, SubSize.X*Scale*.85*Scale2
+				,DTA_DestHeightF, SubSize.Y*Scale*.85*Scale2
+				,DTA_Rotate, SubRot
+				,DTA_FlipY, SubFlipX
 			);
+			
+			if(Hand){
+				TextureId Sprt = (Hand.Stayt<1?Texman.CheckForTexture("MRD1D0"):Texman.CheckForTexture("MRD1C0"));
+				Vector2 HandSize = Texman.GetScaledSize(Sprt);
+				
+				Screen.DrawTexture(Sprt, true, Screen.GetWidth()*.5 + Vec.X + Hand.Pos.X - 100*4, Screen.GetHeight()*.5 - vec.Y*DefScale*.8 + Hand.Pos.Y - 275*4
+					,DTA_FlipY, true
+					,DTA_DestWidthF, HandSize.X*4
+					,DTA_DestHeightF, HandSize.Y*4
+					,DTA_TranslationIndex, Hand.Trans
+				);
+			}
+		}
+	}
+}
+
+Class MRIntWeaps_MainMenuActor: Object Ui
+{
+	TextureId Sprt;
+	int Stayt;
+	Bool FlipX, FlipY;
+	Double OldRot, Rot;
+	Vector2 Prev, Pos, Vel, OldScale, Scale;
+	Virtual Void Tick(){}
+}
+
+Class MRIntWeaps_MainMenuHand: Object Ui
+{
+	Static Const String Translations[] = {
+		"MRIntWGlovesClassic", "MRIntWGlovesBlack", "MRIntWGlovesBrown", "MRIntWGlovesGreen",
+		"MRIntWGlovesRed", "MRIntWGlovesGrey", "MRIntWGlovesBlue"
+	};
+	Vector2 Pos;
+	int Stayt, Trans;
+	Double YSpeed;
+	
+	Void Tick()
+	{
+		if(Stayt<1){
+			if(Pos.Y<=-Screen.GetHeight()*.8){
+				if(CRandom(-Translations.Size(), -5)==-5 && Players[ConsolePlayer].mo && MRIntWeaps_Fist(Players[ConsolePlayer].mo.FindInventory("MRIntWeaps_Fist"))){
+					Trans = MRIntWeaps_Fist(Players[ConsolePlayer].mo.FindInventory("MRIntWeaps_Fist")).GlovesTrans;
+				}
+				else Trans = Translation.GetId(Translations[CRandom(0, Translations.Size()-1)]);
+				
+				YSpeed = CFRandom(.7, .93);
+			}
+			Pos.Y *= YSpeed;
+			if(abs(Pos.Y)<1)Stayt++;
+		}
+		else if(Stayt<20){
+			Stayt++;
+		}
+		else {
+			Pos.Y -= abs(Pos.Y)*CFRandom(.4, .6)+1;
+			if(Pos.Y<-Screen.GetHeight()*.8){
+				Destroy();
+			}
 		}
 	}
 }

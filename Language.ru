@@ -419,6 +419,9 @@ MRIntW_EmptyPresset = "Этот прессет пуст";
 MRIntWeaps_UiMenu = "Настройки интерфейса";
 MRIntW_SmoothUi = "Плавное меню";
 MRIntW_SmoothUiTransitions = "Плавные переходы в меню";
+MRIntW_SmoothUiTransitions1 = "Кроме настроек";
+MRIntW_SmoothUiTransitions2 = "Везде";
+MRIntW_SmoothUiLogo = "Анимированный логотип";
 
 
 TAG_RIFLE = "Винтовка";
