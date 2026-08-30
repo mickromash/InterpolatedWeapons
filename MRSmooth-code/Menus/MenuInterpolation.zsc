@@ -400,12 +400,6 @@ class MRIntWeaps_SaveMenu: MRIntWeaps_LoadSaveMenu
 		if (manager.RemoveNewSaveNode())Selected--;
 		Super.OnDestroy();
 	}
-	override void TryDeleteMessage()
-	{
-		if (Selected == 0)return;
-
-		super.TryDeleteMessage();
-	}
 	override bool MenuEvent (int mkey, bool fromcontroller)
 	{
 		if (Super.MenuEvent(mkey, fromcontroller))return true;
