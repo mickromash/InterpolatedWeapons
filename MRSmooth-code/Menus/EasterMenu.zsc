@@ -23,11 +23,6 @@ Class MRIntWeaps_EasterMenu: MRIntWeaps_OptionMenu
 		
 		if(Mus>69+60)Return;
 		
-		if(Mus>69+48){
-			Alpha -= .1;
-		}
-		else Scale *= .8;
-		
 		Switch(Mus)
 		{
 			Case 0:
@@ -216,6 +211,13 @@ Class MRIntWeaps_EasterMenu: MRIntWeaps_OptionMenu
 	Override Void Drawer()
 	{
 		Super.Drawer();
+		
+		if(Mus>69+60 && Alpha<.05)Return;
+		
+		if(Mus>69+48){
+			Alpha -= .05;
+		}
+		else Scale *= .8;
 		
 		Screen.DrawTexture(Sprite, false, Pos.X, Pos.Y,
 				DTA_DestWidthF, Scale.X,
