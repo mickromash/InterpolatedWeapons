@@ -1271,49 +1271,32 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 					
 					if(index<invoker.Casings.Size() && index>-1){
 						A_Overlay(CaseStart+index, "CasingLay");
-						A_OverlayOffset(CaseStart+index, 125+i*19+Player.GetPSprite(PSP_WEAPON).OldX, 145+Player.GetPSprite(PSP_WEAPON).OldY);
-						A_OverlayScale(CaseStart+index, 1.14+i*.1, 1.14+i*.1);
+						A_OverlayOffset(CaseStart+index, 115+i*19+Player.GetPSprite(PSP_WEAPON).OldX, 140-i*5+Player.GetPSprite(PSP_WEAPON).OldY);
+						A_OverlayScale(CaseStart+index, 1.145+i*.05, 1.14+i*.05);
 						A_OverlayRotate(CaseStart+index, 20);
 						invoker.CasingDir[index] = Dir;
 					}
 				}
 			}
 			#### F 1 {
-				Float Miss = -CFRandom(6, 9);
+				Float Miss = -CFRandom(15, 18);
 				A_OverlayOffset(Lay1, Miss, Miss, WOF_ADD);
 				A_OverlayOffset(Lay3, Miss, Miss, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayFlags(Lay3, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
-				A_OverlayRotate(Lay1, -7, WOF_ADD);
-				A_OverlayRotate(Lay3, -7, WOF_ADD);
+				A_OverlayRotate(Lay1, -9, WOF_ADD);
+				A_OverlayRotate(Lay3, -9, WOF_ADD);
 				
 				invoker.MuzzleSmoke((60, 145), (62, 145), .7, .7);
 			}
-			#### F 1 {
+			#### ####### 1 {
 				Player.GetPSprite(Lay1).X *= .7;
 				Player.GetPSprite(Lay1).Y *= .7;
 				Player.GetPSprite(Lay3).X = Player.GetPSprite(Lay1).X;
 				Player.GetPSprite(Lay3).Y = Player.GetPSprite(Lay1).Y;
-				A_OverlayRotate(Lay1, -5, WOF_ADD);
-				A_OverlayRotate(Lay3, -5, WOF_ADD);
+				Player.GetPSprite(Lay1).Rotation *= .6;
+				Player.GetPSprite(Lay3).Rotation *= .6;
 				invoker.MuzzleSmoke((60, 135), (62, 135), .7, .7);
-			}
-			#### F 1 {
-				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
-				A_OverlayOffset(Lay3, 0, 0, WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
-				A_OverlayRotate(Lay3, 0, WOF_INTERPOLATE);
-				invoker.MuzzleSmoke((60, 125), (62, 125), .7, .7);
-			}
-			#### FFFFF 1 {//Waiting for shells
-				Vector2 Rand = (-CFRandom(.1, .3), CFRandom(.1, .3));
-					
-					
-				A_OverlayOffset(Lay1, Rand.X, Rand.Y, WOF_ADD);
-				
-				A_OverlayOffset(Lay3, Rand.X, Rand.Y, WOF_ADD);
-				
-				invoker.MuzzleSmoke((60, 115), (62, 115), .7, .7);
 			}
 			#### FF 1 {
 				Player.GetPSprite(Lay1).X *= CFRandom(.6, .8);
