@@ -22,6 +22,7 @@ MRIntW/ShotgunDeselect ""
 MRIntW/ShotgunFire dsshotgn
 MRIntW/ShotgunPumpDown ""
 MRIntW/ShotgunPumpUp ""
+MRIntW/ShotgunPump DSSGCOCK
 
 MRIntW/SSGSelect ""
 MRIntW/SSGDeselect ""
