@@ -118,7 +118,7 @@ nosave float MRIntW_PlayerParticlesAmount = 1;
 
 nosave bool MRIntW_MonsterParticles = false;
 nosave int MRIntW_MonsterWhichParticles = -33;
-nosave int MRIntW_MonsterWhichParticles2 = -2147483617;
+nosave int MRIntW_MonsterWhichParticles2 = -2146435073;
 nosave float MRIntW_MonsterParticlesAmount = 1;
 nosave bool MRIntW_MonsterParticleCustom = false;//Apply particle effects to custom monsters
 
