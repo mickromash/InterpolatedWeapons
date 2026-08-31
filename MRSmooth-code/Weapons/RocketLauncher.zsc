@@ -389,12 +389,12 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		HandBackoff:
 			#### ################################ 1 {
 				if(InStateSequence(Player.GetPSprite(Lay1).CurState, invoker.FindState("GunFire"))){
-					Player.GetPSprite(LayHand).Rotation = 30 + (Player.GetPSprite(LayHand).Rotation-30)*.8;
-					A_OverlayMoveTo(LayHand, 240, 120, .8);
+					Player.GetPSprite(LayHand).Rotation -= (Player.GetPSprite(LayHand).Y+6)*.3;
+					A_OverlayOffset(LayHand, (Player.GetPSprite(LayHand).Y+6), (Player.GetPSprite(LayHand).Y+6), WOF_ADD);
 				}
 				else {
-					Player.GetPSprite(LayHand).Rotation = -60 + (Player.GetPSprite(LayHand).Rotation+60)*.98;
-					A_OverlayMoveTo(LayHand, 180, 120, .98);
+					Player.GetPSprite(LayHand).Rotation -= (Player.GetPSprite(LayHand).Y+6)*.21;
+					A_OverlayOffset(LayHand, (Player.GetPSprite(LayHand).Y+6)*.2, (Player.GetPSprite(LayHand).Y+6)*.2, WOF_ADD);
 				}
 			}
 			Stop;

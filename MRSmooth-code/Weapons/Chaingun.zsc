@@ -880,18 +880,18 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			#### ####################################################### 1 {
 				Player.GetPSprite(Hand).Rotation *= .95;
-				A_OverlayMoveTo(Hand, 240, -10, .95);
+				A_OverlayMoveTo(Hand, 240, -10, .93);
 				A_OverlayFlags(Hand, PSPF_INTERPOLATE, !Player.GetPSprite(Hand).FirstTic);
 			}
 		HandBackoff:
-			#### ################################ 1 {
+			#### ################################# 1 {
 				if(Player.Cmd.Buttons&BT_ATTACK){
-					Player.GetPSprite(Hand).Rotation = 30 + (Player.GetPSprite(Hand).Rotation-30)*.8;
-					A_OverlayMoveTo(Hand, 240, 120, .8);
+					Player.GetPSprite(Hand).Rotation -= (Player.GetPSprite(Hand).Y+9)*.3;
+					A_OverlayOffset(Hand, -(Player.GetPSprite(Hand).Y+9), (Player.GetPSprite(Hand).Y+9), WOF_ADD);
 				}
 				else {
-					Player.GetPSprite(Hand).Rotation = -60 + (Player.GetPSprite(Hand).Rotation+60)*.98;
-					A_OverlayMoveTo(Hand, 180, 120, .98);
+					Player.GetPSprite(Hand).Rotation -= (Player.GetPSprite(Hand).Y+9)*.1;
+					A_OverlayOffset(Hand, -(Player.GetPSprite(Hand).Y+9)*.1, (Player.GetPSprite(Hand).Y+9)*.2, WOF_ADD);
 				}
 			}
 			Stop;
