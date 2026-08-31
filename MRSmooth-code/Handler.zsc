@@ -321,6 +321,22 @@ Class MRIntWeaps_Handler: EventHandler
 			CVar.FindCVar("MRIntW_GlovesColorTemp").SetInt(Rand);
 			Return;
 		}
+		if(e.name ~== "MRIntWeaps_ResetParticles"){
+			Switch(e.args[0]){
+				Case 0:
+					CVar.FindCVar("MRIntW_PlayerWhichParticles").SetInt(CVar.FindCVar("MRIntW_PlayerWhichParticles").GetDefaultInt());
+					Break;
+				Case 1:
+					CVar.FindCVar("MRIntW_MonsterWhichParticles").SetInt(CVar.FindCVar("MRIntW_MonsterWhichParticles").GetDefaultInt());
+					CVar.FindCVar("MRIntW_MonsterWhichParticles2").SetInt(CVar.FindCVar("MRIntW_MonsterWhichParticles2").GetDefaultInt());
+					Break;
+				Case 2:
+					CVar.FindCVar("MRIntW_DecorationWhichParticles").SetInt(CVar.FindCVar("MRIntW_DecorationWhichParticles").GetDefaultInt());
+					Break;
+			}
+			UpdateOnStartupParticles();
+			Return;
+		}
 		if(e.name ~== "MRIntWeaps_ApplyParticles"){
 			UpdateOnStartupParticles();
 			Return;
@@ -452,11 +468,9 @@ Class MRIntWeaps_Handler: EventHandler
 		if(Uninstalled)Console.Printf(StringTable.Localize("$MRIntWeaps_Uninstalled"));
 	}
 	
-	Bool DifVersion;
 	Override Void OnRegister()
 	{
-		if((MRIntW_Version!=CVar.GetCVar("MRIntW_Version").GetDefaultInt()))New('MRIntW_DifVersionMessage');
-		CVar.GetCVar("MRIntW_Version").SetInt(CVar.GetCVar("MRIntW_Version").GetDefaultInt());
+		New('MRIntW_DifVersionMessage');
 		//Console.Printf("Register");
 	}
 	
@@ -529,6 +543,7 @@ Class MRIntW_DifVersionMessage: Thinker
 	Const Chan = 221;
 	int Time;
 	Float Pitch;
+	Actor Plr;
 	Override Void Tick()
 	{
 		Super.Tick();
@@ -540,9 +555,13 @@ Class MRIntW_DifVersionMessage: Thinker
 		Time++;
 		Switch(Time)
 		{
+			Case 2:
+				if(demoplayback || (MRIntW_Version==CVar.GetCVar("MRIntW_Version").GetDefaultInt()))Destroy();
+				CVar.GetCVar("MRIntW_Version").SetInt(CVar.GetCVar("MRIntW_Version").GetDefaultInt());
+				Break;
 			Case Start:
-				Console.Printf(StringTable.Localize("$MRIntW_VersionMessage"));
-				Plr.A_StartSound("MRIntW/Message1", Chan, CHANF_LOOP, .05, pitch:Pitch = 4);
+				Plr.A_Log(StringTable.Localize("$MRIntW_VersionMessage"));
+				Plr.A_StartSound("MRIntW/Message1", Chan, CHANF_LOOP|CHANF_MAYBE_LOCAL, .05, pitch:Pitch = 4);
 				Break;
 				
 			Default:
