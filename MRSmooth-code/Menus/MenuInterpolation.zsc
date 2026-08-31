@@ -196,6 +196,8 @@ Class MRIntWeaps_ListMenuMain: MRIntWeaps_ListMenu
 	Override void Init(Menu parent, ListMenuDescriptor desc)
 	{
 		Super.Init(parent, desc);
+		
+		//desc.mVirtWidth = -2;
 
 		AnimatedTransition = MRIntW_SmoothUiTransitions>0;
 	}
