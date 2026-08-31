@@ -378,6 +378,7 @@ MRIntW_RespawnParticles1 = "Облако";
 MRIntW_RespawnParticles2 = "Волна";
 MRIntW_RespawnParticles3 = "Точки";
 
+MRIntW_ResetParticles = "Откатить настройки в этом подменю";
 MRIntW_ApplyParticles = "Применить настройки частиц";
 
 

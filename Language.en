@@ -377,6 +377,7 @@ MRIntW_RespawnParticles1 = "Cloud";
 MRIntW_RespawnParticles2 = "Wave";
 MRIntW_RespawnParticles3 = "Dots";
 
+MRIntW_ResetParticles = "Set this section to default";
 MRIntW_ApplyParticles = "Apply particles settings";
 
 

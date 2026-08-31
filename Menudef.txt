@@ -693,6 +693,8 @@ OptionMenu "MRIntWeaps_PlayerParticlesMenu"
 	AnimatedTransition
 	Title "$MRIntWeaps_PlayerParticlesMenu"
 	StaticText ""
+	Command "$MRIntW_ResetParticles", "MRIntW_ResetParticles 0"
+	StaticText ""
 	FlagOption "$MRIntW_PlrParticles_Puff", "MRIntW_PlayerWhichParticles", "YesNo", 23, "MRIntW_PlayerParticles"
 	FlagOption "$MRIntW_PlrParticles_PuffLiquid", "MRIntW_PlayerWhichParticles", "YesNo", 26, "MRIntW_PlayerParticles"
 	StaticText ""
@@ -743,6 +745,8 @@ OptionMenu "MRIntWeaps_MonsterParticlesMenu"
 	Animated
 	AnimatedTransition
 	Title "$MRIntWeaps_MonsterParticlesMenu"
+	StaticText ""
+	Command "$MRIntW_ResetParticles", "MRIntW_ResetParticles 1"
 	StaticText ""
 	StaticText "$FN_IMP", "Fire"
 	StaticText "$MRIntW_Particles_Tick", "Green"
@@ -843,6 +847,8 @@ OptionMenu "MRIntWeaps_DecorationParticlesMenu"
 	Animated
 	AnimatedTransition
 	Title "$MRIntWeaps_DecorationParticlesMenu"
+	StaticText ""
+	Command "$MRIntW_ResetParticles", "MRIntW_ResetParticles 2"
 	StaticText ""
 	FlagOption "$MRIntW_DecorParticles_Bloom", "MRIntW_DecorationWhichParticles", "YesNo", 6, "MRIntW_DecorationParticles"
 	StaticText ""
