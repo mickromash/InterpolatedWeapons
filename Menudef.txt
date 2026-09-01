@@ -472,7 +472,7 @@ AddOptionMenu "OptionsMenu"
 	Animated
 	AnimatedTransition
 	StaticText "Interpolated weapons"
-	SubMenu "$MRIntWeaps_Menu", "MRIntWeaps_Menu"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_Menu", "MRIntWeaps_Menu"
 	StaticText ""
 }
 
