@@ -32,8 +32,8 @@ Version "4.10"
 #include "MRSmooth-code/Particles/Misc.zsc"//Decoration and other particle effects
 
 #include "MRSmooth-code/Menus/MenuInterpolation.zsc"
-#include "MRSmooth-code/Menus/MainMenuEffects.zsc"
-#include "MRSmooth-code/Menus/SomeTricks.zsc"//Some little tricks for mod's menu
+#include "MRSmooth-code/Menus/MenuRoflz.zsc"
+#include "MRSmooth-code/Menus/MiscMenuFuncs.zsc"//Some little tricks for mod's menu
 #include "MRSmooth-code/Menus/Pressets.zsc"//Settings pressets menu
 #include "MRSmooth-code/Menus/EasterMenu.zsc"//Secret glove colors menu
 

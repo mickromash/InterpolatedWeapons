@@ -1,7 +1,7 @@
 Class MRIntWeaps_OptionMenu: OptionMenu
 {
 	Bool Interpolate, UZDoom;
-	int LastScroll;
+	int LastScroll, SelectorTime;
 	Double DiffY;
 	
 	Override Void Init(Menu parent, OptionMenuDescriptor desc)
@@ -87,10 +87,13 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 			int cur_indent = mDesc.mItems[i].Draw(mDesc, Y, indent, isSelected);
 			if (cur_indent >= 0 && isSelected && mDesc.mItems[i].Selectable())
 			{
-				if (((MenuTime() % 8) < 6) || GetCurrentMenu() != self)
-				{
-					DrawOptionText(cur_indent + 3 * CleanXfac_1, Y, OptionMenuSettings.mFontColorSelection, "◄");
-				}
+				SelectorTime++;
+				if(SelectorTime>40)SelectorTime = 0;
+				
+				Double SelX = SelectorTime;
+				SelX = 5. * abs((SelX%40-19)/20);
+				
+				Screen.DrawText(OptionFont(), OptionMenuSettings.mFontColorSelection, cur_indent + 3 * CleanXfac_1 + SelX, Y, "◄", DTA_CleanNoMove_1, true);
 			}
 			Y += fontheight;
 		}

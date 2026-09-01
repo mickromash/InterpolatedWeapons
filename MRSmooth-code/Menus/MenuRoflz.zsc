@@ -386,3 +386,90 @@ Class MRIntWeaps_MainMenuHand: Object Ui
 		}
 	}
 }
+
+
+class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
+{
+	Bool WasSelected, Selected, PlayingAnim;
+	Array<Double> ChPs, ChVs;
+	Array<String> Chars;
+	
+	int MRDrawLabel(int indent, int y, int color, bool grayed = false)
+	{
+		String label = Stringtable.Localize(mLabel);
+		
+		int x;
+		int w = Menu.OptionWidth(label) * CleanXfac_1;
+		if (!mCentered) x = indent - w;
+		else x = (screen.GetWidth() - w) / 2;
+		
+		if(!PlayingAnim)Menu.DrawOptionText(x, y, color, label, grayed);
+
+		else {
+			if(Chars.Size()<1){
+				For(int i=0;i<label.Length();){
+					int Chr, Next;
+					[Chr, Next] = label.GetNextCodePoint(i);
+					
+					Chars.Push(String.Format("%c", Chr));
+					ChVs.Push(CFRandom(0, 2));
+					ChPs.Push(0);
+					
+					i = Next;
+				}
+			}
+			int overlay = grayed? Color(96,48,0,0) : 0;
+			
+			int Pos = 0;
+			
+			Font Fnt = Menu.OptionFont();
+			
+			Bool AllLanded = true;
+			
+			For(int i=0;i<Chars.Size();i++){
+				if(abs(ChVs[i])>0){
+					ChVs[i] -= .1;
+					ChPs[i] += ChVs[i];
+					AllLanded = false;
+				}
+				if(ChPs[i]<=0){
+					ChPs[i] = ChVs[i] = 0;
+				}
+				
+				screen.DrawText(Fnt, Color, x+Pos, y-ChPs[i], Chars[i], DTA_CleanNoMove_1, true, DTA_ColorOverlay, overlay);
+				
+				Pos += Fnt.StringWidth(Chars[i]) * CleanXfac_1;
+			}
+			
+			PlayingAnim = !AllLanded;
+		}
+		return x;
+	}
+	
+	Override Void Ticker()
+	{
+		Super.Ticker();
+		
+		if(WasSelected != Selected && Selected && !PlayingAnim){
+			Chars.Clear();
+			ChVs.Clear();
+			ChPs.Clear();
+			PlayingAnim = true;
+		}
+		
+		WasSelected = Selected;
+	}
+	
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		Self.Selected = Selected;
+		
+		int x = MRDrawLabel(indent, y, selected? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColorMore);
+		
+		if (mCentered)
+		{
+			return x - 16*CleanXfac_1;
+		}
+		return indent;
+	}
+}
