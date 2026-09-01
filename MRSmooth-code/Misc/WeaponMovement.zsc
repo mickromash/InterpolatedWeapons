@@ -364,7 +364,7 @@ Extend Class MRIntWeaps_Fist
 				Float Add = (Target - CurSway.X);//Speed is based on how far the current position is from the target position
 				
 				if(Target==0){//If camera is not moving
-					if(GoingX<1)GoingX += .1*abs(Mult*.5);//Increasing speed
+					if(GoingX<1)GoingX += .075*abs(Mult*.5);//Increasing speed
 					Add *= GoingX*.25;
 				}
 				else {//Camera is moving
@@ -373,8 +373,11 @@ Extend Class MRIntWeaps_Fist
 				}
 				Sway.X += Add;
 				
-				if((Sway.X<0 && CurSway.X<Target)||
-					(Sway.X>0 && CurSway.X>Target))Sway.X *= .05;//Wobbling
+				if((Sway.X<0 && CurSway.X+Sway.X<Target)||
+					(Sway.X>0 && CurSway.X+Sway.X>Target)){
+					//Wobbling
+					Sway.X *= .5;
+				}
 				
 				CurSway.X += Sway.X;
 				
