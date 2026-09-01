@@ -156,7 +156,7 @@ Class MRIntWeaps_Smoker: Object play
 		Float Life = 25;
 		if(Owner.Pos == Owner.Prev){
 			ZSpeed*=.25;
-			Wind*=.25;
+			//Wind*=.25;
 		}
 		
 		int Flags = 0;
