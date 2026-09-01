@@ -197,7 +197,7 @@ Class MRIntWeaps_ListMenuMain: MRIntWeaps_ListMenu
 	{
 		Super.Init(parent, desc);
 		
-		//desc.mVirtWidth = -2;
+		desc.mVirtWidth = -2;
 
 		AnimatedTransition = MRIntW_SmoothUiTransitions>0;
 	}

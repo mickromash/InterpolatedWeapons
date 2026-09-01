@@ -114,7 +114,7 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 			,DTA_DestHeightF, vec.Y*Scale
 			,DTA_FullscreenScale, FSMode_ScaleToFit43
 		);
-		else Screen.DrawTexture(mTexture, true, Width*.5 -vec.X*Scale*.5 + M_DoomPos.X, Height*.5 -vec.Y*Scale*.5 - vec.Y + M_DoomPos.Y
+		else Screen.DrawTexture(mTexture, true, Width*.5 -vec.X*Scale*.5 + M_DoomPos.X, Height*.5 -vec.Y*Scale*.5 - 70 + M_DoomPos.Y
 			,DTA_DestWidthF, vec.X*Scale
 			,DTA_DestHeightF, vec.Y*Scale
 			,DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_FullscreenScale, FSMode_ScaleToFit43
@@ -152,22 +152,28 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 						Tick = true;
 						if(IntroVar){
 							if(Stayt>35*10){
-								if(Stayt<35*10.5){
+								if(Stayt<35*12){
 									Float Add = (-90 - SubRot);//Speed is based on how far the current position is from the target position
-						
-									if(SubAccel<1)SubAccel += .1*.5;//Increasing speed
-									Add *= SubAccel*.25;
+									
+									if(SubAccel<1)SubAccel += .1;//Increasing speed
+									Add *= SubAccel*.1;
 									SubVel += Add;
 									
-									if((SubVel<0 && SubRot<-90)||
-										(SubVel>0 && SubRot>-90))SubVel *= .05;//Wobbling
-										
+									if((SubVel<0 && SubRot+SubVel<=-90)||
+										(SubVel>0 && SubRot+SubVel>=-90)){//Wobbling
+											SubVel *= .8;
+									}
+									
 									SubRot += SubVel;
 								}
 								else {
 									SubRot -= SubPos.Y*.01;
 									SubPos.Y += 1+SubPos.Y*.5;
 								}
+							}
+							else {
+								SubAccel = SubVel = 0;
+								SubRot = 25;
 							}
 						}
 						else {
@@ -231,7 +237,7 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 								Break;
 							Case 35:
 								SubRot = 90 - 20;
-								SubPos = (Width*CFRandom(-.3, .3), -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.Y*40);
+								SubPos = (Width*CFRandom(-.3, .3), -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.X*3);
 								Stayt++;
 								Break;
 							Case 36:
@@ -241,14 +247,14 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 								if(abs(SubPos.Y-Targ)<1)Stayt++;
 								Break;
 							Case 37:
-								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.Y*4;
+								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.X*.1;
 								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.9;
-								if(abs(SubPos.Y-Targ)<1)Stayt++;
+								if(abs(SubPos.Y-Targ)<.1)Stayt++;
 								Break;
 							Case 47:
-								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.Y*40;
+								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + H;
 								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.7;
-								if(abs(SubPos.Y-Targ)<1){
+								if(abs(SubPos.Y-Targ)<.1){
 									Stayt++;
 									if(CRandom(0, 3)==0){
 										Stayt = 25;
@@ -261,19 +267,19 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 							Case 48:
 								SubFlipX = true;
 								SubRot = 90 + 20;
-								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.Y*4;
+								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.X*.1;
 								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.9;
 								if(abs(SubPos.Y-Targ)<3)Stayt++;
 								Break;
 							Case 60:
 								SubFlipX = true;
 								Tick = false;
-								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.Y*40;
+								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + H;
 								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.7;
-								if(abs(SubPos.Y-Targ)<1){
+								if(abs(SubPos.Y-Targ)<.1){
 									Stayt = 25;
 									SubPos.X = 0;
-									SubPos.Y = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.Y*40;
+									SubPos.Y = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.X*3;
 									IntroVar = 0;
 								}
 								Break;
@@ -316,12 +322,12 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 					,DTA_DestHeightF, HandSize.Y*4
 					,DTA_TranslationIndex, Hand.Trans
 				);
-				else Screen.DrawTexture(Sprt, true, 0, 0//+ Hand.Pos.X - 100, Height*.5 - vec.Y*DefScale*.8 + Hand.Pos.Y - 275
-					//,DTA_FlipY, true
-					,DTA_DestWidthF, HandSize.X*4
-					,DTA_DestHeightF, HandSize.Y*4
+				else Screen.DrawTexture(Sprt, true, width*.5-HandSize.X +100, height*.5-HandSize.Y -vec.Y*DefScale*.8 + Hand.Pos.Y -120
+					,DTA_FlipY, true
+					,DTA_DestWidthF, HandSize.X
+					,DTA_DestHeightF, HandSize.Y
 					,DTA_TranslationIndex, Hand.Trans
-					,DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_FullscreenScale, FSMode_ScaleToFit43
+					,DTA_VirtualWidth, W, DTA_VirtualHeight, H, DTA_FullscreenScale, FSMode_ScaleToFit43
 				);
 			}
 		}
