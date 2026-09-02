@@ -273,6 +273,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 						Player.GetPSprite(LHand).Tics = 0;
 						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
 					}
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				}
 			}
 			#### ## 1 {
@@ -292,6 +293,11 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 						Player.GetPSprite(LHand).Tics = 0;
 						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
 					}
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+				}
+				else if(invoker.SwitchState>-1){
+					invoker.SwitchState = -1;
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				}
 			}
 			#### # 1 {
@@ -311,6 +317,11 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 						Player.GetPSprite(LHand).Tics = 0;
 						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
 					}
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+				}
+				else if(invoker.SwitchState>-1){
+					invoker.SwitchState = -1;
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				}
 			}
 			Wait;

@@ -263,6 +263,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
 					}
 				}
+				else if(invoker.SwitchState>-1){
+					invoker.SwitchState = -1;
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+				}
 			}
 			#### # 1 {
 				if(invoker.SwitchAnim){
@@ -281,6 +285,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 						Player.GetPSprite(LHand).Tics = 0;
 						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
 					}
+				}
+				else if(invoker.SwitchState>-1){
+					invoker.SwitchState = -1;
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				}
 			}
 			#### ## 1 {
@@ -301,6 +309,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
 					}
 				}
+				else if(invoker.SwitchState>-1){
+					invoker.SwitchState = -1;
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
+				}
 			}
 			#### # 1 {
 				if(invoker.SwitchAnim){
@@ -320,6 +332,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 						Player.GetPSprite(LHand).Tics = 0;
 						Player.SetPsprite(LHand, Player.GetPSprite(LHand).CurState.NextState);
 					}
+				}
+				else if(invoker.SwitchState>-1){
+					invoker.SwitchState = -1;
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				}
 			}
 			Wait;
