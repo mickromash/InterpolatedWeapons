@@ -542,6 +542,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		GunFire://Firing animating layer
 			TNT1 A 1 {//Recoil
 				if(!Player.GetPSprite(Lay1).bAddWeapon){
+					Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
 					For(int i=Muzzle0;i<=Ring;i++){
 						Player.GetPSprite(i).OldY -= 32;
 						Player.GetPSprite(i).Y -= 32;
