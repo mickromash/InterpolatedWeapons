@@ -252,7 +252,7 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 								if(abs(SubPos.Y-Targ)<.1)Stayt++;
 								Break;
 							Case 47:
-								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + H;
+								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + (SubSize.X*4.4*Height/1080);
 								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.7;
 								if(abs(SubPos.Y-Targ)<.1){
 									Stayt++;
@@ -274,12 +274,12 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 							Case 60:
 								SubFlipX = true;
 								Tick = false;
-								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + H;
+								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + (SubSize.X*4.4*Height/1080);
 								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.7;
 								if(abs(SubPos.Y-Targ)<.1){
 									Stayt = 25;
 									SubPos.X = 0;
-									SubPos.Y = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.X*3;
+									SubPos.Y = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + (SubSize.X*4.4*Height/1080);
 									IntroVar = 0;
 								}
 								Break;
