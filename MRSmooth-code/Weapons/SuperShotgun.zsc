@@ -35,7 +35,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		
 		MuzzleSmoke();
 		
-		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Health<1 || !InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Owner.Health<1 || !InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
 		if((Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD) && !Catch && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).bAddWeapon){
 			Catch = true;

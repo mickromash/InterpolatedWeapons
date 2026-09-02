@@ -17,7 +17,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 		
 		DoMisc();
 		
-		if(Owner.Player.ReadyWeapon != Self || Health<1)Return;
+		if(Owner.Player.ReadyWeapon != Self || Owner.Health<1)Return;
 						
 		if(!Owner.Player.FindPSprite(SecndLay) || (
 			!InStateSequence(Owner.Player.FindPSprite(SecndLay).CurState, FindState("SecndHandWaitLoop")) &&

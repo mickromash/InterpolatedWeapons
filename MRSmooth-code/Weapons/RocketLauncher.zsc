@@ -25,7 +25,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 		
 		MuzzleSmoke();
 		
-		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Health<1)Return;
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Owner.Health<1)Return;
 		
 		if(!Owner.Player.FindPSprite(PSP_WEAPON) || !InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		

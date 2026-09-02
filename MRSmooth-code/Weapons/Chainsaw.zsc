@@ -32,7 +32,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		
 		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*Owner.GetCVar("MRIntW_RecoilAmount"));}
 		
-		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Health<1)Return;
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Owner.Health<1)Return;
 				
 		if(!Owner.Player.FindPSprite(Lay1) || !InStateSequence(Owner.Player.FindPSprite(Lay1).CurState, FindState("SawReady")))Return;
 		
