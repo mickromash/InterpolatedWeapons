@@ -1114,3 +1114,5 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			bJustAttacked = true;
 	}
 }
+
+#include "MRSmooth-code/Weapons/Additionally/ChainsawBlood.zsc"

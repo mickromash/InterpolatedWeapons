@@ -16,10 +16,6 @@ Version "4.10"
 #include "MRSmooth-code/Weapons/Id24incinerator.zsc"
 #include "MRSmooth-code/Weapons/id24calamityblade.zsc"
 
-#include "MRSmooth-code/Weapons/Additionally/FistIdleAnims.zsc"
-#include "MRSmooth-code/Weapons/Additionally/ChainsawBlood.zsc"//Blood on chainsaw
-#include "MRSmooth-code/Weapons/Additionally/SSGStuff.zsc"//SSG code for Effects.zsc, MuzzleSmoke.zsc and Dying.zsc
-
 #include "MRSmooth-code/Misc/WeaponMovement.zsc"//Landing bounce, damage shake, vanilla firing bob and other weapon offset related stuff
 #include "MRSmooth-code/Misc/Effects.zsc"//Casings/smoke/psprite-particles
 #include "MRSmooth-code/Misc/MuzzleSmoke.zsc"//Flowing smoke

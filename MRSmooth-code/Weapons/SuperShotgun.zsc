@@ -1618,3 +1618,5 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		}
 	}
 }
+
+#include "MRSmooth-code/Weapons/Additionally/SSGStuff.zsc"//Code for Effects.zsc, MuzzleSmoke.zsc and Dying.zsc

@@ -1505,3 +1505,5 @@ Class MRIntWeaps_FistSelector: CustomInventory
 		Stop;
 	}
 }
+
+#include "MRSmooth-code/Weapons/Additionally/FistIdleAnims.zsc"
