@@ -107,8 +107,10 @@ Extend Class MRIntWeaps_Fist
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesFireShades.R*100/255*2, GlovesFireShades.G*100/255*2, GlovesFireShades.B*100/255*2);
 					
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesFireLights.R*100/255*2, GlovesFireLights.G*100/255*2, GlovesFireLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesFireLights.R*100/255*2, GlovesFireLights.G*100/255*2, GlovesFireLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesFireLights.R*100/255*2, GlovesFireLights.G*100/255*2, GlovesFireLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesFireLights.R*100/255*2, GlovesFireLights.G*100/255*2, GlovesFireLights.B*100/255*2, Owner.PlayerNumber() + 2500);
@@ -173,9 +175,10 @@ Extend Class MRIntWeaps_Fist
 					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
-					
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
@@ -226,9 +229,10 @@ Extend Class MRIntWeaps_Fist
 					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
-					
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
@@ -321,9 +325,10 @@ Extend Class MRIntWeaps_Fist
 					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
-					
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
@@ -381,9 +386,10 @@ Extend Class MRIntWeaps_Fist
 					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
-					
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
@@ -440,9 +446,10 @@ Extend Class MRIntWeaps_Fist
 					GlovesLights = Color(Cols[0],Cols[1],Cols[2]);
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
-					
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
@@ -485,9 +492,10 @@ Extend Class MRIntWeaps_Fist
 					GlovesLights = Color(int(Cols[0]),int(Cols[1]),int(Cols[2]));
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
-					
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
@@ -550,9 +558,10 @@ Extend Class MRIntWeaps_Fist
 					}
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
-					
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
@@ -715,9 +724,10 @@ Extend Class MRIntWeaps_Fist
 					}
 					
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesShade", GlovesShades.R*100/255*2, GlovesShades.G*100/255*2, GlovesShades.B*100/255*2);
-					
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
@@ -747,8 +757,10 @@ Extend Class MRIntWeaps_Fist
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPresset", GlovesColor, Owner.PlayerNumber() + 2500);
 				}
 				else {
-					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
-					RifleGlovesTrans = Translation;
+					if(Owner.Player.ReadyWeapon is 'MRIntWeaps_Pistol'){
+						ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorRifle", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2800);
+						RifleGlovesTrans = Translation;
+					}
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColorPistol", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 3000);
 					PistolGlovesTrans = Translation;
 					ACS_NamedExecuteWithResult("MRIntWeaps_GlovesColor", GlovesLights.R*100/255*2, GlovesLights.G*100/255*2, GlovesLights.B*100/255*2, Owner.PlayerNumber() + 2500);
