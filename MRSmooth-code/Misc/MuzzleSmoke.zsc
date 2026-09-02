@@ -46,7 +46,7 @@ Class MRIntWeaps_Smoker: Object play
 	Actor Owner;
 	Vector2 WeapOfst[6], Wind;
 	Vector3 Prev[6];
-	Double OldBob, ViewHeight, InterFloorZ, Bob, Scale[6], Alpha, Speed[6], MaxLength, LastRoll[6];
+	Double OldBob, ViewHeight, InterFloorZ, Bob, Scale[6], Alpha, Speed[6], MaxLength, LastRoll[6], MaxWind;
 	Bool PassSpawn, ResetInterpolation, ForceConnect, Bright, Bright1;
 	Weapon LastWeapon;
 	Color Col, Col1;
@@ -74,13 +74,17 @@ Class MRIntWeaps_Smoker: Object play
 		MaxLength = MRIntW_FlowingSmokeLength;
 		
 		if(Owner.GetAge()%2==0){
-			if(Wind.X > .5)Wind.X -= CFRandom(0, .01);
-			else if(Wind.X<-.5)Wind.X += CFRandom(0, .01);
-			else Wind.X += CFRandom(-.01, .01);
+			if(Owner.CeilingPic.IsValid()){
+				if(Texman.GetName(Owner.CeilingPic) ~== "F_SKY1")MaxWind = .4;
+				else MaxWind = .1;
+			}
+			if(Wind.X > MaxWind)Wind.X -= CFRandom(0, .0025);
+			else if(Wind.X < -MaxWind)Wind.X += CFRandom(0, .0025);
+			else Wind.X += CFRandom(-.0025, .0025);
 			
-			if(Wind.Y > .5)Wind.Y -= CFRandom(0, .01);
-			else if(Wind.Y<-.5)Wind.Y += CFRandom(0, .01);
-			else Wind.Y += CFRandom(-.01, .01);
+			if(Wind.Y > MaxWind)Wind.Y -= CFRandom(0, .0025);
+			else if(Wind.Y< -MaxWind)Wind.Y += CFRandom(0, .0025);
+			else Wind.Y += CFRandom(-.0025, .0025);
 		}
 	}
 	
@@ -107,7 +111,7 @@ Class MRIntWeaps_Smoker: Object play
 		
 		Double Step = Step/MRIntW_FlowingSmokePrecision*Scale[Num];
 		Double ZSpeed = ZSpeed*4*Speed[Num];
-		Vector2 Wind = Wind*4*Speed[Num];
+		Vector2 Wind = Wind*Speed[Num];
 		
 		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ+(OldBob-Bob));
 		
