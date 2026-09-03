@@ -729,7 +729,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			MRD1 G 1 {
 				A_OverlayFlags(SHand, PSPF_INTERPOLATE, !Player.GetPSprite(SHand).FirstTic);
 				
-				A_OverlayMoveTo(SHand, 35+Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y, .6);
+				A_OverlayMoveTo(SHand, 35+Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y, .7);
 				Player.GetPSprite(SHand).Rotation = Player.GetPSprite(Lay1).Rotation-30+(Player.GetPSprite(SHand).Rotation+30-Player.GetPSprite(Lay1).Rotation)*.6;
 				Player.GetPSprite(SHand).Scale = Player.GetPSprite(Lay1).Scale-(.05, .05)+(Player.GetPSprite(SHand).Scale-(Player.GetPSprite(Lay1).Scale-(.05,.05)))*.6;
 				A_GlovesColor();
@@ -738,7 +738,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				if(
 					Player.FindPSprite(PSP_WEAPON) && 
 					(!InStateSequence(Player.FindPSprite(PSP_WEAPON).CurState, invoker.FindState("Select")) || Player.FindPSprite(PSP_WEAPON).Y<=36) &&
-					abs(Player.GetPSprite(Lay1).X - Player.GetPSprite(SHand).X + 35)<4 &&
+					abs(Player.GetPSprite(Lay1).X - Player.GetPSprite(SHand).X + 35)<6 &&
 					abs(Player.GetPSprite(Lay1).Y - Player.GetPSprite(SHand).Y)<2 &&
 					abs(Player.GetPSprite(Lay1).Rotation-30 - Player.GetPSprite(SHand).Rotation)<4
 				){
