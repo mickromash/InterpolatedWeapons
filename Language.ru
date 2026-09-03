@@ -35,7 +35,7 @@ MRIntW_ScreenShake3 = "Вся";
 MRIntW_ScreenShakeAmount = "Сила тряски экрана";
 MRIntW_InstantFire = "Убрать задержку перед выстрелом";
 MRIntW_FastPistol = "\cv⊛\c- Скорострельный пистолет";
-MRIntW_QuickSwitch = "\cv⊛\c- Быстрая смена оружия";
+MRIntW_QuickSwitch = "\cv⊛\c- Комбинирование оружия";
 MRIntW_BetterAlert = "\cv⊛\c- Реалистичное привлечение внимания монстров";
 
 
