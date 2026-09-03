@@ -261,22 +261,23 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 				if(Setting&MRIWPP_PlasmaDroppingSparks && ((Enemy && DeathTick%2!=0)||(!Enemy && DeathTick<2))){
 					int Times = 1;
 					if(!Enemy)Times = 6*PAmnt;
+					Vector3 Pos = Master.Pos + (0,0,-4);
 					For(int i=0;i<Times;i++){
-						Vector3 Pos = Master.Pos + (CRandom(-4, 4), CRandom(-4, 4), CRandom(-3, 3));
 						if(Enemy)Pos = Master.Master.Pos + (Actor.AngleToVector(FaceCam(Master.Master)+90, Master.Master.Radius*CFRandom(-.5, .5)), GetDefaultByType(Master.Master.GetClass()).Height*CFRandom(.1, .8));
 						Vector3 Vel = (Actor.AngleToVector(CRandom(0, 360), 2), CRandom(2, 4));
 						if(!Enemy){
-							Double Pow = 3;
-							Double Ang = FaceCam(Master);
-							Double Pit = FaceCam(Master, true);
-							Vel = (Actor.AngleToVector(Ang+CRandom(-180, 180)*Max(.4, Abs(Sin(Pit)*1.5)), Pow)*Max(.1, Cos(Pit)), -Sin(Pit-CRandom(0, 90)*Cos(Pit))*Pow*1.5);
+							Double Pow = CFRandom(2, 5);
+							Vector3 Vel = (Actor.AngleToVector(CRandom(0, 360), Pow), -Sin(-CRandom(-20, 40))*Pow*2);
 						}
 						int Col = 25*CRandom(5, 10);
 						
-						int Size = CFRandom(1.5, 3.5);
-						if(Enemy)Size = Max(1, GetDefaultByType(Master.Master.GetClass()).Radius*.05);
-						
-						MRSpawnParticle(Color(Col,Col,255), ParTex, SPF_FULLBRIGHT, STYLE_Add, CRandom(19, 25), Size, Pos, Vel, (0,0,-.5));
+						Float Size = CFRandom(1.5, 3.5);
+						if(Enemy){
+							Size = Max(1, GetDefaultByType(Master.Master.GetClass()).Radius*.1);
+							Vel.XY *= Size;
+						}
+						int Age = CRandom(13, 19);
+						MRSpawnParticle(Color(Col,Col,255), ParTex, SPF_FULLBRIGHT, STYLE_Add, Age, Size, Pos, Vel, (0,0,-CFRandom(.2, .6)), Fade:0, SizeStep:-(Size/Age));
 					}
 				}
 				
