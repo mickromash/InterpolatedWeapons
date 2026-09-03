@@ -415,17 +415,22 @@ Class MRIntWeaps_BarrelParticles: MRIntWeaps_ActorEffects
 			MRSpawnParticle(Color(30,30+CRandom(0, 5)*2,30), SmkTex, SPF_ROLL, STYLE_None, CRandom(40, 60)*Min(1, PAmnt), CRandom(32, 35), Master.Pos + (0,0,16), (Actor.AngleToVector(FaceCam(Master)+Ang*2, 2), CFRandom(-.5, 2))+Master.Vel*.25, Alpha: CFRandom(.7, 1), SizeStep: CFRandom(6.3, 7)/PAmnt, Roll: CRandom(0, 360), RollVel: -Ang*.1);
 		}
 		if(DeathTick<8 && DeathTick%2!=0){
-			For(int i=CRandom(0, 10)*PAmnt;i<30*PAmnt;i++){
-				Vector3 Pos = Master.Pos + (CRandom(-4, 4), CRandom(-4, 4), Master.Height*.5);
+			int Amount = 30*PAmnt;
+			Vector3 Pos = Master.Pos + (0,0,Master.Height*.5);
 				
-				Double Pow = CFRandom(3, 6);
+			Double Dist = 1;
+			if(Players[ConsolePlayer].Camera)Dist = Max(1, 1+(Master.Distance3D(Players[ConsolePlayer].Camera)-80)*.0016);
+			
+			For(int i=CRandom(0, 10)*PAmnt;i<Amount;i++){
+				Double Pow = CFRandom(1, 4);
 				
-				Vector3 Vel = (Actor.AngleToVector(CRandom(0, 360), Pow), -Sin(-CRandom(5, 30)*2)*Pow*2);
+				Vector3 Vel = (Actor.AngleToVector(CRandom(0, 360), Pow), -Sin(-CRandom(-20, 40))*Pow*2)*Dist;
 				
-				int Col = 25*CRandom(2, 7);
+				int Col = 25*CRandom(4, 10);
 				
-				int Size = CFRandom(1.5, 5);
-				MRSpawnParticle(Color(255,Col,int(Col*.5)), ParTex, SPF_REPLACE|SPF_FULLBRIGHT, STYLE_Add, CRandom(70, 80), Size, Pos, Vel+Master.Vel, (0,0,-Size*.1), SizeStep:-(Size/21));
+				Float Size = CFRandom(1, 4)*Dist;
+				int Age = 40-Pow;
+				MRSpawnParticle(Color(255,Col,int(Col*.5)), ParTex, SPF_FULLBRIGHT, STYLE_Add, Age, Size, Pos, Vel, (0,0,-CFRandom(.005, .7)*Dist), 1, 0, -(Size/Age));
 			}
 		}
 		if(DeathTick<5){
