@@ -845,7 +845,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			#### # 0 A_JumpIf(true, CRandom(0, 3));
 			#### ### 1 {
 				Player.GetPSprite(Lay1).Scale = (.99,.8)+(Player.GetPSprite(Lay1).Scale-(.99,.8))*.5;
-				if(Player.Cmd.Buttons&BT_ALTATTACK){
+				if(Player.Cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD){
 					invoker.ReadySound = "";
 					if(invoker.SawFrame%2==0)invoker.SawFrame++;
 				}
@@ -860,7 +860,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			#### # 0 A_JumpIf(true, CRandom(0, 3));
 			#### ### 1 {
 				Player.GetPSprite(Lay1).Scale = (.99,.8)+(Player.GetPSprite(Lay1).Scale-(.99,.8))*.5;
-				if(Player.Cmd.Buttons&BT_ALTATTACK){
+				if(Player.Cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD){
 					invoker.ReadySound = "";
 					if(invoker.SawFrame%2==0)invoker.SawFrame++;
 				}
@@ -872,7 +872,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				if(invoker.SawFrame>5)invoker.SawFrame = 2;
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
 			}
-			#### # 0 A_JumpIf(Player.Cmd.Buttons&BT_ALTATTACK, "SawIdleLoop");//13, 19
+			#### # 0 A_JumpIf(Player.Cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD, "SawIdleLoop");//13, 19
 			
 			#### ###### 1 {
 				A_StopSound(CHAN_5);
