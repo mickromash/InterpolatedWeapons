@@ -113,7 +113,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		Super.PostBeginPlay();
 		IdleDelay = -35*4;
 		Rotation = 30;
-		if(Level.Time<2 && MRIntW_ReloadAnims>1)Reload = true;
+		if((Level.Time<2 || Owner) && MRIntW_ReloadAnims>1)Reload = true;
 	}
 	
 	action void A_FireCGun()
@@ -548,6 +548,12 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 						Player.GetPSprite(i).Y -= 32;
 						Player.GetPSprite(i).bAddWeapon = true;
 						Player.GetPSprite(i).bInterpolate = false;
+					}
+					if(Player.FindPSprite(Lay2)){
+						Player.GetPSprite(Lay2).OldY -= 32;
+						Player.GetPSprite(Lay2).Y -= 32;
+						Player.GetPSprite(Lay2).bAddWeapon = true;
+						Player.GetPSprite(Lay2).bInterpolate = false;
 					}
 				}
 				invoker.MaxSpeedM = GetCVar("MRIntW_ChaingunSpeed");
