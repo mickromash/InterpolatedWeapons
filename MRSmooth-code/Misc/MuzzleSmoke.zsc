@@ -207,7 +207,7 @@ Class MRIntWeaps_Smoker: Object play
 				PPos.Z *= Curve;
 				PPos.XY *= Curve;
 				if(PPos!=PPos)PPos = (0,0,0);
-				MRSpawnParticle(Col1, Texture2, Flags, STYLE_None, 1, 1*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (PVel.XY, Bobb)*(1-i/(Connect*.5)) + (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:LastRoll[Num] + Roll*(i/Connect));
+				MRSpawnParticle(Col1, Texture2, Flags, STYLE_None, 1, 1*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:LastRoll[Num] + Roll*(i/Connect));
 			}
 		}
 		
