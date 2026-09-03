@@ -113,7 +113,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if(Level.Time<2 && MRIntW_ReloadAnims>1)Reload = true;
+		if((Level.Time<2 || Owner) && MRIntW_ReloadAnims>1)Reload = true;
 	}
 	
 	Bool Catch, SpecSwitch;
