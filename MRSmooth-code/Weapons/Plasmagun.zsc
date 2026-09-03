@@ -59,7 +59,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			Let b = New('MRIntWeaps_PlayerProjectileParticles');
 			b.Master = a;
 			b.Type = 1;
-			if(invoker.CountLights>0){
+			if(invoker.CountLights>0 || !MRIntW_PlasmaLight){
 				a.NoLight = true;
 			}
 		}

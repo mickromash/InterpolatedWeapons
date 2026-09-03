@@ -218,6 +218,7 @@ MRIntW_PlasmaParticles0 = "Нет";
 MRIntW_PlasmaParticles1 = "Только свечение";
 MRIntW_PlasmaParticles2 = "Свечение + частицы";
 
+MRIntW_PlasmaLight = "Снаряды излучают динамические свет";
 MRIntW_PlasmaSkipLight = "Только каждый второй снаряд излучает свет";
 
 MRIntW_BFGParticles = "Частицы при стрельбе";
