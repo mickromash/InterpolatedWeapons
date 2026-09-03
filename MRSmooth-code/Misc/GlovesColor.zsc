@@ -402,10 +402,9 @@ Extend Class MRIntWeaps_Fist
 					
 					if(Owner.FindInventory("BasicArmor")){
 						Let Arm = BasicArmor(Owner.FindInventory("BasicArmor"));
-
 						Switch(Arm.ArmorType)
 						{
-							Case 'BasicArmorPickup':
+							Default:
 							Case 'ArmorBonus':
 								Col[0] = Arm.Amount*.7;
 								Col[1] = Arm.Amount*1.35;
@@ -416,13 +415,11 @@ Extend Class MRIntWeaps_Fist
 								Col[1] = Arm.Amount*1.35;
 								Col[2] = Arm.Amount*.4;
 								Break;
+							Case 'BlueArmorForMegasphere':
 							Case 'BlueArmor':
 								Col[0] = Arm.Amount*.15;
 								Col[1] = Arm.Amount*.25;
 								Col[2] = Arm.Amount*1.15;
-								Break;
-							Default:
-								Col[0] = Col[1] = Col[2] = 0;
 								Break;
 						}
 					}
