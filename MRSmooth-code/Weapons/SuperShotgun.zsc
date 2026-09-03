@@ -163,11 +163,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			}
 			#### ####### 1 {
 				if(invoker.SwitchAnim){
-					A_OverlayMoveTo(Lay1, -3, 32-6, .8, .5);
+					A_OverlayMoveTo(Lay1, -3, 32-5, .8, .5);
 					A_OverlayRotate(Lay1, -4, WOF_ADD);
 				}
 				else {
-					A_OverlayMoveTo(Lay1, -3, 32-6, .8, .5);
+					A_OverlayMoveTo(Lay1, -5, 32-5, .8, .5);
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 					A_OverlayRotate(Lay1, 1.2, WOF_ADD);
 				}
@@ -175,34 +175,35 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			}
 			#### ## 1 {
 				if(invoker.SwitchAnim){
-					A_OverlayMoveTo(Lay1, -1, 32, .7);
+					A_OverlayMoveTo(Lay1, -3, 34, .7);
 					A_OverlayRotate(Lay1, -.2, WOF_ADD);
 				}
 				else {
-					A_OverlayMoveTo(Lay1, -1, 32, .7);
-					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
+					A_OverlayMoveTo(Lay1, -4, 34, .7);
+					A_OverlayScale(Lay1, -.04, -.04, WOF_ADD);
 					A_OverlayRotate(Lay1, 1.4, WOF_ADD);
 				}
 				invoker.SwitchState--;
 			}
 			#### # 1{
-				A_OverlayOffset(Lay1, 0, 30, WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, 0, 33, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				invoker.SwitchState = 0;
 			}
 			#### A 1 {
 				if(invoker.SwitchAnim)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
-				else Player.GetPSprite(Lay1).Y += CFRandom(.5, 1);
 			}
 			#### A 1 {
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON, true);
-				A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				Player.GetPSprite(Lay1).OldY -= 32;
+				Player.GetPSprite(Lay1).Y -= 32;
+				Player.GetPSprite(Lay1).Y *= .9;
 			}
+			#### ########## 1 {Player.GetPSprite(Lay1).Y *= .9;}
 		GunWait:
 			SH12 A 1 {
 				invoker.Catch = false;
@@ -229,6 +230,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				
 				if(invoker.SwitchAnim){
 					A_Overlay(LHand, "LeftHandLower");
+					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 					Player.GetPSprite(Lay1).OldX = Player.GetPSprite(PSP_WEAPON).OldX;
 					Player.GetPSprite(Lay1).OldY = invoker.SwitchState<1?Player.GetPSprite(PSP_WEAPON).OldY:32;
 					Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).OldY;
@@ -237,9 +239,10 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 					Player.GetPSprite(Lay1).Frame = 25;
 				}
 				else {
-					A_OverlayOffset(Lay1, Player.GetPSprite(PSP_WEAPON).OldX, invoker.SwitchState<1?Player.GetPSprite(PSP_WEAPON).OldY:32);
-					A_OverlayRotate(Lay1, 0);
-					A_OverlayScale(Lay1, 1, 1);
+					Player.GetPSprite(Lay1).Y = invoker.SwitchState<1?Player.GetPSprite(PSP_WEAPON).OldY:32;
+					Player.GetPSprite(Lay1).X = Player.GetPSprite(PSP_WEAPON).OldX;
+					A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
+					A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 					A_OverlayPivot(Lay1, .5, 0);
 				}
 				
