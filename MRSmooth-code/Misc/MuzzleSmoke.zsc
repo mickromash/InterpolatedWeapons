@@ -90,7 +90,8 @@ Class MRIntWeaps_Smoker: Object play
 	
 	Virtual Void Update(Bool OldB = false)
 	{
-		InterFloorZ += (Owner.FloorZ-InterFloorZ)*.05;
+		if(abs(Owner.FloorZ-InterFloorZ)>Owner.MaxStepHeight+1)InterFloorZ += (Owner.FloorZ-InterFloorZ)*.5;
+		else InterFloorZ += (Owner.FloorZ-InterFloorZ)*.05;
 		
 		ViewHeight = PlayerPawn(Owner).ViewHeight + Owner.player.crouchviewdelta;
 		Bob = (Owner.Player.ViewZ - InterFloorZ) - ViewHeight;
@@ -112,6 +113,7 @@ Class MRIntWeaps_Smoker: Object play
 		Double Step = Step/MRIntW_FlowingSmokePrecision*Scale[Num];
 		Double ZSpeed = ZSpeed*4*Speed[Num];
 		Vector2 Wind = Wind*Speed[Num];
+		Vector3 PVel = Owner.Pos - Owner.Prev;
 		
 		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ+(OldBob-Bob));
 		
@@ -139,7 +141,7 @@ Class MRIntWeaps_Smoker: Object play
 		if(ResetInterpolation){
 			InterFloorZ = Owner.FloorZ;
 			For(int i=0;i<Prev.Size();i++){
-				Prev[i] = Pos + Owner.Vel + (Wind.X,Wind.Y,ZSpeed - (Owner.Player.ViewZ));
+				Prev[i] = Pos + PVel + (Wind.X,Wind.Y,ZSpeed - (Owner.Player.ViewZ));
 				LastRoll[i] = -90;
 			}
 		}
@@ -192,7 +194,7 @@ Class MRIntWeaps_Smoker: Object play
 			MRSpawnParticle(Col, Texture, Flags, STYLE_None, Life/Max(1, Diff.Length()*.15/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:LastRoll[Num] + Roll*(i/Connect));
 		}
 		
-		if(Owner.Vel.XY.Length()>0 || ForceConnect){
+		if(PVel.XY.Length()>0 || ForceConnect){
 			Flags = SPF_NOTIMEFREEZE;
 			if(Bright1)Flags |= SPF_FULLBRIGHT;
 			if(ActRoll!=0)Flags |= SPF_ROLL;
@@ -205,7 +207,7 @@ Class MRIntWeaps_Smoker: Object play
 				PPos.Z *= Curve;
 				PPos.XY *= Curve;
 				if(PPos!=PPos)PPos = (0,0,0);
-				MRSpawnParticle(Col1, Texture2, Flags, STYLE_None, 1, 1*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:LastRoll[Num] + Roll*(i/Connect));
+				MRSpawnParticle(Col1, Texture2, Flags, STYLE_None, 1, 1*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (PVel.XY, Bobb)*(1-i/(Connect*.5)) + (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:LastRoll[Num] + Roll*(i/Connect));
 			}
 		}
 		
