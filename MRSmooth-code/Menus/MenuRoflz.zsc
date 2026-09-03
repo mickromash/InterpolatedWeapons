@@ -19,7 +19,7 @@ Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenuMain
 
 Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 {
-	Bool Tick;
+	Bool Tick, Dead;
 	int Stayt, IntroVar;
 	Double Scale, Scale2, SubVel, SubAccel, SubRot;
 	Vector2 M_DoomPos, SubPos;
@@ -34,8 +34,16 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 		SubRot = 25;
 		
 		int w = desc ? desc.DisplayWidth() : ListMenuDescriptor.CleanScale;
+		int h = desc ? desc.DisplayHeight() : -1;
+		
+		Double Width = w;
+		Double Height = h;
 		Double DefScale = 1;
-		if(w == ListMenuDescriptor.CleanScale)DefScale = 3;
+		if(w == ListMenuDescriptor.CleanScale){
+			Width = Screen.GetWidth();
+			Height = Screen.GetHeight();
+			DefScale = 3;
+		}
 
 		Switch(IntroVar){
 			Case 0:
@@ -43,17 +51,30 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 				Break;
 			Case 1:
 				Scale = DefScale;
-				M_DoomPos = (Screen.GetWidth()*.6, 0);
+				M_DoomPos = (Width*.6, 0);
 				Break;
 			Case 2:
 				Scale = DefScale;
-				M_DoomPos = (0, -Screen.GetHeight()*.5);
+				M_DoomPos = (0, -Height*.5);
 				Break;
 		}
 		
 		Tick = true;
 		
-		if(MRIntW_MenuState>1)CVar.FindCVar("MRIntW_MenuState").SetInt(0);
+		Dead = Players[ConsolePlayer].mo && Players[ConsolePlayer].mo.Health<1;
+		
+		if(Dead){
+			CVar.FindCVar("MRIntW_MenuState").SetInt(2);
+			Scale = DefScale;
+			M_DoomPos = (0, Height*CFRandom(1.05, 1.1));
+			SubPos = (0,0);
+			Scale2 = 1;
+			IntroVar = 0;
+			Stayt = 36;
+		}
+		
+		
+		else if(MRIntW_MenuState>1)CVar.FindCVar("MRIntW_MenuState").SetInt(0);
 		
 		if(Hand)Hand.Destroy();
 	}
@@ -107,6 +128,12 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 					}
 					Break;
 			}
+		}
+		if(Dead){
+			if(M_DoomPos.Y<Height*.01)M_DoomPos.Y *= .9;
+			else M_DoomPos.Y -= Min(M_DoomPos.Y, Height*.001);
+			
+			if(M_DoomPos.Y<.1)Dead = false;
 		}
 		//M_Doom
 		if(w == ListMenuDescriptor.CleanScale)Screen.DrawTexture(mTexture, true, Width*.5 -vec.X*Scale*.5 + M_DoomPos.X, Height*.5 -vec.Y*Scale*.5 - vec.Y*DefScale*1.2 + M_DoomPos.Y
