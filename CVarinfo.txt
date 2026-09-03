@@ -157,4 +157,4 @@ nosave noarchive int MRIntW_MenuState = 0;
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;
-server noarchive int MRIntW_Version = 2508261;//DDMMYYI
+server noarchive int MRIntW_Version = 409260;//DDMMYYI
