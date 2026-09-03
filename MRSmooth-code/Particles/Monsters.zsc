@@ -445,7 +445,7 @@ Class MRIntWeaps_MonsterProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				Return;
 			Case 4://ArachnotronPlasma
-				if(Setting&MRIWMP_ArachnoBallImpactSmoke && DeathTick<7){
+				if(Setting&MRIWMP_ArachnoBallImpactSmoke && DeathTick%6==0){
 					MRSpawnParticle(Color(255,255,255), SmkTex, 0, STYLE_None, CRandom(20, 30)*Min(1, PAmnt), CRandom(32, 35), GotHit?GotHit.Pos+HitPlace:Master.Pos, (Actor.AngleToVector(FaceCam(Master)+CRandom(-30,30), 2), CFRandom(-.5, 2)), Alpha: CFRandom(.2, .3), SizeStep: CFRandom(2, 3));
 				}
 				if(Setting&MRIWMP_ArachnoBallImpactSplash && DeathTick<3){
