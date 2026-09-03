@@ -177,10 +177,12 @@ Extend Class MRIntWeaps_Fist
 		Bouncing = false;
 		
 		if(Owner.Pos.Z > Owner.FloorZ){
+			Double CapMult = Weap.FloatSpeed/4;
+			
 			BounceStrength = Owner.Vel.Z;//Move weapon based on vertical velocity (going down - move up, going up - move down)
 			CurBounce += (Clear?Max(0, (abs(BounceStrength) + CurBounce))*.4 : (BounceStrength - CurBounce)*.5);
-			if(Clear) CurBounce = Min(40, CurBounce);
-			else CurBounce = Clamp(CurBounce, -abs(Weap.FloatSpeed*6.5), 20);
+			if(Clear)CurBounce = Min(40, CurBounce);
+			else CurBounce = Clamp(CurBounce*CapMult, -abs(Weap.FloatSpeed*6.5), 20);
 			Bouncing = true;
 			Landed = true;
 		}
@@ -228,6 +230,8 @@ Extend Class MRIntWeaps_Fist
 	Float GoingX;
 	Void DoSway(int Style)
 	{
+		Double CapMult = Weap.FloatSpeed/4;
+		
 		Double Target;
 		Switch(Style)
 		{
@@ -271,12 +275,12 @@ Extend Class MRIntWeaps_Fist
 					PSP.X += (Sway.X-PSP.X)*.5;
 					PSP.OldX = PSP.X;
 					if(Allowed){
-						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y + CurSway.Y + Sway.Y);
+						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y + (CurSway.Y + Sway.Y)*CapMult);
 					}
 				}
 				else {
 					PSP.X = PSP.X+(Sway.X-PSP.X)*.5;
-					if(Allowed)PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), 32 + CurSway.Y + Sway.Y);
+					if(Allowed)PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), 32 + (CurSway.Y + Sway.Y)*CapMult);
 					OfstAdd = true;
 				}
 				
@@ -390,12 +394,12 @@ Extend Class MRIntWeaps_Fist
 					PSP.X += (CurSway.X - PSP.X)*.5;
 					PSP.OldX = PSP.X;
 					if(Allowed){
-						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y + CurSway.Y);
+						PSP.OldY = PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), PSP.Y + CurSway.Y*CapMult);
 					}
 				}
 				else {
 					PSP.OldX = PSP.X = PSP.X+(CurSway.X - PSP.X)*.5;
-					if(Allowed)PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), 32 + CurSway.Y);
+					if(Allowed)PSP.Y = Max(32-abs(Weap.FloatSpeed*6.5), 32 + CurSway.Y*CapMult);
 					OfstAdd = true;
 				}
 				if(!Allowed)CurSway.Y = 0;
