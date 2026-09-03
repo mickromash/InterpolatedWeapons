@@ -67,7 +67,7 @@ Class MRIntWeaps_ActorEffects: Thinker
 		else CVa = MRIntW_ParticleTexture;
 		
 		if(CVa<0){
-			if(VThink)CVa = gl_particles_style;
+			if(VThink)CVa = 2-gl_particles_style;
 			else Return Texman.CheckForTexture("glpart");
 		}
 		
@@ -266,7 +266,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						if(Enemy)Pos = Master.Master.Pos + (Actor.AngleToVector(FaceCam(Master.Master)+90, Master.Master.Radius*CFRandom(-.5, .5)), GetDefaultByType(Master.Master.GetClass()).Height*CFRandom(.1, .8));
 						Vector3 Vel = (Actor.AngleToVector(CRandom(0, 360), 2), CRandom(2, 4));
 						if(!Enemy){
-							Double Pow = CFRandom(2, 5);
+							Double Pow = CFRandom(7, 12);
 							Vector3 Vel = (Actor.AngleToVector(CRandom(0, 360), Pow), -Sin(-CRandom(-20, 40))*Pow*2);
 						}
 						int Col = 25*CRandom(5, 10);
@@ -579,7 +579,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 	}
 }
 
-Class MRIntWeaps_BFGParticle: VisualThinker//Particles spinning around the ball
+Class MRIntWeaps_BFGParticle: VisualThinker//Particles spinning around BFG ball
 {
 	Actor Master;
 	Double Angle, Pitch, AngChange, PitChange, Radius;
@@ -596,9 +596,9 @@ Class MRIntWeaps_BFGParticle: VisualThinker//Particles spinning around the ball
 		SetRenderStyle(STYLE_Add);
 		Alpha = .7;
 		Texture = MRIntWeaps_ActorEffects.SetTexture(VThink:true);
-		//Texman.CheckForTexture("NSHSB0");
-		Scale = (.02,.02)*StartScale;
-		Vector2 BaseOffset = -(32,32);
+		Vector2 Size = Texman.GetScaledSize(Texture);
+		Scale = (StartScale/Size.X, StartScale/Size.Y);
+		Vector2 BaseOffset = -Size*.5;
 		Offset = BaseOffset*Scale.X;
 		Super.PostBeginPlay();
 	}
@@ -606,7 +606,7 @@ Class MRIntWeaps_BFGParticle: VisualThinker//Particles spinning around the ball
 	Override Void Tick()
 	{
 		Super.Tick();
-		
+
 		if(Scale.X<=0||Alpha<=0){
 			Destroy();
 			Return;
