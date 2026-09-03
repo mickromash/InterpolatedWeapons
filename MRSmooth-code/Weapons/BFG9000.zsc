@@ -15,7 +15,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	int BobState, Idle;
 	Double Muzzle,//Muzzle position
 			Power;//Prefiring shaking
-	Bool InterpolateMuzzle, LightUpMuzzle;
+	Bool InterpolateMuzzle, LightUpMuzzle, Idling;
 	
 	Float Recoil;
 	Override Void DoEffect()
@@ -208,7 +208,9 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 					Return;
 				}
 				
-				if(!(Player.Cmd.Buttons&BT_ALTATTACK))Return;
+				if(Player.Cmd.Buttons&BT_ALTATTACK && !(Player.OldButtons&BT_ALTATTACK))invoker.Idling = !invoker.Idling;
+				
+				if(!invoker.Idling)Return;
 				
 				if(GetAge()%2==0){
 					Player.GetPSprite(Lay2).X = CFRandom(-.5, .5);
