@@ -81,8 +81,10 @@ Class MRIntWeaps_Casing: VisualThinker
 			if(Fading!=0){
 				Fading-=.2356;
 				Alpha = Fading;
-				if(Fading<0)Destroy();
-				Return;
+				if(Fading<0){
+					Destroy();
+					Return;
+				}
 			}
 			
 			if(CurSector){
@@ -90,6 +92,7 @@ Class MRIntWeaps_Casing: VisualThinker
 					Pos.Z = CurSector.CenterFloor();
 					if(CurSector.GetTexture(0).IsValid() && CheckLiquid(CurSector.GetTexture(0)))Return;
 				}
+				else Pos.Z = CurSector.CenterFloor();
 			}
 			if(Vel.XY.Length()>0){
 				Vel.XY *= .6;
