@@ -960,6 +960,11 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayOffset(Lay1, -4, -6.*CFRandom(.9, 1.2), WOF_ADD);
 				A_OverlayScale(Lay1, 1.05, .95, WOF_INTERPOLATE);
 				if(!invoker.CustomSound && GetAge()-invoker.ReactionTime>10)A_StopSound(CHAN_WEAPON);
+				
+				if(MRIntW_ScreenShake>1){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.15*Amnt,0,.075*Amnt, 8, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 4,0,4, rollIntensity: .02*Amnt, rollwave: 4);
+				}
 			}
 			#### G 1 {
 				A_OverlayOffset(Lay1, -2, -(Player.GetPSprite(Lay1).Y+36)*.6, WOF_ADD);

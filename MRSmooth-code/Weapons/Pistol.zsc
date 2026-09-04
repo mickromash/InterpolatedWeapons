@@ -829,6 +829,12 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			}
 			#### ### 1 A_OverlayMoveTo(Lay1, 29, 10, .9);
 			#### ## 1 A_OverlayMoveTo(Lay1, 25, 5, .5);
+			#### # 0 {
+				if(MRIntW_ScreenShake>1){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.2*Amnt,0,.2*Amnt, 13, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 9,0,9, rollIntensity: .1*Amnt, rollwave: 9);
+				}
+			}
 			#### BC 1{
 				A_OverlayMoveTo(Lay1, 29, 40, .5);
 			}

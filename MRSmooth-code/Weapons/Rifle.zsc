@@ -274,7 +274,13 @@ Extend Class MRIntWeaps_Pistol
 				
 				Return ResolveState(Null);
 			}
-			#### # 0 A_StartSound("weapons/shotgr", CHAN_WEAPON, pitch:CFRandom(.97, 1.02)*i_timescale);
+			#### # 0 {
+				A_StartSound("weapons/shotgr", CHAN_WEAPON, pitch:CFRandom(.97, 1.02)*i_timescale);
+				if(MRIntW_ScreenShake>1){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.2*Amnt,0,.2*Amnt, 13, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 9,0,9, rollIntensity: .1*Amnt, rollwave: 9);
+				}
+			}
 			#### ## 1 {
 				A_OverlayMoveTo(Lay1, 15, 30, .5);
 				Player.GetPSprite(Lay1).Scale = (1.4,1.4)+(Player.GetPSprite(Lay1).Scale-(1.4,1.4))*.5;
@@ -292,6 +298,7 @@ Extend Class MRIntWeaps_Pistol
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
 					A_OverlayOffset(PSP_FLASH+10+index, 172+Player.GetPSprite(PSP_WEAPON).OldX+Player.GetPSprite(Lay1).X, 130+Player.GetPSprite(Lay1).Y+Player.GetPSprite(PSP_WEAPON).OldY);
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
+					Player.GetPSprite(PSP_FLASH+10+index).Alpha = .5;
 				}
 			}
 			#### ## 1{
@@ -299,7 +306,7 @@ Extend Class MRIntWeaps_Pistol
 				Player.GetPSprite(Lay1).Scale = (1.35,1.35)+(Player.GetPSprite(Lay1).Scale-(1.35,1.35))*.5;
 				Player.GetPSprite(Lay1).Rotation = 10+(Player.GetPSprite(Lay1).Rotation-10)*.5;
 			}
-			#### #### 1 {
+			#### ##### 1 {
 				A_OverlayMoveTo(Lay1, 0, 0, .6);
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.6;
 				Player.GetPSprite(Lay1).Rotation *= .6;
@@ -329,6 +336,7 @@ Extend Class MRIntWeaps_Pistol
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
 					A_OverlayOffset(PSP_FLASH+10+index, 182+Player.GetPSprite(PSP_WEAPON).OldX, 152+Player.GetPSprite(PSP_WEAPON).OldY);
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
+					Player.GetPSprite(PSP_FLASH+10+index).Alpha = .5;
 				}
 			}
 			Goto GunWait;
@@ -365,9 +373,16 @@ Extend Class MRIntWeaps_Pistol
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
 					A_OverlayOffset(PSP_FLASH+10+index, 182+Player.GetPSprite(PSP_WEAPON).OldX+Player.GetPSprite(Lay1).X, 120+Player.GetPSprite(Lay1).Y+Player.GetPSprite(PSP_WEAPON).OldY);
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
+					Player.GetPSprite(PSP_FLASH+10+index).Alpha = .5;
 				}
 				
 				A_StartSound("weapons/bfgx", CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:CFRandom(1.5, 2));
+				
+				
+				if(MRIntW_ScreenShake>1){
+					Double Amnt = MRIntW_ScreenShakeAmount;
+					A_QuakeEx(.7*Amnt,0,.7*Amnt, 130, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 5,0,5, rollIntensity: .7*Amnt, rollwave: 5);
+				}
 			}
 			#### # 1 {
 				A_OverlayMoveTo(Lay1, 0, 0, .95);
