@@ -260,7 +260,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay1, CFRandom(-.5, .5), CFRandom(-.5, .5), WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-.25, .25), WOF_INTERPOLATE);
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
-				A_OverlayScale(Lay1, CFRandom(1, 1.025), CFRandom(1, 1.025), WOF_INTERPOLATE);
+				
+				Double BobZ = 0;
+				if(MRIntW_BobRangeZ!=0)BobZ = MRIntWeaps_Fist.GetBobZ(invoker, .5);
+				A_OverlayScale(Lay1, CFRandom(1, 1.025)+BobZ, CFRandom(1, 1.025)+BobZ, WOF_INTERPOLATE);
 				
 				if(MRIntW_ChainsawSmoke){
 					int index;
@@ -288,7 +291,10 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				A_OverlayOffset(Lay1, CFRandom(-.5, .5)*(1+invoker.SawSpeed), CFRandom(-.5, .5)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
 				A_OverlayRotate(Lay1, CFRandom(-.25, .25)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
-				A_OverlayScale(Lay1, 1+CFRandom(0, .025)*(1+invoker.SawSpeed), 1+CFRandom(0, .025)*(1+invoker.SawSpeed), WOF_INTERPOLATE);
+				
+				Double BobZ = 0;
+				if(MRIntW_BobRangeZ!=0)BobZ = MRIntWeaps_Fist.GetBobZ(invoker, .5);
+				A_OverlayScale(Lay1, 1+CFRandom(0, .025)*(1+invoker.SawSpeed)+BobZ, 1+CFRandom(0, .025)*(1+invoker.SawSpeed)+BobZ, WOF_INTERPOLATE);
 				if(GetAge()%Max(1, int(2-invoker.SawSpeed))==0)invoker.SawFrame++;
 				if(invoker.SawFrame>5)invoker.SawFrame = 2;
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
@@ -929,8 +935,14 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				
 				Double Amnt = MRIntW_ScreenShakeAmount;
 				if(MRIntW_ScreenShake>1)A_QuakeEx(.03*Amnt,0,.02*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_WAVE, 10,0,10, rollIntensity: .02*Amnt, rollwave: 10);
+				
+				if(MRIntW_VanillaFireBob)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			}
-			#### ### 1 A_WeaponReady();//WRF_NOFIRE|WRF_NOSWITCH);
+			#### ### 1 {
+				A_WeaponReady();//WRF_NOFIRE|WRF_NOSWITCH);
+				
+				if(MRIntW_VanillaFireBob)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
+			}
 			TNT1 D 1 {
 				A_WeaponReady();
 				
@@ -941,8 +953,14 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				
 				Double Amnt = MRIntW_ScreenShakeAmount;
 				if(MRIntW_ScreenShake>1)A_QuakeEx(.03*Amnt,0,.02*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_WAVE, 10,0,10, rollIntensity: .02*Amnt, rollwave: 10);
+				
+				if(MRIntW_VanillaFireBob)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			}
-			#### DDD 1 A_WeaponReady();//WRF_NOFIRE|WRF_NOSWITCH);
+			#### DDD 1 {
+				A_WeaponReady();//WRF_NOFIRE|WRF_NOSWITCH);
+				
+				if(MRIntW_VanillaFireBob)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
+			}
 			Loop;
 		Fire:
 			TNT1 A 0 A_Overlay(Lay1, "SawStartCut");
