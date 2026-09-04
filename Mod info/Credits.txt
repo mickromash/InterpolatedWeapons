@@ -36,6 +36,7 @@ Weapon dropping sounds taken from The Soldier Z mod
 Smooth Doom mod
 Beautiful Doom mod
 Hideous destructor mod
+SmoothBlood mod
 Doom Delta mod
 Doom Deluxe mod
 
