@@ -403,7 +403,7 @@ Extend Class MRIntWeaps_Pistol
 			Owner.Player.SetPsprite(Lay, Null);
 			Casings[index] = false;
 			
-			SpawnRealCasing();
+			if(PSP.Alpha>.5)SpawnRealCasing();
 			Return;
 		}
 		
@@ -551,7 +551,7 @@ Extend Class MRIntWeaps_Pistol
 			PISC # 20 A_SetTics(CaseLife);
 			TNT1 # 0 {
 				Player.GetPSprite(OverlayId()).bInterpolate=invoker.Casings[OverlayId()-10-PSP_FLASH]=false;
-				invoker.SpawnRealCasing();
+				if(Player.GetPSprite(OverlayId()).Alpha>.5)invoker.SpawnRealCasing();
 			}
 			Stop;
 	}
