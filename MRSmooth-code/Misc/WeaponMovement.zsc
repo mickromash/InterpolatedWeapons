@@ -33,7 +33,10 @@ Extend Class MRIntWeaps_Fist
 		
 		if(MRIntW_WeaponSway)DoSway(MRIntW_WeaponSwayStyle);
 	}
-	
+}
+
+Extend Class MRIntWeaps_Fist//Vanilla firing bob
+{
 	Vector2 FireBob, OldFireBob;
 	Double BobInter;
 	Void DoVanillaFiringBob()
@@ -47,8 +50,8 @@ Extend Class MRIntWeaps_Fist
 			if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = -FireBob.X;
 			if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.Y = 32+FireBob.Y;
 			
-			PSP.OldX = PSP.X;
-			if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.OldY = PSP.Y;
+			//PSP.OldX = PSP.X;
+			//if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.OldY = PSP.Y;
 			
 			OldFireBob = FireBob;
 			BobInter = 1;
@@ -68,10 +71,10 @@ Extend Class MRIntWeaps_Fist
 					PSP.Y = -FireBob.Y*BobInter+32;
 					PSP.Y += OldFireBob.Y*BobInter;
 					
-					if(BobInter==1){
+					/*if(BobInter==1){
 						PSP.OldX = PSP.X;
 						PSP.OldY = PSP.Y;
-					}
+					}*/
 					
 					BobInter *= .6;
 					if(BobInter<.1){
@@ -86,7 +89,9 @@ Extend Class MRIntWeaps_Fist
 			else BobInter = 0;
 		}
 	}
-	
+}
+Extend Class MRIntWeaps_Fist//Base offset
+{
 	Vector2 BaseOffset;
 	Void DoBaseOffset()
 	{
@@ -112,7 +117,9 @@ Extend Class MRIntWeaps_Fist
 			OfstAdd = true;
 		}
 	}
-	
+}
+Extend Class MRIntWeaps_Fist//Damage shake
+{
 	int DamageShake, PlrLastHealth;
 	Void DoDamageShake()
 	{
@@ -140,7 +147,9 @@ Extend Class MRIntWeaps_Fist
 		
 		PlrLastHealth = Max(0, Owner.Health);
 	}
-	
+}
+Extend Class MRIntWeaps_Fist//Manual gun lowering
+{
 	Bool LowerGun;
 	Double RunKey;
 	Void DoGunLower()
@@ -167,7 +176,9 @@ Extend Class MRIntWeaps_Fist
 		}
 		else RunKey = 0;
 	}
-	
+}
+Extend Class MRIntWeaps_Fist//Jumping and landing bouncing
+{
 	Double CurBounce, BounceStrength;
 	Bool Bouncing, Landed;
 	Void DoBounce()
@@ -224,7 +235,9 @@ Extend Class MRIntWeaps_Fist
 			}
 		}
 	}
-	
+}
+Extend Class MRIntWeaps_Fist//Weapon sway
+{
 	Vector2 CurSway, Sway;
 	int GoingY;
 	Float GoingX;
@@ -426,10 +439,9 @@ Extend Class MRIntWeaps_Fist
 				Break;
 		}
 	}
-	
-	
-	
-	
+}
+Extend Class MRIntWeaps_Fist//Z Bob
+{
 	Clearscope Static Double GetBobZ(Weapon Weap, Double Center = .5)
 	{
 		PlayerPawn Plr = PlayerPawn(Weap.Owner);
@@ -444,8 +456,8 @@ Extend Class MRIntWeaps_Fist
 		Double R;
 
 		// The weapon bobbing intensity while firing can be adjusted by the player.
-		double BobIntensity = ((Plr.player.WeaponState & WF_WEAPONBOBBING) ? 1. : Plr.player.GetWBobFire())*.01;
-
+		double BobIntensity = .01;
+		
 		if (Plr.curbob != 0)
 		{
 			double bobVal = Plr.player.bob;
