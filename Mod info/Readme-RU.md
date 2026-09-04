@@ -266,6 +266,7 @@
      * Smooth Doom
      * Beautiful Doom
      * Hideous destructor
+     * SmoothBlood
      * Doom Delta
      * Doom Deluxe
      * Bioshock
@@ -280,9 +281,11 @@
      * Doom 3
      * Doom Retro
      * Аниме Black Lagoon
+     * Killer Bean Forever
      * Видео с youtube канала C&Rsenal (а точнее переводами с канала C&Rsenal rus)
      * Импакт шутера - Kefir succerland на youtube
      * DOOM's pistol is kinda LAME... but it doesn't have to be! - Doomkid на youtube
+     * Doom 2's Super Shotgun Graphics Are JANK - BeefGee на youtube
 * Отдельная благодарность
      * Patis
      * RastamanGames
