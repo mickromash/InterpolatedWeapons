@@ -384,7 +384,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				}
 				
 				if(MRIntW_SwitchAnims)invoker.SwitchAnim = CRandom(0, 1);
-				A_OverlayOffset(Lay1, MRIntW_SwitchAnims?(invoker.SwitchAnim?-51:51):0, 90);
+				A_OverlayOffset(Lay1, MRIntW_SwitchAnims?(invoker.SwitchAnim?-51:51)+Player.GetPSprite(PSP_WEAPON).X:Player.GetPSprite(PSP_WEAPON).X, 90);
 				invoker.SwitchState = 12;
 			}
 			CH1G # 0 {
@@ -392,7 +392,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				if(!invoker.Reload && CRandom(0, 1)>0)invoker.Speed = 205.6*GetCVar("MRIntW_ChaingunStopTime");
 			}
 			CH1G ########## 1 {
-				Vector2 Offset = (-Player.GetPSprite(Lay1).X*1.3, -Player.GetPSprite(Lay1).Y+24);
+				Vector2 Offset = (-Player.GetPSprite(Lay1).X*1.3+Player.GetPSprite(PSP_WEAPON).X, -Player.GetPSprite(Lay1).Y+24);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, Offset.X*.16, Offset.Y*.16, WOF_ADD);
 				For(int i=Muzzle0;i<=Ring;i++){
 					if(i>Lay1 && (invoker.SwitchState>12 || invoker.Speed>.05))Continue;
@@ -409,7 +409,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					invoker.Reload = false;
 				}
 				
-				Vector2 Offset = (-Player.GetPSprite(Lay1).X, -Player.GetPSprite(Lay1).Y+32);
+				Vector2 Offset = (-Player.GetPSprite(Lay1).X+Player.GetPSprite(PSP_WEAPON).X, -Player.GetPSprite(Lay1).Y+32);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, Offset.X*.4, Offset.Y*.3, WOF_ADD);
 				For(int i=Muzzle0;i<=Ring;i++){
 					A_OverlayFlags(i, PSPF_INTERPOLATE, (!Player.GetPSprite(i).FirstTic && !(i>Lay1 && invoker.Speed>.05)));
@@ -418,7 +418,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				invoker.SwitchState--;
 			}
 			CH1G # 1 {
-				Vector2 Ofst = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				Vector2 Ofst = (Player.GetPSprite(Lay1).X-Player.GetPSprite(PSP_WEAPON).X, Player.GetPSprite(Lay1).Y);
 				For(int i=Muzzle0;i<=Ring;i++){
 					Player.GetPSprite(i).X -= Ofst.X;
 					Player.GetPSprite(i).Y -= Ofst.Y;
@@ -435,7 +435,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			#### # 1 {if(!(Player.Cmd.Buttons&BT_ATTACK) && !Player.FindPSprite(AnimLay))A_IdleAnimation(Lay1);}
 			#### # 0 {
 				invoker.InterpolateBarrels = true;
-				Bool Sway = MRIntW_WeaponSway;
+				Bool Sway = MRIntW_WeaponSway || Player.FindPSprite(AnimLay) || abs(invoker.Speed)>.01;
 				For(int i=Muzzle0;i<=Ring;i++){
 					if(i<=Muzzle5 && (abs(invoker.Speed)>.1||Player.FindPSprite(Lay2)))Continue;
 					A_OverlayFlags(i, PSPF_INTERPOLATE, (invoker.Speed<.1 && Sway && !Player.GetPSprite(i).FirstTic));
@@ -470,7 +470,10 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			#### # 0 {if(invoker.IdleDelay>35 && GetCVar("MRIntW_IdleAnims")>1 && abs(invoker.BobState)<2)A_Overlay(Hand, "HandIdle1");}
 			Loop;
 		GunLower:
+			#### # 0;
 			CH1G # 1 {
+				if(FindInventory("MRIntWeaps_Fist"))FindInventory("MRIntWeaps_Fist").DoEffect();
+				
 				A_DoVanillaDisplay();
 				A_ClearOverlays(AnimLay, AnimLay);
 				Double Ofst = 32-Player.GetPSprite(Lay1).OldY;
@@ -479,7 +482,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				For(int i=Muzzle0;i<=Ring;i++){
 					Player.GetPSprite(i).Y += Ofst;
 					Player.GetPSprite(i).OldY += Ofst;
-					Player.GetPSprite(i).X += Player.GetPSprite(PSP_WEAPON).OldX;
+					Player.GetPSprite(i).X += Player.GetPSprite(PSP_WEAPON).X;
 					Player.GetPSprite(i).OldX = Player.GetPSprite(i).X;
 				}
 				Player.GetPSprite(Lay1).Frame = invoker.GunFrame;
