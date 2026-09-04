@@ -174,10 +174,10 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					A_OverlayRotate(Lay1, 4, WOF_ADD);
 				}
 				else {
-					A_OverlayMoveTo(Lay1, -3, 32-6, .8, .5);
+					A_OverlayMoveTo(Lay1, -3, 32-5, .8, .5);
 					
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
-					A_OverlayRotate(Lay1, 1.2, WOF_ADD);
+					A_OverlayRotate(Lay1, 1.4, WOF_ADD);
 				}
 				
 				invoker.SwitchState--;
@@ -189,9 +189,9 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					A_OverlayRotate(Lay1, .2, WOF_ADD);
 				}
 				else {
-					A_OverlayMoveTo(Lay1, -1, 32, .7);
+					A_OverlayMoveTo(Lay1, -2, 32, .7);
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
-					A_OverlayRotate(Lay1, 1.4, WOF_ADD);
+					A_OverlayRotate(Lay1, 1.2, WOF_ADD);
 				}
 				
 				invoker.SwitchState--;
@@ -204,9 +204,9 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 				}
 				else {
-					A_OverlayOffset(Lay1, -4, 4, WOF_ADD);
+					A_OverlayMoveTo(Lay1, -2, 32, .7);
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
-					A_OverlayRotate(Lay1, 1.4, WOF_ADD);
+					A_OverlayRotate(Lay1, 1, WOF_ADD);
 				}
 				invoker.SwitchState--;
 			}

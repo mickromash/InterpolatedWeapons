@@ -163,11 +163,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			}
 			#### ####### 1 {
 				if(invoker.SwitchAnim){
-					A_OverlayMoveTo(Lay1, -3, 32-5, .8, .5);
+					A_OverlayMoveTo(Lay1, -5, 32-3, .8, .5);
 					A_OverlayRotate(Lay1, -4, WOF_ADD);
 				}
 				else {
-					A_OverlayMoveTo(Lay1, -5, 32-5, .8, .5);
+					A_OverlayMoveTo(Lay1, -6, 32-3, .8, .5);
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 					A_OverlayRotate(Lay1, 1.2, WOF_ADD);
 				}
@@ -180,7 +180,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				}
 				else {
 					A_OverlayMoveTo(Lay1, -4, 34, .7);
-					A_OverlayScale(Lay1, -.04, -.04, WOF_ADD);
+					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 					A_OverlayRotate(Lay1, 1.4, WOF_ADD);
 				}
 				invoker.SwitchState--;
