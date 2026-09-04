@@ -1307,7 +1307,7 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			#### A 1 {
 				A_WeaponReady();
 				
-				if(MRIntW_BobRangeZ!=0 && invoker.IdleState<1){
+				if((MRIntW_BobRangeZ!=0 || MRIntW_VanillaFireBob) && invoker.IdleState<1){
 					Double BobZ = invoker.GetBobZ(invoker, .5);
 					A_OverlayScale(SecndLay, 1+BobZ, 1+BobZ, WOF_INTERPOLATE);
 					A_OverlayScale(MainLay, 1+BobZ, 1+BobZ, WOF_INTERPOLATE);

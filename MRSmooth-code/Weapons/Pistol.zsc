@@ -1021,7 +1021,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PISGA0");
 			}
 			#### A 1 {
-				if(MRIntW_BobRangeZ!=0 && !invoker.Catch){
+				if((MRIntW_BobRangeZ!=0 || MRIntW_VanillaFireBob) && !invoker.Catch){
 					Double BobZ = MRIntWeaps_Fist.GetBobZ(invoker, .5);
 					A_OverlayScale(Lay1, 1+BobZ, 1+BobZ, WOF_INTERPOLATE);
 					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);

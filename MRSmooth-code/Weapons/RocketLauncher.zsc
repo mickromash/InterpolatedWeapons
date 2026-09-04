@@ -436,7 +436,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("MISGA0");
 			}
 			#### A 1 {
-				if(MRIntW_BobRangeZ!=0){
+				if(MRIntW_BobRangeZ!=0 || MRIntW_VanillaFireBob){
 					Double BobZ = MRIntWeaps_Fist.GetBobZ(invoker, .5);
 					A_OverlayScale(Lay1, 1+BobZ, 1+BobZ, WOF_INTERPOLATE);
 					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
