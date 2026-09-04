@@ -13,6 +13,13 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 	
 	int SwitchAnim, SwitchState;
 	
+	Override Void PostBeginPlay()
+	{
+		if(Wads.CheckNumForName("HETFA0", wads.ns_sprites)<0){Destroy();Return;}
+		Super.PostBeginPlay();
+		if(Owner && Owner.CountInv("ID24CalamityBlade"))Destroy();
+	}
+	
 	States{
 	
 	GunRaise:
