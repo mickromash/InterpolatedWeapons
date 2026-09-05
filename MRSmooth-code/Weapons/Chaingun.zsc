@@ -46,7 +46,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Const Ring = BarrelOver5+1;//Front disk
 	Const Hand = Ring+1;
 	Const Lay2 = -2;//Muzzle flash
-	Const Lay3 = -3;
+	Const Lay3 = -3;//Flash flare
 	Const AnimLay = PSP_FLASH+1;//Animator layer
 	
 	Const MaxSpeed = 15.;
@@ -334,51 +334,21 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_DoVanillaDisplay();
 				invoker.InterpolateBarrels = true;
 				invoker.HandPos = 1;
-				A_Overlay(Muzzle0, "Muzzle");
-				A_Overlay(Muzzle1, "Muzzle");
-				A_Overlay(Muzzle2, "Muzzle");
-				A_Overlay(Muzzle3, "Muzzle");
-				A_Overlay(Muzzle4, "Muzzle");
-				A_Overlay(Muzzle5, "Muzzle");
-				A_Overlay(BarrReflct0, "Reflection");
-				A_Overlay(BarrReflct1, "Reflection");
-				A_Overlay(BarrReflct2, "Reflection");
-				A_Overlay(BarrReflct3, "Reflection");
-				A_Overlay(BarrReflct4, "Reflection");
-				A_Overlay(BarrReflct5, "Reflection");
-				A_Overlay(BarrShadow0, "Shadow");
-				A_Overlay(BarrShadow1, "Shadow");
-				A_Overlay(BarrShadow2, "Shadow");
-				A_Overlay(BarrShadow3, "Shadow");
-				A_Overlay(BarrShadow4, "Shadow");
-				A_Overlay(BarrShadow5, "Shadow");
-				A_Overlay(Barrel0, "Barrel");
-				A_Overlay(Barrel1, "Barrel");
-				A_Overlay(Barrel2, "Barrel");
-				A_Overlay(Barrel3, "Barrel");
-				A_Overlay(Barrel4, "Barrel");
-				A_Overlay(Barrel5, "Barrel");
-				A_Overlay(BarrShadowOver0, "ShadowOver");
-				A_Overlay(BarrShadowOver1, "ShadowOver");
-				A_Overlay(BarrShadowOver2, "ShadowOver");
-				A_Overlay(BarrShadowOver3, "ShadowOver");
-				A_Overlay(BarrShadowOver4, "ShadowOver");
-				A_Overlay(BarrShadowOver5, "ShadowOver");
-				A_Overlay(BarrelOver0, "BarrelOver");
-				A_Overlay(BarrelOver1, "BarrelOver");
-				A_Overlay(BarrelOver2, "BarrelOver");
-				A_Overlay(BarrelOver3, "BarrelOver");
-				A_Overlay(BarrelOver4, "BarrelOver");
-				A_Overlay(BarrelOver5, "BarrelOver");
+				For(int i=Muzzle0;i<=Muzzle5;i++)A_Overlay(i, "Muzzle");
+				For(int i=BarrReflct0;i<=BarrReflct5;i++)A_Overlay(i, "Reflection");
+				For(int i=BarrShadow0;i<=BarrShadow5;i++)A_Overlay(i, "Shadow");
+				For(int i=Barrel0;i<=Barrel5;i++)A_Overlay(i, "Barrel");
+				For(int i=BarrShadowOver0;i<=BarrShadowOver5;i++)A_Overlay(i, "ShadowOver");
+				For(int i=BarrelOver0;i<=BarrelOver5;i++)A_Overlay(i, "BarrelOver");
 				A_Overlay(Ring, "Ring");
 				
 				For(int i=Muzzle0;i<=Muzzle5;i++){
-					A_OverlayFlags(i, PSPF_INTERPOLATE|PSPF_ADDWEAPON, false);
+					A_OverlayFlags(i, PSPF_INTERPOLATE|PSPF_ADDWEAPON|(MRIntW_VanillaFireBob?PSPF_ADDBOB:0), false);
 					A_OverlayOffset(i, 0, 90);
 					A_OverlayPivot(i, .5, 0);
 				}
 				For(int i=Lay1;i<=Ring;i++){
-					A_OverlayFlags(i, PSPF_INTERPOLATE|PSPF_ADDWEAPON, false);
+					A_OverlayFlags(i, PSPF_INTERPOLATE|PSPF_ADDWEAPON|(MRIntW_VanillaFireBob?PSPF_ADDBOB:0), false);
 					A_OverlayOffset(i, 0, 90);
 					A_OverlayPivot(i, .5, 0);
 				}
@@ -418,14 +388,15 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				invoker.SwitchState--;
 			}
 			CH1G # 1 {
-				Vector2 Ofst = (Player.GetPSprite(Lay1).X-Player.GetPSprite(PSP_WEAPON).X, Player.GetPSprite(Lay1).Y);
+				Vector2 Ofst = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				For(int i=Muzzle0;i<=Ring;i++){
 					Player.GetPSprite(i).X -= Ofst.X;
 					Player.GetPSprite(i).Y -= Ofst.Y;
 					Player.GetPSprite(i).OldY -= 32;
+					Player.GetPSprite(i).OldX -= Player.GetPSprite(PSP_WEAPON).X;
 				}
 				For(int i=Muzzle0;i<=Ring;i++){
-					A_OverlayFlags(i, PSPF_ADDWEAPON, true);
+					A_OverlayFlags(i, PSPF_ADDWEAPON|PSPF_ADDBOB, true);
 					A_OverlayFlags(i, PSPF_INTERPOLATE, (!Player.GetPSprite(i).FirstTic && !(i>Lay1 && invoker.Speed>.05)));
 				}
 				invoker.SwitchState = -1;
@@ -470,15 +441,13 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			#### # 0 {if(invoker.IdleDelay>35 && GetCVar("MRIntW_IdleAnims")>1 && abs(invoker.BobState)<2)A_Overlay(Hand, "HandIdle1");}
 			Loop;
 		GunLower:
-			#### # 0;
-			CH1G # 1 {
+			#### # 1{
 				if(FindInventory("MRIntWeaps_Fist"))FindInventory("MRIntWeaps_Fist").DoEffect();
 				
 				A_DoVanillaDisplay();
 				A_ClearOverlays(AnimLay, AnimLay);
 				Double Ofst = 32-Player.GetPSprite(Lay1).OldY;
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayPivot(i, .5, 0);
-				For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_ADDWEAPON, false);
 				For(int i=Muzzle0;i<=Ring;i++){
 					Player.GetPSprite(i).Y += Ofst;
 					Player.GetPSprite(i).OldY += Ofst;
@@ -486,6 +455,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					Player.GetPSprite(i).OldX = Player.GetPSprite(i).X;
 				}
 				Player.GetPSprite(Lay1).Frame = invoker.GunFrame;
+				For(int i=Muzzle0;i<=Ring;i++)A_OverlayFlags(i, PSPF_ADDWEAPON|(MRIntW_VanillaFireBob?PSPF_ADDBOB:0), false);
 				
 				if(invoker.SwitchState<1 && MRIntW_SwitchAnims>1)invoker.SwitchAnim = CRandom(0, 1);
 				else {invoker.SwitchState--;A_SetTics(0);}
@@ -549,13 +519,13 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 					For(int i=Muzzle0;i<=Ring;i++){
 						Player.GetPSprite(i).OldY -= 32;
 						Player.GetPSprite(i).Y -= 32;
-						Player.GetPSprite(i).bAddWeapon = true;
+						Player.GetPSprite(i).bAddWeapon = Player.GetPSprite(i).bAddBob = true;
 						Player.GetPSprite(i).bInterpolate = false;
 					}
 					if(Player.FindPSprite(Lay2)){
 						Player.GetPSprite(Lay2).OldY -= 32;
 						Player.GetPSprite(Lay2).Y -= 32;
-						Player.GetPSprite(Lay2).bAddWeapon = true;
+						Player.GetPSprite(Lay2).bAddWeapon = Player.GetPSprite(Lay2).bAddBob = true;
 						Player.GetPSprite(Lay2).bInterpolate = false;
 					}
 				}
@@ -922,7 +892,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		Deselect:
 			TNT1 A 0 {
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
-				A_Overlay(Lay1, "GunLower");
+				//A_Overlay(Lay1, "GunLower");
+				Player.SetPsprite(Lay1, invoker.FindState("GunLower"));
 				//Player.GetPSprite(PSP_WEAPON).Y = 32;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("CHGGA0");
