@@ -1,4 +1,4 @@
-﻿[en eng enu default]
+[en eng enu default]
 
 MRIntWeaps_Menu = "Configure Interpolated weapons";
 
@@ -125,7 +125,7 @@ MRIntW_IdleAnims1 = "Only breathing";
 MRIntW_IdleAnims2 = "Only shake up";
 MRIntW_IdleAnims3 = "Both";
 
-MRIntW_ReloadAnims = "Pickup and reload animations";
+MRIntW_ReloadAnims = "Pickup and reload anmations";
 MRIntW_ReloadAnims0 = "No";
 MRIntW_ReloadAnims1 = "Reload only";
 MRIntW_ReloadAnims2 = "Pickup only";
@@ -199,7 +199,7 @@ MRIntW_ShotgunSparks = "Buckshot sparks";
 
 MRIntW_SSGHandless = "Holding stock during reloading";
 MRIntW_SSGHandless0 = "No";
-MRIntW_SSGHandless1 = "Sometimes";
+MRIntW_SSGHandless1 = "Some times";
 MRIntW_SSGHandless2 = "Yes";
 MRIntW_SSGSmoke = "Smoke from barrels when reloading";
 MRIntW_SSGSparks = "Buckshot sparks";
@@ -393,29 +393,29 @@ MRIntW_ChaingunSound = "Chaingun custom firing sound";
 MRIntW_Braindead = "How old are you";
 MRIntW_Braindead4 = "You are the youngest person ever!";
 
-MRIntWeaps_PressetsMenu = "Settings presets";
+MRIntWeaps_PressetsMenu = "Settings pressets";
 
 MRIntW_PressetDefault = "Reset to defaults";
-MRIntW_PressetDefaultPrompt = "Preset with default settings.\n\nAll changes will be applied as soon as you press Yes.";
-MRIntW_PressetVanilla = "Vanilla preset";
-MRIntW_PressetVanillaPrompt = "Preset with settings closer to vanilla doom.\n\nAll changes will be applied as soon as you press Yes.";
-MRIntW_PressetMaximum = "Advanced preset";
-MRIntW_PressetMaximumPrompt = "Preset that turns on as much mods features as possible.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_PressetDefaultPrompt = "Presset with default settings.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_PressetVanilla = "Vanilla presset";
+MRIntW_PressetVanillaPrompt = "Presset with settings closer to vanilla doom.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_PressetMaximum = "Advanced presset";
+MRIntW_PressetMaximumPrompt = "Presset that turns on as much mods features as possible.\n\nAll changes will be applied as soon as you press Yes.";
 MRIntW_PressetNoGameplay = "Vanilla gameplay";
-MRIntW_PressetNoGameplayPrompt = "Preset that turns off all gameplay options. Any visual-only settings will not be changed.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_PressetNoGameplayPrompt = "Presset that turns off all gameplay options. Any visual-only settings will not be changed.\n\nAll changes will be applied as soon as you press Yes.";
 
-MRIntW_WhichPresset = "Custom preset";
+MRIntW_WhichPresset = "Custom presset";
 MRIntW_WhichPresset1 = "#1";
 MRIntW_WhichPresset2 = "#2";
 MRIntW_WhichPresset3 = "#3";
 MRIntW_WritePresset = "Save current settings";
-MRIntW_WritePressetPrompt = "Save current settings into this preset?";
-MRIntW_WritePressetPrompt2 = "Save current settings into this preset?\n\nPreviously saved settings will be rewritten.";
+MRIntW_WritePressetPrompt = "Save current settings into this presset?";
+MRIntW_WritePressetPrompt2 = "Save current settings into this presset?\n\nPreviously saved settings will be rewritten.";
 MRIntW_ApplyPresset = "Load saved settings";
-MRIntW_ApplyPressetPrompt = "Load previously saved settings?\nThis preset won't be deleted.\n\nAll changes will be applied as soon as you press Yes.";
-MRIntW_ViewPresset = "View preset";
-MRIntW_ViewingPresset = "Custom preset #%i";
-MRIntW_EmptyPresset = "This preset is empty";
+MRIntW_ApplyPressetPrompt = "Load previously saved settings?\nThis presset won't be deleted.\n\nAll changes will be applied as soon as you press Yes.";
+MRIntW_ViewPresset = "View presset";
+MRIntW_ViewingPresset = "Custom presset #%i";
+MRIntW_EmptyPresset = "This presset is empty";
 
 MRIntWeaps_UiMenu = "Ui settings";
 MRIntW_SmoothUi = "Smooth menus";

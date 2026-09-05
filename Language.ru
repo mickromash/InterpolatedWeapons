@@ -1,4 +1,4 @@
-﻿[ru]
+[ru]
 
 MRIntWeaps_Menu = "Настроить интерполированное оружие";
 
@@ -186,7 +186,7 @@ MRIntW_ChainsawBlood1 = "Капающая кровь";
 MRIntW_ChainsawBloodLife = "Время до исчезновения (в секундах)";
 
 MRIntW_LHand = "Держать пистолет в левой руке";
-MRIntW_PistolSHand = "Держать пистолет двумя руками";
+MRIntW_PistolSHand = "Деражть пистолет двумя руками";
 MRIntW_PistolSHand0 = "Нет";
 MRIntW_PistolSHand1 = "Если враг далеко";
 MRIntW_PistolSHand2 = "Всегда";
@@ -391,32 +391,32 @@ MRIntW_ChainsawRandomPitch = "Рандомизация высоты звука �
 MRIntW_ShotgunSound = "Звуки дробовика из аддона";
 MRIntW_ChaingunSound = "Звуки пулемёта из аддона";
 
-MRIntW_Braindead = "Сколько вам лет";
+MRIntW_Braindead = "Склько вам лет";
 MRIntW_Braindead4 = "You are the youngest person ever!";
 
-MRIntWeaps_PressetsMenu = "Пресеты настроек";
+MRIntWeaps_PressetsMenu = "Прессеты настроек";
 
 MRIntW_PressetDefault = "Настройки по умолчанию";
-MRIntW_PressetDefaultPrompt = "Пресет с настройками по умолчанию.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
-MRIntW_PressetVanilla = "Ванильный пресет";
-MRIntW_PressetVanillaPrompt = "Пресет с настройками близкими к классическому Doom.\n\nВсе изменения вступят в силу как только вы нажмёте Да.";
-MRIntW_PressetMaximum = "Максимальный пресет";
-MRIntW_PressetMaximumPrompt = "Пресет включает максимальное количество фишек мода.\n\nВсе изменения вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetDefaultPrompt = "Прессет с настройками по умолчанию.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetVanilla = "Ванильный прессет";
+MRIntW_PressetVanillaPrompt = "Прессет с настройками близкими к классическому Doom.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetMaximum = "Максимальный прессет";
+MRIntW_PressetMaximumPrompt = "Прессет включает максимальное количество фишек мода.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
 MRIntW_PressetNoGameplay = "Классический геймплей";
-MRIntW_PressetNoGameplayPrompt = "Пресет выключает все геймплейные опции мода, без изменения остальных.\n\nВсе изменения вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetNoGameplayPrompt = "Прессет выключает все геймплейные опции мода, без изменения остальных.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
 
-MRIntW_WhichPresset = "Свой пресет";
+MRIntW_WhichPresset = "Свой прессет";
 MRIntW_WhichPresset1 = "#1";
 MRIntW_WhichPresset2 = "#2";
 MRIntW_WhichPresset3 = "#3";
 MRIntW_WritePresset = "Сохранить текущие настройки";
-MRIntW_WritePressetPrompt = "Сохранить текущие настройки в пресет?";
-MRIntW_WritePressetPrompt2 = "Сохранить текущие настройки в пресет?\n\nНастройки сохранённые до этого будут перезаписаны.";
+MRIntW_WritePressetPrompt = "Сохранить текущие настройки в прессет?";
+MRIntW_WritePressetPrompt2 = "Сохранить текущие настройки в прессет?\n\nНастройки сохранённые до этого будут перезаписаны.";
 MRIntW_ApplyPresset = "Загрузить сохранённые настройки";
-MRIntW_ApplyPressetPrompt = "Загрузить прежде сохранённые настройки?\nЭтот пресет не будет удалён.\n\nВсе изменения вступят в силу как только вы нажмёте Да.";
-MRIntW_ViewPresset = "Просмотреть пресет";
-MRIntW_ViewingPresset = "Свой пресет #%i";
-MRIntW_EmptyPresset = "Этот пресет пуст";
+MRIntW_ApplyPressetPrompt = "Загрузить прежде сохранённые настройки?\nЭтот прессет не будет удалён.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_ViewPresset = "Просмотреть прессет";
+MRIntW_ViewingPresset = "Свой прессет #%i";
+MRIntW_EmptyPresset = "Этот прессет пуст";
 
 MRIntWeaps_UiMenu = "Настройки интерфейса";
 MRIntW_SmoothUi = "Плавное меню";
