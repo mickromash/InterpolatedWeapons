@@ -146,6 +146,8 @@ nosave bool MRIntW_SmoothUi = true;
 nosave int MRIntW_SmoothUiTransitions = 2;
 nosave bool MRIntW_SmoothUiLogo = true;
 
+nosave bool MRIntW_ChangeFiringBob = true;
+
 user string MRIntW_Braindead = "";
 
 nosave int MRIntW_WhichPresset = 0;
@@ -154,6 +156,7 @@ nosave string MRIntW_PressetCust2 = "";
 nosave string MRIntW_PressetCust3 = "";
 
 nosave noarchive int MRIntW_MenuState = 0;
+nosave float MRIntW_LastFPS = 1;
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;

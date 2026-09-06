@@ -1,471 +1,11 @@
-AddListMenu "MainMenu"
-{
-	Class MRIntWeaps_MainMenu
-	Animated
-	AnimatedTransition
-}
-AddListMenu "MainMenuTextOnly"
-{
-	Class MRIntWeaps_MainMenu
-	Animated
-	AnimatedTransition
-}
-AddListMenu "EpisodeMenu"
-{
-	Class MRIntWeaps_ListMenuMain
-	Animated
-	AnimatedTransition
-}
-AddListMenu "SkillMenu"
-{
-	Class MRIntWeaps_ListMenuMain
-	Animated
-	AnimatedTransition
-}
-AddListMenu "SaveGameMenu"
-{
-	Class MRIntWeaps_SaveMenu
-	Animated
-	AnimatedTransition
-}
-AddListMenu "LoadGameMenu"
-{
-	Class MRIntWeaps_LoadMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CustomizeControls"
+AddOptionMenu "HUDOptions" after "wbobfire"
 {
 	Class MRIntWeaps_OptionMenu
 	Animated
 	AnimatedTransition
+	StaticText "Interpolated weapons"
+	Option "$MRIntW_ChangeFiringBob", "MRIntW_ChangeFiringBob", "YesNo"
 }
-AddOptionMenu "ActionControlsMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ChatControlsMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "WeaponsControlMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "InventoryControlsMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "OtherControlsMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "StrifeControlsMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "MouseOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "JoystickOptionsDefaults"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "NewPlayerMenu"
-{
-	Class MRIntWeaps_NewPlayerMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "VideoOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "SWROptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "TrueColorOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "VideoModeMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CustomResolutionMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "GLTextureGLOptions"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CustomResolutionMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "GLLightOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "OpenGLOptions"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "VR3DMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "PostProcessMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "vkoptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "HUDOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "FlashOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ScalingOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "AltHUDOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-/*AddOptionMenu "HapticsOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}*/
-AddOptionMenu "MiscOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "AutomapOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "MapControlsMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "MapColorMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "MapColorMenuCheats"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "MapColorMenuOverlay"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "MapColorMenuCheatsOverlay"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "MessageOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ScoreboardOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "FontOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "GameplayOptions"
-{
-	Class MRIntWeaps_GameplayMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "DeathmatchOptions"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CoopOptions"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CompatibilityOptions"
-{
-	Class MRIntWeaps_CompatibilityMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CompatActorMenu"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CompatDehackedMenu"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CompatMapMenu"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CompatPhysicsMenu"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CompatRenderMenu"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "CompatSoundMenu"
-{
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "OpenALSoundItems"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "SoundOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-/*AddOptionMenu "MidiDevicesMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}*/
-AddOptionMenu "GusConfigMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "WildMidiConfigMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "TimidityConfigMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "FluidPatchsetMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ADLBankMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ADLMIDICustomBanksMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "OPNMIDICustomBanksMenu"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ModReplayerOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "MidiPlayerOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "FluidsynthOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "TimidityOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "GUSOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "WildMidiOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "OPLOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ADLOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "OPNOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ReverbEdit"
-{
-	Class MRIntWeaps_ReverbEdit
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ReverbSelect"
-{
-	Class MRIntWeaps_ReverbSelect
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ReverbSettings"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ReverbNew"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-AddOptionMenu "ReverbSave"
-{
-	Class MRIntWeaps_ReverbSave
-	Animated
-	AnimatedTransition
-}
-/*AddOptionMenu "AccessibilityOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}*/
-AddOptionMenu "NetworkOptions"
-{
-	Class MRIntWeaps_OptionMenu
-	Animated
-	AnimatedTransition
-}
-
-
-
-
 AddOptionMenu "OptionsMenu"
 {
 	Class MRIntWeaps_OptionsMenu
@@ -505,6 +45,8 @@ OptionMenu "MRIntWeaps_Menu"
 	SubMenu "$MRIntWeaps_UiMenu", "MRIntWeaps_UiMenu"
 	StaticText ""
 	SubMenu "$MRIntWeaps_PressetsMenu", "MRIntWeaps_PressetsMenu"
+	StaticText ""
+	Option "$MRIntW_ChangeFiringBob", "MRIntW_ChangeFiringBob", "YesNo"
 	StaticText ""
 	TextField "$MRIntW_Braindead", "MRIntW_Braindead"
 	StaticText ""
@@ -1130,4 +672,469 @@ OptionValue "MRIntW_WhichPressetValues"
 	1, "$MRIntW_WhichPresset1"
 	2, "$MRIntW_WhichPresset2"
 	3, "$MRIntW_WhichPresset3"
+}
+
+
+/*
+	Smoothing ZDoom menus
+*/
+
+
+AddListMenu "MainMenu"
+{
+	Class MRIntWeaps_MainMenu
+	Animated
+	AnimatedTransition
+}
+AddListMenu "MainMenuTextOnly"
+{
+	Class MRIntWeaps_MainMenu
+	Animated
+	AnimatedTransition
+}
+AddListMenu "EpisodeMenu"
+{
+	Class MRIntWeaps_ListMenuMain
+	Animated
+	AnimatedTransition
+}
+AddListMenu "SkillMenu"
+{
+	Class MRIntWeaps_ListMenuMain
+	Animated
+	AnimatedTransition
+}
+AddListMenu "SaveGameMenu"
+{
+	Class MRIntWeaps_SaveMenu
+	Animated
+	AnimatedTransition
+}
+AddListMenu "LoadGameMenu"
+{
+	Class MRIntWeaps_LoadMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CustomizeControls"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ActionControlsMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ChatControlsMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "WeaponsControlMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "InventoryControlsMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "OtherControlsMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "StrifeControlsMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "MouseOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "JoystickOptionsDefaults"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "NewPlayerMenu"
+{
+	Class MRIntWeaps_NewPlayerMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "VideoOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "SWROptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "TrueColorOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "VideoModeMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CustomResolutionMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "GLTextureGLOptions"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CustomResolutionMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "GLLightOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "OpenGLOptions"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "VR3DMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "PostProcessMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "vkoptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "FlashOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ScalingOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "AltHUDOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+/*AddOptionMenu "HapticsOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}*/
+AddOptionMenu "MiscOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "AutomapOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "MapControlsMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "MapColorMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "MapColorMenuCheats"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "MapColorMenuOverlay"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "MapColorMenuCheatsOverlay"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "MessageOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ScoreboardOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "FontOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "GameplayOptions"
+{
+	Class MRIntWeaps_GameplayMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "DeathmatchOptions"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CoopOptions"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CompatibilityOptions"
+{
+	Class MRIntWeaps_CompatibilityMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CompatActorMenu"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CompatDehackedMenu"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CompatMapMenu"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CompatPhysicsMenu"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CompatRenderMenu"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "CompatSoundMenu"
+{
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "OpenALSoundItems"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "SoundOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+/*AddOptionMenu "MidiDevicesMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}*/
+AddOptionMenu "GusConfigMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "WildMidiConfigMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "TimidityConfigMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "FluidPatchsetMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ADLBankMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ADLMIDICustomBanksMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "OPNMIDICustomBanksMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ModReplayerOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "MidiPlayerOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "FluidsynthOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "TimidityOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "GUSOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "WildMidiOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "OPLOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ADLOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "OPNOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ReverbEdit"
+{
+	Class MRIntWeaps_ReverbEdit
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ReverbSelect"
+{
+	Class MRIntWeaps_ReverbSelect
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ReverbSettings"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ReverbNew"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}
+AddOptionMenu "ReverbSave"
+{
+	Class MRIntWeaps_ReverbSave
+	Animated
+	AnimatedTransition
+}
+/*AddOptionMenu "AccessibilityOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+}*/
+AddOptionMenu "NetworkOptions"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
 }

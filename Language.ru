@@ -425,6 +425,8 @@ MRIntW_SmoothUiTransitions1 = "Кроме настроек";
 MRIntW_SmoothUiTransitions2 = "Везде";
 MRIntW_SmoothUiLogo = "Анимированный логотип";
 
+MRIntW_ChangeFiringBob = "Форсировать раскачивание при стрельбе";
+
 
 TAG_RIFLE = "Винтовка";
 
