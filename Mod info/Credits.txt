@@ -10,25 +10,25 @@ Shotgun - id Software, Perkristian
 
 Super Shotgun - id Software, Perkristian
 
-Chaingun - id Software, Perkristian
+Chaingun - based on spirtes from Doom by id Software and Smooth Doom by Perkristian
 
 Rocket Launcher - id Software, Perkristian
 
-PlasmaGun (Plasma Rifle) - id Software, Perkristian
+PlasmaGun (Plasma Rifle) - based on spirtes from Doom id Software and Smooth Doom by Perkristian
 
 BFG 9000 - id Software
 
 Rifle - id Software, DrPyspy
 
 Casings - id Software
-Lowres casings - taken from Hideous Destructor
+Lowres casings - based on sprites from Hideous Destructor
 
 
 ==== SOUNDS ====
 
 Fist whoosh sound - id Software
-Gloves takin on/off sounds taken from The Soldier Z mod
-Weapon dropping sounds taken from The Soldier Z mod
+Gloves takin on/off - based on sounds from The Soldier Z mod
+Weapon dropping - based on sounds from The Soldier Z mod
 
 
 ==== INSPIRATION ====
