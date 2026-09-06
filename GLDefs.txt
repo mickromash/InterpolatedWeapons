@@ -74,6 +74,19 @@ brightmap Sprite PLSOH0
 	map "Brightmaps/Auto/PLSOC0.png"
 }
 
+brightmap Sprite PLS1D0
+{
+	map "Brightmaps/Auto/PLSOC0.png"
+}
+brightmap Sprite PLS1G0
+{
+	map "Brightmaps/Auto/PLSOF0.png"
+}
+brightmap Sprite PLS1H0
+{
+	map "Brightmaps/Auto/PLSOC0.png"
+}
+
 /*
 	DYNAMIC LIGHTS
 */

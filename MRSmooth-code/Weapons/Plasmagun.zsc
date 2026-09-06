@@ -131,7 +131,11 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 					Player.GetPSprite(Lay2).ResetInterpolation();
 				}
 				Player.GetPSprite(Lay2).Frame = Player.GetPSprite(Lay1).Frame;
-				if(Player.FindPSprite(Lay3))Player.FindPSprite(Lay3).Frame = Player.GetPSprite(Lay2).Frame;
+				if(Player.FindPSprite(Lay3)){
+					Player.FindPSprite(Lay3).Frame = Player.GetPSprite(Lay2).Frame;
+					if(GetCVar("MRIntW_NoMuzzleFlash"))Player.GetPSprite(Lay2).Sprite = GetSpriteIndex("PLS1A0");
+					else Player.GetPSprite(Lay2).Sprite = GetSpriteIndex("PLSOA0");
+				}
 			}
 			#### # 0 A_JumpIf(Player.GetPSprite(Lay1).Sprite == GetSpriteIndex("PLSRA0"), Null);
 			Loop;
@@ -653,6 +657,11 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				}
 			}
 			Goto LightDone;
+			
+		//Caching sprites
+		Sprites:
+			PLS1 A 0;
+			Stop;
 	}
 		
 	Action Void A_IdleAnimation(int Lay = 2)//Idle hand bobbing
