@@ -4,6 +4,8 @@ Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenuMain
 	{
 		Super.Init(parent, desc);
 		
+		FPSScale = MRIntW_LastFPS;
+		
 		if(!MRIntW_SmoothUiLogo || !Interpolate)Return;
 		
 		For(int i=0;i<mDesc.mItems.Size();i++)
@@ -13,7 +15,15 @@ Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenuMain
 			
 			mDesc.mItems[i] = New('ListMenuItemMR_Doom');
 			ListMenuItemMR_Doom(mDesc.mItems[i]).Init(mDesc, 94, 2, Texman.CheckForTexture("M_DOOM"));
+			ListMenuItemMR_Doom(mDesc.mItems[i]).FPSScale = FPSScale;
 		}
+	}
+		
+	Override Void OnDestroy()
+	{
+		Super.OnDestroy();
+		
+		CVar.FindCVar("MRIntW_LastFPS").SetFloat(FPSScale);
 	}
 }
 
@@ -25,6 +35,8 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 	Vector2 M_DoomPos, SubPos;
 	Array<MRIntWeaps_MainMenuActor> Actors;
 	MRIntWeaps_MainMenuHand Hand;
+	Double FPSScale;
+	int Frames, Ticks;
 	
 	void Init(ListMenuDescriptor desc, double x, double y, TextureID patch, bool centered = false, String substitute = "")
 	{
@@ -51,7 +63,7 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 				Break;
 			Case 1:
 				Scale = DefScale;
-				M_DoomPos = (Width*.6, 0);
+				M_DoomPos = (Width*.7, 0);
 				Break;
 			Case 2:
 				Scale = DefScale;
@@ -85,10 +97,20 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 		
 		if(Tick)Stayt++;
 		Tick = false;
+		
+		Ticks++;
+		if(Ticks%35==0){
+			Ticks = 0;
+			FPSScale = Frames;
+			FPSScale /= 60;
+			if(FPSScale == 0)FPSScale = 1;
+			Frames = 0;
+		}
 	}
 	
 	override void Draw(bool selected, ListMenuDescriptor desc)
 	{
+		Frames++;
 		if (!mTexture.Exists())
 		{
 			return;
@@ -114,14 +136,14 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 					Break;
 				Case 2:
 					Tick = false;
-					if(M_DoomPos.Length()<40)Scale = (DefScale*1.4)+(Scale-(DefScale*1.4))*.5;
-					M_DoomPos *= .6;
+					if(M_DoomPos.Length()<40)Scale = (DefScale*1.4)+(Scale-(DefScale*1.4))*Min(.99, .5*((FPSScale-1)*.1+1));
+					M_DoomPos *= Min(.99, .6*((FPSScale-1)*.1+1));
 					if(abs(Scale-(DefScale*1.4))<.2 && M_DoomPos.Length()<3)Stayt++;
 					Break;
 				Case 3:
 					Tick = false;
 					M_DoomPos = (0, 0);
-					Scale = DefScale+(Scale-DefScale)*.7;
+					Scale = DefScale+(Scale-DefScale)*Min(.99, .7*((FPSScale-1)*.1+1));
 					if(abs(Scale-DefScale)<.01){
 						IntroVar = CRandom(0, 1);
 						Stayt++;
@@ -130,8 +152,8 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 			}
 		}
 		if(Dead){
-			if(M_DoomPos.Y<Height*.01)M_DoomPos.Y *= .9;
-			else M_DoomPos.Y -= Min(M_DoomPos.Y, Height*.001);
+			if(M_DoomPos.Y<Height*.01)M_DoomPos.Y *= Min(.99, .9*((FPSScale-1)*.1+1));
+			else M_DoomPos.Y -= Min(M_DoomPos.Y, Height*.001/FPSScale);
 			
 			if(M_DoomPos.Y<.1)Dead = false;
 		}
@@ -170,7 +192,7 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 								Stayt++;
 								Break;
 							Case 2+20:
-								Scale2 = 1+(Scale2-1)*.4;
+								Scale2 = 1+(Scale2-1)*Min(.99, .4*((FPSScale-1)*.1+1));
 								if(abs(Scale2-1)<.01)Stayt++;
 								Break;
 						}
@@ -182,9 +204,9 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 								if(Stayt<35*12){
 									Float Add = (-90 - SubRot);//Speed is based on how far the current position is from the target position
 									
-									if(SubAccel<1)SubAccel += .1;//Increasing speed
+									if(SubAccel<1)SubAccel += .1/FPSScale;//Increasing speed
 									Add *= SubAccel*.1;
-									SubVel += Add;
+									SubVel += Add/FPSScale;
 									
 									if((SubVel<0 && SubRot+SubVel<=-90)||
 										(SubVel>0 && SubRot+SubVel>=-90)){//Wobbling
@@ -194,8 +216,8 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 									SubRot += SubVel;
 								}
 								else {
-									SubRot -= SubPos.Y*.01;
-									SubPos.Y += 1+SubPos.Y*.5;
+									SubRot -= SubPos.Y*.01/FPSScale;
+									SubPos.Y += (1+SubPos.Y*.5)/FPSScale;
 								}
 							}
 							else {
@@ -207,9 +229,9 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 							if(Stayt>35*10){
 								if(Stayt<35*11)SubRot = 25+CFRandom(-.01, .01)*(Stayt-60*10);
 								else {
-									if(Stayt==60*12)SubRot -= 20;
-									SubRot -= SubPos.Y*.1;
-									SubPos.Y += 1+SubPos.Y*.5;
+									if(Stayt==60*12)SubRot -= 20/FPSScale;
+									SubRot -= SubPos.Y*.1/FPSScale;
+									SubPos.Y += (1+SubPos.Y*.5)/FPSScale;
 								}
 							}
 						}
@@ -237,6 +259,8 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 									SubRot = 25;
 									Scale2 = 1;
 									Hand.Height = Height;
+									Hand.PartOf = Self;
+									SubPos = (0, Hand.Pos.Y);
 								}
 								
 								else {
@@ -270,17 +294,17 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 							Case 36:
 								Tick = false;
 								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height;
-								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.6;
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*Min(.99, .6*((FPSScale-1)*.1+1));
 								if(abs(SubPos.Y-Targ)<1)Stayt++;
 								Break;
 							Case 37:
 								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.X*.1;
-								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.9;
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*Min(.99, .9*((FPSScale-1)*.1+1));
 								if(abs(SubPos.Y-Targ)<.1)Stayt++;
 								Break;
 							Case 47:
 								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + (SubSize.X*4.4*Height/1080);
-								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.7;
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*Min(.99, .7*((FPSScale-1)*.1+1));
 								if(abs(SubPos.Y-Targ)<.1){
 									Stayt++;
 									if(CRandom(0, 3)==0){
@@ -295,14 +319,14 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 								SubFlipX = true;
 								SubRot = 90 + 20;
 								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + SubSize.X*.1;
-								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.9;
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*Min(.99, .9*((FPSScale-1)*.1+1));
 								if(abs(SubPos.Y-Targ)<3)Stayt++;
 								Break;
 							Case 60:
 								SubFlipX = true;
 								Tick = false;
 								Targ = -(Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5) + Height + (SubSize.X*4.4*Height/1080);
-								SubPos.Y = (Targ)+(SubPos.Y-Targ)*.7;
+								SubPos.Y = (Targ)+(SubPos.Y-Targ)*Min(.99, .7*((FPSScale-1)*.1+1));
 								if(abs(SubPos.Y-Targ)<.1){
 									Stayt = 25;
 									SubPos.X = 0;
@@ -384,6 +408,7 @@ Class MRIntWeaps_MainMenuHand: Object Ui
 		"MRIntWGlovesRed", "MRIntWGlovesGrey", "MRIntWGlovesBlue"
 	};
 	
+	ListMenuItemMR_Doom PartOf;
 	Vector2 Pos;
 	int Stayt, Trans;
 	Double YSpeed, Height;
@@ -399,14 +424,14 @@ Class MRIntWeaps_MainMenuHand: Object Ui
 				
 				YSpeed = CFRandom(.7, .93);
 			}
-			Pos.Y *= YSpeed;
+			Pos.Y *= Min(.99, YSpeed*((PartOf.FPSScale-1)*.08+1));
 			if(abs(Pos.Y)<1)Stayt++;
 		}
 		else if(Stayt<20){
 			Stayt++;
 		}
 		else {
-			Pos.Y -= abs(Pos.Y)*CFRandom(.4, .6)+1;
+			Pos.Y -= (abs(Pos.Y)*CFRandom(.4, .6)+1)/PartOf.FPSScale;
 			if(Pos.Y<-Height*.8){
 				Destroy();
 			}
@@ -420,7 +445,9 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 	Bool WasSelected, Selected, PlayingAnim;
 	Array<Double> ChPs, ChVs;
 	Array<String> Chars;
-	
+	Double FPSScale;
+	int Frames, Ticks;
+		
 	int MRDrawLabel(int indent, int y, int color, bool grayed = false)
 	{
 		String label = Stringtable.Localize(mLabel);
@@ -439,7 +466,7 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 					[Chr, Next] = label.GetNextCodePoint(i);
 					
 					Chars.Push(String.Format("%c", Chr));
-					ChVs.Push(CFRandom(0, 2));
+					ChVs.Push(CFRandom(0, 2)/((FPSScale-1)*.2+1));
 					ChPs.Push(0);
 					
 					i = Next;
@@ -455,7 +482,7 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 			
 			For(int i=0;i<Chars.Size();i++){
 				if(abs(ChVs[i])>0){
-					ChVs[i] -= .1;
+					ChVs[i] -= .1/FPSScale;
 					ChPs[i] += ChVs[i];
 					AllLanded = false;
 				}
@@ -485,10 +512,20 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 		}
 		
 		WasSelected = Selected;
+		
+		Ticks++;
+		if(Ticks%35==0){
+			Ticks = 0;
+			FPSScale = Frames;
+			FPSScale /= 60;
+			if(FPSScale == 0)FPSScale = 1;
+			Frames = 0;
+		}
 	}
 	
 	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
 	{
+		Frames++;
 		Self.Selected = Selected;
 		
 		int x = MRDrawLabel(indent, y, selected? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColorMore);

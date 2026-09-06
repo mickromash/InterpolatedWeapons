@@ -2,7 +2,8 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 {
 	Bool Interpolate, UZDoom;
 	int LastScroll, SelectorTime;
-	Double DiffY;
+	Double DiffY, FPSScale;
+	int Frames, Ticks;
 	
 	Override Void Init(Menu parent, OptionMenuDescriptor desc)
 	{
@@ -15,10 +16,31 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		else Animated = false;
 		
 		AnimatedTransition = MRIntW_SmoothUiTransitions>1;
+		
+		if(MRIntWeaps_OptionMenu(parent) || MRIntWeaps_ListMenu(parent)){
+			if(MRIntWeaps_OptionMenu(parent))FPSScale = MRIntWeaps_OptionMenu(parent).FPSScale;
+			else FPSScale = MRIntWeaps_ListMenu(parent).FPSScale;
+		}
+	}
+	
+	Override Void Ticker()
+	{
+		Super.Ticker();
+		
+		Ticks++;
+		if(Ticks%35==0){
+			Ticks = 0;
+			FPSScale = Frames;
+			FPSScale /= 60;
+			if(FPSScale==0)FPSScale = 1;
+			//Console.Printf("FPS "..(FPSScale*60).." ("..FPSScale..")");
+			Frames = 0;
+		}
 	}
 	
 	override void Drawer()
 	{
+		Frames++;
 		//Back button
 		if (self == GetCurrentMenu() && BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
 		{
@@ -43,7 +65,7 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		
 		int fontheight = OptionMenuSettings.mLinespacing * CleanYfac_1;
 		
-		DiffY *= .7;
+		DiffY *= Min(.99, .7*((FPSScale-1)*.1+1));
 		
 		if(LastScroll != mDesc.mScrollPos){
 			DiffY += (mDesc.mScrollPos - LastScroll)*fontheight;
@@ -88,10 +110,10 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 			if (cur_indent >= 0 && isSelected && mDesc.mItems[i].Selectable())
 			{
 				SelectorTime++;
-				if(SelectorTime>40)SelectorTime = 0;
+				if(SelectorTime>40*FPSScale)SelectorTime = 0;
 				
 				Double SelX = SelectorTime;
-				SelX = 5. * abs((SelX%40-19)/20);
+				SelX = 5. * abs((SelX%(40*FPSScale)-(19*FPSScale))/(20*FPSScale));
 				
 				Screen.DrawText(OptionFont(), OptionMenuSettings.mFontColorSelection, cur_indent + 3 * CleanXfac_1 + SelX, Y, "◄", DTA_CleanNoMove_1, true);
 			}
@@ -119,6 +141,8 @@ Class MRIntWeaps_ListMenu: ListMenu
 	Bool Interpolate;
 	Vector2 Selector;
 	int LastSelected;
+	Double FPSScale;
+	int Frames, Ticks;
 	
 	Override void Init(Menu parent, ListMenuDescriptor desc)
 	{
@@ -135,10 +159,31 @@ Class MRIntWeaps_ListMenu: ListMenu
 		else Animated = false;
 		
 		AnimatedTransition = MRIntW_SmoothUiTransitions>1;
+		
+		if(MRIntWeaps_OptionMenu(parent) || MRIntWeaps_ListMenu(parent)){
+			if(MRIntWeaps_OptionMenu(parent))FPSScale = MRIntWeaps_OptionMenu(parent).FPSScale;
+			else FPSScale = MRIntWeaps_ListMenu(parent).FPSScale;
+		}
+	}
+	
+	Override Void Ticker()
+	{
+		Super.Ticker();
+		
+		Ticks++;
+		if(Ticks%35==0){
+			Ticks = 0;
+			FPSScale = Frames;
+			FPSScale /= 60;
+			if(FPSScale==0)FPSScale = 1;
+			//Console.Printf("FPS "..(FPSScale*60).." ("..FPSScale..")");
+			Frames = 0;
+		}
 	}
 	
 	Override Void Drawer()
 	{
+		Frames++;
 		//Back button
 		if (self == GetCurrentMenu() && BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
 		{
@@ -160,9 +205,9 @@ Class MRIntWeaps_ListMenu: ListMenu
 				}
 			}
 		}
-
-		Selector.Y *= .7;
-		Selector.X *= .35;
+		
+		Selector.Y *= Min(.99, .7*((FPSScale-1)*.1+1));
+		Selector.X *= Min(.99, .35*((FPSScale-1)*.1+1));
 		
 		if(LastSelected != mDesc.mSelectedItem && LastSelected > -1 && mDesc.mSelectedItem > -1){
 			if(LastSelected>mDesc.mSelectedItem)Selector.Y -= (mDesc.mItems[LastSelected].GetY()-mDesc.mItems[mDesc.mSelectedItem].GetY()+mDesc.mSelectOfsY);
@@ -211,6 +256,8 @@ Class MRIntWeaps_LoadSaveMenu: LoadSaveMenu
 	Bool Interpolate;
 	int LastTopItem;
 	Double DiffY;
+	Double FPSScale;
+	int Frames, Ticks;
 	
 	override void Init(Menu parent, ListMenuDescriptor desc)
 	{
@@ -224,6 +271,11 @@ Class MRIntWeaps_LoadSaveMenu: LoadSaveMenu
 		else Animated = false;
 		
 		AnimatedTransition = MRIntW_SmoothUiTransitions>0;
+		
+		if(MRIntWeaps_OptionMenu(parent) || MRIntWeaps_ListMenu(parent)){
+			if(MRIntWeaps_OptionMenu(parent))FPSScale = MRIntWeaps_OptionMenu(parent).FPSScale;
+			else FPSScale = MRIntWeaps_ListMenu(parent).FPSScale;
+		}
 	}
 	
 	Void SetWindows()
@@ -256,8 +308,23 @@ Class MRIntWeaps_LoadSaveMenu: LoadSaveMenu
 		commentRows = commentHeight / rowHeight;
 	}
 	
+	Override Void Ticker()
+	{
+		Super.Ticker();
+		
+		Ticks++;
+		if(Ticks%35==0){
+			Ticks = 0;
+			FPSScale = Frames;
+			FPSScale /= 60;
+			if(FPSScale == 0)FPSScale = 1;
+			Frames = 0;
+		}
+	}
+	
 	Override Void Drawer()
 	{
+		Frames++;
 		//Back button
 		if (BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
 		{
@@ -330,7 +397,7 @@ Class MRIntWeaps_LoadSaveMenu: LoadSaveMenu
 			return;
 		}
 		
-		DiffY *= .7;
+		DiffY *= Min(.99, .7*((FPSScale-1)*.1+1));
 		
 		if(LastTopItem != TopItem){
 			DiffY += (TopItem - LastTopItem)*rowHeight;
