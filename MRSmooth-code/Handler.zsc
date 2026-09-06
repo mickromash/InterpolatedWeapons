@@ -470,7 +470,7 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Override Void OnRegister()
 	{
-		New('MRIntW_DifVersionMessage');
+		New('MRIntWeaps_DifVersionMessage');
 		//Console.Printf("Register");
 	}
 	
@@ -537,7 +537,7 @@ Class MRIntWeaps_WeaponChecker: Thinker
 	}
 }
 
-Class MRIntW_DifVersionMessage: Thinker
+Class MRIntWeaps_DifVersionMessage: Thinker
 {
 	Const Start = 6;
 	Const Chan = 221;

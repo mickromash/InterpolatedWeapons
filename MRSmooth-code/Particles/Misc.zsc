@@ -329,7 +329,7 @@ Extend Class MRIntWeaps_Handler
 		Float Radius = GetDefaultByType(e.Thing.GetClass()).Radius;
 		int Start = CRandom(120, 240)*35;
 		For(int i=0;i<Radius/5;i++){
-			Let a = MRIntW_ParticleFly(Level.SpawnVisualThinker('MRIntW_ParticleFly'));
+			Let a = MRIntWeaps_ParticleFly(Level.SpawnVisualThinker('MRIntWeaps_ParticleFly'));
 			a.Master = e.Thing;
 			a.StartFly = Start;
 			if(i==0){
@@ -1016,7 +1016,7 @@ Class MRIntWeaps_RespawnParticles: MRIntWeaps_ActorEffects
 	}
 }
 
-Class MRIntW_ParticleFly: VisualThinker
+Class MRIntWeaps_ParticleFly: VisualThinker
 {
 	Const Pit = 2.3;
 	Float Vol, SndVol, SndPitch, Amount;
