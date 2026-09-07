@@ -513,7 +513,6 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 		
 		WasSelected = Selected;
 		
-		Ticks++;
 		if(Ticks%35==0){
 			Ticks = 0;
 			FPSScale = Frames;
@@ -521,6 +520,7 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 			if(FPSScale == 0)FPSScale = 1;
 			Frames = 0;
 		}
+		Ticks++;
 	}
 	
 	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
