@@ -103,7 +103,7 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 			Ticks = 0;
 			FPSScale = Frames;
 			FPSScale /= 60;
-			if(FPSScale == 0)FPSScale = 1;
+			if(FPSScale<2)FPSScale = 1;
 			Frames = 0;
 		}
 	}
@@ -517,7 +517,7 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 			Ticks = 0;
 			FPSScale = Frames;
 			FPSScale /= 60;
-			if(FPSScale == 0)FPSScale = 1;
+			if(FPSScale<2)FPSScale = 1;
 			Frames = 0;
 		}
 		Ticks++;
