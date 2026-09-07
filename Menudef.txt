@@ -825,6 +825,7 @@ AddOptionMenu "GLLightOptions"
 }
 AddOptionMenu "OpenGLOptions"
 {
+	Class MRIntWeaps_OptionMenu
 	Animated
 	AnimatedTransition
 }
