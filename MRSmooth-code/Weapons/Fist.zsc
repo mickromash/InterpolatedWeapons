@@ -854,8 +854,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayRotate(OverlayId(), CFRandom(1, 3), WOF_ADD);
 				}
 				else if(invoker.HitActor){
-					Double Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
-					if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					Double Ang = 0;
+					if(MRIntW_FistFixedOnTarget){
+						Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
+						if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					}
 					A_OverlayOffset(OverlayId(), 80 - Player.GetPSprite(PSP_WEAPON).OldX - Ang, -64, WOF_INTERPOLATE);
 					A_OverlayScale(OverlayId(), -.05, .012, WOF_ADD);
 					if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), -.005, .012, WOF_ADD);
@@ -873,8 +876,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayRotate(OverlayId(), CFRandom(2, 3), WOF_ADD);
 				}
 				else if(invoker.HitActor){
-					Double Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
-					if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					Double Ang = 0;
+					if(MRIntW_FistFixedOnTarget){
+						Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
+						if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					}
 					A_OverlayOffset(OverlayId(), 80 + CFRandom(2, 4) - Player.GetPSprite(PSP_WEAPON).OldX - Ang, -62, WOF_INTERPOLATE);
 					A_OverlayScale(OverlayId(), -.05, .012, WOF_ADD);
 					if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), -.005, .012, WOF_ADD);
@@ -892,8 +898,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayRotate(OverlayId(), CFRandom(5, 7), WOF_ADD);
 				}
 				else if(invoker.HitActor){
-					Double Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
-					if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					Double Ang = 0;
+					if(MRIntW_FistFixedOnTarget){
+						Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
+						if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					}
 					A_OverlayOffset(OverlayId(), 80 + CFRandom(-2, 2) - Player.GetPSprite(PSP_WEAPON).OldX - Ang, -62 + CFRandom(0, 2), WOF_INTERPOLATE);
 					A_OverlayScale(OverlayId(), .02, -.01, WOF_ADD);
 					if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), CFRandom(-.01, .01), CFRandom(-.01, .01), WOF_ADD);
@@ -907,8 +916,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayRotate(OverlayId(), -CFRandom(.6, 1), WOF_ADD);
 					A_OverlayScale(OverlayId(), .005, -.01, WOF_ADD);
 					if(invoker.HitActor){
-						Double Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
-						if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+						Double Ang = 0;
+						if(MRIntW_FistFixedOnTarget){
+							Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
+							if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+						}
 						A_OverlayOffset(OverlayId(), 79 + CFRandom(-1, 1) - Player.GetPSprite(PSP_WEAPON).OldX - Ang, -62 + CFRandom(0, 2), WOF_INTERPOLATE);
 						A_OverlayScale(OverlayId(), .02, -.01, WOF_ADD);
 						if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), CFRandom(-.01, .01), CFRandom(-.01, .01), WOF_ADD);
@@ -1070,8 +1082,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayRotate(OverlayId(), CFRandom(1, 3), WOF_ADD);
 				}
 				else if(invoker.HitActor){
-					Double Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
-					if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					Double Ang = 0;
+					if(MRIntW_FistFixedOnTarget){
+						Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
+						if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					}
 					A_OverlayOffset(OverlayId(), 80 - Player.GetPSprite(PSP_WEAPON).OldX - Ang, -64, WOF_INTERPOLATE);
 					A_OverlayScale(OverlayId(), -.05, .012, WOF_ADD);
 					if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), -.005, .012, WOF_ADD);
@@ -1089,8 +1104,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayRotate(OverlayId(), CFRandom(1, 3), WOF_ADD);
 				}
 				else if(invoker.HitActor){
-					Double Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
-					if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					Double Ang = 0;
+					if(MRIntW_FistFixedOnTarget){
+						Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
+						if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+					}
 					A_OverlayOffset(OverlayId(), 80 + CFRandom(2, 4) - Player.GetPSprite(PSP_WEAPON).OldX - Ang, -62, WOF_INTERPOLATE);
 					A_OverlayScale(OverlayId(), -.05, .012, WOF_ADD);
 					if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), -.005, .012, WOF_ADD);
@@ -1105,8 +1123,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayRotate(OverlayId(), -CFRandom(.6, 1), WOF_ADD);
 					A_OverlayScale(OverlayId(), .005, -.01, WOF_ADD);
 					if(invoker.HitActor){
-						Double Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
-						if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+						Double Ang = 0;
+						if(MRIntW_FistFixedOnTarget){
+							Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
+							if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+						}
 						A_OverlayOffset(OverlayId(), 80 + CFRandom(-2, 2) - Player.GetPSprite(PSP_WEAPON).OldX - Ang, -62 + CFRandom(0, 2), WOF_INTERPOLATE);
 						A_OverlayScale(OverlayId(), .02, -.01, WOF_ADD);
 						if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), CFRandom(-.01, .01), CFRandom(-.01, .01), WOF_ADD);
@@ -1120,8 +1141,11 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 					A_OverlayRotate(OverlayId(), CFRandom(0, .5), WOF_ADD);
 					A_OverlayScale(OverlayId(), .005, .005, WOF_ADD);
 					if(invoker.HitActor){
-						Double Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
-						if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+						Double Ang = 0;
+						if(MRIntW_FistFixedOnTarget){
+							Ang = DeltaAngle(Angle, AngleTo(invoker.HitActor))*3;
+							if(Player.GetPSprite(OverlayId()).bFlip)Ang = -Ang;
+						}
 						A_OverlayOffset(OverlayId(), 79 + CFRandom(-1, 1) - Player.GetPSprite(PSP_WEAPON).OldX - Ang, -62 + CFRandom(0, 2), WOF_INTERPOLATE);
 						A_OverlayScale(OverlayId(), .02, -.01, WOF_ADD);
 						if(CountInv("PowerStrength"))A_OverlayScale(OverlayId(), CFRandom(-.01, .01), CFRandom(-.01, .01), WOF_ADD);
