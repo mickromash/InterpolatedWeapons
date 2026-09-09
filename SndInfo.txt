@@ -52,6 +52,8 @@ MRIntW/BFGFireLoop ""
 MRIntW/BFGFire ""
 MRIntW/BFGSelect ""
 MRIntW/BFGDeselect ""
+MRIntW/BFGCharge "Sounds/MRIntW/MRIntFly.wav"
+MRIntW/BFGChargeStop railgf1
 
 MRIntW/PistolCasing "Sounds/MRIntW/dsding.ogg"
 MRIntW/ShotgunCasingLand "Sounds/MRIntW/SDIE1.ogg"

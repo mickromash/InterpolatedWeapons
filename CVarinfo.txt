@@ -73,6 +73,7 @@ user float MRIntW_FinishPunchChance = .7;
 user bool MRIntW_SurfacePunchRecoil = false;//Kick player back if he punches a wall with berserk
 user int MRIntW_PunchingFist = 0;//0 - punch with only main fist,
 //1 - randomly punch with main or second fist, 2 - alternate punching fist, 3 - punching fist based on camera movement
+nosave bool MRIntW_FistFixedOnTarget = false;
 //Chainsaw
 user bool MRIntW_ChainsawStart = false;//Chainsaw starting animation
 user bool MRIntW_ChainsawCutting = true;//Improved cutting animations
@@ -110,6 +111,7 @@ nosave bool MRIntW_PlasmaLight = true;//Dynamic lighting from projectiles
 nosave bool MRIntW_PlasmaSkipLight = false;//Disable dynamic lights for every second projectile
 //BFG 9000
 nosave bool MRIntW_BFGParticles = true;//Fancy ahh firing animation
+nosave float MRIntW_BFGAltVolume = .6;
 //id24 Incinerator
 nosave int MRIntW_InciniSmoke = 3;//0 - None, 1 - Only muzzle, 2 - Only small, 3 - Both
 
@@ -145,6 +147,7 @@ nosave int MRIntW_ParticleSmokeTexture = -1;
 nosave bool MRIntW_SmoothUi = true;
 nosave int MRIntW_SmoothUiTransitions = 2;
 nosave bool MRIntW_SmoothUiLogo = true;
+nosave bool MRIntW_SmoothUiOptions = true;
 
 nosave bool MRIntW_ChangeFiringBob = true;
 
@@ -160,4 +163,4 @@ nosave float MRIntW_LastFPS = 1;
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;
-server noarchive int MRIntW_Version = 509260;//DDMMYYI
+server noarchive int MRIntW_Version = 909260;//DDMMYYI

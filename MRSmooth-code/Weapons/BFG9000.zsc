@@ -208,8 +208,12 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 					Return;
 				}
 				
-				if(Player.Cmd.Buttons&BT_ALTATTACK && !(Player.OldButtons&BT_ALTATTACK))invoker.Idling = !invoker.Idling;
-				
+				if(Player.Cmd.Buttons&BT_ALTATTACK && !(Player.OldButtons&BT_ALTATTACK)){
+					invoker.Idling = !invoker.Idling;
+					if(invoker.Idling)A_StartSound("MRIntW/BFGCharge", CHAN_6, CHANF_LOOP, volume:MRIntW_BFGAltVolume, pitch:.6);
+					else A_StopSound(CHAN_6);
+				}
+
 				if(!invoker.Idling)Return;
 				
 				if(GetAge()%2==0){
@@ -548,6 +552,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			Loop;
 		Deselect:
 			TNT1 A 0 {
+				A_StopSound(CHAN_6);
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
 				if(MRIntW_SwitchAnims)A_Overlay(Lay1, "GunLower");
 				else A_Overlay(Lay1, "GunLowerVanilla");
