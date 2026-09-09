@@ -443,7 +443,7 @@ Class MRIntWeaps_MainMenuHand: Object Ui
 
 class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 {
-	Name mType;
+	Name mType, ActualType;
 	int Weaps, LastWeap, LastTick;
 	Bool WasSelected, Selected, PlayingAnim;
 	Array<Double> ChPs, ChPYs, ChVs, ChVYs;
@@ -455,7 +455,7 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 	OptionMenuItemSubmenu Init(String label, Name command, String Type)
 	{
 		Super.init(label, command);
-		mType = Type.MakeLower();
+		ActualType = mType = Type.MakeLower();
 		Weaps = 5;
 		if(Wads.CheckNumForName("SGN2A0", wads.ns_sprites)<0)Weaps--;
 		LastWeap = CRandom(1, Weaps);
@@ -613,7 +613,7 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 			}Break;
 			Case 'weapons':
 			{
-				if(ChPs.Size()<3 && gametic%20==0 && LastTick != Ticks && Selected){
+				if(ChPs.Size()<3 && ((gametic%20==0 && LastTick != Ticks) || ChPs.Size()<1) && Selected){
 					LastTick = Ticks;
 					ChPs.Push(0);
 					Chars.Push("MR_WMA"..LastWeap);
@@ -628,11 +628,8 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 					
 					ChPs[i]++;
 					if(ChPs[i]>60*7/FPSScale){
-						if(!Selected){
-							ChPs.Delete(i);
-							Chars.Delete(i);
-							Continue;
-						}
+						if(!Selected)Continue;
+						
 						ChPs[i] = 0;
 						Chars[i] = "MR_WMA"..LastWeap;
 						if(LastWeap<Weaps)LastWeap++;
@@ -646,7 +643,6 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 						else if(ChPs[i]>20/FPSScale){
 							if(i<2)Pos = 90;
 							if(i!=1) Angle = 35;
-							if(!Selected)ChPs[i] = 60*6.81/FPSScale;
 						}
 						else {
 							if(i<2)Pos = (ChPs[i]/(20/FPSScale))*90;
@@ -658,6 +654,12 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 					GotOne = true;
 					
 					Screen.DrawTexture(Texman.CheckForTexture(Chars[i]), true, i>0?(x-Pos*Cos(Angle)+85):x+85, y+Pos*.3*Sin(Angle), DTA_CleanNoMove_1, true, DTA_ROTATE, Angle);
+				}
+				
+				if(!GotOne){
+					ChPs.Clear();
+					Chars.Clear();
+					PlayingAnim = false;
 				}
 				
 				Menu.DrawOptionText(x, y, color, label, grayed);
@@ -695,7 +697,24 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 			ChPYs.Clear();
 			Targ = Accel = Vel = Pos *= 0;
 			if(mType=='sound')S_StartSound(CRandomPick(CRandom(1, 23), CRandom(225, 639)), CHAN_AUTO, CHANF_UI, .5);
+			if(ActualType=='random'){
+				Switch(CRandom(0, 2)){
+					Case 0:mType = 'jump';Break;
+					Case 1:mType = 'particles';Break;
+					Case 2:mType = 'move';Break;
+				}
+			}
 			PlayingAnim = true;
+		}
+		
+		else if(WasSelected != Selected && !Selected && mType=='weapons'){
+			For(int i=0;i<ChPs.Size();i++){
+				if(ChPs[i]>60*6.8/FPSScale)Continue;
+				if(ChPs[i]<20/FPSScale){
+					ChPs[i] = 60*6.8/FPSScale+(20/FPSScale-ChPs[i])*.5;
+				}
+				else ChPs[i] += Min(60*6.81-ChPs[i]/FPSScale, 60*5.5/FPSScale);
+			}
 		}
 		
 		WasSelected = Selected;
