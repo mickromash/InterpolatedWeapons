@@ -41,6 +41,7 @@ Extend Class MRIntWeaps_Chainsaw
 			
 			if(i<6 && Dripping[i]>0){
 				Dripping[i]--;
+				if(Underwater)Dripping[i] = 0;
 			}
 			
 			if(BldAlpha[i]>0){
@@ -353,6 +354,9 @@ Extend Class MRIntWeaps_Chainsaw
 					}
 			}
 			
+			A_ClearOverlays(LayBloodDrip-39, LayBloodDrip);
+			For(int i=0;i<6;i++)invoker.Dripping[i] = 0;
+			
 			Player.GetPSprite(PSP_WEAPON).Translation = OldTrans;
 			A_AddBlood(Type: 2);
 		}
@@ -370,6 +374,9 @@ Extend Class MRIntWeaps_Chainsaw
 					invoker.BldAlpha[i] *= .8;
 				}
 			}
+			
+			A_ClearOverlays(LayBloodDrip-39, LayBloodDrip);
+			For(int i=0;i<6;i++)invoker.Dripping[i] = 0;
 		}
 	}
 	
@@ -429,7 +436,7 @@ Extend Class MRIntWeaps_Chainsaw
 		Player.GetPSprite(Lay).FirstTic = Player.GetPSprite(Lay1).FirstTic;
 		Player.GetPSprite(Lay).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
 		
-		if(Num<6 && invoker.Dripping[Num]>0 && !invoker.Cutting){
+		if(Num<6 && invoker.Dripping[Num]>0 && !invoker.Cutting && WaterLevel<2){
 			if(CRandom(0, 35*25-invoker.Dripping[Num])<4){
 				int PNum;
 				For(PNum=LayBloodDrip;PNum>LayBloodDrip-40;PNum--){
@@ -493,7 +500,7 @@ Extend Class MRIntWeaps_Chainsaw
 				}
 				else A_OverlayOffset(OverlayId(), Player.GetPSprite(Lay1).X-Player.GetPSprite(Lay1).OldX, Player.GetPSprite(Lay1).Y-Player.GetPSprite(Lay1).OldY, WOF_ADD);
 				
-				if(Player.GetPSprite(OverlayId()).Y>140)A_ClearOverlays(OverlayId(), OverlayId());
+				if(Player.GetPSprite(OverlayId()).Y>140 || WaterLevel>1)A_ClearOverlays(OverlayId(), OverlayId());
 			}
 			Wait;
 		//Caching sprites
