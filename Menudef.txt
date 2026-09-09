@@ -12,7 +12,7 @@ AddOptionMenu "OptionsMenu"
 	Animated
 	AnimatedTransition
 	StaticText "Interpolated weapons"
-	MRIntWeaps_ModSubMenu "$MRIntWeaps_Menu", "MRIntWeaps_Menu"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_Menu", "MRIntWeaps_Menu", "Jump"
 	StaticText ""
 }
 
@@ -39,10 +39,10 @@ OptionMenu "MRIntWeaps_Menu"
 	Option "$MRIntW_FastPistol", "MRIntW_FastPistol", "YesNo"//Server
 	Option "$MRIntW_QuickSwitch", "MRIntW_QuickSwitch", "YesNo"
 	StaticText ""
-	SubMenu "$MRIntWeaps_AnimMenu", "MRIntWeaps_AnimMenu"
-	SubMenu "$MRIntWeaps_ParticlesMenu", "MRIntWeaps_ParticlesMenu"
-	SubMenu "$MRIntWeaps_SoundMenu", "MRIntWeaps_SoundMenu"
-	SubMenu "$MRIntWeaps_UiMenu", "MRIntWeaps_UiMenu"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_AnimMenu", "MRIntWeaps_AnimMenu", "Move"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_ParticlesMenu", "MRIntWeaps_ParticlesMenu", "Particles"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_SoundMenu", "MRIntWeaps_SoundMenu", "Sound"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_UiMenu", "MRIntWeaps_UiMenu", "Jump"
 	StaticText ""
 	SubMenu "$MRIntWeaps_PressetsMenu", "MRIntWeaps_PressetsMenu"
 	StaticText ""
@@ -68,8 +68,8 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Command "$MRIntW_RandomGlovesColor2", MRIntW_RandomGlovesColor2
 	Command "$MRIntW_RandomGlovesColor1", MRIntW_RandomGlovesColor1
 	Submenu "", "MRIntWeaps_EasterMenu"
-	SubMenu "$MRIntWeaps_OffsetMenu", "MRIntWeaps_OffsetMenu"
-	SubMenu "$MRIntWeaps_WeaponsMenu", "MRIntWeaps_WeaponsMenu"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_OffsetMenu", "MRIntWeaps_OffsetMenu", "MoveX"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_WeaponsMenu", "MRIntWeaps_WeaponsMenu", "Weapons"
 	StaticText ""
 	Option "$MRIntW_ReloadAnims", "MRIntW_ReloadAnims", "MRIntW_ReloadAnimsValues"
 	Option "$MRIntW_NoMuzzleFlash", "MRIntW_NoMuzzleFlash", "YesNo"
@@ -126,6 +126,7 @@ OptionMenu "MRIntWeaps_WeaponsMenu"
 	Option "$MRIntW_FinishPunch", "MRIntW_FinishPunch", "MRIntW_FinishPunchValues"
 	Option "$MRIntW_MissPunch", "MRIntW_MissPunch", "YesNo"
 	Slider "$MRIntW_FinishPunchChance", "MRIntW_FinishPunchChance", .1, 1, .1, 2, "MRIntW_FinishPunch"
+	Option "$MRIntW_FistFixedOnTarget", "MRIntW_FistFixedOnTarget", "YesNo"
 	Option "$MRIntW_SurfacePunchRecoil", "MRIntW_SurfacePunchRecoil", "YesNo"
 	StaticText ""
 	StaticText "$TAG_CHAINSAW", "Fire"
@@ -422,6 +423,8 @@ OptionMenu "MRIntWeaps_SoundMenu"
 	Slider "$MRIntW_ChainsawVolume", "MRIntW_ChainsawVolume", 0, 1, .1
 	Slider "$MRIntW_ChainsawRandomPitch", "MRIntW_ChainsawRandomPitch", 0, 10, 1
 	StaticText ""
+	Slider "$MRIntW_BFGAltVolume", "MRIntW_BFGAltVolume", 0, 1, .1
+	StaticText ""
 	StaticText "$MRIntWeaps_SoundAddonRequired", "Gold"
 	Option "$MRIntW_ShotgunSound", "MRIntW_ShotgunSound", "YesNo"
 	Option "$MRIntW_ChaingunSound", "MRIntW_ChaingunSound", "YesNo"
@@ -437,6 +440,7 @@ OptionMenu "MRIntWeaps_UiMenu"
 	Option "$MRIntW_SmoothUi", "MRIntW_SmoothUi", "YesNo"
 	Option "$MRIntW_SmoothUiTransitions", "MRIntW_SmoothUiTransitions", "MRIntW_SmoothUiTransitionsValues"
 	Option "$MRIntW_SmoothUiLogo", "MRIntW_SmoothUiLogo", "YesNo"
+	Option "$MRIntW_SmoothUiOptions", "MRIntW_SmoothUiOptions", "YesNo"
 }
 
 OptionMenu "MRIntWeaps_PressetsMenu"

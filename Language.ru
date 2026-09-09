@@ -175,6 +175,7 @@ MRIntW_FinishPunch3 = "Да";
 
 MRIntW_FinishPunchChance = "Шанс добивающего удара";
 MRIntW_MissPunch = "Анимация промаха";
+MRIntW_FistFixedOnTarget = "Фиксировать кулак на ударенном монстре";
 MRIntW_SurfacePunchRecoil = "Отдача при ударе стены с берсерком";
 
 MRIntW_ChainsawStart = "Анимация включения";
@@ -388,35 +389,36 @@ MRIntWeaps_SoundAddonRequired = "(требуется аддон)";
 
 MRIntW_ChainsawVolume = "Громкость работы пилы";
 MRIntW_ChainsawRandomPitch = "Рандомизация высоты звука пилы";
+MRIntW_BFGAltVolume = "Громкость альт. атаки BFG";
 MRIntW_ShotgunSound = "Звуки дробовика из аддона";
 MRIntW_ChaingunSound = "Звуки пулемёта из аддона";
 
 MRIntW_Braindead = "Склько вам лет";
 MRIntW_Braindead4 = "You are the youngest person ever!";
 
-MRIntWeaps_PressetsMenu = "Прессеты настроек";
+MRIntWeaps_PressetsMenu = "Пресеты настроек";
 
 MRIntW_PressetDefault = "Настройки по умолчанию";
-MRIntW_PressetDefaultPrompt = "Прессет с настройками по умолчанию.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
-MRIntW_PressetVanilla = "Ванильный прессет";
-MRIntW_PressetVanillaPrompt = "Прессет с настройками близкими к классическому Doom.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
-MRIntW_PressetMaximum = "Максимальный прессет";
-MRIntW_PressetMaximumPrompt = "Прессет включает максимальное количество фишек мода.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetDefaultPrompt = "Пресет с настройками по умолчанию.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetVanilla = "Ванильный пресет";
+MRIntW_PressetVanillaPrompt = "Пресет с настройками близкими к классическому Doom.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetMaximum = "Максимальный пресет";
+MRIntW_PressetMaximumPrompt = "Пресет включает максимальное количество фишек мода.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
 MRIntW_PressetNoGameplay = "Классический геймплей";
-MRIntW_PressetNoGameplayPrompt = "Прессет выключает все геймплейные опции мода, без изменения остальных.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_PressetNoGameplayPrompt = "Пресет выключает все геймплейные опции мода, без изменения остальных.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
 
-MRIntW_WhichPresset = "Свой прессет";
+MRIntW_WhichPresset = "Свой пресет";
 MRIntW_WhichPresset1 = "#1";
 MRIntW_WhichPresset2 = "#2";
 MRIntW_WhichPresset3 = "#3";
 MRIntW_WritePresset = "Сохранить текущие настройки";
-MRIntW_WritePressetPrompt = "Сохранить текущие настройки в прессет?";
-MRIntW_WritePressetPrompt2 = "Сохранить текущие настройки в прессет?\n\nНастройки сохранённые до этого будут перезаписаны.";
+MRIntW_WritePressetPrompt = "Сохранить текущие настройки в пресет?";
+MRIntW_WritePressetPrompt2 = "Сохранить текущие настройки в пресет?\n\nНастройки сохранённые до этого будут перезаписаны.";
 MRIntW_ApplyPresset = "Загрузить сохранённые настройки";
-MRIntW_ApplyPressetPrompt = "Загрузить прежде сохранённые настройки?\nЭтот прессет не будет удалён.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
-MRIntW_ViewPresset = "Просмотреть прессет";
-MRIntW_ViewingPresset = "Свой прессет #%i";
-MRIntW_EmptyPresset = "Этот прессет пуст";
+MRIntW_ApplyPressetPrompt = "Загрузить прежде сохранённые настройки?\nЭтот пресет не будет удалён.\n\nВсе изменеия вступят в силу как только вы нажмёте Да.";
+MRIntW_ViewPresset = "Просмотреть пресет";
+MRIntW_ViewingPresset = "Свой пресет #%i";
+MRIntW_EmptyPresset = "Этот пресет пуст";
 
 MRIntWeaps_UiMenu = "Настройки интерфейса";
 MRIntW_SmoothUi = "Плавное меню";
@@ -424,6 +426,7 @@ MRIntW_SmoothUiTransitions = "Плавные переходы в меню";
 MRIntW_SmoothUiTransitions1 = "Кроме настроек";
 MRIntW_SmoothUiTransitions2 = "Везде";
 MRIntW_SmoothUiLogo = "Анимированный логотип";
+MRIntW_SmoothUiOptions = "Анимированные пункты в меню";
 
 MRIntW_ChangeFiringBob = "Форсировать раскачивание при стрельбе";
 
