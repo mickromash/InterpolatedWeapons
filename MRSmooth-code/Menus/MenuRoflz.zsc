@@ -450,6 +450,10 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 	Double FPSScale;
 	int Frames, Ticks;
 	Vector2 Pos, Vel, Accel, Targ;
+	
+	Static Const String Sounds[] = {
+		"MRIntW/FistPuch", "MRIntW/PistolReload", "MRIntW/ShotgunPump", "weapons/sawidle", "weapons/sawup"
+	};
 		
 	OptionMenuItemSubmenu Init(String label, Name command, String Type)
 	{
@@ -698,7 +702,7 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
 			ChPs.Clear();
 			ChPYs.Clear();
 			Targ = Accel = Vel = Pos *= 0;
-			if(mType=='sound')S_StartSound(CRandomPick(CRandom(1, 23), CRandom(225, 639)), CHAN_AUTO, CHANF_UI, .5);
+			if(mType=='sound')S_StartSound(Sounds[CRandom(0, Sounds.Size()-1)], CHAN_AUTO, CHANF_UI, .5);
 			if(ActualType=='random'){
 				Switch(CRandom(0, 2)){
 					Case 0:mType = 'jump';Break;
