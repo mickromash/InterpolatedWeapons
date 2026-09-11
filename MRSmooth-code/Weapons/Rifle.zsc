@@ -264,12 +264,15 @@ Extend Class MRIntWeaps_Pistol
 					Player.GetPSprite(Lay1).Y -= 32;
 					Player.GetPSprite(Lay1).OldY -= 32;
 				}
+				invoker.ReloadR = false;
 				A_OverlayPivot(Lay1, .7, 0);
-				Switch(CRandom(0, 10))
+				
+				if((Player.Cmd.Buttons&BT_RELOAD && Player.Cmd.Buttons&BT_ALTATTACK) || CRandom(0, 1000)==0)Return ResolveState("RifleCoolIdleStroke");
+				
+				if(Player.Cmd.Buttons&BT_USE)Switch(CRandom(0, 10))
 				{
 					Case 1:Return ResolveState("RifleCoolIdleBFG");
-					Case 2:Return ResolveState("RifleCoolIdleRandom");
-					Case 3:Return ResolveState("RifleCoolIdleStroke");
+					Default:Return ResolveState("RifleCoolIdleRandom");
 				}
 				
 				Return ResolveState(Null);
