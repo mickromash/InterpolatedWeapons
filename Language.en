@@ -430,6 +430,7 @@ MRIntW_SmoothUiOptions = "Animated options";
 MRIntW_ChangeFiringBob = "Force firing bob";
 
 TAG_RIFLE = "Rifle";
+PICKUP_RIFLE_DROPPED = "Picked up a rifle";
 
 MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- This game was saved with a different version of the mod\n"
 						"if you'll encounter any issues, proceed to the mod's settings menu and press \"Make animations smooth\" button.";
