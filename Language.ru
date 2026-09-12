@@ -434,6 +434,8 @@ MRIntW_ChangeFiringBob = "Форсировать раскачивание при
 TAG_RIFLE = "Винтовка";
 PICKUP_RIFLE_DROPPED = "Получена винтовка";
 
+MRIntW_Version = "Версия \cdInt Weaps\c-: ";
+
 MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- Это сохранение было сделано с другой версией мода\n"
 						"если у вас возникнут проблемы, нажмите кнопку \"Сделать анимации плавными\" в меню настроек мода.";
 MRIntW_VMAbortMessage = "\n\cdВерсия Interpolated Weapons: \c-%i\n"

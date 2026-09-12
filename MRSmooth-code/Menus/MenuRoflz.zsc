@@ -1,10 +1,25 @@
-Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenuMain
+/*
+	Animated M_Doom (logo) and submenu items
+*/
+Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenuMain//Replacing default M_Doom with animated
 {
+	String MRIntWVer;
+	Double VerAlpha;
+	Bool DisplayVer;
+	
 	Override void Init(Menu parent, ListMenuDescriptor desc)
 	{
 		Super.Init(parent, desc);
 		
 		FPSScale = MRIntW_LastFPS;
+		
+		DisplayVer = true;
+		String Ver = ""..CVar.FindCVar("MRIntW_Version").GetDefaultInt();
+		MRIntWVer = Ver;
+		
+		MRIntWVer = Ver.Left(Ver.Length()-5).."."..Ver.Mid(Ver.Length()-5);//Dot after day
+		MRIntWVer = MRIntWVer.Left(MRIntWVer.Length()-3).."."..MRIntWVer.Mid(MRIntWVer.Length()-3);//Dot after month
+		MRIntWVer = MRIntWVer.Left(MRIntWVer.Length()-1).." #"..MRIntWVer.Mid(MRIntWVer.Length()-1);//Index
 		
 		if(!MRIntW_SmoothUiLogo || !Interpolate)Return;
 		
@@ -18,6 +33,25 @@ Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenuMain
 			ListMenuItemMR_Doom(mDesc.mItems[i]).FPSScale = FPSScale;
 		}
 	}
+	
+	Override Void Drawer()
+	{
+		Super.Drawer();
+		
+		if(!DisplayVer)Return;
+		
+		if(VerAlpha>=0 && VerAlpha<1)VerAlpha += .2/FPSScale;
+		else if(VerAlpha>=1)VerAlpha = -14;
+		else {
+			if(VerAlpha<0)VerAlpha += .05/FPSScale;
+			if(VerAlpha>=0)DisplayVer = false;
+		}
+		
+		Screen.DrawText(OptionFont(), Font.CR_WHITE, 0, Screen.GetHeight() - mDesc.mLinespacing*CleanYfac_1, StringTable.Localize("$MRIntW_Version")..MRIntWVer
+			,DTA_CleanNoMove_1, true
+			,DTA_Alpha, abs(VerAlpha)
+		);
+	}
 		
 	Override Void OnDestroy()
 	{
@@ -27,13 +61,17 @@ Class MRIntWeaps_MainMenu: MRIntWeaps_ListMenuMain
 	}
 }
 
-Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
+Class ListMenuItemMR_Doom: ListMenuItemStaticPatch//Animated M_Doom
 {
+	/*
+		I was thinking about commenting all this, but instead I'll just say one thing
+		
+		F*CK STRUCT SCREEN
+	*/
 	Bool Tick, Dead;
 	int Stayt, IntroVar;
 	Double Scale, Scale2, SubVel, SubAccel, SubRot;
 	Vector2 M_DoomPos, SubPos;
-	Array<MRIntWeaps_MainMenuActor> Actors;
 	MRIntWeaps_MainMenuHand Hand;
 	Double FPSScale;
 	int Frames, Ticks;
@@ -130,6 +168,11 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 		Vector2 vec = TexMan.GetScaledSize(mTexture);
 		Vector2 MOfst = Texman.GetScaledOffset(mTexture);
 		
+		if(w == ListMenuDescriptor.CleanScale){
+			vec *= Height/1080;
+			MOfst *= Height/1080;
+		}
+		
 		if(Stayt<2+18){
 			Switch(Stayt){
 				Default:
@@ -162,7 +205,7 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 		if(w == ListMenuDescriptor.CleanScale)Screen.DrawTexture(mTexture, true, Width*.5 -vec.X*Scale*.5 + M_DoomPos.X + MOfst.X*Scale, Height*.5 -vec.Y*Scale*.5 - vec.Y*DefScale*1.2 + M_DoomPos.Y + MOfst.Y*Scale
 			,DTA_DestWidthF, vec.X*Scale
 			,DTA_DestHeightF, vec.Y*Scale
-			,DTA_FullscreenScale, FSMode_ScaleToFit43
+			//,DTA_FullscreenScale, FSMode_ScaleToFit43
 		);
 		else Screen.DrawTexture(mTexture, true, Width*.5 -vec.X*Scale*.5 + M_DoomPos.X + MOfst.X*Scale, Height*.5 -vec.Y*Scale*.5 - 70 + M_DoomPos.Y + MOfst.Y*Scale
 			,DTA_DestWidthF, vec.X*Scale
@@ -349,6 +392,8 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 				Break;
 			}
 			
+			if(w == ListMenuDescriptor.CleanScale)SubSize *= Height/1080;
+			
 			if(w == ListMenuDescriptor.CleanScale)Screen.DrawTexture(SubTex, true, Width*.5 + Vec.X -SubSize.X*.5*Scale2 + SubPos.X + M_DoomPos.X, Height*.5 - vec.Y*DefScale*.8 +SubSize.Y*.5*Scale2 + SubPos.Y + M_DoomPos.Y
 				,DTA_DestWidthF, SubSize.X*Scale*.85*Scale2
 				,DTA_DestHeightF, SubSize.Y*Scale*.85*Scale2
@@ -366,8 +411,14 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 			if(Hand){
 				TextureId Sprt = (Hand.Stayt<1?Texman.CheckForTexture("MRD1D0"):Texman.CheckForTexture("MRD1C0"));
 				Vector2 HandSize = Texman.GetScaledSize(Sprt);
+				Vector2 HandOfst = Texman.GetScaledOffset(Sprt);
 				
-				if(w == ListMenuDescriptor.CleanScale)Screen.DrawTexture(Sprt, true, Width*.5 + Vec.X + Hand.Pos.X - 100*4, Height*.5 - vec.Y*DefScale*.8 + Hand.Pos.Y - 275*4
+				if(w == ListMenuDescriptor.CleanScale){
+					HandSize *= Height/1080;
+					HandOfst *= Height/1080;
+				}
+				
+				if(w == ListMenuDescriptor.CleanScale)Screen.DrawTexture(Sprt, true, Width*.5 -HandOfst.X + Vec.X + Hand.Pos.X - 150*4*(Height/1080), Height*.5 -HandOfst.Y - vec.Y*DefScale*.8 + Hand.Pos.Y - 300*4*(Height/1080)
 					,DTA_FlipY, true
 					,DTA_DestWidthF, HandSize.X*4
 					,DTA_DestHeightF, HandSize.Y*4
@@ -389,16 +440,6 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch
 		Super.OnDestroy();
 		if(Hand)Hand.Destroy();
 	}
-}
-
-Class MRIntWeaps_MainMenuActor: Object Ui
-{
-	TextureId Sprt;
-	int Stayt;
-	Bool FlipX, FlipY;
-	Double OldRot, Rot;
-	Vector2 Prev, Pos, Vel, OldScale, Scale;
-	Virtual Void Tick(){}
 }
 
 Class MRIntWeaps_MainMenuHand: Object Ui
@@ -440,7 +481,7 @@ Class MRIntWeaps_MainMenuHand: Object Ui
 }
 
 
-class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu
+class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu//Animated submenu item
 {
 	Name mType, ActualType;
 	int Weaps, LastWeap, LastTick;
