@@ -9,6 +9,8 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 	Const LLimb = Lay1-2;
 	Const RLimb = Lay1-1;
 	
+	Double FireState;
+	
 	int BobState, IdleDelay;
 	
 	int SwitchAnim, SwitchState;
@@ -71,7 +73,13 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 			A_OverlayRotate(RLimb, 0, WOF_INTERPOLATE);
 		}
 	GunWait:
-		H1TG A 1;
+		H1TG A 1 {
+			if(Player.Cmd.Buttons&BT_ALTATTACK)invoker.FireState += 1;
+			else if(invoker.FireState>1)invoker.FireState -= 1;
+			else invoker.FireState *= .5;
+			
+			invoker.FireState = Clamp(invoker.FireState, 0, 3);
+		}
 		Wait;
 	GunLower:
 		TNT1 A 1;
@@ -83,12 +91,52 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 	LLimb:
 		H1TO # 1;
 		#### # 1 {
-			Player.GetPSprite(OverlayId()).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
-			Player.GetPSprite(OverlayId()).Y = Player.GetPSprite(Lay1).Y;
-			Player.GetPSprite(OverlayId()).OldY = Player.GetPSprite(Lay1).OldY;
-			Player.GetPSprite(OverlayId()).X = Player.GetPSprite(Lay1).X;
-			Player.GetPSprite(OverlayId()).OldX = Player.GetPSprite(Lay1).OldX;
-			Player.GetPSprite(OverlayId()).bInterpolate = Player.GetPSprite(Lay1).bInterpolate;
+			int Lay = OverlayId();
+			Bool Left = Lay == LLimb;
+			Player.GetPSprite(Lay).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
+			Player.GetPSprite(Lay).Y = Player.GetPSprite(Lay1).Y;
+			Player.GetPSprite(Lay).OldY = Player.GetPSprite(Lay1).OldY;
+			Player.GetPSprite(Lay).X = Player.GetPSprite(Lay1).X;
+			Player.GetPSprite(Lay).OldX = Player.GetPSprite(Lay1).OldX;
+			Player.GetPSprite(Lay).bInterpolate = Player.GetPSprite(Lay1).bInterpolate;
+			
+			Double Mid = invoker.FireState%1/.5;
+			if(Mid>=1)Mid = Mid-2;
+
+			//Console.Printf(Mid.." "..invoker.FireState.." "..Round(invoker.FireState));
+			
+			Switch(Round(invoker.FireState)){
+				Case 0:
+					if(Player.GetPSprite(Lay).Frame != Round(invoker.FireState))Player.GetPSprite(Lay).bInterpolate = false;
+					Player.GetPSprite(Lay).Scale = (1, 1) + (.15,.03)*Mid;
+	 				Player.GetPSprite(Lay).Rotation = -7.5*Mid;
+					if(Left)Player.GetPSprite(Lay).Rotation *= -1;
+					Player.GetPSprite(Lay).Frame = Round(invoker.FireState);
+					Break;
+				Case 1:
+					//if(Player.GetPSprite(Lay).Frame != Round(invoker.FireState))Player.GetPSprite(Lay).bInterpolate = false;
+					Player.GetPSprite(Lay).Scale = (1,1) + (.075,.03)*Mid;
+					Player.GetPSprite(Lay).Rotation = -3*Mid;
+					if(Left)Player.GetPSprite(Lay).Rotation *= -1;
+					Player.GetPSprite(Lay).Frame = Round(invoker.FireState);
+					Break;
+				Case 2:
+					//if(Player.GetPSprite(Lay).Frame != Round(invoker.FireState))Player.GetPSprite(Lay).bInterpolate = false;
+					Player.GetPSprite(Lay).Scale = (1,1) + (.025,.01)*Mid;
+					Player.GetPSprite(Lay).Rotation = -2.5*Mid;
+					if(Left)Player.GetPSprite(Lay).Rotation *= -1;
+					Player.GetPSprite(Lay).Frame = Round(invoker.FireState);
+					Break;
+				Case 3:
+					//if(Player.GetPSprite(Lay).Frame != Round(invoker.FireState))Player.GetPSprite(Lay).bInterpolate = false;
+					Player.GetPSprite(Lay).Scale = (1,1) + (.1,.07)*Mid;
+					Player.GetPSprite(Lay).Rotation = -5*Mid;
+					if(Left)Player.GetPSprite(Lay).Rotation *= -1;
+					Player.GetPSprite(Lay).Frame = Round(invoker.FireState);
+					Break;
+				
+					
+			}
 		}
 		Wait;
 	
