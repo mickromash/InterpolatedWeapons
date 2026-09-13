@@ -462,7 +462,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
-			#### FED 1 {//Lower
+			#### FEE 1 {//Lower
 				A_OverlayOffset(Lay1, 14, -7, WOF_ADD);
 				invoker.SelPos = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
@@ -775,12 +775,14 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayRotate(Lay1, invoker.PumpRotation*.1, WOF_ADD);
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
-			#### D 1 {
+			#### E 1 {
+				A_OverlayScale(Lay1, 1, .9);
 				A_OverlayMoveTo(Lay1, -75, -44, .8);
 				A_OverlayRotate(Lay1, Player.GetPSprite(Lay1).Rotation+invoker.PumpRotation*.1);
 			}
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 			#### EFF 1 {
+				Player.GetPSprite(Lay1).Scale = (1,1.05)+(Player.GetPSprite(Lay1).Scale-(1,1.05))*.6;
 				A_OverlayMoveTo(Lay1, -80, -44, .7);
 				A_OverlayRotate(Lay1, invoker.PumpRotation*.1, WOF_ADD);
 			}
@@ -878,7 +880,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayRotate(Lay1, -invoker.PumpRotation*.1, WOF_ADD);
 				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
 			}
-			#### FEEDD 1 {//Lower
+			#### FEEEE 1 {//Lower
 				A_OverlayOffset(Lay1, 11, 6, WOF_ADD);
 				A_OverlayRotate(Lay1, -invoker.PumpRotation*.1, WOF_ADD);
 			}
