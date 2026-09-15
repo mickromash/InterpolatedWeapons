@@ -316,7 +316,7 @@ Class MRIntWeaps_Handler: EventHandler
 			Casings.Clear();
 		}
 		if(e.name ~== "MRIntWeaps_RandomGlovesColor"){
-			Color Rand = Color(Random(0,255), Random(0,255), Random(0,255));
+			Color Rand = Color(Random[MRIntWRand](0,255), Random[MRIntWRand](0,255), Random[MRIntWRand](0,255));
 			
 			CVar.FindCVar("MRIntW_GlovesColorTemp").SetInt(Rand);
 			Return;
@@ -340,6 +340,13 @@ Class MRIntWeaps_Handler: EventHandler
 		if(e.name ~== "MRIntWeaps_ApplyParticles"){
 			UpdateOnStartupParticles();
 			Return;
+		}
+		if(e.name ~== "MRIntWeaps_RandomizePlayer"){
+			RandomizePlayer(e.Player);
+			Return;
+		}
+		if(e.name ~== "MRIntWeaps_ReturnPlayerSettings"){
+			RandomizePlayer(-1);
 		}
 		if(e.name ~== "MRIntWeaps_CheckAge"){
 			CheckAge(Plr);
@@ -486,6 +493,81 @@ Class MRIntWeaps_Handler: EventHandler
 			}
 		}
 		//Console.Printf("World Loaded");
+	}
+	
+	Void RandomizePlayer(int PlrNum){
+		Bool UnRandomize = PlrNum<0;
+		if(PlrNum<0)PlrNum = ConsolePlayer;
+		if(!playeringame[PlrNum])Return;
+		
+		if(UnRandomize){
+			CVar.GetCVar("MRIntW_GlovesColor", Players[PlrNum]).SetInt(CVar.FindCVar("MRIntW_GlovesColor").GetInt());
+			
+			CVar.GetCVar("MRIntW_BareHands", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_BareHands").GetBool());
+			CVar.GetCVar("MRIntW_RightPunch", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_RightPunch").GetBool());
+			CVar.GetCVar("MRIntW_SecondFist", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_SecondFist").GetBool());
+			CVar.GetCVar("MRIntW_MissPunch", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_MissPunch").GetBool());
+			CVar.GetCVar("MRIntW_PunchingFist", Players[PlrNum]).SetInt(CVar.FindCVar("MRIntW_PunchingFist").GetInt());
+			
+			CVar.GetCVar("MRIntW_LHand", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_LHand").GetBool());
+			CVar.GetCVar("MRIntW_Rifle", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_Rifle").GetBool());
+			CVar.GetCVar("MRIntW_PistolSHand", Players[PlrNum]).SetInt(CVar.FindCVar("MRIntW_PistolSHand").GetInt());
+			
+			CVar.GetCVar("MRIntW_ShotgunPumpAngle", Players[PlrNum]).SetFloat(CVar.FindCVar("MRIntW_ShotgunPumpAngle").GetFloat());
+			CVar.GetCVar("MRIntW_ShotgunPumpRandom", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_ShotgunPumpRandom").GetBool());
+			CVar.GetCVar("MRIntW_ShotgunPumpRandRotation", Players[PlrNum]).SetFloat(CVar.FindCVar("MRIntW_ShotgunPumpRandRotation").GetFloat());
+			
+			CVar.GetCVar("MRIntW_SSGHandless", Players[PlrNum]).SetInt(CVar.FindCVar("MRIntW_SSGHandless").GetInt());
+			
+			CVar.GetCVar("MRIntW_ChaingunFixed", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_ChaingunFixed").GetBool());
+			CVar.GetCVar("MRIntW_ChaingunCounterClock", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_ChaingunCounterClock").GetBool());
+			CVar.GetCVar("MRIntW_ChaingunSpeed", Players[PlrNum]).SetFloat(CVar.FindCVar("MRIntW_ChaingunSpeed").GetFloat());
+			CVar.GetCVar("MRIntW_ChaingunStopTime", Players[PlrNum]).SetFloat(CVar.FindCVar("MRIntW_ChaingunStopTime").GetFloat());
+			Return;
+		}
+		
+		Switch(Random[MRIntWRand](0, 100)){
+			Default:
+				CVar.GetCVar("MRIntW_GlovesColor", Players[PlrNum]).SetInt(Random[MRIntWRand](0, 7));
+				Break;
+			Case 95:
+				CVar.GetCVar("MRIntW_GlovesColor", Players[PlrNum]).SetInt(Random[MRIntWRand](8, 9));
+				Break;
+			Case 96:
+				CVar.GetCVar("MRIntW_GlovesColor", Players[PlrNum]).SetInt(Random[MRIntWRand](19, 24));
+				Break;
+		}
+		
+		CVar.GetCVar("MRIntW_BareHands", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
+		CVar.GetCVar("MRIntW_RightPunch", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
+		CVar.GetCVar("MRIntW_SecondFist", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
+		CVar.GetCVar("MRIntW_MissPunch", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
+		CVar.GetCVar("MRIntW_PunchingFist", Players[PlrNum]).SetInt(Random[MRIntWRand](0, 3));
+		
+		CVar.GetCVar("MRIntW_LHand", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
+		CVar.GetCVar("MRIntW_Rifle", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
+		CVar.GetCVar("MRIntW_PistolSHand", Players[PlrNum]).SetInt(Random[MRIntWRand](0, 2));
+		
+		CVar.GetCVar("MRIntW_ShotgunPumpAngle", Players[PlrNum]).SetFloat(FRandom[MRIntWRand](-2, 2));
+		CVar.GetCVar("MRIntW_ShotgunPumpRandom", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
+		CVar.GetCVar("MRIntW_ShotgunPumpRandRotation", Players[PlrNum]).SetFloat(FRandom[MRIntWRand](-2, 2));
+		
+		CVar.GetCVar("MRIntW_SSGHandless", Players[PlrNum]).SetInt(Random[MRIntWRand](0, 2));
+		
+		CVar.GetCVar("MRIntW_ChaingunFixed", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
+		CVar.GetCVar("MRIntW_ChaingunCounterClock", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
+		CVar.GetCVar("MRIntW_ChaingunSpeed", Players[PlrNum]).SetFloat(FRandom[MRIntWRand](.5, 3));
+		CVar.GetCVar("MRIntW_ChaingunStopTime", Players[PlrNum]).SetFloat(FRandom[MRIntWRand](.3, 1));
+	}
+	
+	Override Void NewGame()
+	{
+		For(int i=0;i<MAXPLAYERS;i++){
+			if(!playeringame[i])Continue;
+			if(!CVar.GetCVar("MRIntW_RandomStart", Players[i]).GetBool())Continue;
+			
+			RandomizePlayer(i);
+		}
 	}
 	
 	

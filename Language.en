@@ -427,6 +427,10 @@ MRIntW_SmoothUiTransitions2 = "For all";
 MRIntW_SmoothUiLogo = "Animated logo";
 MRIntW_SmoothUiOptions = "Animated options";
 
+MRIntW_RandomStart = "Randomize customization on new game";
+MRIntW_RandomizePlayer = "Randomize customization";
+MRIntW_ReturnPlayerSettings = "Return saved customization settings";
+
 MRIntW_ChangeFiringBob = "Force firing bob";
 
 TAG_RIFLE = "Rifle";

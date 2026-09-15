@@ -428,6 +428,10 @@ MRIntW_SmoothUiTransitions2 = "Везде";
 MRIntW_SmoothUiLogo = "Анимированный логотип";
 MRIntW_SmoothUiOptions = "Анимированные пункты в меню";
 
+MRIntW_RandomStart = "Рандомизировать кастомизацию на старте игры";
+MRIntW_RandomizePlayer = "Рандомизировать кастомизацию";
+MRIntW_ReturnPlayerSettings = "Вернуть мои настройки кастомизации";
+
 MRIntW_ChangeFiringBob = "Форсировать раскачивание при стрельбе";
 
 

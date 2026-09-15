@@ -149,6 +149,8 @@ nosave int MRIntW_SmoothUiTransitions = 2;
 nosave bool MRIntW_SmoothUiLogo = true;
 nosave bool MRIntW_SmoothUiOptions = true;
 
+user bool MRIntW_RandomStart = false;
+
 nosave bool MRIntW_ChangeFiringBob = true;
 
 user string MRIntW_Braindead = "";
