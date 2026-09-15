@@ -785,7 +785,7 @@ Extend Class MRIntWeaps_Shotgun
 				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
 				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
 				if(!MRIntW_ShotgunSparks)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
-				Double Scal = FRandom(.02, .06);
+				Double Scal = FRandom[MRIntWRand](.02, .06);
 				A_OverlayScale(OverlayId(), Scal, Scal);
 				A_OverlayPivot(OverlayId(), .5, .5);
 				A_OverlayAlpha(OverlayId(), .8);
@@ -800,7 +800,7 @@ Extend Class MRIntWeaps_Shotgun
 				Par.Vel.Y += .7;
 				Par.Age--;
 				A_OverlayOffset(OverlayId(), Par.Vel.X, Par.Vel.Y, WOF_ADD);
-				Double DownS = FRandom(-.005, -.008);
+				Double DownS = FRandom[MRIntWRand](-.005, -.008);
 				A_OverlayScale(OverlayId(), DownS, DownS, WOF_ADD);
 				Player.GetPSprite(OverlayId()).Alpha -= .05;
 				
@@ -820,7 +820,7 @@ Extend Class MRIntWeaps_Shotgun
 	Action Void A_FiringParticles()
 	{
 		//Buckshot sparks
-		if(Random(0, 20)<2)Return;
+		if(Random[MRIntWRand](0, 20)<2)Return;
 		if(Players[ConsolePlayer].Camera!=Self && MRIntW_ShotgunSparks)
 			For(int i1=CRandom(0, 7);i1<10;i1++){
 				Vector3 Pos = (0,0,0);
@@ -842,7 +842,7 @@ Extend Class MRIntWeaps_Shotgun
 				A_SpawnParticle(Color(Col[0],Col[1],Col[2]), SPF_FULLBRIGHT|SPF_NOTIMEFREEZE, 50, Size, 0, Pos.X,Pos.Y,Pos.Z,
 					Vel.X,Vel.Y,Vel.Z, 0,0,-.25, 1, 0, -Size/20.);
 		}
-		For(int i1=Random(0, 7);i1<10;i1++){
+		For(int i1=Random[MRIntWRand](0, 7);i1<10;i1++){
 		
 			int Par = -1;
 
@@ -1122,7 +1122,7 @@ Extend Class MRIntWeaps_PlasmaRifle
 	Action Void A_FiringParticles()
 	{
 		//Small plasma particles
-		if(Random(0, 20)>18)Return;
+		if(Random[MRIntWRand](0, 20)>18)Return;
 		
 		int Par = -1;
 
@@ -1138,7 +1138,7 @@ Extend Class MRIntWeaps_PlasmaRifle
 		
 		invoker.Particles[Par].Age = 40;
 		invoker.Particles[Par].Vel.XY = (CFRandom(-.9, .9), CFRandom(-.75, .75));
-		invoker.Particles[Par].Vel.Z = FRandom(-.0025, -.005);
+		invoker.Particles[Par].Vel.Z = FRandom[MRIntWRand](-.0025, -.005);
 		
 		int Lay = ParLay-Par;
 		
@@ -1150,7 +1150,7 @@ Extend Class MRIntWeaps_PlasmaRifle
 			Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 90 + invoker.Particles[Par].Vel.Y*35
 		);
 		
-		Double Scal = FRandom(.02, .08);
+		Double Scal = FRandom[MRIntWRand](.02, .08);
 		A_OverlayScale(Lay, Scal, Scal);
 		
 		if(Players[ConsolePlayer].Camera!=Self && MRIntW_PlasmaParticles>1){
@@ -1203,7 +1203,7 @@ Extend Class MRIntWeaps_PlasmaRifle
 		invoker.Particles[Par].Age = 60;
 		invoker.Particles[Par].Vel.XY = (CFRandom(4, 5), -CFRandom(2, 4));
 		invoker.Particles[Par].Gravity = 1;
-		invoker.Particles[Par].Vel.Z = -FRandom(.004, .007);
+		invoker.Particles[Par].Vel.Z = -FRandom[MRIntWRand](.004, .007);
 		
 		int Lay = ParLay-Par;
 		
@@ -1217,7 +1217,7 @@ Extend Class MRIntWeaps_PlasmaRifle
 			Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 45 + Ofst*.75
 		);
 		
-		Double Scal = FRandom(.06, .14);
+		Double Scal = FRandom[MRIntWRand](.06, .14);
 		A_OverlayScale(Lay, Scal, Scal);
 	}
 	
@@ -1295,7 +1295,7 @@ Extend Class MRIntWeaps_BFG9000
 		}
 		if(Chance>1.8)Return;
 		//Small green plasma particles going into the muzzle
-		For(int i1=Min(20*Chance-1, Random(0, 4));i1<20*Chance;i1++){
+		For(int i1=Min(20*Chance-1, Random[MRIntWRand](0, 4));i1<20*Chance;i1++){
 				
 			int Par = -1;
 
@@ -1312,7 +1312,7 @@ Extend Class MRIntWeaps_BFG9000
 			Double Angle = CRandom(-20, 200);
 			Double Vel = CFRandom(1.5, 4.5);
 			
-			invoker.Particles[Par].Age = Random(20, 30)/Abs(Chance+1);
+			invoker.Particles[Par].Age = Random[MRIntWRand](20, 30)/Abs(Chance+1);
 			invoker.Particles[Par].Vel.XY = (Vel*Cos(Angle), Vel*Sin(Angle))*(Chance+.25);
 			
 			int Lay = ParLay-Par;
@@ -1333,7 +1333,7 @@ Extend Class MRIntWeaps_BFG9000
 				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
 				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
 				if(!MRIntW_BFGParticles)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
-				Double Scal = FRandom(.01, .04);
+				Double Scal = FRandom[MRIntWRand](.01, .04);
 				A_OverlayScale(OverlayId(), Scal, Scal);
 				A_OverlayPivot(OverlayId(), .5, .5);
 				A_OverlayAlpha(OverlayId(), .4);

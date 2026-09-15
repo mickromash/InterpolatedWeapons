@@ -350,9 +350,9 @@ Extend Class MRIntWeaps_SuperShotgun//'Particles'
 	Action Void A_FiringParticles()
 	{
 		//Buckshot sparks
-		if(Random(0, 20)<2)Return;
+		if(Random[MRIntWRand](0, 20)<2)Return;
 		
-		Double RandStart = Random(0, 10);
+		Double RandStart = Random[MRIntWRand](0, 10);
 		
 		if(Players[ConsolePlayer].Camera!=Self && MRIntW_SSGSparks)
 			For(int i1=RandStart;i1<20;i1++){
@@ -419,7 +419,7 @@ Extend Class MRIntWeaps_SuperShotgun//'Particles'
 				A_OverlayFlags(OverlayId(), PSPF_ADDBOB|PSPF_ADDWEAPON, false);
 				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
 				if(!MRIntW_SSGSparks)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
-				Double Scal = FRandom(.02, .06);
+				Double Scal = FRandom[MRIntWRand](.02, .06);
 				A_OverlayScale(OverlayId(), Scal, Scal);
 				A_OverlayPivot(OverlayId(), .5, .5);
 				A_OverlayAlpha(OverlayId(), .8);
@@ -434,7 +434,7 @@ Extend Class MRIntWeaps_SuperShotgun//'Particles'
 				Par.Vel.Y += .7;
 				Par.Age--;
 				A_OverlayOffset(OverlayId(), Par.Vel.X, Par.Vel.Y, WOF_ADD);
-				Double DownS = FRandom(-.005, -.008);
+				Double DownS = FRandom[MRIntWRand](-.005, -.008);
 				A_OverlayScale(OverlayId(), DownS, DownS, WOF_ADD);
 				Player.GetPSprite(OverlayId()).Alpha -= .05;
 				

@@ -221,7 +221,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 					Player.GetPSprite(Lay2).Y += CFRandom(-.5, .5);
 				}
 				
-				if(Random(0, 10)==0)A_FiringParticles(-FRandom(.5, .7), true);
+				if(Random[MRIntWRand](0, 10)==0)A_FiringParticles(-FRandom[MRIntWRand](.5, .7), true);
 			}
 			Loop;
 		GunLower:
