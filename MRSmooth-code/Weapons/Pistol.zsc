@@ -365,7 +365,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayRotate(Lay1, 0);
 				A_OverlayScale(Lay1, 1, 1);
 				A_OverlayPivot(Lay1, .5, 1);
+				
 				A_OverlayFlags(SHand2, PSPF_INTERPOLATE, false);
+				if(Player.FindPSprite(SHand2))A_ClearOverlays(SHand, SHand);
+				
 				Player.GetPSprite(Lay1).Frame = invoker.SwitchFrame;
 				if(invoker.Reload)Player.GetPSprite(Lay1).Frame = 2;
 				
