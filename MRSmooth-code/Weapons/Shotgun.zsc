@@ -1009,7 +1009,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayMoveTo(Lay1, -71, -42, CFRandom(.65, .8));
 				if(Player.Cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD)Player.GetPSprite(Lay1).SetState(invoker.FindState("Pumping"));
 			}
-			#### FEEDD 1 {//Lower
+			#### FEEEE 1 {//Lower
 				A_OverlayOffset(Lay1, 11, 6, WOF_ADD);
 				A_OverlayRotate(Lay1, -invoker.PumpRotation*.1, WOF_ADD);
 			}
