@@ -203,6 +203,8 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 			
 			invoker.LastFireFrame = Stayt;
 			
+			invoker.FireState *= .5;
+			
 			A_OverlayRotate(LLimb, CFRandom(-.1, .1)*Stayt, WOF_INTERPOLATE);
 			A_OverlayRotate(RLimb, CFRandom(-.1, .1)*Stayt, WOF_INTERPOLATE);
 			
@@ -210,14 +212,14 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 		}
 		Wait;
 	GunFlash2:
-		H1TF A 1 {
+		H1TF A 1 BRIGHT{
 			A_OverlayPivot(Flash, .5, .8);
 			A_OverlayScale(Flash, 1, 1, WOF_INTERPOLATE);
 			A_OverlayFlags(Flash, PSPF_INTERPOLATE, !Player.GetPSprite(Flash).FirstTic);
 		}
-		#### A 1 A_OverlayScale(Flash, 2, 1.1, WOF_INTERPOLATE);
-		#### BB 1;
-		#### BBBBBBBBBBBB 1 {
+		#### A 1 BRIGHT A_OverlayScale(Flash, 2, 1.1, WOF_INTERPOLATE);
+		#### BB 1 BRIGHT;
+		#### BBBBBBBBBBBB 1 BRIGHT{
 			Player.GetPSprite(Flash).Scale = (.1,.1)+(Player.GetPSprite(Flash).Scale-(.1,.1))*.8;
 		}
 		Stop;
@@ -235,19 +237,33 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETGA0");
 		}
 	Raise:
-		TNT1 A 1 A_Raise();
+		#### A 1 A_Raise();
 		Loop;
 	Ready:
-		TNT1 A 1 A_WeaponReady();
-		Loop;
+		TNT1 A 0 {
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETGA0");
+		}
+		#### A 1 A_WeaponReady();
+		Wait;
 	Deselect:
-		TNT1 A 1 A_Lower();
+		TNT1 A 0 {
+			if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
+			
+			if(MRIntW_SwitchAnims)A_Overlay(Lay1, "GunLower");
+			else A_Overlay(Lay1, "GunLowerVanilla");
+			
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETGA0");
+		}
+	Lower:
+		#### A 1 A_Lower();
 		Loop;
 	Fire:
 	Hold0:
 		TNT1 A 0 {
 			MBF21_ConsumeAmmo(0);
 			A_Overlay(Flash, "GunFlash");
+			
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETGA0");
 		}
 		#### A 0 A_GunFlashTo("Hold0Flash", 1);
 		#### A 20 A_StartSound("weapons/calamityblade/charge", CHAN_WEAPON);
@@ -341,32 +357,46 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 			
 			Player.SetPsprite(Lay1, invoker.FindState("GunFire"));
 			Player.SetPsprite(Flash, invoker.FindState("GunFlash2"));
+			
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETFA0");
 		}
 		#### A 3 BRIGHT A_GunFlash();
 		#### B 5 BRIGHT;
-		#### D 4;
+		#### D 4 {
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETGA0");
+		}
 		#### C 4;
 		#### B 4;
 		#### A 0 A_ReFire();
 		Goto Ready;
 	Hold0Flash:
-		TNT1 A 6 BRIGHT;
+		TNT1 A 6 BRIGHT{
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETCA0");
+		}
 		#### BCD 5 BRIGHT;
 		Goto LightDone;
 	Hold1Flash:
-		TNT1 A/*E*/ 6 BRIGHT;
+		TNT1 A/*E*/ 6 BRIGHT{
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETCA0");
+		}
 		#### FGH 5 BRIGHT;
 		Goto LightDone;
 	Hold2Flash:
-		TNT1 A/*I*/ 6 BRIGHT;
+		TNT1 A/*I*/ 6 BRIGHT{
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETCA0");
+		}
 		#### JKL 5 BRIGHT;
 		Goto LightDone;
 	Hold3Flash:
-		TNT1 A/*M*/ 6 BRIGHT;
+		TNT1 A/*M*/ 6 BRIGHT{
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETCA0");
+		}
 		#### NOP 5 BRIGHT;
 		Goto LightDone;
 	Hold4Flash:
-		TNT1 A/*Q*/ 6 BRIGHT;
+		TNT1 A/*Q*/ 6 BRIGHT{
+			if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("HETCA0");
+		}
 		#### RST 5 BRIGHT;
 		Goto LightDone;
 	Flash:
