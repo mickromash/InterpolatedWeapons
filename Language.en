@@ -437,6 +437,8 @@ TAG_RIFLE = "Rifle";
 PICKUP_RIFLE_DROPPED = "Picked up a rifle";
 
 MRIntW_Version = "\cdInt Weaps\c- version: ";
+MRIntW_SimpleMenu1 = "Go to \"Full options menu\" and";
+MRIntW_SimpleMenu2 = "\cgturn that \"Simple options menu\" thing off\c-, pleaseee";
 
 MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- This game was saved with a different version of the mod\n"
 						"if you'll encounter any issues, proceed to the mod's settings menu and press \"Make animations smooth\" button.";

@@ -14,7 +14,7 @@ nosave float MRIntW_FlowingSmokeLength = .6;
 nosave float MRIntW_FlowingSmokeAlpha = .2;
 nosave float MRIntW_FlowingSmokeMaxTime = 1;
 nosave float MRIntW_FlowingSmokePrecision = 1;
-nosave bool MRIntW_FlowingSmokeBioTexture = false;
+nosave bool MRIntW_FlowingSmokeBioTexture = false;//Bioshock-like texture for flowing smoke
 
 nosave int MRIntW_BobStyle = 4;//0 - Normal, 1 - Alpha jumpy, 2 - Alpha, 3 - Jumpy, 4 - Smooth, 5 - Alpha smooth, 6 - None
 nosave float MRIntW_BobRangeX = 1;
@@ -25,7 +25,7 @@ nosave float MRIntW_SavedWbobFire = 0;
 nosave int MRIntW_Bounce = 1;//Bounce weapon on landing; 0 - None, 1 - Regular, 2 - Clear view
 nosave int MRIntW_RunKey = 0;//0 - Do nothing, 1 - Lowering weapon, 2 - Raising weapon
 nosave bool MRIntW_DamageShake = true;//Shake weapon on receiving damage
-nosave bool MRIntW_BaseOffset = false;
+nosave bool MRIntW_BaseOffset = false;//Weapon offset
 nosave float MRIntW_BaseOffsetX = 0;
 nosave float MRIntW_BaseOffsetY = 0;
 nosave bool MRIntW_WeaponSway = false;
@@ -45,7 +45,7 @@ nosave float MRIntW_ScreenShakeAmount = 1;
 server bool MRIntW_Lighting = true;//Fix and improve weapon dynamic lighting
 user bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
-server bool MRIntW_QuickSwitch = false;
+server bool MRIntW_QuickSwitch = false;//Ability to switch weapons during reloading
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
 server noarchive bool MRIntW_LoRWeaps = false;
 
@@ -111,7 +111,7 @@ nosave bool MRIntW_PlasmaLight = true;//Dynamic lighting from projectiles
 nosave bool MRIntW_PlasmaSkipLight = false;//Disable dynamic lights for every second projectile
 //BFG 9000
 nosave bool MRIntW_BFGParticles = true;//Fancy ahh firing animation
-nosave float MRIntW_BFGAltVolume = .6;
+nosave float MRIntW_BFGAltVolume = .6;//Volume of BFG alt fire sound
 //id24 Incinerator
 nosave int MRIntW_InciniSmoke = 3;//0 - None, 1 - Only muzzle, 2 - Only small, 3 - Both
 
@@ -129,33 +129,34 @@ nosave bool MRIntW_DecorationParticles = false;
 nosave int MRIntW_DecorationWhichParticles = 511;
 nosave float MRIntW_DecorationParticlesAmount = 1;
 
-nosave bool MRIntW_TeleportParticles = false;
-nosave int MRIntW_TeleportParticlesStyle = 6;
-nosave int MRIntW_TeleportParticlesStyleMonsters = 2;
+nosave bool MRIntW_TeleportParticles = false;//Particle effects for teleport fog
+nosave int MRIntW_TeleportParticlesStyle = 6;//Effect for player teleportation
+nosave int MRIntW_TeleportParticlesStyleMonsters = 2;//Effect for other teleportations
 
-nosave int MRIntW_RespawnParticles = 0;
+nosave int MRIntW_RespawnParticles = 0;//Items respawn effect
 
-nosave bool MRIntW_AltLightnings = false;
+nosave bool MRIntW_AltLightnings = false;//Alternative particles lightnings display
 
-nosave bool MRIntW_ParticleFlies = false;
-nosave float MRIntW_ParticleFliesVolume = .4;
+nosave bool MRIntW_ParticleFlies = false;//Corpse flies
+nosave float MRIntW_ParticleFliesVolume = .4;//Flies buzzing volume
 
 //-1 - UZDoom, 0 - Smooth, 1 - Round, 2 - Square
 nosave int MRIntW_ParticleTexture = -1;
 nosave int MRIntW_ParticleSmokeTexture = -1;
 
-nosave bool MRIntW_SmoothUi = true;
-nosave int MRIntW_SmoothUiTransitions = 2;
-nosave bool MRIntW_SmoothUiLogo = true;
-nosave bool MRIntW_SmoothUiOptions = true;
+nosave bool MRIntW_SmoothUi = true;//Interpolated menus
+nosave int MRIntW_SmoothUiTransitions = 2;//Smooth transitions in menus
+nosave bool MRIntW_SmoothUiLogo = true;//Animated M_Doom
+nosave bool MRIntW_SmoothUiOptions = true;//Animated mod submenus
 
-user bool MRIntW_RandomStart = false;
+user bool MRIntW_RandomStart = false;//Use random values instead of user settings
+nosave bool MRIntW_RandomDemo = true;//Use random values instead of user settings in demos
 
-nosave bool MRIntW_ChangeFiringBob = true;
+nosave bool MRIntW_ChangeFiringBob = true;//Force firing bob
 
-user string MRIntW_Braindead = "";
+user string MRIntW_Braindead = "";//Enables some goofy animations
 
-nosave int MRIntW_WhichPresset = 0;
+nosave int MRIntW_WhichPresset = 0;//Selected custom presset number
 nosave string MRIntW_PressetCust1 = "";
 nosave string MRIntW_PressetCust2 = "";
 nosave string MRIntW_PressetCust3 = "";

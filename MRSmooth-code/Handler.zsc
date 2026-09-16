@@ -494,7 +494,7 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 		//Console.Printf("World Loaded");
 	}
-	
+		
 	Void RandomizePlayer(int PlrNum){
 		Bool UnRandomize = PlrNum<0;
 		if(PlrNum<0)PlrNum = ConsolePlayer;
@@ -525,7 +525,7 @@ Class MRIntWeaps_Handler: EventHandler
 			CVar.GetCVar("MRIntW_ChaingunStopTime", Players[PlrNum]).SetFloat(CVar.FindCVar("MRIntW_ChaingunStopTime").GetFloat());
 			Return;
 		}
-		
+
 		Switch(Random[MRIntWRand](0, 100)){
 			Default:
 				CVar.GetCVar("MRIntW_GlovesColor", Players[PlrNum]).SetInt(Random[MRIntWRand](0, 7));
@@ -638,8 +638,12 @@ Class MRIntWeaps_DifVersionMessage: Thinker
 		Switch(Time)
 		{
 			Case 2:
-				if(demoplayback || (MRIntW_Version==CVar.GetCVar("MRIntW_Version").GetDefaultInt()))Destroy();
-				CVar.GetCVar("MRIntW_Version").SetInt(CVar.GetCVar("MRIntW_Version").GetDefaultInt());
+				if(demoplayback || (MRIntW_Version==CVar.GetCVar("MRIntW_Version").GetDefaultInt())){
+					if(demoplayback && MRIntW_RandomDemo)MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler")).RandomizePlayer(Plr.PlayerNumber());
+					Destroy();
+					Return;
+				}
+				CVar.FindCVar("MRIntW_Version").SetInt(CVar.GetCVar("MRIntW_Version").GetDefaultInt());
 				Break;
 			Case Start:
 				Plr.A_Log(StringTable.Localize("$MRIntW_VersionMessage"));
