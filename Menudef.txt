@@ -1,3 +1,10 @@
+AddOptionMenu "OptionsMenuSimple"
+{
+	StaticText "Interpolated weapons"
+	StaticText "$MRIntW_SimpleMenu1", "White"
+	StaticText "$MRIntW_SimpleMenu2", "White"
+	StaticText "-mickromash", "Green"
+}
 AddOptionMenu "HUDOptions" after "wbobfire"
 {
 	Class MRIntWeaps_OptionMenu
