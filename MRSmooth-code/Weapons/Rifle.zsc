@@ -10,7 +10,7 @@ Extend Class MRIntWeaps_Pistol
 			TNT1 AAAA 1 {
 				A_DoVanillaDisplay();
 				if(invoker.Dropped)invoker.Dropped.Destroy();
-				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
+				A_OverlayFlags(Lay1, PSPF_ADDWEAPON|PSPF_FLIP|PSPF_MIRROR, false);
 				A_OverlayPivot(Lay1, .5, 1);
 				A_OverlayOffset(Lay1, invoker.SwitchAnim?-50:50, 80);
 				A_OverlayScale(Lay1, .6, .6);

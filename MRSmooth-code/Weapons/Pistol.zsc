@@ -295,6 +295,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				else invoker.SwitchAnim = 0;
 			}
 			TNT1 AAAA 1 {
+				invoker.IsRifle = GetCVar("MRIntW_Rifle");
+				invoker.LeftHanded = GetCVar("MRIntW_LHand");
+				if(invoker.IsRifle)Player.SetPsprite(Lay1, invoker.FindState("RifleRaise"));
 				A_GlovesColor();
 				if(invoker.Dropped)invoker.Dropped.Destroy();
 				A_OverlayFlags(Lay1, PSPF_ADDWEAPON , false);
@@ -397,6 +400,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		GunRaiseReload:
 			TNT1 A 0 {invoker.SwitchAnim = 1;}
 			TNT1 AAAA 1 {
+				invoker.IsRifle = GetCVar("MRIntW_Rifle");
+				invoker.LeftHanded = GetCVar("MRIntW_LHand");
+				if(invoker.IsRifle)Player.SetPsprite(Lay1, invoker.FindState("RifleRaise"));
+				
 				A_DoVanillaDisplay();
 				A_GlovesColor();
 				if(invoker.Dropped)invoker.Dropped.Destroy();
