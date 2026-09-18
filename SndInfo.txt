@@ -1,28 +1,37 @@
-MRIntW/FistSwing "Sounds/MRIntW/FistSwing.wav"
+MRIntW/FistSwing "Sounds/MRIntW/Fist/FistSwing.wav"
 MRIntW/FistSelect ""
 MRIntW/FistDeselect ""
-MRIntW/FistAltSelect "Sounds/MRIntW/GloveStrip.ogg"
-MRIntW/FistAltDeselect "Sounds/MRIntW/GlovePuton.ogg"
+MRIntW/FistAltSelect "Sounds/MRIntW/Fist/GloveStrip.ogg"
+MRIntW/FistAltDeselect "Sounds/MRIntW/Fist/GlovePuton.ogg"
 MRIntW/FistPunchFleshKnuckles ""
 MRIntW/FistPunchFlesh ""
-MRIntW/FistPunchWallKnuckles ""
-MRIntW/FistPunchWall ""
+MRIntW/FistPunchWallKnuckles "Sounds/MRIntW/Fist/FISTNUK1.ogg"
+MRIntW/FistPunchWall "Sounds/MRIntW/Fist/FISTPUN1.ogg"
 MRIntW/FistPuch dspunch
+
+MRIntW/SawUp dssawup
+MRIntW/SawIdle dssawidl
+MRIntW/SawFull dssawful
+MRIntW/SawHit dssawhit
 
 MRIntW/PistolSelect ""
 MRIntW/PistolReload "Sounds/MRIntW/dsrifclk.wav"
 MRIntW/PistolDeselect ""
+MRIntW/PistolFire dspistol
 
 MRIntW/RifleSelect ""
 MRIntW/RifleDeselect ""
+MRIntW/RifleReload "Sounds/MRIntW/dsrifclk.wav"
+MRIntW/RifleReload2 "Sounds/MRIntW/dsrifclk.wav"
 MRIntW/RifleFire dspistol
+MRIntW/RifleChamber dssgcock
 
 MRIntW/ShotgunSelect ""
 MRIntW/ShotgunDeselect ""
 MRIntW/ShotgunFire dsshotgn
 MRIntW/ShotgunPumpDown ""
 MRIntW/ShotgunPumpUp ""
-MRIntW/ShotgunPump DSSGCOCK
+MRIntW/ShotgunPump dssgcock
 
 MRIntW/SSGSelect ""
 MRIntW/SSGDeselect ""
@@ -31,34 +40,36 @@ MRIntW/SSGOpen dsdbopn
 MRIntW/SSGLoad dsdbload
 MRIntW/SSGClose dsdbcls
 
-MRIntW/ChaingunRotateStart ""
+MRIntW/ChaingunReload "Sounds/MRIntW/dsrifclk.wav"
 MRIntW/ChaingunRotateLoop ""
 MRIntW/ChaingunRotateStop ""
 MRIntW/ChaingunDeselect ""
 MRIntW/ChaingunSelect ""
 MRIntW/ChaingunFire dspistol
 
-MRIntW/RLLoad DSPSTOP
+MRIntW/RLLoad dspstop
+MRIntW/RLLoad2 dssgcock
 MRIntW/RLFire dsrlaunc
 
 MRIntW/PlasmaSelect ""
 MRIntW/PlasmaDeselect ""
-MRIntW/PlasmaReload dspstart
+MRIntW/PlasmaReload "Sounds/MRIntW/dsrifclk.wav"
+MRIntW/PlasmaReload2 dspstart
 MRIntW/PlasmaFire dsplasma
 
-MRIntW/BFGReload DSITMBK
+MRIntW/BFGReload "Sounds/MRIntW/dsrifclk.wav"
+MRIntW/BFGReload2 dsitmbk
+MRIntW/BFGReload3 dspstart
 MRIntW/BFGFireStart dsbfg
-MRIntW/BFGFireLoop ""
-MRIntW/BFGFire ""
 MRIntW/BFGSelect ""
 MRIntW/BFGDeselect ""
 MRIntW/BFGCharge "Sounds/MRIntW/MRIntFly.wav"
 
-MRIntW/PistolCasing "Sounds/MRIntW/dsding.ogg"
-MRIntW/ShotgunCasingLand "Sounds/MRIntW/SDIE1.ogg"
+MRIntW/PistolCasing "Sounds/MRIntW/Casings/dsding.ogg"
+MRIntW/ShotgunCasingLand "Sounds/MRIntW/Casings/SDIE1.ogg"
 
-MRIntW/ShotgunCasingBounce1 "Sounds/MRIntW/SBNCE1.ogg"
-MRIntW/ShotgunCasingBounce2 "Sounds/MRIntW/SBNCE2.ogg"
+MRIntW/ShotgunCasingBounce1 "Sounds/MRIntW/Casings/SBNCE1.ogg"
+MRIntW/ShotgunCasingBounce2 "Sounds/MRIntW/Casings/SBNCE2.ogg"
 $Random MRIntW/ShotgunCasingBounce { MRIntW/ShotgunCasingBounce1 MRIntW/ShotgunCasingBounce2 }
 
 
@@ -78,7 +89,7 @@ $Random MRIntW/BFG9000Bounce { MRIntW/WeapBounce1 MRIntW/WeapBounce2 }
 MRIntW/FlyBuzz "Sounds/MRIntW/MRIntFly.wav"
 $limit MRIntW/FlyBuzz 1
 
-MRIntW/Message1 "Sounds/MRIntW/SBNCE1.ogg"
+MRIntW/Message1 "Sounds/MRIntW/Casings/SBNCE1.ogg"
 MRIntW/Crash dssecret
 MRIntW/Braindead1 DSCACSIT
 MRIntW/Braindead2 DSBOSSIT
