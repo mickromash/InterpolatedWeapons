@@ -13,7 +13,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	//Const LayBloodDrip = -2;
 	//Const SmokeStart = PSP_FLASH+10;
 	
-	int SawFrame; //Idle frame
+	int SawFrame, OldHealth; //Idle frame
 	Double SawPos, //Saw towards/backwards distance
 		CuttingWay, //Cutting state
 		SawAngle, //Cutting direction
@@ -33,6 +33,9 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*Owner.GetCVar("MRIntW_RecoilAmount"));}
 		
 		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Owner.Health<1)Return;
+		
+		if(Owner.Health<OldHealth)Owner.Player.SetPsprite(4, FindState("BloodAdder"));
+		OldHealth = Owner.Health;
 				
 		if(!Owner.Player.FindPSprite(Lay1) || !InStateSequence(Owner.Player.FindPSprite(Lay1).CurState, FindState("SawReady")))Return;
 		
@@ -59,6 +62,9 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	Float StartingHand, IdlePower;
 	
 	States{
+		BloodAdder:
+			TNT1 A 1 A_AddBlood(Self, 3);
+			Stop;
 		SawRaiseVanilla://Vanilla select animation
 			SAW1 C 1 {
 				A_DoVanillaDisplay();
@@ -108,6 +114,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				A_OverlayOffset(Lay2, CFRandom(24, 25)+invoker.StartingHand*.5, -26+CFRandom(-1, 1)-invoker.StartingHand, WOF_ADD);
 			}
 			#### # 1{
+				A_GlovesColor();
 				A_OverlayOffset(Lay3, CFRandom(2, 3), -CFRandom(2, 3), WOF_ADD);
 				A_OverlayRotate(Lay3, -1, WOF_ADD);
 				Double Scal = -Player.GetPSprite(Lay3).Y;
@@ -438,7 +445,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		SawStartCut://Transition from ready to fire state
 			SAW1 # 1{
 				A_DoVanillaDisplay();
-				invoker.ReadySound = "weapons/sawidle";
+				invoker.ReadySound = invoker.SndIdle;
 				A_GlovesColor(1);
 				Player.GetPSprite(Lay1).Frame = invoker.SawFrame;
 				A_OverlayPivot(Lay1, .5, 1);
@@ -747,7 +754,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		SawIdleLoop:
 			#### # 0 {
 				invoker.ReadySound = "";
-				A_StartSound(invoker.UpSound, CHAN_5, 0, CFRandom(.7, 1), pitch: CFRandom(.9, 1)*i_timescale);
+				A_StartSound(invoker.SndSelect, CHAN_5, 0, CFRandom(.7, 1), pitch: CFRandom(.9, 1)*i_timescale);
 				A_Overlay(Lay3, "SawStartHand");
 				A_Overlay(Lay2, "SawStartRope");
 				
@@ -757,7 +764,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				
 				A_OverlayScale(Lay1, .99, .8, WOF_INTERPOLATE);
 			}
-			#### # 2;
+			#### ## 1 A_OverlayOffset(Lay1, -1, 1, WOF_ADD);
 			#### # 1 {
 				invoker.IdlePower = CFRandomPick(-CFRandom(1, 3), CFRandom(1, 3));
 				A_OverlayOffset(Lay1, -4*abs(invoker.IdlePower), 12*abs(invoker.IdlePower)*Cos(Max(0, Pitch)), WOF_ADD);
@@ -812,8 +819,9 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				Player.GetPSprite(Lay1).Scale -= (.1,.1)*abs(invoker.IdlePower*Sin(Max(0, Pitch)));
 			}
 			#### ######## 1 {
-				Player.GetPSprite(Lay1).X = -26+(Player.GetPSprite(Lay1).X+26)*.7;
-				Player.GetPSprite(Lay1).Y = 26+(Player.GetPSprite(Lay1).Y-26)*.7;
+				Float X = CFRandom(20, 30);
+				Player.GetPSprite(Lay1).X = -X+(Player.GetPSprite(Lay1).X+X)*CFRandom(.7, .9);
+				Player.GetPSprite(Lay1).Y = 21+(Player.GetPSprite(Lay1).Y-21)*CFRandom(.7, .9);
 				Player.GetPSprite(Lay1).Rotation = 11+(Player.GetPSprite(Lay1).Rotation-11)*.7;
 				Player.GetPSprite(Lay1).Scale = (.99,.8)+(Player.GetPSprite(Lay1).Scale-(.99,.8))*.8;
 				
@@ -841,7 +849,8 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				}
 			}
 			#### # 1 {
-				A_OverlayOffset(Lay1, -CFRandom(28, 30), CFRandom(27, 29), WOF_INTERPOLATE);
+				Player.GetPSprite(Lay1).X = -26+(Player.GetPSprite(Lay1).X+26)*.7;
+				Player.GetPSprite(Lay1).Y = 26+(Player.GetPSprite(Lay1).Y-26)*.7;
 				Player.GetPSprite(Lay1).Scale = (.99,.8)+(Player.GetPSprite(Lay1).Scale-(.99,.8))*.6;
 				
 				if(GetAge()%2==0)invoker.SawFrame++;
@@ -850,13 +859,15 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 			#### # 0 A_JumpIf(true, CRandom(0, 3));
 			#### ### 1 {
+				Player.GetPSprite(Lay1).X = -26+(Player.GetPSprite(Lay1).X+26)*.7;
+				Player.GetPSprite(Lay1).Y = 26+(Player.GetPSprite(Lay1).Y-26)*.7;
 				Player.GetPSprite(Lay1).Scale = (.99,.8)+(Player.GetPSprite(Lay1).Scale-(.99,.8))*.5;
 				if(Player.Cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD){
 					invoker.ReadySound = "";
 					if(invoker.SawFrame%2==0)invoker.SawFrame++;
 				}
 				else {
-					invoker.ReadySound = "weapons/sawidle";
+					invoker.ReadySound = invoker.SndIdle;
 					A_OverlayOffset(Lay1, -CFRandom(28, 30), CFRandom(27, 29), WOF_INTERPOLATE);
 					if(GetAge()%2==0)invoker.SawFrame++;
 				}
@@ -865,13 +876,15 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			}
 			#### # 0 A_JumpIf(true, CRandom(0, 3));
 			#### ### 1 {
+				Player.GetPSprite(Lay1).X = -26+(Player.GetPSprite(Lay1).X+26)*.7;
+				Player.GetPSprite(Lay1).Y = 26+(Player.GetPSprite(Lay1).Y-26)*.7;
 				Player.GetPSprite(Lay1).Scale = (.99,.8)+(Player.GetPSprite(Lay1).Scale-(.99,.8))*.5;
 				if(Player.Cmd.Buttons&BT_ALTATTACK || Player.Cmd.Buttons&BT_RELOAD){
 					invoker.ReadySound = "";
 					if(invoker.SawFrame%2==0)invoker.SawFrame++;
 				}
 				else {
-					invoker.ReadySound = "weapons/sawidle";
+					invoker.ReadySound = invoker.SndIdle;
 					A_OverlayOffset(Lay1, -CFRandom(28, 30), CFRandom(27, 29), WOF_INTERPOLATE);
 					if(GetAge()%2==0)invoker.SawFrame++;
 				}
@@ -882,7 +895,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			
 			#### ###### 1 {
 				A_StopSound(CHAN_5);
-				invoker.ReadySound = "weapons/sawidle";
+				invoker.ReadySound = invoker.SndIdle;
 				Player.GetPSprite(Lay1).X *= .7;
 				Player.GetPSprite(Lay1).Y *= .7;
 				Player.GetPSprite(Lay1).Rotation *= .7;
@@ -998,138 +1011,6 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 			A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
 			Player.GetPSprite(OverlayId()).Alpha = Min(Player.GetPSprite(OverlayId()).Alpha, .5);
 		}
-	}
-	
-	//Making sound pitch affected by i_timescale
-	
-	action void A_WeaponReady(int flags = 0)
-	{
-		if(!player) return;
-		
-		DoReadyWeaponToSwitch(player, !(flags & WRF_NoSwitch));
-		if((flags & WRF_NoFire) != WRF_NoFire)invoker.DoReadyWeaponToFire(player.mo, !(flags & WRF_NoPrimary), !(flags & WRF_NoSecondary));
-		if(!(flags & WRF_NoBob))DoReadyWeaponToBob(player);
-
-		player.WeaponState |= GetButtonStateFlags(flags);
-		DoReadyWeaponDisableSwitch(player, flags & WRF_DisableSwitch);
-	}
-	
-	static void DoReadyWeaponToFire (PlayerPawn pawn, bool prim, bool alt)
-	{
-		let player = pawn.player;
-		let weapon = player.ReadyWeapon;
-		
-		if(!weapon)return;
-
-		if(pawn.InStateSequence(pawn.curstate, pawn.MissileState) ||
-			pawn.InStateSequence(pawn.curstate, pawn.MeleeState))
-		{
-			pawn.PlayIdle ();
-		}
-
-		let psp = player.GetPSprite(PSP_WEAPON);
-		let PSP2 = Player.FindPSprite(Lay1);
-		if(weapon.ReadySound && psp && psp.curState == weapon.FindState('Ready'))
-		{
-			if(!weapon.bReadySndHalf || random[WpnReadySnd]() < 128){
-				Double Pitch = i_timescale;
-				if(PSP2)Pitch *= (1+(PSP2.Scale.X-1)*MRIntW_ChainsawRandomPitch);
-				pawn.A_StartSound(weapon.ReadySound, CHAN_WEAPON, Volume:MRIntW_ChainsawVolume, pitch:Pitch);
-			}
-		}
-
-		player.WeaponState |= ((prim ? WF_WEAPONREADY : 0) | (alt ? WF_WEAPONREADYALT : 0));
-		return;
-	}
-	
-	Override void PlayUpSound(Actor origin)
-	{
-		if(UpSound)origin.A_StartSound(UpSound, CHAN_WEAPON, pitch:i_timescale);
-	}
-	
-	action void A_Saw(sound fullsound = "weapons/sawfull", sound hitsound = "weapons/sawhit", int damage = 2, class<Actor> pufftype = "BulletPuff", int flags = 0, double range = 0, double spread_xy = 2.8125, double spread_z = 0, double lifesteal = 0, int lifestealmax = 0, class<BasicArmorBonus> armorbonustype = "ArmorBonus")
-	{
-		FTranslatedLineTarget t;
-
-		if(!player)return;
-
-		if(!(flags & SF_NORANDOM))damage *=  random[Saw](1, 10);
-		if(range == 0)range = MeleeRange + MELEEDELTA + (1. / 65536.); // MBF21 SAWRANGE;
-
-		double ang = angle + spread_xy * (Random2[Saw]() / 255.);
-		double slope = AimLineAttack (ang, range, t) + spread_z * (Random2[Saw]() / 255.);
-
-		Weapon weap = player.ReadyWeapon;
-
-		int puffFlags = (flags & SF_NORANDOMPUFFZ) ? LAF_NORANDOMPUFFZ : 0;
-
-		Actor puff;
-		int actualdamage;
-		[puff, actualdamage] = LineAttack (ang, range, slope, damage, 'Melee', pufftype, puffFlags, t);
-
-		if(!t.linetarget)
-		{
-			if((flags & SF_RANDOMLIGHTMISS) && (Random[Saw]() > 64))player.extralight = !player.extralight;
-			A_StartSound (fullsound, CHAN_WEAPON, pitch:i_timescale);
-			return;
-		}
-
-		if(flags & SF_RANDOMLIGHTHIT)
-		{
-			int randVal = Random[Saw]();
-			
-			if(randVal < 64)player.extralight = 0;
-			else if(randVal < 160)player.extralight = 1;
-			else player.extralight = 2;
-		}
-
-		if(lifesteal && !t.linetarget.bDontDrain)
-		{
-			if(flags & SF_STEALARMOR)
-			{
-				if(!armorbonustype)armorbonustype = "ArmorBonus";
-				else
-				{
-					BasicArmorBonus armorbonus = BasicArmorBonus(Spawn(armorbonustype));
-					armorbonus.SaveAmount = int(armorbonus.SaveAmount * actualdamage * lifesteal);
-					armorbonus.MaxSaveAmount = lifestealmax <= 0 ? armorbonus.MaxSaveAmount : lifestealmax;
-					armorbonus.bDropped = true;
-					armorbonus.ClearCounters();
-
-					if(!armorbonus.CallTryPickup (self))armorbonus.Destroy ();
-				}
-			}
-
-			else
-			{
-				GiveBody(int(actualdamage * lifesteal), lifestealmax);
-			}
-		}
-
-		A_StartSound(hitsound, CHAN_WEAPON, pitch:i_timescale);
-			
-		// turn to face target
-		if(!(flags & SF_NOTURN))
-		{
-			double anglediff = deltaangle(angle, t.angleFromSource);
-
-			if(anglediff < 0.0)
-			{
-				if (anglediff < -4.5)
-					angle = t.angleFromSource + 90.0 / 21;
-				else
-					angle -= 4.5;
-			}
-			else
-			{
-				if(anglediff > 4.5)
-					angle = t.angleFromSource - 90.0 / 21;
-				else
-					angle += 4.5;
-			}
-		}
-		if(!(flags & SF_NOPULLIN))
-			bJustAttacked = true;
 	}
 }
 
