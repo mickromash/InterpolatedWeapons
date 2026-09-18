@@ -74,13 +74,13 @@ Extend Class MRIntWeaps_Chainsaw
 	
 	Action Void A_AddBlood(Actor Victim=Null, int Type=0)
 	{
-		if(Type<1 && (!Victim || !Victim.bShootable || Victim.bNoBlood))Return;
+		if(Type != 1 && Type != 2 && (!Victim || !Victim.bShootable || Victim.bNoBlood))Return;
 		if(MRIntW_ChainsawBlood<1)Return;
 		
 		int Trans;
 		if(Victim){
 			if(Victim.BloodTranslation != 0)Trans = Victim.BloodTranslation;
-			else {
+			else if(Type != 3){
 				String Blacklist = "Actor";
 				if(CVar.FindCVar("MRGoreParts_BlackList"))Blacklist = CVar.FindCVar("MRGoreParts_BlackList").GetString().MakeLower();
 				
@@ -106,6 +106,12 @@ Extend Class MRIntWeaps_Chainsaw
 				Trans = Player.GetPSprite(Lay1).Translation;
 				Player.GetPSprite(Lay1).Translation = OldTrans;
 			}
+			else {
+				int OldTrans = Player.GetPSprite(Lay1).Translation;
+				A_OverlayTranslation(Lay1, "MRIntWBldRed");
+				Trans = Player.GetPSprite(Lay1).Translation;
+				Player.GetPSprite(Lay1).Translation = OldTrans;
+			}
 		}
 		else {
 			int OldTrans = Player.GetPSprite(Lay1).Translation;
@@ -125,31 +131,34 @@ Extend Class MRIntWeaps_Chainsaw
 		int CoolDown = MRIntW_ChainsawBloodLife*35;
 	
 		Bool NoAdd = false;
-		For(int i=0;i<41;i++){
-			if(i>39)Break;
-			
-			if(invoker.BldAlpha[i]<=0)Continue;
-			
-			if(invoker.BldTrans[i]!=Trans){
-				if(Force == -1)Force = i;
-				Continue;
+		if(Type != 3){
+			For(int i=0;i<41;i++){
+				if(i>39)Break;
+				
+				if(invoker.BldAlpha[i]<=0)Continue;
+				
+				if(invoker.BldTrans[i]!=Trans){
+					if(Force == -1)Force = i;
+					Continue;
+				}
+				
+				if(invoker.BldAlpha[i]<1 && invoker.BldCooldown[i]<1){
+					invoker.BldAlpha[i] += CFRandom(.025, .05);
+					NoAdd = true;
+				}
+				else if(NoAdd)Continue;
+				if(i>5){
+					if(invoker.BldCooldown[i]<Cooldown*.75)invoker.BldCooldown[i] += Min(Cooldown*.75-invoker.BldCooldown[i], Cooldown*.75*CFRandom(.4, .9));
+				}
+				else {
+					if(invoker.BldCooldown[i]<Cooldown)invoker.BldCooldown[i] += Min(Cooldown-invoker.BldCooldown[i], Cooldown*CFRandom(.4, .9));
+					if(invoker.Dripping[i]<35*20 && MRIntW_ChainsawBlood&2)invoker.Dripping[i] += CRandom(10, 35);
+				}
 			}
 			
-			if(invoker.BldAlpha[i]<1 && invoker.BldCooldown[i]<1){
-				invoker.BldAlpha[i] += CFRandom(.025, .05);
-				NoAdd = true;
-			}
-			else if(NoAdd)Continue;
-			if(i>5){
-				if(invoker.BldCooldown[i]<Cooldown*.75)invoker.BldCooldown[i] += Min(Cooldown*.75-invoker.BldCooldown[i], Cooldown*.75*CFRandom(.4, .9));
-			}
-			else {
-				if(invoker.BldCooldown[i]<Cooldown)invoker.BldCooldown[i] += Min(Cooldown-invoker.BldCooldown[i], Cooldown*CFRandom(.4, .9));
-				if(invoker.Dripping[i]<35*20 && MRIntW_ChainsawBlood&2)invoker.Dripping[i] += CRandom(10, 35);
-			}
+			if(Force>5 || (Force>1 && CRandom(0, 20)!=0))Force = -1;
 		}
-		
-		if(Force>5 || (Force>1 && CRandom(0, 20)!=0))Force = -1;
+		else Force = -1;
 		
 		int Num;
 		if(Force>-1){
@@ -160,7 +169,10 @@ Extend Class MRIntWeaps_Chainsaw
 			//Console.Printf("Frame "..Num..": "..invoker.BldFrame[Num]);
 		}
 		
-		if(CRandom(0, 120-invoker.BldFrames.Size()*5)==0)
+		Float Chance = 1;
+		if(Type == 3)Chance = 1+(invoker.OldHealth-Health)*.3;
+		
+		if(int(CRandom(0, 120-invoker.BldFrames.Size()*5)/Chance)==0)
 		{
 			if(invoker.BldFrames.Size()<1)
 			{
@@ -202,7 +214,7 @@ Extend Class MRIntWeaps_Chainsaw
 			}
 		}
 		
-		else if(CRandom(0, 80-invoker.BldFrames3.Size()*7)==0)
+		else if(int(CRandom(0, 80-invoker.BldFrames3.Size()*7)/Chance)==0)
 		{
 			if(invoker.BldFrames3.Size()<1)
 			{
@@ -286,7 +298,7 @@ Extend Class MRIntWeaps_Chainsaw
 			}
 		}
 		
-		if(Num>5)Return;
+		if(Num>5 || Type == 3)Return;
 		
 		if(Num>1 && Num<5){
 			if(CRandom(0, 50+Num*5)!=0)Return;
