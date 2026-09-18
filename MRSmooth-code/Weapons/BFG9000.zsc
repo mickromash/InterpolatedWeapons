@@ -66,6 +66,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	{
 		Super.PostBeginPlay();
 		if(MRIntW_ReloadAnims>1)Reload = true;
+		MarkPrecacheSounds();
 	}
 	
 	States{
@@ -155,11 +156,11 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 					Switch(invoker.SwitchState){
 						Case 8:
 						Case 7:
-							A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.97, 1.02));
+							A_StartSound(invoker.SndReload, CHAN_AUTO, pitch:i_timescale*CFRandom(.97, 1.02));
 							Break;
 						Case 6:
-							A_StartSound("MRIntW/BFGReload", CHAN_AUTO, pitch:i_timescale*CFRandom(1.47, 1.53));
-							A_StartSound("MRIntW/PlasmaReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.76, .83));
+							A_StartSound(invoker.SndReload2, CHAN_AUTO, pitch:i_timescale*CFRandom(1.47, 1.53));
+							A_StartSound(invoker.SndReload3, CHAN_AUTO, pitch:i_timescale*CFRandom(.76, .83));
 							invoker.Reload = false;
 							invoker.Muzzle = 5;
 							Break;
@@ -210,7 +211,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				
 				if(Player.Cmd.Buttons&BT_ALTATTACK && !(Player.OldButtons&BT_ALTATTACK)){
 					invoker.Idling = !invoker.Idling;
-					if(invoker.Idling)A_StartSound("MRIntW/BFGCharge", CHAN_6, CHANF_LOOP, volume:MRIntW_BFGAltVolume, pitch:.6);
+					if(invoker.Idling)A_StartSound(invoker.SndCharge, CHAN_6, CHANF_LOOP, volume:MRIntW_BFGAltVolume, pitch:.6);
 					else A_StopSound(CHAN_6);
 				}
 
@@ -571,7 +572,7 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			Wait;
 		Fire:
 			TNT1 A 20 {
-				A_StartSound("MRIntW/BFGFireStart", CHAN_WEAPON, pitch:i_timescale);
+				A_StartSound(invoker.SndFire, CHAN_WEAPON, pitch:i_timescale);
 				Player.SetPsprite(Lay1, invoker.FindState("GunFire"));
 				if(Player.FindPSprite(LayHand))Player.SetPsprite(LayHand, invoker.FindState("HandBackoff"));
 				

@@ -16,6 +16,7 @@ Version "4.10"
 #include "MRSmooth-code/Weapons/id24incinerator.zsc"
 #include "MRSmooth-code/Weapons/id24calamityblade.zsc"
 
+#include "MRSmooth-code/Misc/WeaponsSound.zsc"
 #include "MRSmooth-code/Misc/WeaponMovement.zsc"//Landing bounce, damage shake, vanilla firing bob and other weapon offset related stuff
 #include "MRSmooth-code/Misc/Effects.zsc"//Casings/smoke/psprite-particles
 #include "MRSmooth-code/Misc/MuzzleSmoke.zsc"//Flowing smoke

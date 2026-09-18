@@ -1,0 +1,439 @@
+Extend Class MRIntWeaps_Fist
+{
+	String SndAltSelect, SndAltDeselect, SndSwing, SndKnuck, SndFist, SndPunch;
+	
+	Override Void MarkPrecacheSounds()
+	{
+		//if(!Owner)Return;
+		
+		SetupSounds();
+		MarkSound(SndAltSelect);
+		MarkSound(SndAltDeselect);
+		MarkSound(SndSwing);
+		MarkSound(SndKnuck);
+		MarkSound(SndFist);
+		
+		/*Inventory Item = Owner.Inv;
+		while(Item != Null){
+			Let CurItem = Item;
+			Item = Item.Inv;
+			if(CurItem == Self || MRIntWeaps_Fist(CurItem))Continue;
+			if(Weapon(CurItem))CurItem.MarkPrecacheSounds();
+		}*/
+	}
+	
+	Void SetupSounds()
+	{
+		SndSwing = "MRIntW/FistSwing";
+		
+		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			SndAltSelect = "MRIntW/HQ/FistAltSelect";
+			SndAltDeselect = "MRIntW/HQ/FistAltDeselect";
+			SndKnuck = "MRIntW/HQ/FistPunchWallKnuckles";
+			SndFist = "MRIntW/HQ/FistPunchWall";
+			SndPunch = "MRIntW/HQ/FistPuch";
+			Return;
+		}
+		
+		SndAltSelect = "MRIntW/FistAltSelect";
+		SndAltDeselect = "MRIntW/FistAltDeselect";
+		SndKnuck = "MRIntW/FistPunchWallKnuckles";
+		SndFist = "MRIntW/FistPunchWall";
+		SndPunch = "MRIntW/FistPuch";
+	}
+	
+	Override Void BeginPlay()
+	{
+		Super.BeginPlay();
+		MarkPrecacheSounds();
+	}
+	
+	action void A_Punch()
+	{
+		FTranslatedLineTarget t;
+
+		if (player != null)
+		{
+			Weapon weap = player.ReadyWeapon;
+			if (weap != null && !weap.bDehAmmo && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
+			{
+				if (!weap.DepleteAmmo (weap.bAltFire))
+					return;
+			}
+		}
+
+		int damage = random[Punch](1, 10) << 1;
+
+		if (FindInventory("PowerStrength"))
+			damage *= 10;
+
+		double ang = angle + Random2[Punch]() * (5.625 / 256);
+		double range = MeleeRange + MELEEDELTA;
+		double pitch = AimLineAttack (ang, range, null, 0., ALF_CHECK3D);
+
+		LineAttack (ang, range, pitch, damage, 'Melee', "BulletPuff", LAF_ISMELEEATTACK, t);
+
+		// turn to face target
+		if (t.linetarget)
+		{
+			A_StartSound(invoker.SndPunch, CHAN_WEAPON);
+			angle = t.angleFromSource;
+		}
+	}
+}
+
+Extend Class MRIntWeaps_Chainsaw
+{
+	String SndSelect, SndIdle, SndFull, SndHit;
+	
+	Override Void MarkPrecacheSounds()
+	{
+		SetupSounds();
+		ReadySound = SndIdle;
+		MarkSound(SndSelect);
+		MarkSound(SndIdle);
+		MarkSound(SndFull);
+		MarkSound(SndHit);
+	}
+	
+	Void SetupSounds()
+	{
+		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			SndSelect = "MRIntW/HQ/SawUp";
+			SndIdle = "MRIntW/HQ/SawIdle";
+			SndFull = "MRIntW/HQ/SawFull";
+			SndHit = "MRIntW/HQ/SawHit";
+			Return;
+		}
+		
+		SndSelect = "MRIntW/SawUp";
+		SndIdle = "MRIntW/SawIdle";
+		SndFull = "MRIntW/SawFull";
+		SndHit = "MRIntW/SawHit";
+	}
+	
+	Override Void BeginPlay()
+	{
+		Super.BeginPlay();
+		MarkPrecacheSounds();
+	}
+	
+	//Making sound pitch affected by i_timescale
+	
+	action void A_WeaponReady(int flags = 0)
+	{
+		if(!player) return;
+		
+		DoReadyWeaponToSwitch(player, !(flags & WRF_NoSwitch));
+		if((flags & WRF_NoFire) != WRF_NoFire)invoker.DoReadyWeaponToFire(player.mo, !(flags & WRF_NoPrimary), !(flags & WRF_NoSecondary));
+		if(!(flags & WRF_NoBob))DoReadyWeaponToBob(player);
+
+		player.WeaponState |= GetButtonStateFlags(flags);
+		DoReadyWeaponDisableSwitch(player, flags & WRF_DisableSwitch);
+	}
+	
+	static void DoReadyWeaponToFire (PlayerPawn pawn, bool prim, bool alt)
+	{
+		let player = pawn.player;
+		let weapon = player.ReadyWeapon;
+		
+		if(!weapon)return;
+
+		if(pawn.InStateSequence(pawn.curstate, pawn.MissileState) ||
+			pawn.InStateSequence(pawn.curstate, pawn.MeleeState))
+		{
+			pawn.PlayIdle ();
+		}
+
+		let psp = player.GetPSprite(PSP_WEAPON);
+		let PSP2 = Player.FindPSprite(Lay1);
+		if(weapon.ReadySound && psp && psp.curState == weapon.FindState('Ready'))
+		{
+			if(!weapon.bReadySndHalf || random[WpnReadySnd]() < 128){
+				Double Pitch = i_timescale;
+				if(PSP2)Pitch *= (1+(PSP2.Scale.X-1)*MRIntW_ChainsawRandomPitch);
+				pawn.A_StartSound(weapon.ReadySound, CHAN_WEAPON, Volume:MRIntW_ChainsawVolume, pitch:Pitch);
+			}
+		}
+
+		player.WeaponState |= ((prim ? WF_WEAPONREADY : 0) | (alt ? WF_WEAPONREADYALT : 0));
+		return;
+	}
+	
+	Override void PlayUpSound(Actor origin)
+	{
+		if(SndSelect)origin.A_StartSound(SndSelect, CHAN_WEAPON, pitch:i_timescale);
+	}
+	
+	action void A_Saw(sound fullsound = "weapons/sawfull", sound hitsound = "weapons/sawhit", int damage = 2, class<Actor> pufftype = "BulletPuff", int flags = 0, double range = 0, double spread_xy = 2.8125, double spread_z = 0, double lifesteal = 0, int lifestealmax = 0, class<BasicArmorBonus> armorbonustype = "ArmorBonus")
+	{
+		FTranslatedLineTarget t;
+
+		if(!player)return;
+
+		if(!(flags & SF_NORANDOM))damage *=  random[Saw](1, 10);
+		if(range == 0)range = MeleeRange + MELEEDELTA + (1. / 65536.); // MBF21 SAWRANGE;
+
+		double ang = angle + spread_xy * (Random2[Saw]() / 255.);
+		double slope = AimLineAttack (ang, range, t) + spread_z * (Random2[Saw]() / 255.);
+
+		Weapon weap = player.ReadyWeapon;
+
+		int puffFlags = (flags & SF_NORANDOMPUFFZ) ? LAF_NORANDOMPUFFZ : 0;
+
+		Actor puff;
+		int actualdamage;
+		[puff, actualdamage] = LineAttack (ang, range, slope, damage, 'Melee', pufftype, puffFlags, t);
+
+		if(!t.linetarget)
+		{
+			if((flags & SF_RANDOMLIGHTMISS) && (Random[Saw]() > 64))player.extralight = !player.extralight;
+			A_StartSound(invoker.SndFull, CHAN_WEAPON, pitch:i_timescale);
+			return;
+		}
+
+		if(flags & SF_RANDOMLIGHTHIT)
+		{
+			int randVal = Random[Saw]();
+			
+			if(randVal < 64)player.extralight = 0;
+			else if(randVal < 160)player.extralight = 1;
+			else player.extralight = 2;
+		}
+
+		if(lifesteal && !t.linetarget.bDontDrain)
+		{
+			if(flags & SF_STEALARMOR)
+			{
+				if(!armorbonustype)armorbonustype = "ArmorBonus";
+				else
+				{
+					BasicArmorBonus armorbonus = BasicArmorBonus(Spawn(armorbonustype));
+					armorbonus.SaveAmount = int(armorbonus.SaveAmount * actualdamage * lifesteal);
+					armorbonus.MaxSaveAmount = lifestealmax <= 0 ? armorbonus.MaxSaveAmount : lifestealmax;
+					armorbonus.bDropped = true;
+					armorbonus.ClearCounters();
+
+					if(!armorbonus.CallTryPickup (self))armorbonus.Destroy ();
+				}
+			}
+
+			else
+			{
+				GiveBody(int(actualdamage * lifesteal), lifestealmax);
+			}
+		}
+
+		A_StartSound(invoker.SndHit, CHAN_WEAPON, pitch:i_timescale);
+			
+		// turn to face target
+		if(!(flags & SF_NOTURN))
+		{
+			double anglediff = deltaangle(angle, t.angleFromSource);
+
+			if(anglediff < 0.0)
+			{
+				if (anglediff < -4.5)
+					angle = t.angleFromSource + 90.0 / 21;
+				else
+					angle -= 4.5;
+			}
+			else
+			{
+				if(anglediff > 4.5)
+					angle = t.angleFromSource - 90.0 / 21;
+				else
+					angle += 4.5;
+			}
+		}
+		if(!(flags & SF_NOPULLIN))
+			bJustAttacked = true;
+	}
+}
+
+Extend Class MRIntWeaps_Pistol
+{
+	String SndSelect, SndPFire, SndPReload, SndRFire, SndRReload, SndRReload2, SndRChamber;
+	
+	Override Void MarkPrecacheSounds()
+	{
+		SetupSounds();
+		MarkSound(SndSelect);
+		MarkSound(SndPFire);
+		MarkSound(SndPReload);
+		MarkSound(SndRFire);
+		MarkSound(SndRReload);
+		MarkSound(SndRReload2);
+		MarkSound(SndRChamber);
+	}
+	
+	Void SetupSounds()
+	{
+		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			SndPFire = "MRIntW/HQ/PistolFire";
+			SndPReload = "MRIntW/HQ/PistolReload";
+			SndRFire = "MRIntW/HQ/RifleFire";
+			SndRReload = "MRIntW/HQ/RifleReload";
+			SndRReload2 = "MRIntW/HQ/RifleReload2";
+			SndRChamber = "MRIntW/HQ/RifleChamber";
+			Return;
+		}
+		
+		SndPFire = "MRIntW/PistolFire";
+		SndPReload = "MRIntW/PistolReload";
+		SndRFire = "MRIntW/RifleFire";
+		SndRReload = "MRIntW/RifleReload";
+		SndRReload2 = "MRIntW/RifleReload2";
+		SndRChamber = "MRIntW/RifleChamber";
+	}
+}
+
+Extend Class MRIntWeaps_Shotgun
+{
+	Bool CustomSound;
+	String SndSelect, SndFire, SndRaise, SndPump, SndPumpDown, SndPumpUp;
+	
+	Override Void MarkPrecacheSounds()
+	{
+		SetupSounds();
+		MarkSound(SndSelect);
+		MarkSound(SndFire);
+		MarkSound(SndRaise);
+		MarkSound(SndPump);
+		MarkSound(SndPumpDown);
+		MarkSound(SndPumpUp);
+	}
+	
+	Void SetupSounds()
+	{
+		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			CustomSound = true;
+			SndFire = "MRIntW/HQ/ShotgunFire";
+			SndRaise = "MRIntW/ShotgunRaise";
+			SndPumpDown = "MRIntW/HQ/ShotgunPumpDown";
+			SndPumpUp = "MRIntW/HQ/ShotgunPumpUp";
+			Return;
+		}
+		
+		CustomSound = false;
+		SndFire = "MRIntW/ShotgunFire";
+		SndPump = "MRIntW/ShotgunPump";
+	}
+}
+
+Extend Class MRIntWeaps_Chaingun
+{
+	String SndSelect, SndFire, SndReload;
+	
+	Override Void MarkPrecacheSounds()
+	{
+		SetupSounds();
+		MarkSound(SndSelect);
+		MarkSound(SndFire);
+		MarkSound(SndReload);
+	}
+	
+	Void SetupSounds()
+	{
+		Bool Custom = CVar.FindCVar("MRIntW_ChaingunSound") && CVar.FindCVar("MRIntW_ChaingunSound").GetBool();
+		
+		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			SndFire = Custom?"MRIntW/HQ/ChaingunFireCustom":"MRIntW/HQ/ChaingunFire";
+			SndReload = "MRIntW/HQ/ChaingunReload";
+			Return;
+		}
+		
+		SndFire = Custom?"MRIntW/ChaingunFireCustom":"MRIntW/ChaingunFire";
+		SndReload = "MRIntW/ChaingunReload";
+	}
+}
+
+Extend Class MRIntWeaps_RocketLauncher
+{
+	String SndSelect, SndFire, SndReload, SndReload2;
+	
+	Override Void MarkPrecacheSounds()
+	{
+		SetupSounds();
+		MarkSound(SndSelect);
+		MarkSound(SndFire);
+		MarkSound(SndReload);
+		MarkSound(SndReload2);
+	}
+	
+	Void SetupSounds()
+	{
+		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			SndFire = "MRIntW/HQ/RLFire";
+			SndReload = "MRIntW/HQ/RLLoad";
+			SndReload2 = "MRIntW/HQ/RLLoad2";
+			Return;
+		}
+		
+		SndFire = "MRIntW/RLFire";
+		SndReload = "MRIntW/RLLoad";
+		SndReload2 = "MRIntW/RLLoad2";
+	}
+}
+
+Extend Class MRIntWeaps_Plasmarifle
+{
+	String SndSelect, SndFire, SndReload, SndReload2;
+	
+	Override Void MarkPrecacheSounds()
+	{
+		SetupSounds();
+		MarkSound(SndSelect);
+		MarkSound(SndFire);
+		MarkSound(SndReload);
+		MarkSound(SndReload2);
+	}
+	
+	Void SetupSounds()
+	{
+		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			SndFire = "MRIntW/HQ/PlasmaFire";
+			SndReload = "MRIntW/HQ/PlasmaReload";
+			SndReload2 = "MRIntW/HQ/PlasmaReload2";
+			Return;
+		}
+		
+		SndFire = "MRIntW/PlasmaFire";
+		SndReload = "MRIntW/PlasmaReload";
+		SndReload2 = "MRIntW/PlasmaReload2";
+	}
+}
+
+Extend Class MRIntWeaps_BFG9000
+{
+	String SndSelect, SndFire, SndReload, SndReload2, SndReload3, SndCharge;
+	
+	Override Void MarkPrecacheSounds()
+	{
+		SetupSounds();
+		MarkSound(SndSelect);
+		MarkSound(SndFire);
+		MarkSound(SndReload);
+		MarkSound(SndReload2);
+		MarkSound(SndReload3);
+		MarkSound(SndCharge);
+	}
+	
+	Void SetupSounds()
+	{
+		SndCharge = "MRIntW/BFGCharge";
+		
+		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			SndFire = "MRIntW/HQ/BFGFireStart";
+			SndReload = "MRIntW/HQ/BFGReload";
+			SndReload2 = "MRIntW/HQ/BFGReload2";
+			SndReload2 = "MRIntW/HQ/BFGReload3";
+			Return;
+		}
+		
+		SndFire = "MRIntW/BFGFireStart";
+		SndReload = "MRIntW/BFGReload";
+		SndReload2 = "MRIntW/BFGReload2";
+		SndReload2 = "MRIntW/BFGReload3";
+	}
+}

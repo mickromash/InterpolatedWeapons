@@ -448,3 +448,34 @@ Extend Class MRIntWeaps_SuperShotgun//'Particles'
 			Wait;
 	}
 }
+
+Extend Class MRIntWeaps_SuperShotgun//Sounds
+{
+	String SndSelect, SndFire, SndOpen, SndLoad, SndClose;
+	
+	Override Void MarkPrecacheSounds()
+	{
+		SetupSounds();
+		MarkSound(SndSelect);
+		MarkSound(SndFire);
+		MarkSound(SndOpen);
+		MarkSound(SndLoad);
+		MarkSound(SndClose);
+	}
+	
+	Void SetupSounds()
+	{
+		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			SndFire = "MRIntW/HQ/SSGFire";
+			SndOpen = "MRIntW/HQ/SSGOpen";
+			SndLoad = "MRIntW/HQ/SSGLoad";
+			SndClose = "MRIntW/HQ/SSGClose";
+			Return;
+		}
+		
+		SndFire = "MRIntW/SSGFire";
+		SndOpen = "MRIntW/SSGOpen";
+		SndLoad = "MRIntW/SSGLoad";
+		SndClose = "MRIntW/SSGClose";
+	}
+}

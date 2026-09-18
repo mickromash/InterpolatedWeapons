@@ -390,7 +390,8 @@ MRIntWeaps_SoundAddonRequired = "(требуется аддон)";
 MRIntW_ChainsawVolume = "Громкость работы пилы";
 MRIntW_ChainsawRandomPitch = "Рандомизация высоты звука пилы";
 MRIntW_BFGAltVolume = "Громкость альт. атаки BFG";
-MRIntW_ShotgunSound = "Звуки дробовика из аддона";
+MRIntW_HQSounds = "Звуки оружия высокого качества";
+MRIntW_SwitchSounds = "Звуки смены оружия";
 MRIntW_ChaingunSound = "Звуки пулемёта из аддона";
 
 MRIntW_Braindead = "Склько вам лет";

@@ -383,13 +383,14 @@ MRIntW_ResetParticles = "Set this section to default";
 MRIntW_ApplyParticles = "Apply particles settings";
 
 
-MRIntWeaps_SoundMenu = "Sounds settings";
+MRIntWeaps_SoundMenu = "Sound settings";
 MRIntWeaps_SoundAddonRequired = "(add-on required)";
 
 MRIntW_ChainsawVolume = "Chainsaw idle volume";
 MRIntW_ChainsawRandomPitch = "Chainsaw idle pitch randomness";
 MRIntW_BFGAltVolume = "BFG alt fire volume";
-MRIntW_ShotgunSound = "Shotgun custom firing sound";
+MRIntW_HQSounds = "High quality weapon sounds";
+MRIntW_SwitchSounds = "Weapon switch sound";
 MRIntW_ChaingunSound = "Chaingun custom firing sound";
 
 MRIntW_Braindead = "How old are you";

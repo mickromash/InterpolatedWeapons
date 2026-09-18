@@ -66,7 +66,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				a.NoLight = true;
 			}
 		}
-		A_StartSound("MRIntW/PlasmaFire", CHAN_AUTO, pitch:i_timescale);
+		A_StartSound(invoker.SndFire, CHAN_AUTO, pitch:i_timescale);
 		invoker.Shots++;
 		
 		if(CountInv(invoker.AmmoType1)<1 && MRIntW_ReloadAnims%2==1)invoker.Reload = true;
@@ -99,6 +99,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	{
 		Super.PostBeginPlay();
 		if(MRIntW_ReloadAnims>1)Reload = true;
+		MarkPrecacheSounds();
 	}
 	
 	States{
@@ -198,7 +199,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayRotate(Lay1, -.9, WOF_ADD);
 				
 				if(invoker.Reload){
-					A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.97, 1.02));
+					A_StartSound(invoker.SndReload, CHAN_AUTO, pitch:i_timescale*CFRandom(.97, 1.02));
 				}
 			}
 			#### C 1 {
@@ -212,7 +213,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				A_OverlayOffset(Lay1, 9, -6, WOF_ADD);
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
 				
-				if(invoker.Reload)A_StartSound("MRIntW/PlasmaReload", CHAN_AUTO, pitch:i_timescale*CFRandom(2.9, 3.1));
+				if(invoker.Reload)A_StartSound(invoker.SndReload2, CHAN_AUTO, pitch:i_timescale*CFRandom(2.9, 3.1));
 				invoker.Reload = false;
 			}
 			#### B 1 {

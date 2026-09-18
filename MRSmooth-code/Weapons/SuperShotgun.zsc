@@ -48,7 +48,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	{
 		if (!player)return;
 
-		A_StartSound ("MRIntW/SSGFire", CHAN_WEAPON, pitch:i_timescale);
+		A_StartSound(invoker.SndFire, CHAN_WEAPON, pitch:i_timescale);
 		Weapon weap = player.ReadyWeapon;
 		if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
 		{
@@ -98,6 +98,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 	{
 		Super.PostBeginPlay();
 		if(MRIntW_ReloadAnims>1)Reload = true;
+		MarkPrecacheSounds();
 	}
 	
 	Double SpriteRecoil, LoadHandScale, LoadHandRot;
@@ -432,7 +433,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			}
 			SH12 Y 1 {
 				invoker.MuzzleSmoke((60, 75), (62, 75), .56, .56);
-				A_StartSound("MRIntW/SSGLoad", CHAN_AUTO, pitch:i_timescale);
+				A_StartSound(invoker.SndLoad, CHAN_AUTO, pitch:i_timescale);
 				invoker.Reloading = true;
 				invoker.Reload = false;
 				//Casings
@@ -506,7 +507,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				invoker.SelRot = Player.GetPSprite(Lay1).Rotation;
 				invoker.SelFrame = Player.GetPSprite(Lay1).Frame;
 			}
-			#### # 0 A_StartSound ("MRIntW/SSGClose", CHAN_AUTO, pitch:i_timescale);
+			#### # 0 A_StartSound(invoker.SndClose, CHAN_AUTO, pitch:i_timescale);
 			#### # 0 A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 			#### Q 1 {
 				A_OverlayRotate(Lay1, 0);
@@ -1104,7 +1105,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 					A_QuakeEx(.25*Amnt,0,-.15*Amnt, 4, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 5,0,5, rollIntensity: .05*Amnt, rollwave: 5);
 				}
 				
-				if(invoker.Catch)A_StartSound("MRIntW/SSGClose", CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:i_timescale);
+				if(invoker.Catch)A_StartSound(invoker.SndClose, CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:i_timescale);
 				invoker.Catch = false;
 			}
 			#### Q 1 {
@@ -1268,7 +1269,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				
 				invoker.MuzzleSmoke((120, 145) -(Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y), (122, 145) -(Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y), .7, .7);
 				
-				A_StartSound("MRIntW/SSGOpen", CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:i_timescale);
+				A_StartSound(invoker.SndOpen, CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:i_timescale);
 			}
 			SH12 # 1 {
 				invoker.FloatSpeed = 0;
@@ -1462,7 +1463,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Player.GetPSprite(OverlayId()).Scale = (.97,.97) + (Player.GetPSprite(OverlayId()).Scale-(.97,.97))*.8;
 			}
 			#### G 1 {
-				A_StartSound("MRIntW/SSGLoad", CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:i_timescale);
+				A_StartSound(invoker.SndLoad, CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:i_timescale);
 				if(MRIntW_ScreenShake>1){
 					Double Amnt = MRIntW_ScreenShakeAmount;
 					A_QuakeEx(.15*Amnt,.25*Amnt,-.1*Amnt, 8, 0, .5, "", QF_RELATIVE|QF_SCALEDOWN|QF_WAVE, 13,13,13, rollIntensity: .04*Amnt, rollwave: 13);
@@ -1552,17 +1553,17 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				if(MRIntW_QuickSwitch)A_WeaponReady(WRF_NOFIRE);
 			}
 			#### D 7 {
-				A_StartSound ("MRIntW/SSGOpen", CHAN_AUTO, pitch:i_timescale);
+				A_StartSound(invoker.SndOpen, CHAN_AUTO, pitch:i_timescale);
 				if(MRIntW_QuickSwitch)A_WeaponReady(WRF_NOFIRE);
 			}
 			#### E 7 {if(MRIntW_QuickSwitch)A_WeaponReady(WRF_NOFIRE);}
 			#### F 7 {
-				A_StartSound ("MRIntW/SSGLoad", CHAN_AUTO, pitch:i_timescale);
+				A_StartSound(invoker.SndLoad, CHAN_AUTO, pitch:i_timescale);
 				if(MRIntW_QuickSwitch)A_WeaponReady(WRF_NOFIRE);
 			}
 			#### G 6 {if(MRIntW_QuickSwitch)A_WeaponReady(WRF_NOFIRE);}
 			#### H 6 {
-				A_StartSound ("MRIntW/SSGClose", CHAN_WEAPON, pitch:i_timescale);
+				A_StartSound(invoker.SndClose, CHAN_WEAPON, pitch:i_timescale);
 				A_Refire();
 			}
 			#### A 5 A_ReFire();

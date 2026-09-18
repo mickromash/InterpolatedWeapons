@@ -53,7 +53,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	
 	int BobState, IdleDelay;
 	Float Rotation, Speed, MaxSpeedM, GunFrame, HandPos;
-	Bool CustomSound, ConterClock, DontStop, InterpolateBarrels;
+	Bool ConterClock, DontStop, InterpolateBarrels;
 	Double ShotPower;
 	
 	Vector2 HandVector;
@@ -114,6 +114,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		IdleDelay = -35*4;
 		Rotation = 30;
 		if((Level.Time<2 || Owner) && MRIntW_ReloadAnims>1)Reload = true;
+		MarkPrecacheSounds();
 	}
 	
 	action void A_FireCGun()
@@ -125,10 +126,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		{
 			if (!weap.DepleteAmmo (weap.bAltFire, true, 1))
 				return;
-				
-			invoker.CustomSound = CVar.GetCVar("MRIntW_ChaingunSound", players[ConsolePlayer]) && CVar.GetCVar("MRIntW_ChaingunSound", players[ConsolePlayer]).GetBool();
 			
-			A_StartSound(invoker.CustomSound?"MRIntW/ChaingunFireCustom":"MRIntW/ChaingunFire", CHAN_WEAPON, pitch:i_timescale);
+			A_StartSound(invoker.SndFire, CHAN_WEAPON, pitch:i_timescale);
 
 			State flash = weap.FindState('Flash');
 			if (flash != null)
@@ -370,7 +369,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				}
 				invoker.SwitchState--;
 				
-				if(invoker.Reload && invoker.SwitchState==6)A_StartSound("MRIntW/PistolReload", CHAN_AUTO, pitch:i_timescale*CFRandom(.85, .93));
+				if(invoker.Reload && invoker.SwitchState==6)A_StartSound(invoker.SndReload, CHAN_AUTO, pitch:i_timescale*CFRandom(.85, .93));
 			}
 			
 			CH1G ### 1 {

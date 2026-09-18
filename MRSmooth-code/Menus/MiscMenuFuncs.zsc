@@ -113,3 +113,13 @@ Extend Class MRIntWeaps_MainMenu
 		CVar.FindCVar("wbobfire").SetFloat(1);
 	}
 }
+
+Class MRIntWeaps_SoundMenu: MRIntWeaps_OptionMenu
+{
+	override bool MenuEvent (int mkey, bool fromcontroller)
+	{
+		if(mkey == MKEY_Back)EventHandler.SendNetworkEvent("MRIntWeaps_ApplySounds");
+		
+		Return Super.MenuEvent(mkey, fromcontroller);
+	}
+}

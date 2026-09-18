@@ -269,6 +269,11 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Override Void NetworkProcess(ConsoleEvent e)
 	{
+		if(e.name ~== "MRIntWeaps_ApplySounds"){
+			ApplyWeaponSounds();
+			Return;
+		}
+		
 		Let Plr = Players[e.Player].mo;
 		if(!Plr)Return;
 		
@@ -456,6 +461,20 @@ Class MRIntWeaps_Handler: EventHandler
 			}
 			
 			if(Decorations)SpawnDecorationParticleEffects(mo);
+		}
+	}
+	
+	Void ApplyWeaponSounds()
+	{
+		For(int i=0;i<MAXPLAYERS;i++){
+			if(!Players[i].mo)Continue;
+			
+			Inventory Item = Players[i].mo.Inv;
+			while(Item != Null){
+				Let CurItem = Item;
+				Item = Item.Inv;
+				if(Weapon(CurItem))CurItem.MarkPrecacheSounds();
+			}
 		}
 	}
 		
