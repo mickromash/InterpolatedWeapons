@@ -1,0 +1,274 @@
+OptionMenu "MRIntWeaps_AnimMenu"
+{
+	Animated
+	AnimatedTransition
+	Class MRIntWeaps_AnimMenu
+	Title "$MRIntWeaps_AnimMenu"
+	StaticText ""
+	Option "$MRIntW_GlovesColor", "MRIntW_GlovesColor", "MRIntW_GlovesColorValues"
+	ColorPicker "$MRIntW_GlovesColorShade", "MRIntW_GlovesColorShade"
+	ColorPicker "$MRIntW_GlovesColorLight", "MRIntW_GlovesColorLight"
+	Command "$MRIntW_RandomGlovesColor2", MRIntW_RandomGlovesColor2
+	Command "$MRIntW_RandomGlovesColor1", MRIntW_RandomGlovesColor1
+	Submenu "", "MRIntWeaps_EasterMenu"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_OffsetMenu", "MRIntWeaps_OffsetMenu", "MoveX"
+	MRIntWeaps_ModSubMenu "$MRIntWeaps_WeaponsMenu", "MRIntWeaps_WeaponsMenu", "Weapons"
+	StaticText ""
+	Option "$MRIntW_ReloadAnims", "MRIntW_ReloadAnims", "MRIntW_ReloadAnimsValues"
+	Option "$MRIntW_NoMuzzleFlash", "MRIntW_NoMuzzleFlash", "YesNo"
+	Option "$MRIntW_FlashFlare", "MRIntW_FlashFlare", "YesNo"
+	StaticText ""
+	Option "$MRIntW_RandomStart", "MRIntW_RandomStart", "YesNo"
+	Command "$MRIntW_RandomizePlayer", "MRIntW_RandomizePlayer"
+	Command "$MRIntW_ReturnPlayerSettings", "MRIntW_ReturnPlayerSettings"
+	StaticText ""
+}
+
+OptionMenu "MRIntWeaps_OffsetMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+	Title "$MRIntWeaps_OffsetMenu"
+	StaticText ""
+	Option "$MRIntW_BobStyle", "MRIntW_BobStyle", "MRIntW_BobStyleValues"
+	Slider "$MRIntW_BobRangeX", "MRIntW_BobRangeX", 0, 3, .1
+	Slider "$MRIntW_BobRangeY", "MRIntW_BobRangeY", 0, 3, .1
+	Slider "$MRIntW_BobRangeZ", "MRIntW_BobRangeZ", 0, 3, .1
+	Slider "$DSPLYMNU_BOBSPEED", "wbobspeed", 0, 3, .1
+	MRIntWeaps_VanillaBobOption "$MRIntW_VanillaFireBob", "MRIntW_VanillaFireBob", "YesNo"
+	StaticText ""
+	Option "$MRIntW_SwitchAnims", "MRIntW_SwitchAnims", "MRIntW_SwitchAnimsValues"
+	StaticText ""
+	Option "$MRIntW_Bounce", "MRIntW_Bounce", "MRIntW_BounceValues"
+	Option "$MRIntW_RunKey", "MRIntW_RunKey", "MRIntW_RunKeyValues"
+	Control "$MRIntW_LowerGun", "MRIntW_LowerGun"
+	StaticText ""
+	Option "$MRIntW_WeaponSway", "MRIntW_WeaponSway", "YesNo"
+	Option "$MRIntW_WeaponSwayStyle", "MRIntW_WeaponSwayStyle", "MRIntW_WeaponSwayStyleValues", "MRIntW_WeaponSway"
+	StaticText ""
+	Option "$MRIntW_IdleAnims", "MRIntW_IdleAnims", "MRIntW_IdleAnimsValues"
+	Option "$MRIntW_DamageShake", "MRIntW_DamageShake", "YesNo"
+	Option "$MRIntW_LowHealthShake", "MRIntW_LowHealthShake", "YesNo"
+	StaticText ""
+	Option "$MRIntW_BaseOffset", "MRIntW_BaseOffset", "YesNo"
+	Slider "$MRIntW_BaseOffsetX", "MRIntW_BaseOffsetX", -100, 100, 1, 1, "MRIntW_BaseOffset"
+	Slider "$MRIntW_BaseOffsetY", "MRIntW_BaseOffsetY", -30, 30, 1, 1, "MRIntW_BaseOffset"
+}
+
+OptionMenu "MRIntWeaps_WeaponsMenu"
+{
+	Class MRIntWeaps_OptionMenu
+	Animated
+	AnimatedTransition
+	Title "$MRIntWeaps_WeaponsMenu"
+	StaticText ""
+	StaticText "$TAG_FIST", "Fire"
+	Option "$MRIntW_RightPunch", "MRIntW_RightPunch", "YesNo"
+	Option "$MRIntW_BersShake", "MRIntW_BersShake", "MRIntW_BersShakeValues"
+	Option "$MRIntW_BareHands", "MRIntW_BareHands", "YesNo"
+	Option "$MRIntW_GloveStrip", "MRIntW_GloveStrip", "YesNo", "MRIntW_BareHands"
+	Option "$MRIntW_SecondFist", "MRIntW_SecondFist", "YesNo"
+	Option "$MRIntW_PunchingFist", "MRIntW_PunchingFist", "MRIntW_PunchingFistValues"
+	Option "$MRIntW_FinishPunch", "MRIntW_FinishPunch", "MRIntW_FinishPunchValues"
+	Option "$MRIntW_MissPunch", "MRIntW_MissPunch", "YesNo"
+	Slider "$MRIntW_FinishPunchChance", "MRIntW_FinishPunchChance", .1, 1, .1, 2, "MRIntW_FinishPunch"
+	Option "$MRIntW_FistFixedOnTarget", "MRIntW_FistFixedOnTarget", "YesNo"
+	Option "$MRIntW_SurfacePunchRecoil", "MRIntW_SurfacePunchRecoil", "YesNo"
+	StaticText ""
+	StaticText "$TAG_CHAINSAW", "Fire"
+	Option "$MRIntW_ChainsawStart", "MRIntW_ChainsawStart", "YesNo"
+	Option "$MRIntW_ChainsawCutting", "MRIntW_ChainsawCutting", "YesNo"
+	Option "$MRIntW_ChainsawCuttingWall", "MRIntW_ChainsawCuttingWall", "YesNo"
+	Option "$MRIntW_ChainsawSmoke", "MRIntW_ChainsawSmoke", "YesNo"
+	FlagOption "$MRIntW_ChainsawBlood0", "MRIntW_ChainsawBlood", "YesNo", 0
+	FlagOption "$MRIntW_ChainsawBlood1", "MRIntW_ChainsawBlood", "YesNo", 1, "MRIntW_ChainsawBlood"
+	Slider "$MRIntW_ChainsawBloodLife", "MRIntW_ChainsawBloodLife", 0, 180, 5, 0, "MRIntW_ChainsawBlood"
+	StaticText ""
+	StaticText "$TAG_PISTOL", "Fire"
+	Option "$MRIntW_LHand", "MRIntW_LHand", "YesNo"
+	Option "$MRIntW_PistolSHand", "MRIntW_PistolSHand", "MRIntW_PistolSHandValues"
+	Option "$MRIntW_Rifle", "MRIntW_Rifle", "YesNo"
+	StaticText ""
+	StaticText "$TAG_SHOTGUN", "Fire"
+	Option "$MRIntW_ShotgunSmoke", "MRIntW_ShotgunSmoke", "YesNo"
+	Option "$MRIntW_ShotgunSparks", "MRIntW_ShotgunSparks", "YesNo"
+	Slider "$MRIntW_ShotgunPumpAngle", "MRIntW_ShotgunPumpAngle", -2, 2, .1, 1
+	Option "$MRIntW_ShotgunPumpRandom", "MRIntW_ShotgunPumpRandom", "YesNo"
+	Slider "$MRIntW_ShotgunPumpRandRotation", "MRIntW_ShotgunPumpRandRotation", 0, 2, .1, 1, "MRIntW_ShotgunPumpRandom"
+	Slider "$MRIntW_ShotgunsRecoil", "MRIntW_ShotgunsRecoil", 0, 2, .1
+	StaticText ""
+	StaticText "$TAG_SuperShotgun", "Fire"
+	Option "$MRIntW_SSGHandless", "MRIntW_SSGHandless", "MRIntW_SSGHandlessValues"
+	Option "$MRIntW_SSGSmoke", "MRIntW_SSGSmoke", "YesNo"
+	Option "$MRIntW_SSGSparks", "MRIntW_SSGSparks", "YesNo"
+	Slider "$MRIntW_ShotgunsRecoil", "MRIntW_ShotgunsRecoil", 0, 2, .1
+	StaticText ""
+	StaticText "$TAG_CHAINGUN", "Fire"
+	Option "$MRIntW_ChaingunFixed", "MRIntW_ChaingunFixed", "YesNo"
+	Slider "$MRIntW_ChaingunSpeed", "MRIntW_ChaingunSpeed", 1, 5, .5, 1
+	Slider "$MRIntW_ChaingunStopTime", "MRIntW_ChaingunStopTime", .05, 1, .05, 2
+	Option "$MRIntW_ChaingunCounterClock", "MRIntW_ChaingunCounterClock", "YesNo"
+	Slider "$MRIntW_ChaingunMaxSmokes", "MRIntW_ChaingunMaxSmokes", 1, 6, 1, 0, "MRIntW_FlowingSmoke"
+	StaticText ""
+	StaticText "$TAG_ROCKETLAUNCHER", "Fire"
+	Slider "$MRIntW_RocketSmoke", "MRIntW_RocketSmoke", 0, 2, .1, 1, "MRIntW_FlowingSmoke"
+	StaticText ""
+	StaticText "$TAG_PLASMARIFLE", "Fire"
+	Option "$MRIntW_PlasmaParticles", "MRIntW_PlasmaParticles", "MRIntW_PlasmaParticlesValues"
+	Option "$MRIntW_PlasmaLight", "MRIntW_PlasmaLight", "YesNo"
+	Option "$MRIntW_PlasmaSkipLight", "MRIntW_PlasmaSkipLight", "YesNo", "MRIntW_PlasmaLight"
+	StaticText ""
+	StaticText "$TAG_BFG9000", "Fire"
+	Option "$MRIntW_BFGParticles", "MRIntW_BFGParticles", "OnOff"
+}
+
+
+/*
+	Values
+*/
+
+
+OptionValue "MRIntW_GlovesColorValues"
+{
+	0, "$MRIntW_GlovesColor0"//Tan (Classic)
+	1, "$MRIntW_GlovesColor1"//Black
+	2, "$MRIntW_GlovesColor2"//Tan (Classic)
+	3, "$MRIntW_GlovesColor3"//Tan (Classic)
+	4, "$MRIntW_GlovesColor4"//Tan (Classic)
+	5, "$MRIntW_GlovesColor5"//Tan (Classic)
+	6, "$MRIntW_GlovesColor6"//Tan (Classic)
+	7, "$MRIntW_GlovesColor7"//Custom
+}
+
+OptionValue "MRIntW_GlovesColorValuesSpecial"
+{
+	8, "$MRIntW_GlovesColor8"//Subtle glow
+	9, "$MRIntW_GlovesColor9"//Rainbow
+	10, "$MRIntW_GlovesColor10"//Fast rainbow
+	11, "$MRIntW_GlovesColor11"//Epilepsy
+	12, "$MRIntW_GlovesColor12"//Light to dark
+	13, "$MRIntW_GlovesColor13"//Last damaged by
+	14, "$MRIntW_GlovesColor14"//Last damaged
+	15, "$MRIntW_GlovesColor15"//Health
+	16, "$MRIntW_GlovesColor16"//Enemy health
+	17, "$MRIntW_GlovesColor17"//Armor
+	18, "$MRIntW_GlovesColor18"//Ammo
+	25, "$MRIntW_GlovesColor25"//Ammo
+}
+
+OptionValue "MRIntW_GlovesColorValuesSpecial2"
+{
+	19, "$MRIntW_GlovesColor19"//LGBT
+	20, "$MRIntW_GlovesColor20"//Asexual
+	21, "$MRIntW_GlovesColor21"//Lesbian
+	22, "$MRIntW_GlovesColor22"//Bi
+	23, "$MRIntW_GlovesColor23"//Trans
+	24, "$MRIntW_GlovesColor24"//Muad Pie
+}
+
+OptionValue "MRIntW_BobStyleValues"
+{
+	0, "$MRIntW_BobStyle0"//Normal
+	4, "$MRIntW_BobStyle4"//Smooth
+	3, "$MRIntW_BobStyle3"//Jumpy
+	2, "$MRIntW_BobStyle2"//Alpha
+	5, "$MRIntW_BobStyle5"//Alpha smooth
+	1, "$MRIntW_BobStyle1"//Alpha jumpy
+	6, "$MRIntW_BobStyle6"//None
+}
+
+OptionValue "MRIntW_SwitchAnimsValues"
+{
+	0, "$MRIntW_SwitchAnims0"//Vanilla
+	1, "$MRIntW_SwitchAnims1"//Single vriant
+	2, "$MRIntW_SwitchAnims2"//Random variants
+}
+
+OptionValue "MRIntW_BounceValues"
+{
+	0, "$MRIntW_Bounce0"
+	1, "$MRIntW_Bounce1"
+	2, "$MRIntW_Bounce2"
+}
+
+OptionValue "MRIntW_RunKeyValues"
+{
+	0, "$MRIntW_RunKey0"
+	1, "$MRIntW_RunKey1"
+	2, "$MRIntW_RunKey2"
+}
+
+OptionValue "MRIntW_WeaponSwayStyleValues"
+{
+	0, "$MRIntW_WeaponSwayStyle0"
+	1, "$MRIntW_WeaponSwayStyle1"
+}
+
+OptionValue "MRIntW_IdleAnimsValues"
+{
+	0, "$TXT_NO"
+	1, "$MRIntW_IdleAnims1"
+	2, "$MRIntW_IdleAnims2"
+	3, "$MRIntW_IdleAnims3"
+}
+
+OptionValue "MRIntW_ReloadAnimsValues"
+{
+	0, "$MRIntW_ReloadAnims0"//None
+	1, "$MRIntW_ReloadAnims1"//Reload only
+	2, "$MRIntW_ReloadAnims2"//Pickup only
+	3, "$MRIntW_ReloadAnims3"//Both
+}
+
+OptionValue "MRIntW_BersShakeValues"
+{
+	0, "$MRIntW_BersShake0"
+	1, "$MRIntW_BersShake1"
+	2, "$MRIntW_BersShake2"
+}
+
+OptionValue "MRIntW_PunchingFistValues"
+{
+	0, "$MRIntW_PunchingFist0"
+	1, "$MRIntW_PunchingFist1"
+	2, "$MRIntW_PunchingFist2"
+	3, "$MRIntW_PunchingFist3"
+}
+
+OptionValue "MRIntW_FinishPunchValues"
+{
+	0, "$MRIntW_FinishPunch0"
+	1, "$MRIntW_FinishPunch1"
+	2, "$MRIntW_FinishPunch2"
+	3, "$MRIntW_FinishPunch3"
+}
+
+OptionValue "MRIntW_PistolSHandValues"
+{
+	0, "$MRIntW_PistolSHand0"
+	1, "$MRIntW_PistolSHand1"
+	2, "$MRIntW_PistolSHand2"
+}
+
+OptionValue "MRIntW_SSGHandlessValues"
+{
+	0, "$MRIntW_SSGHandless0"
+	1, "$MRIntW_SSGHandless1"
+	2, "$MRIntW_SSGHandless2"
+}
+
+OptionValue "MRIntW_PlasmaParticlesValues"
+{
+	0, "$MRIntW_PlasmaParticles0"
+	1, "$MRIntW_PlasmaParticles1"
+	2, "$MRIntW_PlasmaParticles2"
+}
+
+OptionValue "MRIntW_ParticleTextureValues"
+{
+	-1, "$MRIntW_ParticleTextureDef"
+	0, "$MRIntW_ParticleTexture0"
+	1, "$MRIntW_ParticleTexture1"
+	2, "$MRIntW_ParticleTexture2"
+}
