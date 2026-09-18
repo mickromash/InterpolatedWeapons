@@ -865,8 +865,8 @@ Extend Class MRIntWeaps_Shotgun
 			Vector2 Bob = PlayerPawn(Self).BobWeapon(2);
 			Bob *= CVar.FindCVar("wbobfire").GetFloat();
 			A_OverlayOffset(Lay, 
-				Player.GetPSprite(PSP_WEAPON).X + Player.GetPSprite(Lay1).X + Bob.X + 130,
-				Player.GetPSprite(PSP_WEAPON).Y + Player.GetPSprite(Lay1).Y + Bob.Y + 85
+				Player.GetPSprite(PSP_WEAPON).OldX + Player.GetPSprite(Lay1).X + Bob.X + 130,
+				Player.GetPSprite(PSP_WEAPON).OldY + Player.GetPSprite(Lay1).Y + Bob.Y + 85
 			);
 		}
 	}
