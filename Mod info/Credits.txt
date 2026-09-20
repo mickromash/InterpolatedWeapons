@@ -28,6 +28,7 @@ Lowres casings - based on sprites from Hideous Destructor
 
 Fist whoosh sound - id Software
 Gloves takin on/off - based on sounds from The Soldier Z mod
+Fist hitting wall sound - based on sounds from Beautiful Doom mod
 Weapon dropping - based on sounds from The Soldier Z mod
 
 
