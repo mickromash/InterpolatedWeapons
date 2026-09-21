@@ -21,6 +21,8 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 			if(MRIntWeaps_OptionMenu(parent))FPSScale = MRIntWeaps_OptionMenu(parent).FPSScale;
 			else FPSScale = MRIntWeaps_ListMenu(parent).FPSScale;
 		}
+		
+		if(FPSScale<2)FPSScale = 1;
 	}
 	
 	Override Void Ticker()
