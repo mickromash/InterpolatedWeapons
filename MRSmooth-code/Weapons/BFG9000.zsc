@@ -20,6 +20,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 	Float Recoil;
 	Override Void DoEffect()
 	{
+		if(!Owner || !Owner.Player || Owner.Health<1 || Owner.Player.ReadyWeapon != Self)Return;
+		
 		if(Recoil>0){
 			Double Recover = .125*Owner.GetCVar("MRIntW_RecoilRecover");
 			Recoil -= Recover;

@@ -30,9 +30,12 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 	{
 		if(MRIntW_ChainsawBlood)DoBloodTick();
 		
-		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*Owner.GetCVar("MRIntW_RecoilAmount"));}
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Owner.Health<1){
+			OldHealth = Owner.Health;
+			Return;
+		}
 		
-		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Owner.Health<1)Return;
+		if(Recoil>0){Recoil-=.5;Owner.A_SetPitch(Owner.Pitch+.5*Owner.GetCVar("MRIntW_RecoilAmount"));}
 		
 		if(Owner.Health<OldHealth)Owner.Player.SetPsprite(4, FindState("BloodAdder"));
 		OldHealth = Owner.Health;

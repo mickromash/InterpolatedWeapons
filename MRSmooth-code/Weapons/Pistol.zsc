@@ -23,12 +23,6 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){
-			Double Recover = .125*Owner.GetCVar("MRIntW_RecoilRecover");
-			Recoil -= Recover;
-			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
-		}
-
 		For(int i=0;i<Casings.Size();i++){
 			if(Casings[i])DoCasing(i);
 		}
@@ -38,6 +32,12 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		if(HandTime>0)HandTime--;
 		
 		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Owner.Health<1)Return;
+		
+		if(Recoil>0){
+			Double Recover = .125*Owner.GetCVar("MRIntW_RecoilRecover");
+			Recoil -= Recover;
+			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
+		}
 		
 		if(!Catch && (Owner.Player.Cmd.Buttons&BT_ALTATTACK || (IsRifle && Owner.Player.Cmd.Buttons&BT_RELOAD)) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready"))){
 			Catch = true;

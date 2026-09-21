@@ -61,12 +61,6 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Float Recoil;
 	Override Void DoEffect()
 	{
-		if(Recoil>0){
-			Double Recover = .25*Owner.GetCVar("MRIntW_RecoilRecover");
-			Recoil -= Recover;
-			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
-		}
-		
 		For(int i=0;i<Casings.Size();i++){
 			if(Casings[i])DoCasing(i);
 		}
@@ -76,6 +70,12 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self)Return;
 		
 		if(Owner.Health>0){
+			if(Recoil>0){
+				Double Recover = .25*Owner.GetCVar("MRIntW_RecoilRecover");
+				Recoil -= Recover;
+				Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
+			}
+		
 			if(Owner.Player.WeaponState&WF_WEAPONREADY){
 				if(Owner.Player.Cmd.Buttons&BT_ALTATTACK){//Rotating barrels (Alt fire)
 					if(abs(Speed)<10)Speed--;

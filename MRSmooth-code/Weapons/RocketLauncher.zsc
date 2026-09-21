@@ -18,15 +18,15 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	Float Recoil;
 	Override Void DoEffect()
 	{
+		MuzzleSmoke();
+		
+		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Owner.Health<1)Return;
+		
 		if(Recoil>0){
 			Double Recover = .125*Owner.GetCVar("MRIntW_RecoilRecover");
 			Recoil -= Recover;
 			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
 		}
-		
-		MuzzleSmoke();
-		
-		if(!Owner.Player || Owner.Player.ReadyWeapon != Self || Owner.Health<1)Return;
 		
 		if(!Owner.Player.FindPSprite(PSP_WEAPON) || !InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
