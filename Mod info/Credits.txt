@@ -50,6 +50,7 @@ Quake 1, 2, 4
 Unreal Tournament 3
 Star Wars Battlefront 2015
 Soldier of Fortune
+Blood
 Doom 3
 
 Doom Retro
