@@ -41,12 +41,12 @@ Class OptionMenuItemMRIntWeaps_VanillaBobOption: OptionMenuItemOption
 		
 		//if vanilla firing bob is turned on, set ZDoom firing bob setting to 0
 		if(mCVar.GetBool()){
-			CVar.FindCVar("MRIntW_SavedWbobFire").SetFloat(CVar.FindCVar("wbobfire").GetFloat());
+			//CVar.FindCVar("MRIntW_SavedWbobFire").SetFloat(CVar.FindCVar("wbobfire").GetFloat());
 			CVar.FindCVar("wbobfire").SetFloat(0);
 		}
-		else if(CVar.FindCVar("wbobfire").GetFloat() != 1 || MRIntW_SavedWBobFire == 0){
+		/*else if(CVar.FindCVar("wbobfire").GetFloat() != 1 || MRIntW_SavedWBobFire == 0){
 			CVar.FindCVar("wbobfire").SetFloat(MRIntW_SavedWbobFire);
-		}
+		}*/
 	}
 }
 
@@ -106,7 +106,7 @@ Extend Class MRIntWeaps_MainMenu
 	
 	Void ChangeWBobFire()
 	{
-		if(!MRIntW_ChangeFiringBob||MRIntW_VanillaFireBob||CVar.FindCVar("wbobfire").GetFloat()==1)Return;
+		if(MRIntW_VanillaFireBob||CVar.FindCVar("wbobfire").GetFloat()==1)Return;
 		
 		CVar.FindCVar("MRIntW_SavedWbobFire").SetFloat(CVar.FindCVar("wbobfire").GetFloat());
 		

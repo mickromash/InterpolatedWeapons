@@ -4,8 +4,11 @@
 
 Extend Class MRIntWeaps_Fist
 {
+	Bool Interpolate;
 	Weapon Weap;
 	Bool Allowed, OfstAdd;
+	int FireBobMode;//0 - Off, 1 - Vanilla, 2 - move weapon to center on firing
+	Double FireCenter;
 	PSPrite PSP;
 	
 	Void DoMisc()
@@ -15,13 +18,19 @@ Extend Class MRIntWeaps_Fist
 		PSP = Owner.Player.GetPSprite(PSP_WEAPON);
 		Allowed = (!InStateSequence(PSP.curState, Weap.GetDownState()) && !InStateSequence(PSP.CurState, Weap.FindState("Select")));
 		
-		OfstAdd = false;
+		OfstAdd = Interpolate = false;
 		
 		Weap.BobStyle = MRIntW_BobStyle;
 		Weap.BobRangeX = MRIntW_BobRangeX;
 		Weap.BobRangeY = MRIntW_BobRangeY;
 		
-		if(MRIntW_VanillaFireBob)DoVanillaFiringBob();
+		FireCenter = CVar.GetCVar("MRIntW_ChangeFiringBob", Owner.Player).GetFloat();
+		
+		if(CVar.GetCVar("MRIntW_VanillaFireBob").GetBool())FireBobMode = 1;
+		else if(FireCenter<1)FireBobMode = 2;
+		else FireBobMode = 0;
+		
+		if(FireBobMode)DoFiringBob();
 		
 		if(MRIntW_BaseOffset)DoBaseOffset();
 		
@@ -32,6 +41,8 @@ Extend Class MRIntWeaps_Fist
 		if(MRIntW_Bounce)DoBounce();
 		
 		if(MRIntW_WeaponSway)DoSway(MRIntW_WeaponSwayStyle);
+		
+		if(MRIntW_BobRangeZ!=0)Interpolate = true;
 	}
 }
 
@@ -39,54 +50,99 @@ Extend Class MRIntWeaps_Fist//Vanilla firing bob
 {
 	Vector2 FireBob, OldFireBob;
 	Double BobInter;
-	Void DoVanillaFiringBob()
+	Void DoFiringBob()
 	{
-		if(
-			InStateSequence(PSP.CurState, Weap.FindState("Fire"))||
-			InStateSequence(PSP.CurState, Weap.FindState("Select"))||
-			InStateSequence(PSP.CurState, Weap.FindState("Deselect"))
-		){
-			PSP.X = FireBob.X;
-			if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = -FireBob.X;
-			if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.Y = 32+FireBob.Y;
-			
-			//PSP.OldX = PSP.X;
-			//if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.OldY = PSP.Y;
-			
-			OldFireBob = FireBob;
-			BobInter = 1;
-			
-			OfstAdd = true;
-		}
-		else {
-			FireBob = PlayerPawn(Owner).BobWeapon(2);
-			if(BobInter>0 && OldFireBob.Length()>0){
-				if(InStateSequence(PSP.CurState, Weap.FindState("Ready"))){
-					PSP.X = -FireBob.X*BobInter;
-					PSP.X += OldFireBob.X*BobInter;
-					if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror){
-						PSP.X = FireBob.X*BobInter;
-						PSP.X -= OldFireBob.X*BobInter;
-					}
-					PSP.Y = -FireBob.Y*BobInter+32;
-					PSP.Y += OldFireBob.Y*BobInter;
+		Switch(FireBobMode){
+			Case 1://Dos Doom firing bob
+				if(
+					InStateSequence(PSP.CurState, Weap.FindState("Fire"))||
+					InStateSequence(PSP.CurState, Weap.FindState("Select"))||
+					InStateSequence(PSP.CurState, Weap.FindState("Deselect"))
+				){
+					Interpolate = true;
+					PSP.X = FireBob.X;
+					if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = -FireBob.X;
+					if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.Y = 32+FireBob.Y;
 					
-					/*if(BobInter==1){
-						PSP.OldX = PSP.X;
-						PSP.OldY = PSP.Y;
-					}*/
+					//PSP.OldX = PSP.X;
+					//if(InStateSequence(PSP.CurState, Weap.FindState("Fire")))PSP.OldY = PSP.Y;
 					
-					BobInter *= .6;
-					if(BobInter<.1){
-						OldFireBob = (0,0);
-						BobInter = 0;
-					}
+					OldFireBob = FireBob;
+					BobInter = 1;
 					
 					OfstAdd = true;
 				}
-				else OldFireBob = (0,0);
-			}
-			else BobInter = 0;
+				else {
+					FireBob = PlayerPawn(Owner).BobWeapon(2);
+					if(BobInter>0 && OldFireBob.Length()>0){
+						if(InStateSequence(PSP.CurState, Weap.FindState("Ready"))){
+							Interpolate = true;
+							
+							PSP.X = -FireBob.X*BobInter;
+							PSP.X += OldFireBob.X*BobInter;
+							if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror){
+								PSP.X = FireBob.X*BobInter;
+								PSP.X -= OldFireBob.X*BobInter;
+							}
+							PSP.Y = -FireBob.Y*BobInter+32;
+							PSP.Y += OldFireBob.Y*BobInter;
+							
+							/*if(BobInter==1){
+								PSP.OldX = PSP.X;
+								PSP.OldY = PSP.Y;
+							}*/
+							
+							BobInter -= .1;
+							if(BobInter<.1){
+								OldFireBob = (0,0);
+								BobInter = 0;
+							}
+							
+							OfstAdd = true;
+						}
+						else OldFireBob = (0,0);
+					}
+					else BobInter = 0;
+				}
+				Break;
+			Case 2://Moving the weapon to center of the screen
+				FireBob = PlayerPawn(Owner).BobWeapon(2);
+				if(InStateSequence(PSP.CurState, Weap.FindState("Fire"))){
+					Interpolate = true;
+					if(BobInter<(1-FireCenter))BobInter += ((1-FireCenter)-BobInter)*.6;
+					
+					PSP.X = -FireBob.X*BobInter;
+					if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = FireBob.X*BobInter;
+					PSP.Y = 32-FireBob.Y*BobInter;
+										
+					OldFireBob = FireBob;
+					
+					OfstAdd = true;
+				}
+				else {
+					if(BobInter>0){
+						if(InStateSequence(PSP.CurState, Weap.FindState("Ready"))){
+							Interpolate = true;
+							
+							PSP.X = -OldFireBob.X*BobInter;
+							if(Owner.Player.FindPSprite(2) && Owner.Player.FindPSprite(2).bMirror)PSP.X = FireBob.X*BobInter;
+							PSP.Y = 32-FireBob.Y*BobInter;
+																					
+							BobInter -= .1;
+							if(BobInter<.1){
+								OldFireBob = (0,0);
+								BobInter = 0;
+							}
+							
+							OldFireBob = FireBob;
+							
+							OfstAdd = true;
+						}
+						else OldFireBob = (0,0);
+					}
+					else BobInter = 0;
+				}
+				Break;
 		}
 	}
 }
@@ -116,6 +172,8 @@ Extend Class MRIntWeaps_Fist//Base offset
 			if(Allowed)PSP.Y = 32+BaseOffset.Y;
 			OfstAdd = true;
 		}
+		
+		Interpolate = true;
 	}
 }
 Extend Class MRIntWeaps_Fist//Damage shake
@@ -124,6 +182,7 @@ Extend Class MRIntWeaps_Fist//Damage shake
 	Void DoDamageShake()
 	{
 		if(DamageShake>0){
+			Interpolate = true;
 			Double Shake = DamageShake;
 			Shake *= .1;
 			
@@ -155,6 +214,7 @@ Extend Class MRIntWeaps_Fist//Manual gun lowering
 	Void DoGunLower()
 	{
 		if(Allowed){
+			Interpolate = true;
 			Bool Invert = MRIntW_RunKey>1;
 			Bool Pressing = (Owner.Player.Cmd.Buttons&BT_SPEED) || LowerGun;
 			if(LowerGun && Owner.Player.Cmd.Buttons&BT_SPEED)Pressing = !Pressing;
@@ -217,6 +277,7 @@ Extend Class MRIntWeaps_Fist//Jumping and landing bouncing
 		}
 		
 		if(Bouncing && Allowed){
+			Interpolate = true;
 			if(Clear){
 				if(!OfstAdd)PSP.Y = 32 + CurBounce;
 				else {
@@ -243,6 +304,8 @@ Extend Class MRIntWeaps_Fist//Weapon sway
 	Float GoingX;
 	Void DoSway(int Style)
 	{
+		Interpolate = true;
+		
 		Double CapMult = Weap.FloatSpeed/4;
 		
 		Double Target;
@@ -495,6 +558,8 @@ Extend Class MRIntWeaps_Fist//Z Bob
 		{
 			r = 0;
 		}
+		
+		if(MRIntWeaps_Fist(Weap.Owner.FindInventory("MRIntWeaps_Fist")) && MRIntWeaps_Fist(Weap.Owner.FindInventory("MRIntWeaps_Fist")).BobInter>0)R *= 1-MRIntWeaps_Fist(Weap.Owner.FindInventory("MRIntWeaps_Fist")).BobInter;
 		
 		Return R;
 	}

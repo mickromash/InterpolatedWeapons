@@ -10,8 +10,9 @@ AddOptionMenu "HUDOptions" after "wbobfire"
 	Class MRIntWeaps_OptionMenu
 	Animated
 	AnimatedTransition
+	StaticText "$MRIntW_FiringBobBottom", "White"
 	StaticText "Interpolated weapons"
-	Option "$MRIntW_ChangeFiringBob", "MRIntW_ChangeFiringBob", "YesNo"
+	Slider "$MRIntW_ChangeFiringBob", "MRIntW_ChangeFiringBob", 0, 1, .1
 }
 AddOptionMenu "OptionsMenu"
 {
@@ -52,8 +53,6 @@ OptionMenu "MRIntWeaps_Menu"
 	MRIntWeaps_ModSubMenu "$MRIntWeaps_UiMenu", "MRIntWeaps_UiMenu", "Jump"
 	StaticText ""
 	SubMenu "$MRIntWeaps_PressetsMenu", "MRIntWeaps_PressetsMenu"
-	StaticText ""
-	Option "$MRIntW_ChangeFiringBob", "MRIntW_ChangeFiringBob", "YesNo"
 	StaticText ""
 	TextField "$MRIntW_Braindead", "MRIntW_Braindead"
 	StaticText ""

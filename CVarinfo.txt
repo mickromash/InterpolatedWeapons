@@ -152,7 +152,7 @@ nosave bool MRIntW_SmoothUiOptions = true;//Animated mod submenus
 user bool MRIntW_RandomStart = false;//Use random values instead of user settings
 nosave bool MRIntW_RandomDemo = true;//Use random values instead of user settings in demos
 
-nosave bool MRIntW_ChangeFiringBob = true;//Force firing bob
+user float MRIntW_ChangeFiringBob = 1;//Move weapon to center on firing
 
 user string MRIntW_Braindead = "";//Enables some goofy animations
 

@@ -39,7 +39,7 @@ MRIntW_QuickSwitch = "\cv⊛\c- Quick switching";
 MRIntW_BetterAlert = "\cv⊛\c- Better monster alerting";
 
 
-MRIntWeaps_GiveTip = "If there's anything wrong with the weapon, press this";
+MRIntWeaps_GiveTip = "If there's anything wrong with your weapon, press this";
 MRIntWeaps_Give = "Make animations smooth";
 
 MRIntWeaps_Uninstall = "Uninstall mod";
@@ -175,7 +175,7 @@ MRIntW_FinishPunch3 = "Yes";
 MRIntW_FinishPunchChance = "Finish punch chance";
 MRIntW_MissPunch = "Miss animation";
 MRIntW_FistFixedOnTarget = "Fix fist on punched actor";
-MRIntW_SurfacePunchRecoil = "Kick back from punching surface with berserk";
+MRIntW_SurfacePunchRecoil = "Kickback from punching surface with berserk";
 
 MRIntW_ChainsawStart = "Starting animation";
 MRIntW_ChainsawCutting = "Improved chainsaw cutting animation";
@@ -432,7 +432,7 @@ MRIntW_RandomStart = "Randomize customization on new game";
 MRIntW_RandomizePlayer = "Randomize customization";
 MRIntW_ReturnPlayerSettings = "Return saved customization settings";
 
-MRIntW_ChangeFiringBob = "Force firing bob";
+MRIntW_ChangeFiringBob = "Weapon bob when firing";
 
 TAG_RIFLE = "Rifle";
 PICKUP_RIFLE_DROPPED = "Picked up a rifle";
@@ -440,6 +440,7 @@ PICKUP_RIFLE_DROPPED = "Picked up a rifle";
 MRIntW_Version = "\cdInt Weaps\c- version: ";
 MRIntW_SimpleMenu1 = "Go to \"Full options menu\" and";
 MRIntW_SimpleMenu2 = "\cgturn that \"Simple options menu\" thing off\c-, pleaseee";
+MRIntW_FiringBobBottom = "^ \cgInterpolated weapons\c- ignores this one ^";
 
 MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- This game was saved with a different version of the mod\n"
 						"if you'll encounter any issues, proceed to the mod's settings menu and press \"Make animations smooth\" button.";

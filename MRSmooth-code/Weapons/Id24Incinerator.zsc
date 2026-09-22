@@ -18,6 +18,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 	Const LaySmallSmoke = LayFlare+1;//Flames smoke start
 	Const LayHand = LayUnderSmoke-1;
 	
+	MRIntWeaps_Fist Handler;
 	int BobState, IdleDelay;
 	
 	Override Void DoEffect()
@@ -25,6 +26,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		MuzzleSmoke();
 		
 		if(Owner.Player.ReadyWeapon != Self || Health<1)Return;
+		
+		Handler = MRIntWeaps_Fist(Owner.FindInventory("MRIntWeaps_Fist"));
 		
 		
 		if(LEDs>0)LEDs -= .05;
@@ -162,7 +165,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 					Return;
 				}
 			}
-			#### # 0 {if(MRIntW_BobRangeZ==0)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
+			#### # 0 {if(!invoker.Handler || !invoker.Handler.Interpolate)A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);}
 			#### # 0 A_JumpIf(invoker.IdleDelay>35 && abs(invoker.BobState)<2, "GunIdle1");
 			Loop;
 		GunLower:
@@ -636,7 +639,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			Loop;
 		Ready:
 			TNT1 A 1 {
-				if(MRIntW_BobRangeZ!=0){
+				if(invoker.Handler && invoker.Handler.Interpolate){
 					Double BobZ = MRIntWeaps_Fist.GetBobZ(invoker, .5);
 					A_OverlayScale(Lay1, 1+BobZ, 1+BobZ, WOF_INTERPOLATE);
 					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);

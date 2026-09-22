@@ -12,9 +12,17 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 	
 	Double FireState, LastFireFrame, FireFrame;
 	
+	MRIntWeaps_Fist Handler;
 	int BobState, IdleDelay;
 	
 	int SwitchAnim, SwitchState;
+	
+	Override Void DoEffect()
+	{
+		if(Owner.Player.ReadyWeapon != Self || Health<1)Return;
+		
+		Handler = MRIntWeaps_Fist(Owner.FindInventory("MRIntWeaps_Fist"));
+	}
 	
 	Override Void PostBeginPlay()
 	{

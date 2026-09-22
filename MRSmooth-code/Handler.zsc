@@ -700,3 +700,14 @@ Class MRIntWeaps_DifVersionMessage: Thinker
 		}
 	}
 }
+
+/*
+	So ehm the only purpose of this is to reset firing bob value on ZDoom closing
+*/
+Class MRIntWeaps_StaticHandler: StaticEventHandler
+{
+	Override Void OnUnregister()
+	{
+		CVar.FindCVar("wbobfire").SetFloat(MRIntW_SavedWbobFire);
+	}
+}

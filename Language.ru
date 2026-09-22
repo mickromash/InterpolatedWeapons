@@ -433,7 +433,7 @@ MRIntW_RandomStart = "Рандомизировать кастомизацию н
 MRIntW_RandomizePlayer = "Рандомизировать кастомизацию";
 MRIntW_ReturnPlayerSettings = "Вернуть мои настройки кастомизации";
 
-MRIntW_ChangeFiringBob = "Форсировать раскачивание при стрельбе";
+MRIntW_ChangeFiringBob = "Покачивание оружия при стрельбе";
 
 
 TAG_RIFLE = "Винтовка";
@@ -442,6 +442,7 @@ PICKUP_RIFLE_DROPPED = "Получена винтовка";
 MRIntW_Version = "Версия \cdInt Weaps\c-: ";
 MRIntW_SimpleMenu1 = "Убедительная проcьба перейти в \"Полное меню настроек\"";
 MRIntW_SimpleMenu2 = "и \cgвырубить к чёрту \"Упрощённое меню настроек\"\c-, спасибо";
+MRIntW_FiringBobBottom = "^ \cgInterpolated weapons\c- игнорирует эту настройку ^";
 
 MRIntW_VersionMessage = "\cdInterpolated Weapons:\c- Это сохранение было сделано с другой версией мода\n"
 						"если у вас возникнут проблемы, нажмите кнопку \"Сделать анимации плавными\" в меню настроек мода.";
