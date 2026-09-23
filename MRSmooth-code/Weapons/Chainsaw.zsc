@@ -447,6 +447,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 		
 		SawStartCut://Transition from ready to fire state
 			SAW1 # 1{
+				invoker.FloatSpeed = 0;
 				A_DoVanillaDisplay();
 				invoker.ReadySound = invoker.SndIdle;
 				A_GlovesColor(1);
@@ -684,6 +685,7 @@ Class MRIntWeaps_Chainsaw: Chainsaw Replaces Chainsaw
 				if(invoker.SawSpeed>0)invoker.SawSpeed-=Min(invoker.SawSpeed, .5);
 			}
 			#### ###### 1{
+				invoker.FloatSpeed = .6;
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.8;
 				Player.GetPSprite(Lay1).X *= .8;
 				Player.GetPSprite(Lay1).Y *= .8;
