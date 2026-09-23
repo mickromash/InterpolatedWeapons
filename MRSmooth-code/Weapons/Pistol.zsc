@@ -49,7 +49,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		if(IsRifle)Return;
 		
 		if(Owner.Player.Cmd.Buttons&BT_RELOAD && !(Owner.Player.OldButtons&BT_RELOAD)){
-			if(SecondHand)SHandState = -1;
+			if(SecondHand || InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle")))SHandState = -1;
 			else {
 				SHandState = 0;
 				HandTime = 35*60;
@@ -83,7 +83,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				}
 			}
 			else {//If second hand is off screen
-				if(SHandState==1 && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bAddWeapon && !InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
+				if(SHandState==1 && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bAddWeapon && 
+				!InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
 					Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
 					HandTime = 35*20;
 				}
@@ -93,7 +94,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 		
 		if(EnableSecondHand>1){
-			if(!SecondHand && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bAddWeapon && !InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
+			if(!SecondHand && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bAddWeapon && 
+			!InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
 					Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
 			}
 		}
@@ -850,7 +852,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayMoveTo(Lay1, 29, 40, .5);
 			}
 			#### # 0{
-				A_StartSound(invoker.SndPReload, CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:.75*i_timescale);
+				if(invoker.SndPReload == invoker.SndPReload2)A_StartSound(invoker.SndPReload, CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:.75*i_timescale);
+				else A_StartSound(invoker.SndPReload2, CHAN_AUTO, CHANF_MAYBE_LOCAL, pitch:i_timescale);
 				if(!GetCVar("MRIntW_Casings") || invoker.Reload)Return;
 				int index;
 				For(index=0;index<invoker.Casings.Size()+1;index++){
