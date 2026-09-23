@@ -465,7 +465,7 @@ Extend Class MRIntWeaps_SuperShotgun//Sounds
 	
 	Void SetupSounds()
 	{
-		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
 			SndFire = "MRIntW/HQ/SSGFire";
 			SndOpen = "MRIntW/HQ/SSGOpen";
 			SndLoad = "MRIntW/HQ/SSGLoad";
