@@ -4,29 +4,19 @@ Extend Class MRIntWeaps_Fist
 	
 	Override Void MarkPrecacheSounds()
 	{
-		//if(!Owner)Return;
-		
 		SetupSounds();
 		MarkSound(SndAltSelect);
 		MarkSound(SndAltDeselect);
 		MarkSound(SndSwing);
 		MarkSound(SndKnuck);
 		MarkSound(SndFist);
-		
-		/*Inventory Item = Owner.Inv;
-		while(Item != Null){
-			Let CurItem = Item;
-			Item = Item.Inv;
-			if(CurItem == Self || MRIntWeaps_Fist(CurItem))Continue;
-			if(Weapon(CurItem))CurItem.MarkPrecacheSounds();
-		}*/
 	}
 	
 	Void SetupSounds()
 	{
 		SndSwing = "MRIntW/FistSwing";
 		
-		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
 			SndAltSelect = "MRIntW/HQ/FistAltSelect";
 			SndAltDeselect = "MRIntW/HQ/FistAltDeselect";
 			SndKnuck = "MRIntW/HQ/FistPunchWallKnuckles";
@@ -98,7 +88,7 @@ Extend Class MRIntWeaps_Chainsaw
 	
 	Void SetupSounds()
 	{
-		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
 			SndSelect = "MRIntW/HQ/SawUp";
 			SndIdle = "MRIntW/HQ/SawIdle";
 			SndFull = "MRIntW/HQ/SawFull";
@@ -253,7 +243,7 @@ Extend Class MRIntWeaps_Chainsaw
 
 Extend Class MRIntWeaps_Pistol
 {
-	String SndSelect, SndPFire, SndPReload, SndRFire, SndRReload, SndRReload2, SndRChamber;
+	String SndSelect, SndPFire, SndPReload, SndPReload2, SndRFire, SndRReload, SndRReload2, SndRChamber;
 	
 	Override Void MarkPrecacheSounds()
 	{
@@ -261,6 +251,7 @@ Extend Class MRIntWeaps_Pistol
 		MarkSound(SndSelect);
 		MarkSound(SndPFire);
 		MarkSound(SndPReload);
+		MarkSound(SndPReload2);
 		MarkSound(SndRFire);
 		MarkSound(SndRReload);
 		MarkSound(SndRReload2);
@@ -269,9 +260,10 @@ Extend Class MRIntWeaps_Pistol
 	
 	Void SetupSounds()
 	{
-		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
 			SndPFire = "MRIntW/HQ/PistolFire";
 			SndPReload = "MRIntW/HQ/PistolReload";
+			SndPReload2 = "MRIntW/HQ/PistolReload2";
 			SndRFire = "MRIntW/HQ/RifleFire";
 			SndRReload = "MRIntW/HQ/RifleReload";
 			SndRReload2 = "MRIntW/HQ/RifleReload2";
@@ -281,6 +273,7 @@ Extend Class MRIntWeaps_Pistol
 		
 		SndPFire = "MRIntW/PistolFire";
 		SndPReload = "MRIntW/PistolReload";
+		SndPReload2 = "MRIntW/PistolReload";
 		SndRFire = "MRIntW/RifleFire";
 		SndRReload = "MRIntW/RifleReload";
 		SndRReload2 = "MRIntW/RifleReload2";
@@ -306,7 +299,7 @@ Extend Class MRIntWeaps_Shotgun
 	
 	Void SetupSounds()
 	{
-		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
 			CustomSound = true;
 			SndFire = "MRIntW/HQ/ShotgunFire";
 			SndRaise = "MRIntW/ShotgunRaise";
@@ -335,9 +328,9 @@ Extend Class MRIntWeaps_Chaingun
 	
 	Void SetupSounds()
 	{
-		Bool Custom = CVar.FindCVar("MRIntW_ChaingunSound") && CVar.FindCVar("MRIntW_ChaingunSound").GetBool();
+		Bool Custom = CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_ChaingunSound") && CVar.FindCVar("MRIntW_ChaingunSound").GetBool();
 		
-		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
 			SndFire = Custom?"MRIntW/HQ/ChaingunFireCustom":"MRIntW/HQ/ChaingunFire";
 			SndReload = "MRIntW/HQ/ChaingunReload";
 			Return;
@@ -363,7 +356,7 @@ Extend Class MRIntWeaps_RocketLauncher
 	
 	Void SetupSounds()
 	{
-		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
 			SndFire = "MRIntW/HQ/RLFire";
 			SndReload = "MRIntW/HQ/RLLoad";
 			SndReload2 = "MRIntW/HQ/RLLoad2";
@@ -391,7 +384,7 @@ Extend Class MRIntWeaps_Plasmarifle
 	
 	Void SetupSounds()
 	{
-		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
 			SndFire = "MRIntW/HQ/PlasmaFire";
 			SndReload = "MRIntW/HQ/PlasmaReload";
 			SndReload2 = "MRIntW/HQ/PlasmaReload2";
@@ -423,7 +416,7 @@ Extend Class MRIntWeaps_BFG9000
 	{
 		SndCharge = "MRIntW/BFGCharge";
 		
-		if(CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
 			SndFire = "MRIntW/HQ/BFGFireStart";
 			SndReload = "MRIntW/HQ/BFGReload";
 			SndReload2 = "MRIntW/HQ/BFGReload2";
