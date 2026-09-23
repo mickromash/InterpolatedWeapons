@@ -197,7 +197,7 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch//Animated M_Doom
 		}
 		if(Dead){
 			if(M_DoomPos.Y<Height*.01)M_DoomPos.Y *= Min(.99, .9*((FPSScale-1)*.1+1));
-			else M_DoomPos.Y -= Min(M_DoomPos.Y, Height*.001/FPSScale);
+			else M_DoomPos.Y -= Min(M_DoomPos.Y, Height*.002/FPSScale);
 			
 			if(M_DoomPos.Y<.1)Dead = false;
 		}
