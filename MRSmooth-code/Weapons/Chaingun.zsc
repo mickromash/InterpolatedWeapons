@@ -53,7 +53,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	
 	MRIntWeaps_Fist Handler;
 	int BobState, IdleDelay;
-	Float Rotation, Speed, MaxSpeedM, GunFrame, HandPos;
+	Float Rotation, Speed, MaxSpeedM, GunFrame, HandPos, SpinVolume;
 	Bool ConterClock, DontStop, InterpolateBarrels;
 	Double ShotPower;
 	
@@ -69,6 +69,11 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		MuzzleSmoke();
 		
 		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self)Return;
+		
+		if(SpinVolume>0){
+			Owner.A_SoundVolume(CHAN_7, abs(Speed)/(MaxSpeed*MaxSpeedM)*SpinVolume);
+			Owner.A_SoundPitch(CHAN_7, ((abs(Speed)/MaxSpeed-1)*.5+1)*i_timescale);
+		}
 		
 		Handler = MRIntWeaps_Fist(Owner.FindInventory("MRIntWeaps_Fist"));
 		
@@ -533,6 +538,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				}
 				invoker.MaxSpeedM = GetCVar("MRIntW_ChaingunSpeed");
 				if(invoker.Speed<MaxSpeed*invoker.MaxSpeedM)invoker.Speed+=8*invoker.MaxSpeedM;
+				invoker.Speed = Min(MaxSpeed*invoker.MaxSpeedM, invoker.Speed);
 				
 				Player.GetPSprite(Lay1).OldY = 0;
 				
@@ -545,6 +551,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			TNT1 A 1 {//Recoil
 				if(invoker.Speed<MaxSpeed*invoker.MaxSpeedM)invoker.Speed+=8*invoker.MaxSpeedM;
+				invoker.Speed = Min(MaxSpeed*invoker.MaxSpeedM, invoker.Speed);
 				
 				Vector2 Ofst = (Player.GetPSprite(Lay1).X*.5, 1+invoker.ShotPower*.75);
 				For(int i=Muzzle0;i<=Ring;i++)A_OverlayOffset(i, Ofst.X, Ofst.Y, WOF_ADD);
@@ -557,6 +564,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			TNT1 A 1 {//Recover
 				if(invoker.Speed<MaxSpeed*invoker.MaxSpeedM)invoker.Speed+=8*invoker.MaxSpeedM;
+				invoker.Speed = Min(MaxSpeed*invoker.MaxSpeedM, invoker.Speed);
 				
 				Vector2 Ofst = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				For(int i=Muzzle0;i<=Ring;i++){
@@ -566,6 +574,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			}
 			TNT1 A 1 {
 				if(invoker.Speed<MaxSpeed*invoker.MaxSpeedM)invoker.Speed+=8*invoker.MaxSpeedM;
+				invoker.Speed = Min(MaxSpeed*invoker.MaxSpeedM, invoker.Speed);
 				
 				Vector2 Ofst = (Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				Ofst.Y *= CFRandom(.8, .9);
@@ -887,12 +896,21 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("CHGGA0");
+				
+				invoker.MaxSpeedM = GetCVar("MRIntW_ChaingunSpeed");
+				
+				if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_ChaingunVolume")){
+					invoker.SpinVolume = CVar.FindCVar("MRIntW_ChaingunVolume").GetFloat();
+					A_StartSound("MRIntW/HQ/ChaingunSpin", CHAN_7, CHANF_LOOP, .01);
+				}
+				else invoker.SpinVolume = 0;
 			}
 		Raise:
 			#### A 1 A_Raise();
 			Loop;
 		Deselect:
 			TNT1 A 0 {
+				A_StopSound(CHAN_7);
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
 				//A_Overlay(Lay1, "GunLower");
 				Player.SetPsprite(Lay1, invoker.FindState("GunLower"));
