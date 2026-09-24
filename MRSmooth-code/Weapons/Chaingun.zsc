@@ -49,7 +49,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	Const Lay3 = -3;//Flash flare
 	Const AnimLay = PSP_FLASH+1;//Animator layer
 	
-	Const MaxSpeed = 15.;
+	Const MaxSpeed = 20.;
 	
 	MRIntWeaps_Fist Handler;
 	int BobState, IdleDelay;
@@ -618,7 +618,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				For(int i=Muzzle0;i<=Muzzle5;i++)Player.GetPSprite(i).Sprite = GetSpriteIndex("CH2MA0");
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				Float Scale;
-				if(invoker.Speed<10)Scale = .7;
+				if(invoker.Speed<MaxSpeed*invoker.MaxSpeedM*.75)Scale = .7;
 				else Scale = 1;
 				A_OverlayScale(Lay2, Scale*CFRandom(1, 1.025), Scale*CFRandom(1, 1.025), WOF_INTERPOLATE);
 				
@@ -632,7 +632,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			CH1F ABB 1 BRIGHT {
 				For(int i=Muzzle0;i<=Muzzle5;i++)A_OverlayFlags(i, PSPF_INTERPOLATE, !Player.GetPSprite(i).FirstTic);
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y, wof_interpolate);
-				Float Scale = Min(1, invoker.Speed/MaxSpeed);
+				Float Scale = Min(1, invoker.Speed/(MaxSpeed*invoker.MaxSpeedM));
 				A_OverlayScale(Lay2, Scale*CFRandom(.93, 1), Scale*CFRandom(.93, 1), WOF_INTERPOLATE);
 				
 				A_FireSmoke();
