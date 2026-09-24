@@ -137,10 +137,10 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch//Animated M_Doom
 		Tick = false;
 		
 		Ticks++;
-		if(Ticks%35==0){
+		if(Ticks%7==0){
 			Ticks = 0;
 			FPSScale = Frames;
-			FPSScale /= 60;
+			FPSScale /= 12;
 			if(FPSScale<2)FPSScale = 1;
 			Frames = 0;
 		}
@@ -197,7 +197,7 @@ Class ListMenuItemMR_Doom: ListMenuItemStaticPatch//Animated M_Doom
 		}
 		if(Dead){
 			if(M_DoomPos.Y<Height*(Height/1080)*.05)M_DoomPos.Y *= Min(.99, .9*((FPSScale-1)*.1+1));
-			else M_DoomPos.Y -= Min(M_DoomPos.Y, Height/1080/FPSScale);
+			else M_DoomPos.Y -= Min(M_DoomPos.Y, (Height/1080)*2/FPSScale);
 			
 			if(M_DoomPos.Y<.1)Dead = false;
 		}
@@ -766,10 +766,10 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu//Animated subme
 		
 		WasSelected = Selected;
 		
-		if(Ticks%35==0){
+		if(Ticks%7==0){
 			Ticks = 0;
 			FPSScale = Frames;
-			FPSScale /= 60;
+			FPSScale /= 12;
 			if(FPSScale<2)FPSScale = 1;
 			Frames = 0;
 		}

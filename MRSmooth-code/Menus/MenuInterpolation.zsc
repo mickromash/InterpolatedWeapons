@@ -29,10 +29,10 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 	{
 		Super.Ticker();
 		
-		if(Ticks%35==0){
+		if(Ticks%7==0){
 			Ticks = 0;
 			FPSScale = Frames;
-			FPSScale /= 60;
+			FPSScale /= 12;
 			if(FPSScale<2)FPSScale = 1;
 			//Console.Printf("FPS "..(FPSScale*60).." ("..FPSScale..")");
 			Frames = 0;
@@ -172,10 +172,10 @@ Class MRIntWeaps_ListMenu: ListMenu
 	{
 		Super.Ticker();
 		
-		if(Ticks%35==0){
+		if(Ticks%7==0){
 			Ticks = 0;
 			FPSScale = Frames;
-			FPSScale /= 60;
+			FPSScale /= 12;
 			if(FPSScale<2)FPSScale = 1;
 			//Console.Printf("FPS "..(FPSScale*60).." ("..FPSScale..")");
 			Frames = 0;
@@ -314,10 +314,10 @@ Class MRIntWeaps_LoadSaveMenu: LoadSaveMenu
 	{
 		Super.Ticker();
 		
-		if(Ticks%35==0){
+		if(Ticks%7==0){
 			Ticks = 0;
 			FPSScale = Frames;
-			FPSScale /= 60;
+			FPSScale /= 12;
 			if(FPSScale<2)FPSScale = 1;
 			Frames = 0;
 		}
