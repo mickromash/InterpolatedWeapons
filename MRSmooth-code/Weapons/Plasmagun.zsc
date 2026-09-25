@@ -106,21 +106,6 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 	}
 	
 	States{
-		GunRaiseVanilla://Vanilla select animation
-			PL1G A 1 {
-				invoker.FloatSpeed = 2;
-				invoker.IdleEnd = false;
-				invoker.Selecting = false;
-				invoker.InterpolateMuzzle = -1;
-				A_OverlayPivot(Lay1, .5, 1);
-				A_Overlay(Lay2, "GunMuzzle");
-				A_OverlayOffset(Lay2, 0, 0);
-				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
-			}
-			#### # 1{
-				if(Player.GetPSprite(PSP_WEAPON).Y<=32)Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
-			}
-			Wait;
 		GunMuzzle:
 			PLSO # 1{
 				if(invoker.InterpolateMuzzle==1){
@@ -182,6 +167,21 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 			}
 			Wait;
 		
+		GunRaiseVanilla://Vanilla select animation
+			PL1G A 1 {
+				invoker.FloatSpeed = 2;
+				invoker.IdleEnd = false;
+				invoker.Selecting = false;
+				invoker.InterpolateMuzzle = -1;
+				A_OverlayPivot(Lay1, .5, 1);
+				A_Overlay(Lay2, "GunMuzzle");
+				A_OverlayOffset(Lay2, 0, 0);
+				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, !Player.GetPSprite(Lay1).FirstTic);
+			}
+			#### # 1{
+				if(Player.GetPSprite(PSP_WEAPON).Y<=32)Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
+			}
+			Wait;
 		GunRaise:
 			TNT1 AAAA 1 {
 				invoker.Idle = Min(0, invoker.Idle);
