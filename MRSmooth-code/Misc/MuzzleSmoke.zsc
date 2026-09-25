@@ -45,7 +45,7 @@ Class MRIntWeaps_Smoker: Object play
 	int Smokes, LastAge;
 	Actor Owner;
 	Vector2 WeapOfst[6], Wind;
-	Vector3 Prev[6];
+	Vector3 Prev[6], PVel;
 	Double OldBob, ViewHeight, InterFloorZ, Bob, Scale[6], Alpha, Speed[6], MaxLength, LastRoll[6], MaxWind;
 	Bool PassSpawn, ResetInterpolation, ForceConnect, Bright, Bright1;
 	Weapon LastWeapon;
@@ -64,6 +64,7 @@ Class MRIntWeaps_Smoker: Object play
 		
 		if(MRIntW_FlowingSmoke)For(int i=0;i<Smokes;i++)SpawnSmoke(i);
 		
+		PVel = Owner.Pos;
 		OldBob = Bob;
 		Smokes = 0;
 		LastAge = Owner.GetAge();
@@ -113,7 +114,7 @@ Class MRIntWeaps_Smoker: Object play
 		Double Step = Step/MRIntW_FlowingSmokePrecision*Scale[Num];
 		Double ZSpeed = ZSpeed*4*Speed[Num];
 		Vector2 Wind = Wind*Speed[Num];
-		Vector3 PVel = Owner.Pos - Owner.Prev;
+		Vector3 PVel = Owner.Pos - Self.PVel;
 		
 		Vector3 Pos = (Owner.Pos.XY, Owner.Player.ViewZ+(OldBob-Bob));
 		
@@ -160,10 +161,10 @@ Class MRIntWeaps_Smoker: Object play
 		
 		if(Diff.Length()<=Step*1.5 && abs(Diff.Z)<1)Connect = Step;
 		Float Life = 25;
-		if(Owner.Pos == Owner.Prev){
+		//if(Owner.Pos == Self.PVel){
 			ZSpeed*=.25;
 			//Wind*=.25;
-		}
+		//}
 		
 		int Flags = 0;
 		if(Bright)Flags = SPF_FULLBRIGHT;
@@ -188,7 +189,7 @@ Class MRIntWeaps_Smoker: Object play
 			Vector3 PPos = Diff.Unit()*i;
 			Double Curve = i/(Connect+Step);
 			if(Pos.Z < Prev[Num].Z && i>0)Curve = 1.-(i/(Connect+Step))+1;
-			if(Owner.Pos == Owner.Prev)Curve = 1;
+			Curve = 1;
 			PPos.Z *= Curve;
 			if(PPos != PPos)PPos = (0,0,0);
 			MRSpawnParticle(Col, Texture, Flags, STYLE_None, Life/Max(1, Diff.Length()*.15/MaxLength), BaseScale*Scale[Num], 0, Pos + PPos, (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:LastRoll[Num] + Roll*(i/Connect));
@@ -207,7 +208,7 @@ Class MRIntWeaps_Smoker: Object play
 				PPos.Z *= Curve;
 				PPos.XY *= Curve;
 				if(PPos!=PPos)PPos = (0,0,0);
-				MRSpawnParticle(Col1, Texture2, Flags, STYLE_None, 1, 1*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Roll:LastRoll[Num] + Roll*(i/Connect));
+				MRSpawnParticle(Col1, Texture2, Flags, STYLE_None, 1, 1*Scale[Num], 0, Pos + PPos + (0,0,ZOfst)*(1-i/(Connect*.5)), (Owner.Vel.XY, Bobb)*(1-i/(Connect*.5)) + (Wind.X,Wind.Y,ZSpeed), Alpha:Alpha/Max(1, Diff.Length()*.15/MaxLength), Fade:0, Roll:LastRoll[Num] + Roll*(i/Connect));
 			}
 		}
 		
