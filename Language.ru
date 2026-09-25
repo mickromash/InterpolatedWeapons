@@ -393,6 +393,7 @@ MRIntW_BFGAltVolume = "Громкость альт. атаки BFG";
 MRIntW_HQSounds = "Звуки оружия высокого качества";
 MRIntW_SwitchSounds = "Звуки смены оружия";
 MRIntW_ChaingunSound = "Звуки пулемёта из аддона";
+MRIntW_ChaingunVolume = "Громкость звука вращения пулемёта";
 
 MRIntW_Braindead = "Склько вам лет";
 MRIntW_Braindead4 = "You are the youngest person ever!";

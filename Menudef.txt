@@ -81,6 +81,7 @@ OptionMenu "MRIntWeaps_SoundMenu"
 	Option "$MRIntW_HQSounds", "MRIntW_HQSounds", "YesNo"
 	Option "$MRIntW_SwitchSounds", "MRIntW_SwitchSounds", "YesNo"
 	Option "$MRIntW_ChaingunSound", "MRIntW_ChaingunSound", "YesNo"
+	Slider "$MRIntW_ChaingunVolume", "MRIntW_ChaingunVolume", 0, 1, .1
 }
 
 OptionMenu "MRIntWeaps_UiMenu"
