@@ -47,7 +47,7 @@ user bool MRIntW_InstantFire = true;//Remove firing delay
 server bool MRIntW_FastPistol = false;//Increase pistol fire rate
 server bool MRIntW_QuickSwitch = false;//Ability to switch weapons during reloading
 server bool MRIntW_BetterAlert = false;//Fist won't alert monsters, chainsaw will alert monsters all the time it's selected
-server noarchive bool MRIntW_LoRWeaps = false;
+server bool MRIntW_LoRWeaps = true;
 
 user int MRIntW_GlovesColor = 0;//0 - Tan (Classic), 1 - Black, 2 - Brown, 3 - Green, 4 - Red, 5 - Grey, 6 - Blue, 7 - Custom, 8 - Subtle glow, 9 - Slow rainbow, 10 - Fast rainbow, 11 - Epilepsy, 12 - Light to dark, 13 - Last damaged by, 14 - Last damaged, 15 - Health, 16 - Enemy health, 17 - Armor, 18 - Ammo, 19 - 24 LGBT, 25 - Powerups
 user color MRIntW_GlovesColorShade = "2 2 2";//Shades color
@@ -166,4 +166,4 @@ nosave float MRIntW_LastFPS = 1;
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;
-server noarchive int MRIntW_Version = 2309260;//DDMMYYI
+server noarchive int MRIntW_Version = 2509260;//DDMMYYI

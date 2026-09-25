@@ -433,6 +433,7 @@ MRIntW_RandomizePlayer = "Randomize customization";
 MRIntW_ReturnPlayerSettings = "Return saved customization settings";
 
 MRIntW_ChangeFiringBob = "Weapon bob when firing";
+MRIntW_LoRWeaps = "Legacy of Rust weapons";
 
 TAG_RIFLE = "Rifle";
 PICKUP_RIFLE_DROPPED = "Picked up a rifle";

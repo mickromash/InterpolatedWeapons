@@ -434,6 +434,7 @@ MRIntW_RandomizePlayer = "Рандомизировать кастомизаци�
 MRIntW_ReturnPlayerSettings = "Вернуть мои настройки кастомизации";
 
 MRIntW_ChangeFiringBob = "Покачивание оружия при стрельбе";
+MRIntW_LoRWeaps = "Оружие из Legacy of Rust";
 
 
 TAG_RIFLE = "Винтовка";
