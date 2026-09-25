@@ -71,7 +71,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self)Return;
 		
 		if(SpinVolume>0){
-			Owner.A_SoundVolume(CHAN_7, abs(Speed)/(MaxSpeed*MaxSpeedM)*SpinVolume);
+			Owner.A_SoundVolume(CHAN_7, Min(1, abs(Speed)/MaxSpeed)*SpinVolume);
 			Owner.A_SoundPitch(CHAN_7, ((abs(Speed)/MaxSpeed-1)*.5+1)*i_timescale);
 		}
 		
