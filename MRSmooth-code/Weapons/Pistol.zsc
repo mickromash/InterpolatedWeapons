@@ -18,7 +18,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		SHandState,//SHandState: -1 - Must go off screen, 0 - Must go off screen if cooldown is 0, 1 - Must be on screen, if cooldown is 0 must go off screen
 		HandTime, EnableSecondHand;//HandTime - second hand cooldown
 	Bool IsRifle, LeftHanded, 
-		SecondHand, Catch;
+		SecondHand, Catch,
+		ForceHand;
 	Double ShotPower;
 
 	Float Recoil;
@@ -42,18 +43,33 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
 		}
 		
-		if(!Catch && (Owner.Player.Cmd.Buttons&BT_ALTATTACK || (IsRifle && Owner.Player.Cmd.Buttons&BT_RELOAD)) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready"))){
+		if(!Catch && ((Owner.Player.Cmd.Buttons&BT_ALTATTACK && !(!IsRifle && Owner.Player.Cmd.Buttons&BT_USE)) || (IsRifle && Owner.Player.Cmd.Buttons&BT_RELOAD)) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready"))){
 			Catch = true;
 			Owner.Player.SetPsprite(Lay1, FindState("GunCoolIdle"));
 		}
+		
+		
 		if(IsRifle)Return;
 		
+		
 		if(Owner.Player.Cmd.Buttons&BT_RELOAD && !(Owner.Player.OldButtons&BT_RELOAD)){
-			if(SecondHand || InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle")))SHandState = -1;
+			if(SecondHand || InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
+				SHandState = -1;
+				ForceHand = false;
+			}
 			else {
+				ForceHand = true;
 				SHandState = 0;
 				HandTime = 35*60;
 				if(!Owner.Player.FindPSprite(SHand) && !Owner.Player.FindPSprite(SHand2))Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
+			}
+		}
+		else if(Owner.Player.Cmd.Buttons&BT_USE && Owner.Player.Cmd.Buttons&BT_ALTATTACK){
+			if(!InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle")) &&
+				!InStateSequence(Owner.Player.GetPSprite(SHand2).CurState, FindState("HandPointingFromHold")) &&
+				!InStateSequence(Owner.Player.GetPSprite(SHand2).CurState, FindState("HandPointingStart"))){
+				if(SecondHand)Owner.Player.SetPsprite(SHand2, FindState("HandPointingFromHold"));
+				else Owner.Player.SetPsprite(SHand2, FindState("HandPointingStart"));
 			}
 		}
 		
@@ -75,7 +91,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 						Break;
 					Case 1:
 					Case 0:
-						if(HandTime<1){
+						if(HandTime<1 && !ForceHand){
 							SHandState = 0;
 							Owner.Player.SetPsprite(SHand, FindState("SecondHandLower"));
 						}
@@ -130,7 +146,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			accurate = true;
 		}
 		
-		if(invoker.EnableSecondHand==1)
+		if(invoker.EnableSecondHand==1 && !invoker.ForceHand)
 		{
 			FLineTraceData data;
 			
@@ -996,6 +1012,119 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
 			}
 			Wait;
+		
+		HandPointingFromHold:
+			P2SG C 0 {
+				Player.GetPSprite(SHand2).X -= 12;
+				Player.GetPSprite(SHand2).OldX -= 10;
+				Player.GetPSprite(SHand2).OldY += 32;
+				Player.GetPSprite(SHand2).Y += 32;
+				A_OverlayFlags(SHand2, PSPF_ADDWEAPON, false);
+				A_ClearOverlays(SHand, SHand);
+			}
+			#### ##### 1 {
+				A_OverlayMoveTo(SHand2, -30, 10+32, .7);
+				Player.GetPSprite(SHand2).Rotation = -20+(Player.GetPSprite(SHand2).Rotation+20)*.7;
+				Player.GetPSprite(SHand2).Scale = (1,1)+(Player.GetPSprite(SHand2).Scale-(1,1))*.7;
+			}
+			Goto HandPointing;
+		HandPointingStart:
+			P2SG C 0 {
+				A_GlovesColor();
+				Player.GetPSprite(CtchHand).bMirror = Player.GetPSprite(CtchHand).bFlip = Player.GetPSprite(Lay1).bMirror;
+				
+				A_OverlayPivot(SHand2, 1, 0);
+				A_OverlayOffset(SHand2, -CRandom(50, 70), CRandom(90, 100)+32);
+				A_OverlayFlags(SHand2, PSPF_ADDWEAPON, false);
+				A_OverlayRotate(SHand2, -50);
+			}
+			#### ######## 1 {
+				Player.GetPSprite(SHand2).X = -30+(Player.GetPSprite(SHand2).X+30)*.8;
+				Player.GetPSprite(SHand2).Y -= 8;
+				Player.GetPSprite(SHand2).Rotation = -20+(Player.GetPSprite(SHand2).Rotation+20)*.7;
+				A_OverlayFlags(Shand2, PSPF_INTERPOLATE, !Player.GetPSprite(SHand2).FirstTic);
+			}
+		HandPointing:
+			#### # 1 {
+				A_OverlayMoveTo(SHand2, -30, 2+32, .7);
+				A_OverlayScale(SHand2, -.025, -.025, WOF_ADD);
+				A_OverlayRotate(SHand2, -1, WOF_ADD);
+			}
+			#### # 1 {
+				A_OverlayMoveTo(SHand2, -30, 2+32, .7);
+				A_OverlayScale(SHand2, -.05, -.05, WOF_ADD);
+				A_OverlayRotate(SHand2, -2, WOF_ADD);
+			}
+			#### ## 1 {
+				A_OverlayScale(SHand2, .025, .025, WOF_ADD);
+				A_OverlayRotate(SHand2, .5, WOF_ADD);
+			}
+			#### ###### 1 {
+				A_OverlayMoveTo(SHand2, -30, 10+32, .7);
+				Player.GetPSprite(SHand2).Scale = (1,1)+(Player.GetPSprite(SHand2).Scale-(1,1))*.7;
+				Player.GetPSprite(SHand2).Rotation = -20+(Player.GetPSprite(SHand2).Rotation+20)*.7;
+			}
+			#### # 1 {
+				A_OverlayScale(SHand2, -.025, -.025, WOF_ADD);
+				A_OverlayRotate(SHand2, -1, WOF_ADD);
+			}
+			#### # 1 {
+				A_OverlayOffset(SHand2, 1, -2, WOF_ADD);
+				A_OverlayScale(SHand2, -.05, -.05, WOF_ADD);
+				A_OverlayRotate(SHand2, -3, WOF_ADD);
+			}
+			#### ## 1 {
+				A_OverlayScale(SHand2, .025, .025, WOF_ADD);
+				A_OverlayRotate(SHand2, .5, WOF_ADD);
+			}
+			#### ##### 1 {
+				A_OverlayMoveTo(SHand2, -30, 10+32, .7);
+				Player.GetPSprite(SHand2).Scale = (1,1)+(Player.GetPSprite(SHand2).Scale-(1,1))*.7;
+				Player.GetPSprite(SHand2).Rotation = -20+(Player.GetPSprite(SHand2).Rotation+20)*.7;
+			}
+			#### # 1 {
+				A_OverlayScale(SHand2, -.05, -.05, WOF_ADD);
+				A_OverlayRotate(SHand2, -1, WOF_ADD);
+			}
+			#### # 1 {
+				A_OverlayOffset(SHand2, 1, -3, WOF_ADD);
+				A_OverlayScale(SHand2, -.1, -.1, WOF_ADD);
+				A_OverlayRotate(SHand2, -3, WOF_ADD);
+			}
+			#### ## 1 {
+				A_OverlayScale(SHand2, .025, .025, WOF_ADD);
+				A_OverlayRotate(SHand2, .25, WOF_ADD);
+			}
+			#### # 0 A_JumpIf(invoker.SecondHand, "HandPointingToHold");
+			#### ######## 1 {
+				A_OverlayMoveTo(SHand2, -30, 10+32, .7);
+				Player.GetPSprite(SHand2).Scale = (1,1)+(Player.GetPSprite(SHand2).Scale-(1,1))*.7;
+				Player.GetPSprite(SHand2).Rotation = -20+(Player.GetPSprite(SHand2).Rotation+20)*.7;
+			}
+			#### # 1{
+				A_OverlayOffset(SHand2, -2, 2, WOF_ADD);
+				A_OverlayScale(SHand2, 0, -.02, WOF_ADD);
+			}
+			#### ####### 1{
+				A_OverlayOffset(SHand2, -3, 6, WOF_ADD);
+				A_OverlayScale(SHand2, 0, -.05, WOF_ADD);
+			}
+			Stop;
+		HandPointingToHold:
+			#### # 1 {
+				A_OverlayOffset(SHand2, 3, -1, WOF_ADD);
+			}
+			#### ##### 1 {
+				A_OverlayMoveTo(SHand2, 10, 1+32, .7);
+				Player.GetPSprite(SHand2).Rotation *= .6;
+				Player.GetPSprite(SHand2).Scale = (1,1)+(Player.GetPSprite(SHand2).Scale-(1,1))*.7;
+			}
+			#### # 0 {
+				A_Overlay(SHand, "SecondHandHoldUnder");
+				A_OverlayOffset(SHand2, 0, 0);
+				A_OverlayFlags(SHand2, PSPF_ADDWEAPON|PSPF_INTERPOLATE, true);
+			}
+			Goto SecondHandHold;
 		
 		//Default states
 		Spawn:
