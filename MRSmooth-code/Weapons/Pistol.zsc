@@ -51,14 +51,15 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		
 		if(IsRifle)Return;
 		
+		EnableSecondHand = Owner.GetCVar("MRIntW_PistolSHand");
 		
 		if(Owner.Player.Cmd.Buttons&BT_RELOAD && !(Owner.Player.OldButtons&BT_RELOAD)){
 			if(SecondHand || InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
 				SHandState = -1;
-				ForceHand = false;
+				ForceHand = (EnableSecondHand>1?true:false);
 			}
 			else {
-				ForceHand = true;
+				ForceHand = (EnableSecondHand>1?false:true);
 				SHandState = 0;
 				HandTime = 35*60;
 				if(!Owner.Player.FindPSprite(SHand) && !Owner.Player.FindPSprite(SHand2))Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
@@ -72,10 +73,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				else Owner.Player.SetPsprite(SHand2, FindState("HandPointingStart"));
 			}
 		}
-		
-		
-		EnableSecondHand = Owner.GetCVar("MRIntW_PistolSHand");
-		
+				
 		if(EnableSecondHand<1){
 			if(SecondHand)Owner.Player.SetPsprite(SHand, FindState("SecondHandLower"));//If disabled, get second hand off the screen
 			Return;
@@ -99,7 +97,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				}
 			}
 			else {//If second hand is off screen
-				if(SHandState==1 && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bAddWeapon && 
+				if((SHandState==1 || ForceHand) && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bAddWeapon && 
 				!InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
 					Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
 					HandTime = 35*20;
@@ -109,7 +107,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Return;
 		}
 		
-		if(EnableSecondHand>1){
+		if(EnableSecondHand>1 && !ForceHand){
 			if(!SecondHand && !Owner.Player.FindPSprite(SHand) && Owner.Player.GetPSprite(Lay1).bAddWeapon && 
 			!InStateSequence(Owner.Player.GetPSprite(Lay1).CurState, FindState("GunCoolIdle"))){
 					Owner.Player.SetPsprite(SHand, FindState("SecondHandStart"));
