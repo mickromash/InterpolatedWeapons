@@ -43,7 +43,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
 		}
 		
-		if(!Catch && ((Owner.Player.Cmd.Buttons&BT_ALTATTACK && !(!IsRifle && Owner.Player.Cmd.Buttons&BT_USE)) || (IsRifle && Owner.Player.Cmd.Buttons&BT_RELOAD)) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready"))){
+		if(!Catch && ((Owner.Player.Cmd.Buttons&BT_ALTATTACK && !(!IsRifle && Owner.Player.Cmd.Buttons&BT_USE)) || 
+			(IsRifle && Owner.Player.Cmd.Buttons&BT_RELOAD)) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready"))
+		){
 			Catch = true;
 			Owner.Player.SetPsprite(Lay1, FindState("GunCoolIdle"));
 		}
@@ -75,7 +77,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 				
 		if(EnableSecondHand<1){
-			if(SecondHand)Owner.Player.SetPsprite(SHand, FindState("SecondHandLower"));//If disabled, get second hand off the screen
+			if(!ForceHand && SecondHand)Owner.Player.SetPsprite(SHand, FindState("SecondHandLower"));//If disabled, get second hand off the screen
 			Return;
 		}
 		
@@ -841,7 +843,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(Lay1).Rotation = 20+(Player.GetPSprite(Lay1).Rotation-20)*.9;
 				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.9;
 				
-				if(Player.FindPSprite(SHand2))A_Overlay(SHand, "SecondHandLower");
+				if(Player.FindPSprite(SHand2) || Player.FindPSprite(SHand))A_Overlay(SHand, "SecondHandLower");
 			}
 			#### ### 1 {
 				A_OverlayMoveTo(Lay1, 36, 15, .8);
@@ -1029,7 +1031,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		HandPointingStart:
 			P2SG C 0 {
 				A_GlovesColor();
-				Player.GetPSprite(CtchHand).bMirror = Player.GetPSprite(CtchHand).bFlip = Player.GetPSprite(Lay1).bMirror;
+				Player.GetPSprite(SHand2).bMirror = Player.GetPSprite(SHand2).bFlip = Player.GetPSprite(Lay1).bMirror;
 				
 				A_OverlayPivot(SHand2, 1, 0);
 				A_OverlayOffset(SHand2, -CRandom(50, 70), CRandom(90, 100)+32);
