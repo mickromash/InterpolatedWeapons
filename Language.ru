@@ -224,6 +224,12 @@ MRIntW_PlasmaSkipLight = "Только каждый второй снаряд и
 
 MRIntW_BFGParticles = "Частицы при стрельбе";
 
+MRIntW_InciniSmoke = "Дым из ствола";
+MRIntW_InciniSmoke0 = "Нет";
+MRIntW_InciniSmoke1 = "Только из дула";
+MRIntW_InciniSmoke2 = "Только из маленьких отверстий";
+MRIntW_InciniSmoke3 = "Весь";
+
 
 MRIntWeaps_ParticlesMenu = "Настройки частиц";
 

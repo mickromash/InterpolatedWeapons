@@ -122,6 +122,9 @@ OptionMenu "MRIntWeaps_WeaponsMenu"
 	StaticText ""
 	StaticText "$TAG_BFG9000", "Fire"
 	Option "$MRIntW_BFGParticles", "MRIntW_BFGParticles", "OnOff"
+	StaticText ""
+	StaticText "$TAG_ID24INCINERATOR", "Fire"
+	Option "$MRIntW_InciniSmoke", "MRIntW_InciniSmoke", "MRIntW_InciniSmokeValues"
 }
 
 
@@ -266,10 +269,10 @@ OptionValue "MRIntW_PlasmaParticlesValues"
 	2, "$MRIntW_PlasmaParticles2"
 }
 
-OptionValue "MRIntW_ParticleTextureValues"
+OptionValue "MRIntW_InciniSmokeValues"
 {
-	-1, "$MRIntW_ParticleTextureDef"
-	0, "$MRIntW_ParticleTexture0"
-	1, "$MRIntW_ParticleTexture1"
-	2, "$MRIntW_ParticleTexture2"
+	0, "$MRIntW_InciniSmoke0"
+	1, "$MRIntW_InciniSmoke1"
+	2, "$MRIntW_InciniSmoke2"
+	3, "$MRIntW_InciniSmoke3"
 }
