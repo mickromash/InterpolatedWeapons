@@ -2,6 +2,7 @@
 
 MRIntWeaps_Menu = "Configure Interpolated weapons";
 
+MRIntW_ReplaceWeapon = "Enable interpolated weapons";
 
 MRIntW_Smoke = "Firing smoke";
 MRIntW_FlowingSmoke = "Flowing smoke";

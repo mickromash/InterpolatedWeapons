@@ -32,6 +32,8 @@ OptionMenu "MRIntWeaps_Menu"
 	Title "$MRIntWeaps_Menu"
 	StaticText ""
 	//Server
+	Option "$MRIntW_ReplaceWeapon", "MRIntW_ReplaceWeapon", "YesNo"
+	StaticText ""
 	Option "$MRIntW_Lighting", "MRIntW_Lighting", "YesNo"
 	Option "$MRIntW_BetterAlert", "MRIntW_BetterAlert", "YesNo"
 	//Client side

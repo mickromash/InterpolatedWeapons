@@ -2,6 +2,7 @@
 
 MRIntWeaps_Menu = "Настроить интерполированное оружие";
 
+MRIntW_ReplaceWeapon = "Включить интерполированное оружие";
 
 MRIntW_Smoke = "Клубы дыма от выстрелов";
 MRIntW_FlowingSmoke = "Струящийся дым";
