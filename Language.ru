@@ -437,7 +437,10 @@ MRIntW_SmoothUiTransitions2 = "Везде";
 MRIntW_SmoothUiLogo = "Анимированный логотип";
 MRIntW_SmoothUiOptions = "Анимированные пункты в меню";
 
-MRIntW_RandomStart = "Рандомизировать кастомизацию на старте игры";
+MRIntW_RandomStart = "Рандомизировать кастомизацию";
+MRIntW_RandomStart0 = "Нет";
+MRIntW_RandomStart1 = "Только при начале новой игры";
+MRIntW_RandomStart2 = "Вначале каждого уровня";
 MRIntW_RandomizePlayer = "Рандомизировать кастомизацию";
 MRIntW_ReturnPlayerSettings = "Вернуть мои настройки кастомизации";
 

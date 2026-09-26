@@ -193,6 +193,8 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Override Void PlayerSpawned(PlayerEvent e)
 	{
+		if(CVar.GetCVar("MRIntW_RandomStart", Players[e.PlayerNumber]).GetInt()>1)RandomizePlayer(e.PlayerNumber);
+		
 		if(!MRIntW_ReplaceWeapon)Return;
 		
 		if(WeaponChecker[e.PlayerNumber])Return;
@@ -583,7 +585,7 @@ Class MRIntWeaps_Handler: EventHandler
 	{
 		For(int i=0;i<MAXPLAYERS;i++){
 			if(!playeringame[i])Continue;
-			if(!CVar.GetCVar("MRIntW_RandomStart", Players[i]).GetBool())Continue;
+			if(CVar.GetCVar("MRIntW_RandomStart", Players[i]).GetInt()<1)Continue;
 			
 			RandomizePlayer(i);
 		}

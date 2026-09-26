@@ -436,7 +436,10 @@ MRIntW_SmoothUiTransitions2 = "For all";
 MRIntW_SmoothUiLogo = "Animated logo";
 MRIntW_SmoothUiOptions = "Animated options";
 
-MRIntW_RandomStart = "Randomize customization on new game";
+MRIntW_RandomStart = "Randomize customization";
+MRIntW_RandomStart0 = "No";
+MRIntW_RandomStart1 = "On starting a new game only";
+MRIntW_RandomStart2 = "On the start of each level";
 MRIntW_RandomizePlayer = "Randomize customization";
 MRIntW_ReturnPlayerSettings = "Return saved customization settings";
 
