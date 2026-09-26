@@ -135,7 +135,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 
 				player.SetPsprite(PSP_FLASH, weap.FindState('Flash'), true);
 			}
-			player.mo.PlayAttacking2 ();
+			player.mo.PlayAttacking2();
 
 			accurate = !player.refire;
 		}
@@ -705,7 +705,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				Player.GetPSprite(OverlayId()).bMirror = Player.GetPSprite(Lay1).bMirror;
 				A_OverlayOffset(OverlayId(), 127, 70);
 				if(invoker.LeftHanded)A_OverlayOffset(OverlayId(), 130, 70);
-				if(invoker.IsRifle)A_OverlayOffset(OverlayId(), 128+invoker.LastPos.X, 78+invoker.LastPos.Y);
+				if(invoker.IsRifle)A_OverlayOffset(OverlayId(), 130+invoker.LastPos.X, 78+invoker.LastPos.Y);
 
 				A_OverlayTranslation(OverlayId(), "MrIntWParFlash");
 				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
