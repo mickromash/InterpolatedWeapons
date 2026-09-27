@@ -25,7 +25,8 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 			!InStateSequence(Owner.Player.FindPSprite(SecndLay).CurState, FindState("GunIdle2"))
 		))Return;
 		
-		if((Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD) && !(Owner.Player.OldButtons&BT_ALTATTACK))Owner.Player.SetPsprite(SecndLay, FindState("SecndHandCoolIdle"));
+		if(Owner.Player.Cmd.Buttons&BT_ALTATTACK && !(Owner.Player.OldButtons&BT_ALTATTACK))Owner.Player.SetPsprite(SecndLay, FindState("SecndHandCoolIdle"));
+		if(Owner.Player.Cmd.Buttons&BT_RELOAD && !(Owner.Player.OldButtons&BT_RELOAD))CVar.GetCVar("MRIntW_SecondFist", Owner.Player).SetBool(!CVar.GetCVar("MRIntW_SecondFist", Owner.Player).GetBool());
 	}
 	
 	Action Void A_SelectPunchingFist()
@@ -747,13 +748,15 @@ Class MRIntWeaps_Fist: Fist Replaces Fist
 				A_OverlayPivot(MainLay, 1, 1);
 				A_OverlayScale(MainLay, 1.3, 1.3);
 				Player.GetPSprite(MainLay).Translation = invoker.GlovesTrans;
+				if(CRandom(0, 3)==1)Player.GetPSprite(MainLay).Frame = 2;
 			}
-			#### BBBBBBB 1 {
+			#### ####### 1 {
 				A_OverlayMoveTo(MainLay, 6, -15, .7, .8);
 				A_OverlayScale(MainLay, -.05, -.05, WOF_ADD);
 			}
-			#### B 2 {
-				A_OverlayOffset(MainLay, 2, 5, WOF_INTERPOLATE);
+			#### # 2 {
+				if(Player.GetPSprite(MainLay).Frame<2)A_OverlayOffset(MainLay, 2, 5, WOF_INTERPOLATE);
+				else A_OverlayOffset(MainLay, 0, 0, WOF_INTERPOLATE);
 				A_OverlayScale(MainLay, 1, 1, WOF_INTERPOLATE);
 			}
 			#### C 1 A_OverlayFlags(MainLay, PSPF_INTERPOLATE, false);
