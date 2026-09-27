@@ -707,8 +707,9 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Let PSP = Player.GetPSprite(Lay1);
 				if(Player.FindPSprite(Lay2))PSP = Player.GetPSprite(Lay2);
 				
-				PSP.X = Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay1).X*Recover;
-				PSP.Y = Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).Y*Recover;
+				A_OverlayMoveTo(Lay1, 0, invoker.Handless?17:0, Recover);
+				PSP.X = Player.GetPSprite(Lay1).X;
+				PSP.Y = Player.GetPSprite(Lay1).Y;
 				PSP.Scale = Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
 				PSP.Rotation = Player.GetPSprite(Lay1).Rotation *= Recover;
 			}
@@ -720,16 +721,22 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				Let PSP = Player.GetPSprite(Lay1);
 				if(Player.FindPSprite(Lay2))PSP = Player.GetPSprite(Lay2);
 				
-				PSP.X = Player.GetPSprite(Lay1).X = Player.GetPSprite(Lay1).X*Recover;
-				PSP.Y = Player.GetPSprite(Lay1).Y = Player.GetPSprite(Lay1).Y*Recover;
+				A_OverlayMoveTo(Lay1, 0, invoker.Handless?17:0, Recover);
+				PSP.X = Player.GetPSprite(Lay1).X;
+				PSP.Y = Player.GetPSprite(Lay1).Y;
 				PSP.Scale = Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*Recover;
 				PSP.Rotation = Player.GetPSprite(Lay1).Rotation *= Recover;
 			}
-			#### # 2{
-				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
-				A_OverlayOffset(Lay1, CFRandom(-2, 2), CFRandom(0, 2), WOF_INTERPOLATE);
-				A_OverlayRotate(Lay1, CFRandom(-.5, .5), WOF_INTERPOLATE);
+			#### # 1{
+				A_OverlayMoveTo(Lay1, 0, invoker.Handless?17:0, .8);
+				Player.GetPSprite(Lay1).Scale = (1,1)+(Player.GetPSprite(Lay1).Scale-(1,1))*.8;
+				Player.GetPSprite(Lay1).Rotation *= .8;
 				invoker.ReloadVar = CRandom(-1, 0);
+			}
+			#### # 1{
+				A_OverlayScale(Lay1, 1, 1, WOF_INTERPOLATE);
+				A_OverlayOffset(Lay1, CFRandom(-2, 2), invoker.Handless?CFRandom(7, 8):CFRandom(0, 2), WOF_INTERPOLATE);
+				A_OverlayRotate(Lay1, CFRandom(-.5, .5), WOF_INTERPOLATE);
 			}
 			#### B 1 {//Start Reload
 				invoker.Reloading = true;
@@ -737,7 +744,8 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 				A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				A_OverlayPivot(Lay1, .5, 1);
 				
-				A_OverlayOffset(Lay1, -10, -5, WOF_ADD);
+				A_OverlayOffset(Lay1, -CFRandom(8, 12), -CFRandom(3, 5), WOF_INTERPOLATE);
+				//A_OverlayOffset(Lay1, -10, -5, WOF_ADD);
 				invoker.MuzzleSmoke((-17, 8), (-3, 3), 1.25, 1.27);
 				
 				if(invoker.Handless){
