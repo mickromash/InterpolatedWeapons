@@ -116,6 +116,8 @@ enum MRIntWeaps_PlrParticlesFlags{
 
 	MRIWPP_InciFire = 16777216,//24
 	MRIWPP_InciSmoke = 33554432,//25
+	
+	MRIWPP_CalaTrail = 134217728,//27
 }
 
 Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
@@ -178,6 +180,8 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 				if(!(Setting&MRIWPP_InciFire||
 					Setting&MRIWPP_InciSmoke)
 				){Destroy();Return;}
+			Case 4://Calamity Blade
+				if(!Setting&MRIWPP_CalaTrail){Destroy();Return;}
 		}
 		
 		PAmnt = MRIntW_PlayerParticlesAmount;
@@ -463,6 +467,11 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 					MRSpawnParticle(Color(Col[0],Col[1],Col[2]), ParTex, SPF_FULLBRIGHT, STYLE_Add, 20*((PAmnt-1)*.5+1), Size, Pos, (-Ofst.XY*CFRandom(-.01, .05), CFRandom(1.2, 2)), Alpha: CFRandom(.5, 1), SizeStep:.25);
 				}
 				Return;
+			Case 4://Calamity Blade
+				if(DeathTick<6)For(int i=CRandom(0, 2);i<5;i++){
+					MRSpawnParticle(Color(255,70,30), ParTex, SPF_FULLBRIGHT, STYLE_Add, 30, CFRandom(3, 6), Master.Pos + (CFRandom(-1, 1)*Master.Radius, CFRandom(-1, 1)*Master.Radius, CFRandom(-1, 1)*Master.Height), (CFRandom(-.25, .25), CFRandom(-.25, .25), CFRandom(-2, 2)), (CFRandom(-.01, .01), CFRandom(-.01, .01), 0));
+				}
+				Return;
 		}
 	}
 	
@@ -573,6 +582,11 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 						Col[2] = Col[1]*.5;
 						MRSpawnParticle(Color(Col[0],Col[1],Col[2]), ParTex, SPF_FULLBRIGHT, STYLE_Add, 6, Size, Master.Pos-Diff.Unit()*i + RPos + ThrwVel*(i/Diff.Length()), (CFRandom(-.1, .1), CFRandom(-.1, .1), CFRandom(0, .25))*Age + ThrwVel*(i/Diff.Length())*.5, SizeStep:1);
 					}
+				}
+				Return;
+			Case 4://Calamity Blade
+				For(int i=CRandom(0, 3);i<10;i++){
+					MRSpawnParticle(Color(255,70,30), ParTex, SPF_FULLBRIGHT, STYLE_Add, 10, CFRandom(3, 6), Master.Pos + (CFRandom(-1, 1)*Master.Radius, CFRandom(-1, 1)*Master.Radius, CFRandom(-1, 1)*Master.Height));
 				}
 				Return;
 		}
