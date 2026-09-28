@@ -478,59 +478,59 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 		#### A 20 A_StartSound("weapons/calamityblade/charge", CHAN_WEAPON);
 		Goto Hold4FireProjectiles;
 	Hold4FireProjectiles:
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -35, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -30, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -25, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -20, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -15, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -10, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 0, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 10, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 15, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 20, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 25, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 30, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 35, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -35, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -30, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -25, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -20, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -15, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -10, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 0, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 10, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 15, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 20, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 25, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 30, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 35, 0, 0, 0);
 		Goto FireAnim;
 	Hold3FireProjectiles:
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -27.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -22.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -17.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -12.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -7.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -2.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 2.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 7.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 12.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 17.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 22.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 27.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -27.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -22.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -17.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -12.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -7.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -2.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 2.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 7.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 12.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 17.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 22.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 27.5, 0, 0, 0);
 		Goto FireAnim;
 	Hold2FireProjectiles:
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -20, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -15, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -10, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 0, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 10, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 15, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 20, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -20, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -15, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -10, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 0, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 10, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 15, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 20, 0, 0, 0);
 		Goto FireAnim;
 	Hold1FireProjectiles:
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -12.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -7.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -2.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 2.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 7.5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 12.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -12.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -7.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -2.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 2.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 7.5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 12.5, 0, 0, 0);
 		Goto FireAnim;
 	Hold0FireProjectiles:
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", -5, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 0, 0, 0, 0);
-		HETF A 0 BRIGHT MBF21_WeaponProjectile("MRIntWeaps_ID24IncineratorProjectile", 5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", -5, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 0, 0, 0, 0);
+		HETF A 0 BRIGHT MBF21_WeaponProjectile("ID24IncineratorProjectile", 5, 0, 0, 0);
 		Goto FireAnim;
 	FireAnim:
 		TNT1 A 0 BRIGHT {
@@ -642,14 +642,5 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 			A_OverlayRenderStyle(OverlayId(), STYLE_TRANSLUCENT);
 			Player.GetPSprite(OverlayId()).Alpha = Min(Player.GetPSprite(OverlayId()).Alpha, .5);
 		}
-	}
-}
-
-class MRIntWeaps_ID24IncineratorProjectile: ID24IncineratorProjectile
-{
-	Override int SpecialMissileHit(Actor Victim)
-	{
-		if(Victim && Victim!=Target && Victim.bShootable)Master = Victim;
-		Return Super.SpecialMissileHit(Victim);
 	}
 }
