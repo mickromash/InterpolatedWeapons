@@ -53,7 +53,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	
 	MRIntWeaps_Fist Handler;
 	int BobState, IdleDelay;
-	Float Rotation, Speed, MaxSpeedM, GunFrame, HandPos, SpinVolume;
+	Float Rotation, Speed, InterSpeed, MaxSpeedM, GunFrame, HandPos, SpinVolume;
 	Bool ConterClock, DontStop, InterpolateBarrels;
 	Double ShotPower;
 	
@@ -71,8 +71,9 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self)Return;
 		
 		if(SpinVolume>0){
-			Owner.A_SoundVolume(CHAN_7, Min(1, abs(Speed)/MaxSpeed)*SpinVolume);
-			Owner.A_SoundPitch(CHAN_7, ((abs(Speed)/MaxSpeed-1)*.5+1)*i_timescale);
+			InterSpeed += (Speed-InterSpeed)*.5;
+			Owner.A_SoundVolume(CHAN_7, Min(1, abs(InterSpeed)/MaxSpeed)*SpinVolume);
+			Owner.A_SoundPitch(CHAN_7, Min(5, (abs(InterSpeed)/MaxSpeed-1)*.5+1)*i_timescale);
 		}
 		
 		Handler = MRIntWeaps_Fist(Owner.FindInventory("MRIntWeaps_Fist"));
