@@ -230,6 +230,8 @@ MRIntW_InciniSmoke1 = "Only big";
 MRIntW_InciniSmoke2 = "Only small";
 MRIntW_InciniSmoke3 = "Both";
 
+MRIntW_CalamityParticles = "Charging particles";
+
 
 MRIntWeaps_ParticlesMenu = "Particles settings";
 
@@ -280,6 +282,8 @@ MRIntW_PlrParticles_BFGHit5 = "Tracer vapor";
 
 MRIntW_PlrParticles_InciFly1 = "Fire (removes the sprite)";
 MRIntW_PlrParticles_InciFly2 = "Smoke";
+
+MRIntW_PlrParticles_CalamityFly1 = "Fire particles";
 
 MRIntW_MonsterParticles = "Monsters particles";
 MRIntW_MonsterParticlesAmount = "Monster effects quality";

@@ -18,7 +18,7 @@ OptionMenu "MRIntWeaps_AnimMenu"
 	Option "$MRIntW_NoMuzzleFlash", "MRIntW_NoMuzzleFlash", "YesNo"
 	Option "$MRIntW_FlashFlare", "MRIntW_FlashFlare", "YesNo"
 	StaticText ""
-	Option "$MRIntW_RandomStart", "MRIntW_RandomStart", "YesNo"
+	Option "$MRIntW_RandomStart", "MRIntW_RandomStart", "MRIntW_RandomStartValues"
 	Command "$MRIntW_RandomizePlayer", "MRIntW_RandomizePlayer"
 	Command "$MRIntW_ReturnPlayerSettings", "MRIntW_ReturnPlayerSettings"
 	StaticText ""
@@ -125,6 +125,9 @@ OptionMenu "MRIntWeaps_WeaponsMenu"
 	StaticText ""
 	StaticText "$TAG_ID24INCINERATOR", "Fire"
 	Option "$MRIntW_InciniSmoke", "MRIntW_InciniSmoke", "MRIntW_InciniSmokeValues"
+	StaticText ""
+	StaticText "$TAG_ID24CALAMITYBLADE", "Fire"
+	Option "$MRIntW_CalamityParticles", "MRIntW_CalamityParticles", "YesNo"
 }
 
 
@@ -169,6 +172,13 @@ OptionValue "MRIntW_GlovesColorValuesSpecial2"
 	22, "$MRIntW_GlovesColor22"//Bi
 	23, "$MRIntW_GlovesColor23"//Trans
 	24, "$MRIntW_GlovesColor24"//Muad Pie
+}
+
+OptionValue "MRIntW_RandomStartValues"
+{
+	0, "$MRIntW_RandomStart0"
+	1, "$MRIntW_RandomStart1"
+	2, "$MRIntW_RandomStart2"
 }
 
 OptionValue "MRIntW_BobStyleValues"

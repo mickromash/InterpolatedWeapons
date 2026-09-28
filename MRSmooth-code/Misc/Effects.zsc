@@ -1362,6 +1362,106 @@ Extend Class MRIntWeaps_BFG9000
 	}
 }
 
+Extend Class MRIntWeaps_ID24CalamityBlade
+{
+	MRIntWeaps_SmokeContainer Particles[100];
+	Const ParLay = -4;
+	
+	Action Void A_FiringParticles(Double Range, Bool Firing=false)
+	{
+		if(Players[ConsolePlayer].Camera!=Self && MRIntW_CalamityParticles){
+			Let Cam = Players[ConsolePlayer].Camera;
+			if(Cam && (abs(DeltaAngle(Cam.Angle, Cam.AngleTo(Self)))<CVar.FindCVar("FOV").GetFloat()||Distance2D(Cam)<Cam.Radius*2) && CheckSight(Cam, SF_IGNOREWATERBOUNDARY|SF_SEEPASTBLOCKEVERYTHING|SF_IGNOREVISIBILITY)){
+				For(int i1=CRandom(0, 3);i1<6;i1++){
+					Vector3 BPos = (0,0,0);
+					BPos += AngleToVector(Angle, 17);
+					BPos += AngleToVector(Angle-90, 7);
+					BPos.Z += Height*.56;
+					
+					Double ToSide = CFRandom(-1, 1);
+					
+					BPos += AngleToVector(Angle+90, ToSide*.1*Range);
+					
+					Vector3 BVel = Vel*.5;
+					BVel += (AngleToVector(Angle, 1), CFRandom(-.5, .5));
+					BVel.XY += AngleToVector(Angle+90, ToSide*.5);
+					
+					int BCol[3];
+					BCol[0] = 255;
+					BCol[1] = BCol[0]*.45;
+					BCol[2] = CRandom(0, 80);
+									
+					Double Size = CFRandom(1, 3);
+									
+					A_SpawnParticle(Color(BCol[0],BCol[1],BCol[2]), SPF_NOTIMEFREEZE|SPF_FULLBRIGHT, 10, Size, 0, Bpos.X,BPos.Y,BPos.Z,
+						BVel.X,BVel.Y,BVel.Z, 0,0,0, 1, 0, -(Size/9));
+				}
+			}
+		}
+		//Fire particles comming from the gun when it's charging
+		For(int i1=Random[MRIntWRand](0, 3)-Firing*3-Range*.1;i1<4;i1++){
+				
+			int Par = -1;
+
+			For(int i=0;i<invoker.Particles.Size();i++){
+				if(!invoker.Particles[i]){
+					Par = i;
+					invoker.Particles[Par] = New("MRIntWeaps_SmokeContainer");
+					Break;
+				}
+			}
+			
+			if(Par<0)Return;
+			
+			int Lay = ParLay-Par;
+			
+			A_Overlay(Lay, "Particle");
+			
+			Double Dir = CFRandom(-1, 1);
+
+			A_OverlayOffset(Lay, 130 + Range*Dir, 90 + Firing*20);
+			
+			invoker.Particles[Par].Gravity = FRandom[MRIntWRand](.05, .1);
+			invoker.Particles[Par].Age = Random[MRIntWRand](19, 21);
+			invoker.Particles[Par].Vel.XY = ((Dir*(Range*.05), -CFRandom(1, 3))/(invoker.Particles[Par].Age*.08))*(Firing+1);
+		}
+	}
+	
+	States{
+		Particle:
+			NSHS B 1 BRIGHT {
+				A_OverlayTranslation(OverlayId(), "MrIntWParOrange");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+				if(!MRIntW_CalamityParticles)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				A_OverlayScale(OverlayId(), .05, .05);
+				A_OverlayPivot(OverlayId(), .5, .5);
+				A_OverlayAlpha(OverlayId(), .4);
+			}
+			NSHS # 1 BRIGHT{
+				Let Par = invoker.Particles[-OverlayId()+ParLay];
+				if(!Par){
+					A_ClearOverlays(OverlayId(), OverlayId());
+					Return;
+				}
+				
+				Par.Age--;
+				Double Age = Par.Age;
+				A_OverlayOffset(OverlayId(), Par.Vel.X, Par.Vel.Y, WOF_ADD);
+				A_OverlayScale(OverlayId(), Par.Gravity*(Age/16), Par.Gravity*(Age/16), WOF_INTERPOLATE);
+				Player.GetPSprite(OverlayId()).Alpha = CFRandom(.8, 1);
+				
+				if(Par.Age<1 || Player.GetPSprite(OverlayId()).Scale.X<=0 || Player.GetPSprite(OverlayId()).Alpha<=0){
+					Par.Destroy();
+					invoker.Particles[-OverlayId()+ParLay] = Null;
+					A_ClearOverlays(OverlayId(), OverlayId());
+					A_OverlayAlpha(OverlayId(), 0);
+				}
+			}
+			Wait;
+	}
+}
+
 Class MRIntWeaps_SmokeParticle: VisualThinker
 {
 	int Life, Age;

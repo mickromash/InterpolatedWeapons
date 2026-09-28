@@ -231,6 +231,8 @@ MRIntW_InciniSmoke1 = "Только из дула";
 MRIntW_InciniSmoke2 = "Только из маленьких отверстий";
 MRIntW_InciniSmoke3 = "Весь";
 
+MRIntW_CalamityParticles = "Частицы заряда";
+
 
 MRIntWeaps_ParticlesMenu = "Настройки частиц";
 
@@ -281,6 +283,8 @@ MRIntW_PlrParticles_BFGHit5 = "Испарения от трасеров";
 
 MRIntW_PlrParticles_InciFly1 = "Пламя (убирает спрайт)";
 MRIntW_PlrParticles_InciFly2 = "Дым";
+
+MRIntW_PlrParticles_CalamityFly1 = "Частицы огня";
 
 MRIntW_MonsterParticles = "Эффекты монстров";
 MRIntW_MonsterParticlesAmount = "Качество эффектов монстров";

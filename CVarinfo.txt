@@ -114,9 +114,11 @@ nosave bool MRIntW_BFGParticles = true;//Fancy ahh firing animation
 nosave float MRIntW_BFGAltVolume = .6;//Volume of BFG alt fire sound
 //id24 Incinerator
 nosave int MRIntW_InciniSmoke = 3;//0 - None, 1 - Only muzzle, 2 - Only small, 3 - Both
+//id24 Calamity Blade
+nosave int MRIntW_CalamityParticles = 1;
 
 nosave bool MRIntW_PlayerParticles = false;
-nosave int MRIntW_PlayerWhichParticles = 134021019;
+nosave int MRIntW_PlayerWhichParticles = 268238747;
 nosave float MRIntW_PlayerParticlesAmount = 1;
 
 nosave bool MRIntW_MonsterParticles = false;
@@ -166,4 +168,4 @@ nosave float MRIntW_LastFPS = 1;
 
 nosave noarchive bool MRIntW_DisplayVanilla = false;//Display vanilla sprites alongside new animations
 nosave noarchive bool MRIntW_Debug = false;
-server noarchive int MRIntW_Version = 2709261;//DDMMYYI
+server noarchive int MRIntW_Version = 2809260;//DDMMYYI
