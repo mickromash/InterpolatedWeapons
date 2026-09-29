@@ -1,4 +1,6 @@
-﻿# Fluid Weapons (a.k.a. Interpolated Weapons)
+[![ru](https://img.shields.io/badge/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D1%8F_%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F_readme-green
+)](https://github.com/mickromash/InterpolatedWeapons/blob/main/Mod%20info/Readme-RU.md)
+# Fluid Weapons (a.k.a. Interpolated Weapons)
 UZDoom weapon mod with interpolated weapon animations, particle effects and more.
 
 
