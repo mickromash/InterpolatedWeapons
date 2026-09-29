@@ -249,6 +249,7 @@
 | Звуки оружия высокого качества | [nosave] MRIntW_HQSounds | Нет | Использовать не сжатые звуки для оружия |
 | Звуки смены оружия | [nosave] MRIntW_SwitchSounds | Нет | Проигрывать звуки при доставании и убирании оружия |
 | Звуки пулемёта из аддона | [nosave] MRIntW_ChaingunSound | Нет | Проигрывать кастомный звук стрельбы для пулемёта, вместо звука выстрела пистолета |
+| Громкость звука вращения пулемёта | [nosave] MRIntW_ChaingunVolume | .3 | Всё ясно из названия |
 
 ### Настройки --> Настроить интерполированное оружие --> Настройки интерфейса
 | Название | [тип квара] CVar | По умолчанию | Что делает |
@@ -304,6 +305,7 @@
      * Импакт шутера - Kefir succerland на youtube
      * DOOM's pistol is kinda LAME... but it doesn't have to be! - Doomkid на youtube
      * Doom 2's Super Shotgun Graphics Are JANK - BeefGee на youtube
+     * Приложение Squoosh
 * Отдельная благодарность
      * Patis
      * RastamanGames
