@@ -262,7 +262,7 @@ Class MRIntWeaps_PlayerProjectileParticles: MRIntWeaps_ActorEffects
 				}
 				Return;
 			Case 1://Plasma
-				if(Setting&MRIWPP_PlasmaDroppingSparks && ((Enemy && DeathTick%2!=0)||(!Enemy && DeathTick<2))){
+				if(Setting&MRIWPP_PlasmaDroppingSparks && ((Enemy && DeathTick%3==0)||(!Enemy && DeathTick<2))){
 					int Times = 1;
 					if(!Enemy)Times = 6*PAmnt;
 					Vector3 Pos = Master.Pos + (0,0,-4);
