@@ -327,4 +327,4 @@ If you want to work with this mod, or add something to it, check the Mod info fo
 ***
 ## $\color{#FF0000}{Give\ me\ the\ damn\ download\ you\ nerd}$
 
-Fine, here it is://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/main.zip
+Fine, here it is: https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/main.zip
