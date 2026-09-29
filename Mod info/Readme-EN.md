@@ -19,7 +19,7 @@ UZDoom weapon mod with interpolated weapon animations, particle effects and more
    * [UI](#Options----Configure-Interpolated-weapons----UI-settings)
 * [Credits](#Credits)
 * [For other modders](#For-other-modders)
-* [Download mod](#ColorFF0000Give-me-the-damn-donwload-you-nerd)
+* [Download mod](#ColorFF0000Give-me-the-damn-download-you-nerd)
 ***
 
 ## What's the difference between this and other weapon mods like Smooth Doom or Beautiful Doom?
@@ -326,5 +326,4 @@ Feel free check this mod's files, use its assets or code. Although it will be gr
 If you want to work with this mod, or add something to it, check the Mod info folder and TexturexEditing!.txt file
 ***
 ## $\color{#FF0000}{Give\ me\ the\ damn\ download\ you\ nerd}$
-
 Fine, here it is: https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/main.zip
