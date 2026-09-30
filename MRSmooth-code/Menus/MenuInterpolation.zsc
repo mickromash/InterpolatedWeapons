@@ -99,7 +99,7 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		Screen.SetClipRect(0, StaticY, Screen.GetWidth(), Screen.GetHeight());
 		
 		int i;
-		for (i = 0; i < mDesc.mItems.Size() && Y <= lastrow; i++)
+		for (i = 0; i < mDesc.mItems.Size() && Y <= lastrow+fontheight; i++)
 		{
 			// Don't scroll the uppermost items
 			if (i == mDesc.mScrollTop)
