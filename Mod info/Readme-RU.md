@@ -1,4 +1,4 @@
-[![en](https://img.shields.io/badge/English_readme-green)](https://github.com/mickromash/InterpolatedWeapons/blob/main/Mod%20info/Readme-EN.md)
+[![en](https://img.shields.io/badge/English_readme-green)](https://github.com/mickromash/InterpolatedWeapons/blob/5.0+/Mod%20info/Readme-EN.md)
  # Fluid Weapons (альт. название Interpolated Weapons)
 Оружейный мод для UZDoom добавляющий анимации оружия с использованием интерполяции, эффекты для оружия и монстров на базе частиц и кое-что ещё.
 
@@ -341,5 +341,6 @@ Textures.txt, который ничего кроме этого списка н�
 ***
 ## $\color{#FF0000}{Дай\ уже\ скачать\ мод\ долбаный\ задрот}$
 
-Версия для GZDoom 4.14.2 - UZDoom 4.14.3 https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip
-Версия для UZDoom 5.0+ https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/5.0+.zip
+[Версия для GZDoom 4.14.2 - UZDoom 4.14.3](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip)
+
+[Версия для UZDoom 5.0+](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/5.0+.zip)
