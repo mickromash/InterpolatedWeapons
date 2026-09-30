@@ -451,7 +451,8 @@ Class MRIntWeaps_MainMenuHand: Object Ui
 	
 	ListMenuItemMR_Doom PartOf;
 	Vector2 Pos;
-	int Stayt, Trans;
+	int Stayt;
+	TranslationId Trans;
 	Double YSpeed, Height;
 	
 	Void Tick()

@@ -42,28 +42,10 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 	
 	override void Drawer()
 	{
+		/*Super.Drawer();
+		Return;*/
+		
 		Frames++;
-		//Back button
-		if (self == GetCurrentMenu() && BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
-		{
-			let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
-			if (tex.IsValid())
-			{
-				Vector2 v = TexMan.GetScaledSize(tex);
-				int w = int(v.X + 0.5) * CleanXfac;
-				int h = int(v.Y + 0.5) * CleanYfac;
-				int x = (!(m_show_backbutton&1))? 0:screen.GetWidth() - w;
-				int y = (!(m_show_backbutton&2))? 0:screen.GetHeight() - h;
-				if (mBackbuttonSelected && (mMouseCapture || m_use_mouse == 1))
-				{
-					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_ColorOverlay, Color(40, 255,255,255), DTA_NOOFFSET, true);
-				}
-				else
-				{
-					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_Alpha, BackbuttonAlpha, DTA_NOOFFSET, true);
-				}
-			}
-		}
 		
 		int fontheight = OptionMenuSettings.mLinespacing * CleanYfac_1;
 		
@@ -76,6 +58,8 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		
 		if(!Interpolate)DiffY = 0;
 		
+		int lastVisible;
+		bool drawCanScrollDown;
 		Double Y = mDesc.mPosition;
 		
 		if(Y <= 0)
@@ -91,26 +75,55 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 
 		int indent = GetIndent();
 
+		ScreenArea box;
+		GetTooltipArea(box);
+		if (!DrawTooltips)
+			box.y = Screen.GetHeight();
+		
 		Double ytop = StaticY + mDesc.mScrollTop * 8 * CleanYfac_1;
-		int lastrow = screen.GetHeight() - OptionHeight() * CleanYfac_1;
+		lastrow = box.Y - OptionHeight() * CleanYfac_1;
+		int rowheight = OptionMenuSettings.mLinespacing * CleanYfac_1 + 1;
+		
+		int _MaxItems = (LastRow - StaticY) / rowheight + 1;
+		bool resized = _MaxItems != MaxItems;
+		MaxItems = _MaxItems;
+		if (resized) ClampCursor();
 		
 		Vector2 OldClip, OldClipW;
 		[OldClip.X, OldClip.Y, OldClipW.X, OldClipW.Y] = Screen.GetClipRect();
 		Screen.SetClipRect(0, StaticY, Screen.GetWidth(), Screen.GetHeight());
 		
+		int hover = -1;
+		int hoverY;
 		int i;
-		for (i = 0; i < mDesc.mItems.Size() && Y <= lastrow; i++)
+		int lastDrawnItemIndex = -1;
+		for (i = 0; i < mDesc.mItems.Size() && StaticY <= lastrow+fontheight; i++)
 		{
 			// Don't scroll the uppermost items
 			if (i == mDesc.mScrollTop)
 			{
 				i += mDesc.mScrollPos;
-				if (i >= mDesc.mItems.Size()) break;	// skipped beyond end of menu 
+				if (i >= mDesc.mItems.Size()) break;	// skipped beyond end of menu
+				if (i < 0) i = 0;
 			}
+			
+			if (!mDesc.mItems[i].Visible())
+			{
+				continue;
+			}
+
+			if(StaticY <= lastrow)lastDrawnItemIndex = i;
+			
 			bool isSelected = mDesc.mSelectedItem == i;
 			int cur_indent = mDesc.mItems[i].Draw(mDesc, Y, indent, isSelected);
-			if (cur_indent >= 0 && isSelected && mDesc.mItems[i].Selectable())
+			if (cur_indent >= 0 && isSelected && mDesc.mItems[i].Selectable() && mDesc.mItems[i].Visible())
 			{
+				if (GetCurrentMenu() == self)
+				{
+					hover = i;
+					hoverY = y;
+				}
+				
 				SelectorTime++;
 				if(SelectorTime>40*FPSScale)SelectorTime = 0;
 				
@@ -120,20 +133,54 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 				Screen.DrawText(OptionFont(), OptionMenuSettings.mFontColorSelection, cur_indent + 3 * CleanXfac_1 + SelX, Y, "◄", DTA_CleanNoMove_1, true);
 			}
 			Y += fontheight;
+			StaticY += fontheight;
 		}
 		Screen.SetClipRect(OldClip.X, OldClip.Y, OldClipW.X, OldClipW.Y);
-
+		
+		lastVisible = LastVisibleItem();
+		drawCanScrollDown = lastVisible >= i;
 		CanScrollUp = (mDesc.mScrollPos > 0);
-		CanScrollDown = (i < mDesc.mItems.Size());
-		VisBottom = i - 1;
+		CanScrollDown = lastVisible + OverScroll >= i
+			&& RemainingVisibleItems(0) > MaxItems-OverScrollThreshold;
+		VisBottom = lastDrawnItemIndex;
 
-		if (CanScrollUp)
+		if(CanScrollUp)
 		{
 			DrawOptionText(screen.GetWidth() - 11 * CleanXfac_1, ytop, OptionMenuSettings.mFontColorSelection, "▲");
 		}
-		if (CanScrollDown)
+		if(drawCanScrollDown)
 		{
-			DrawOptionText(screen.GetWidth() - 11 * CleanXfac_1 , StaticY - 8*CleanYfac_1, OptionMenuSettings.mFontColorSelection, "▼");
+			DrawOptionText(screen.GetWidth() - 11 * CleanXfac_1 , lastrow, OptionMenuSettings.mFontColorSelection, "▼");
+		}
+		if(hover >= 0)
+		{
+			DrawHoverTooltip(OptionMenuItemOptionBase(mDesc.mItems[hover]), indent + mDesc.mItems[hover].CursorSpace(), hoverY, box.y);
+		}
+		
+		if(GetCurrentMenu() == Self){
+			//Back button
+			if(BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
+			{
+				let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
+				if (tex.IsValid())
+				{
+					Vector2 v = TexMan.GetScaledSize(tex);
+					int w = int(v.X + 0.5) * CleanXfac;
+					int h = int(v.Y + 0.5) * CleanYfac;
+					int x = (!(m_show_backbutton&1))? 0:screen.GetWidth() - w;
+					int y = (!(m_show_backbutton&2))? 0:screen.GetHeight() - h;
+					if (mBackbuttonSelected && (mMouseCapture || m_use_mouse == 1))
+					{
+						screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_ColorOverlay, Color(40, 255,255,255), DTA_NOOFFSET, true);
+					}
+					else
+					{
+						screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_Alpha, BackbuttonAlpha, DTA_NOOFFSET, true);
+					}
+				}
+			}
+			if(DrawTooltips)
+				DrawTooltip();
 		}
 	}
 }
@@ -186,27 +233,6 @@ Class MRIntWeaps_ListMenu: ListMenu
 	Override Void Drawer()
 	{
 		Frames++;
-		//Back button
-		if (self == GetCurrentMenu() && BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
-		{
-			let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
-			if (tex.IsValid())
-			{
-				Vector2 v = TexMan.GetScaledSize(tex);
-				int w = int(v.X + 0.5) * CleanXfac;
-				int h = int(v.Y + 0.5) * CleanYfac;
-				int x = (!(m_show_backbutton&1))? 0:screen.GetWidth() - w;
-				int y = (!(m_show_backbutton&2))? 0:screen.GetHeight() - h;
-				if (mBackbuttonSelected && (mMouseCapture || m_use_mouse == 1))
-				{
-					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_ColorOverlay, Color(40, 255,255,255), DTA_NOOFFSET, true);
-				}
-				else
-				{
-					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_Alpha, BackbuttonAlpha, DTA_NOOFFSET, true);
-				}
-			}
-		}
 		
 		Selector.Y *= Min(.99, .7*((FPSScale-1)*.1+1));
 		Selector.X *= Min(.99, .35*((FPSScale-1)*.1+1));
@@ -227,6 +253,33 @@ Class MRIntWeaps_ListMenu: ListMenu
 		{
 			if (!menuDelegate.DrawSelector(mDesc))
 				mDesc.mItems[mDesc.mSelectedItem].DrawSelector(mDesc.mSelectOfsX + Selector.X, mDesc.mSelectOfsY - Selector.Y, mDesc.mSelector, mDesc);
+		}
+		
+		
+		if(GetCurrentMenu() == Self){
+			//Back button
+			if(BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
+			{
+				let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
+				if (tex.IsValid())
+				{
+					Vector2 v = TexMan.GetScaledSize(tex);
+					int w = int(v.X + 0.5) * CleanXfac;
+					int h = int(v.Y + 0.5) * CleanYfac;
+					int x = (!(m_show_backbutton&1))? 0:screen.GetWidth() - w;
+					int y = (!(m_show_backbutton&2))? 0:screen.GetHeight() - h;
+					if (mBackbuttonSelected && (mMouseCapture || m_use_mouse == 1))
+					{
+						screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_ColorOverlay, Color(40, 255,255,255), DTA_NOOFFSET, true);
+					}
+					else
+					{
+						screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_Alpha, BackbuttonAlpha, DTA_NOOFFSET, true);
+					}
+				}
+			}
+			if(DrawTooltips)
+				DrawTooltip();
 		}
 	}
 }
@@ -327,28 +380,7 @@ Class MRIntWeaps_LoadSaveMenu: LoadSaveMenu
 	Override Void Drawer()
 	{
 		Frames++;
-		//Back button
-		if (BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
-		{
-			let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
-			if (tex.IsValid())
-			{
-				Vector2 v = TexMan.GetScaledSize(tex);
-				int w = int(v.X + 0.5) * CleanXfac;
-				int h = int(v.Y + 0.5) * CleanYfac;
-				int x = (!(m_show_backbutton&1))? 0:screen.GetWidth() - w;
-				int y = (!(m_show_backbutton&2))? 0:screen.GetHeight() - h;
-				if (mBackbuttonSelected && (mMouseCapture || m_use_mouse == 1))
-				{
-					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_ColorOverlay, Color(40, 255,255,255), DTA_NOOFFSET, true);
-				}
-				else
-				{
-					screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_Alpha, BackbuttonAlpha, DTA_NOOFFSET, true);
-				}
-			}
-		}
-
+		
 		SaveGameNode node;
 		int i, j;
 		bool didSeeSelected = false;
@@ -454,6 +486,33 @@ Class MRIntWeaps_LoadSaveMenu: LoadSaveMenu
 					DTA_VirtualWidthF, screen.GetWidth() / FontScale, DTA_VirtualHeightF, screen.GetHeight() / FontScale, DTA_KeepRatio, true);
 			}
 			j++;
+		}
+		
+		
+		if(GetCurrentMenu() == Self){
+			//Back button
+			if(BackbuttonAlpha > 0 && m_show_backbutton >= 0 && m_use_mouse)
+			{
+				let tex = TexMan.CheckForTexture(gameinfo.mBackButton, TexMan.Type_MiscPatch);
+				if (tex.IsValid())
+				{
+					Vector2 v = TexMan.GetScaledSize(tex);
+					int w = int(v.X + 0.5) * CleanXfac;
+					int h = int(v.Y + 0.5) * CleanYfac;
+					int x = (!(m_show_backbutton&1))? 0:screen.GetWidth() - w;
+					int y = (!(m_show_backbutton&2))? 0:screen.GetHeight() - h;
+					if (mBackbuttonSelected && (mMouseCapture || m_use_mouse == 1))
+					{
+						screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_ColorOverlay, Color(40, 255,255,255), DTA_NOOFFSET, true);
+					}
+					else
+					{
+						screen.DrawTexture(tex, true, x, y, DTA_CleanNoMove, true, DTA_Alpha, BackbuttonAlpha, DTA_NOOFFSET, true);
+					}
+				}
+			}
+			if(DrawTooltips)
+				DrawTooltip();
 		}
 	}
 }

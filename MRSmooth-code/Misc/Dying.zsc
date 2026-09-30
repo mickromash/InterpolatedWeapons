@@ -80,7 +80,7 @@ Class MRIntWeaps_FlyingWeapon: VisualThinker
 		}
 	}
 	
-	Static MRIntWeaps_FlyingWeapon Throw(String Sprite, String BounceSound, Vector3 Pos=(0,0,0), Vector3 Vel=(0,0,0), Double Gravity=1, Vector2 Scale=(1,1), int Translation=0, Actor Caller=Null, Name Clas='MRIntWeaps_FlyingWeapon')
+	Static MRIntWeaps_FlyingWeapon Throw(String Sprite, String BounceSound, Vector3 Pos=(0,0,0), Vector3 Vel=(0,0,0), Double Gravity=1, Vector2 Scale=(1,1), TranslationId Translation=0, Actor Caller=Null, Name Clas='MRIntWeaps_FlyingWeapon')
 	{
 		if(Players[ConsolePlayer].Camera != Caller)Return Null;
 		

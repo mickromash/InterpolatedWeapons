@@ -6,8 +6,8 @@ Extend Class MRIntWeaps_Fist
 {
 	Color GlovesShades, GlovesLights,
 		GlovesFireShades, GlovesFireLights, TargetColor;
-	int GlovesTrans, RifleGlovesTrans, PistolGlovesTrans, GlovesColor,
-		 ColDir, ColDir2;
+	TranslationId GlovesTrans, RifleGlovesTrans, PistolGlovesTrans;
+	int GlovesColor, ColDir, ColDir2;
 	Bool ColIncrea;
 	Actor LastActor;
 	Name LastName;
@@ -740,7 +740,7 @@ Extend Class MRIntWeaps_Fist
 			if(GlovesLights != CVar.GetCVar("MRIntW_GlovesColorLight", Owner.Player).GetInt()||
 				GlovesShades != CVar.GetCVar("MRIntW_GlovesColorShade", Owner.Player).GetInt()||
 				Owner.GetCVar("MRIntW_GlovesColor") != GlovesColor||
-				GlovesTrans == 0
+				int(GlovesTrans) == 0
 			){
 				GlovesColor = Owner.GetCVar("MRIntW_GlovesColor");
 				GlovesShades = CVar.GetCVar("MRIntW_GlovesColorShade", Owner.Player).GetInt();

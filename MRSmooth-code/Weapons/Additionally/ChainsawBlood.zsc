@@ -2,8 +2,9 @@ Extend Class MRIntWeaps_Chainsaw
 {
 	Const LayBloodDrip = -2;
 	
-	int BldTrans[40], BldFrame[40], BldCooldown[40], Dripping[6];
+	int BldFrame[40], BldCooldown[40], Dripping[6];
 	Float BldAlpha[40];
+	TranslationId BldTrans[40];
 	Array<int> BldFrames, BldFrames2, BldFrames3;
 	
 	Override Void PostBeginPlay()
@@ -77,14 +78,14 @@ Extend Class MRIntWeaps_Chainsaw
 		if(Type != 1 && Type != 2 && (!Victim || !Victim.bShootable || Victim.bNoBlood))Return;
 		if(MRIntW_ChainsawBlood<1)Return;
 		
-		int Trans;
+		TranslationId Trans;
 		if(Victim){
-			if(Victim.BloodTranslation != 0)Trans = Victim.BloodTranslation;
+			if(int(Victim.BloodTranslation) != 0)Trans = Victim.BloodTranslation;
 			else if(Type != 3){
 				String Blacklist = "Actor";
 				if(CVar.FindCVar("MRGoreParts_BlackList"))Blacklist = CVar.FindCVar("MRGoreParts_BlackList").GetString().MakeLower();
 				
-				int OldTrans = Player.GetPSprite(Lay1).Translation;
+				TranslationId OldTrans = Player.GetPSprite(Lay1).Translation;
 				String NaymStr = Victim.GetClassName();
 				Name Naym = NaymStr.MakeLower();
 				Switch(Victim.GetClassName())
@@ -107,14 +108,14 @@ Extend Class MRIntWeaps_Chainsaw
 				Player.GetPSprite(Lay1).Translation = OldTrans;
 			}
 			else {
-				int OldTrans = Player.GetPSprite(Lay1).Translation;
+				TranslationId OldTrans = Player.GetPSprite(Lay1).Translation;
 				A_OverlayTranslation(Lay1, "MRIntWBldRed");
 				Trans = Player.GetPSprite(Lay1).Translation;
 				Player.GetPSprite(Lay1).Translation = OldTrans;
 			}
 		}
 		else {
-			int OldTrans = Player.GetPSprite(Lay1).Translation;
+			TranslationId OldTrans = Player.GetPSprite(Lay1).Translation;
 			if(Type==1){
 				A_OverlayTranslation(Lay1, "MRIntWBldRed");
 				Trans = Player.GetPSprite(Lay1).Translation;
@@ -356,7 +357,7 @@ Extend Class MRIntWeaps_Chainsaw
 			}
 		}
 		if(IsNuke){
-			int OldTrans = Player.GetPSprite(PSP_WEAPON).Translation;
+			TranslationId OldTrans = Player.GetPSprite(PSP_WEAPON).Translation;
 			A_OverlayTranslation(PSP_WEAPON, "MRIntWBldGreen");
 			
 			For(int i=0;i<6;i++){

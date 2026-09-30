@@ -1,4 +1,4 @@
-Version "4.10"
+Version "5.0"//I hate translationid, gl_maplightmode being noarchive cvar and Graf Zahl
 
 #include "MRSmooth-code/Handler.zsc"//Weapon sapwning/replacing/removing functions and other global events
 

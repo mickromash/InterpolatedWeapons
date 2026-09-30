@@ -235,7 +235,7 @@ Class MRIntWeaps_Casing: VisualThinker
 		Return false;
 	}
 	
-	Static MRIntWeaps_Casing SpawnCasing(Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Bool ShotgunShell=false, Double Gravity=1, int Bounce=-1, Vector2 Scale=(.11,.11), int Translation=0)
+	Static MRIntWeaps_Casing SpawnCasing(Vector3 Pos =(0,0,0), Vector3 Vel=(0,0,0), Bool ShotgunShell=false, Double Gravity=1, int Bounce=-1, Vector2 Scale=(.11,.11), TranslationId Translation=0)
 	{
 		if(MRIntW_Casings<2)Return Null;
 		
