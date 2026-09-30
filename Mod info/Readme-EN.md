@@ -1,4 +1,4 @@
-[![ru](https://img.shields.io/badge/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D1%8F_%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F_readme-green
+﻿[![ru](https://img.shields.io/badge/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D1%8F_%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F_readme-green
 )](https://github.com/mickromash/InterpolatedWeapons/blob/main/Mod%20info/Readme-RU.md)
 # Fluid Weapons (a.k.a. Interpolated Weapons)
 UZDoom weapon mod with interpolated weapon animations, particle effects and more.
@@ -88,31 +88,32 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Instant firing | [user] MRIntW_InstantFire | Yes | Removes firing delay without changing the fire rate |
 | Fast pistol | [server] MRIntW_FastPistol | No | Increases pistol firing rate making it a bit more useful |
 | Quick switching | [server] MRIntW_QuickSwitch | No | Ability to switch weapon during reloading or similar animations |
-| Weapon bob when firing | [nosave] MRIntW_ChangeFiringBob | 1 | Amount of weapon bob during firing. |
+| Legacy of Rust Weapons | [server] MRIntW_LoRWeaps | Yes | Enables Legacy of Rust weapons in regular Doom and adds animations for weapons in Legacy of Rust |
 
-### Options  --> Configure Interpolated weapons --> Animations settings
+### Options --> Configure Interpolated weapons --> Animations settings
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Gloves color | [user] MRIntW_GlovesColor | Классический | Цвет перчаток игрока на спрайтах оружия |
-| Custom color shades | [user] MRIntW_GlovesColorShade | 2 2 2 | Если для цвета перчаток выбран пункт "Свой", цветом перчаток будет градиент из MRIntW_GlovesColorShade и MRIntW_GlovesColorLight. Рекомендую давать MRIntW_GlovesColorShade максимально тёмные значения |
-| Custom color lights | [user] MRIntW_GlovesColorLight | EF EF EF | Главным образом на оттенок перчаток влияет именно этот цвет |
-| Pickup and reload animations | [nosave] MRIntW_ReloadAnims | Только перезарядки | Если на оружии кончаются патроны, или при первом его подборе, будет проигрываться альтернативная анимация выбора |
-| Disable muzzle flashes | [nosave] MRIntW_NoMuzzleFlash | No | Отключает анимации дульных вспышек при стрельбе. Надо бы добавить Doom Retro в кредитсы... |
-| Muzzle flash flare | [nosave] MRIntW_FlashFlare | No | Ореолы вокруг дульных вспышек, типа блума |
-| Randomize customization | [user] MRIntW_RandomStart | No | При старте новой игры, для отдельных элементов будут использоваться случанйые значения, вместо настроек игрока. Сохранённые настройки игрока в меню от этого не меняются |
-| Untitled | [nosave] MRIntW_RandomDemo | Yes | Применить рандомизацию предыдущей настройки к проигрываемым демо записям |
+| Gloves color | [user] MRIntW_GlovesColor | Classic | Player's gloves color on weapon sprites |
+| Custom color shades | [user] MRIntW_GlovesColorShade | 2 2 2 | If gloves color is set to "Custom", gloves will be colored with gradient of MRIntW_GlovesColorShade and MRIntW_GlovesColorLight. I recomend you to set MRIntW_GlovesColorShade to the darkest value possible |
+| Custom color lights | [user] MRIntW_GlovesColorLight | EF EF EF | Gloves hue mostly depends on this one |
+| Pickup and reload animations | [nosave] MRIntW_ReloadAnims | Reload only | Если на оружии кончаются патроны, или при первом его подборе, будет проигрываться альтернативная анимация выбора |
+| Disable muzzle flashes | [nosave] MRIntW_NoMuzzleFlash | No | Disables muzzle flashes for weapons like in Doom Retro source port |
+| Muzzle flash flare | [nosave] MRIntW_FlashFlare | No | Bloom-like effect around muzzle flashes |
+| Randomize customization | [user] MRIntW_RandomStart | No | On the start of the level for player and weapon customization will be used random values, instead of ones set in the settings. This won't changed values set in the settings. |
+| Untitled | [nosave] MRIntW_RandomDemo | Yes | Apply setting above to demo playback |
 
-### Options --> Configure Interpolated weapons --> Настройки анимаций --> Общие настройки оружия
+### Options --> Configure Interpolated weapons --> Animations settings --> General weapon settings
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Weapon bob style | [nosave] MRIntW_BobStyle | Плавное | Стиль покачивания оружия в руках во время ходьбы |
+| Weapon bob style | [nosave] MRIntW_BobStyle | Smooth | Стиль покачивания оружия в руках во время ходьбы |
 | Bob X range | [nosave] MRIntW_BobRangeX | 1 | Насколько сильно оружие будет раскачиваться по горизонтали |
 | Bob Y range | [nosave] MRIntW_BobRangeY | 1 | Насколько сильно оружие будет раскачиваться по вертикали |
 | Bob Z range | [nosave] MRIntW_BobRangeZ | 0 | Насколько сильно оружие будет раскачиваться вглубь (взад-вперёд). Вдохновленно Rise of The Triad. Не работает с пулемётом, плазмаганом и бфг из-за сложности реализации |
+| Weapon bob when firing | [nosave] MRIntW_ChangeFiringBob | 1 | Amount of weapon bob during firing. |
 | Original (DOS) Doom firing bob | [nosave] MRIntW_VanillaFireBob | No | Во время выстрела оружие будет замирать на месте, но не перемещаясь при этом в центр экрана |
-| Switch animations | [nosave] MRIntW_SwitchAnims | Случайные вариации | Анимации которые будут проигрываться при смене одного оружия на другое |
-| Bounce on land | [nosave] MRIntW_Bounce | Обычное | Иммерсивное движение оружия в воздухе и при приземлении |
-| Run key | [nosave] MRIntW_RunKey | Ничего не делает | Опускает оружие - при нажатии кнопки бега оружие будет опускаться вниз экрана; Поднимает оружие - оружие всегда находится внизу экрана и поднимается при нажатии кнопки бега |
+| Switch animations | [nosave] MRIntW_SwitchAnims | Random variants | Анимации которые будут проигрываться при смене одного оружия на другое |
+| Bounce on land | [nosave] MRIntW_Bounce | Regular | Иммерсивное движение оружия в воздухе и при приземлении |
+| Run key | [nosave] MRIntW_RunKey | Does nothing | Опускает оружие - при нажатии кнопки бега оружие будет опускаться вниз экрана; Поднимает оружие - оружие всегда находится внизу экрана и поднимается при нажатии кнопки бега |
 | Weapon sway | [nosave] MRIntW_WeaponSway | No | Так называемый weapon sway - отставание оружия от камеры, и более правдоподобное его движение |
 | Weapon sway style | [nosave] MRIntW_WeaponSwayStyle | Battlefront 2015 | Half Life 2 - оружие отстаёт от камеры, при остановке движения остаётся на месте, при стрельбе возвращается в центр экрана; Battlefront 2015 - в зависимости от типа и габаритов оружия, оно отстаёт или движется в направлении камеры и наклоняется. При остановке движения камеры, оружие возвращается в центр экрана с `wobble` эффектом |
 | Idle animations | [nosave] MRIntW_IdleAnims | Yes | Анимация дыхания, покачивания оружия и т.п. при бездействии. У отдельных видов оружия есть уникальные анимации покоя (также на кнопки альт. атаки и перезарядки оружия проигрывает более выраженные анимации) |
@@ -122,23 +123,23 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Horizontal offset | [nosave] MRIntW_BaseOffsetX | 0 | Положение оружия по оси X |
 | Vertical offset | [nosave] MRIntW_BaseOffsetY | 0 | Положение оружия по оси Y (инвертировано) |
 
-### Options --> Configure Interpolated weapons --> Настройки анимаций --> Настроить каждое оружие
-**Кулаки**
+### Options --> Configure Interpolated weapons --> Animations settings --> Customize weapons
+**Brass Knuckles**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Switch main fist | [user] MRIntW_RightPunch | No | Меняет руку с кастетом |
-| Hands shaking on berserk | [user] MRIntW_BersShake | Только без оружия | При подборе берсерка руки игрока будет трясти, а на экране добавится рука с кастетом. |
+| Hands shaking on berserk | [user] MRIntW_BersShake | Only without weapon | При подборе берсерка руки игрока будет трясти, а на экране добавится рука с кастетом. |
 | Bare hands | [user] MRIntW_BareHands | Yes | Использовать спрайты без перчаток для анимаций кулаков. |
 | Gloves removal animation | [user] MRIntW_GlovesStrip | Yes | При выборе кулаков будет проигрываться анимация снятия перчаток (если включена опция выше) |
 | Second fist always on screen | [user] MRIntW_SecondFist | No | На экране всегда будет видна рука с кастетом без необходимости подбирать берсерк |
-| Punching fist | [user] MRIntW_PunchingFist | Основная | Выбор каким кулаком будет бить игрок |
-| Finishing punch | [user] MRIntW_FinishPunch | Только с берсерком | Альтернативная анимация удара при убийстве цели |
+| Punching fist | [user] MRIntW_PunchingFist | Main | Выбор каким кулаком будет бить игрок |
+| Finishing punch | [user] MRIntW_FinishPunch | Only berserk | Альтернативная анимация удара при убийстве цели |
 | Miss animation | [user] MRIntW_MissPunch | No | Проигрывание анимации добивающего удара при промахе 
 | Finishing punch chance | [user] MRIntW_FinishPunchChance | 0.7 | Вероятность проигрывания анимации добивающего удара |
 | Kickback from punching surface with berserk | [user] MRIntW_SurfacePunchRecoil | No | При ударе геометрии уровня (стены/пол/потолок) после подбора берсерка, игрока будет отталкивать в противоположную сторону |
 | Fix fist on punched actor | [nosave] MRIntW_FistFixedOnTarget | No | При попадании по актору, спрайт кулака будет фиксироваться на нём, игнорируя поворот камеры игрока |
 
-**Бензопила**
+**Chainsaw**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Starting animation | [user] MRIntW_ChainsawStart | No | Альтернативная анимация выбора пилы |
@@ -149,14 +150,14 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Blood dripping | [nosave] MRIntW_ChainsawBlood | No | Капли от крови и прочих жидкостей на пиле |
 | Blood time (in seconds) | [nosave] MRIntW_ChainsawBloodLife | 60 | Через сколько секунд кровь на пиле начнёт пропадать |
 
-**Пистолет**
+**Pistol**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Hold pistol in the left hand | [user] MRIntW_LHand | Yes | Каноничный думгай левша |
-| Hold pistol with two hands | [user] MRIntW_PistolSHand | Если враг далеко | В зависимости от значения, при стрельбе в далеко стоящую цель игрок будет брать пистолет в две руки, убирать вторую руку при стрельбе на близкой дистанции, или всегда держать пистолет двумя руками |
+| Hold pistol with two hands | [user] MRIntW_PistolSHand | If enemy is far away | В зависимости от значения, при стрельбе в далеко стоящую цель игрок будет брать пистолет в две руки, убирать вторую руку при стрельбе на близкой дистанции, или всегда держать пистолет двумя руками |
 | Replace pistol with rifle | [user] MRIntW_Rifle | No | Визуальная замена пистолета на винтовку из ранних версий Doom |
 
-**Дробовик**
+**Shotgun**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Smoke from chamber | [nosave] MRIntW_ShotgunSmoke | Yes | Анимация дыма при передёргивании помпы |
@@ -166,15 +167,15 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Random radius | [user] MRIntW_ShotgunPumpRandRotation | 1 | Максимальное число которое может быть добавлено к наклону спрайта |
 | Shotguns firing animation recoil | [nosave] MRIntW_ShotgunsRecoil | 1 | Насколько сильно спрайт дробовика и двустволки увеличивается и опускается при выстреле |
 
-**Двустволка**
+**Super Shotgun**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Holding stock while reloading | [user] MRIntW_SSGHandless | Всегда | Более логичная анимация перезарядки при которой игрок убирает руку с цевья во время открытия двустволки, чтобы взять патроны |
+| Holding stock while reloading | [user] MRIntW_SSGHandless | Always | Более логичная анимация перезарядки при которой игрок убирает руку с цевья во время открытия двустволки, чтобы взять патроны |
 | Smoke from barrels on reload | [nosave] MRIntW_SSGSmoke | Yes | Дым из стволов после их открытия |
 | Buckshot sparks | [nosave] MRIntW_SSGSparks | No | Искры вылетающие из ствола при выстреле |
 | Shotguns firing animation recoil | [nosave] MRIntW_ShotgunsRecoil | 1 | Насколько сильно спрайт дробовика и двустволки увеличивается и опускается при выстреле |
 
-**Пулемёт**
+**Chaingun**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Fixed barrels position | [user] MRIntW_ChaingunFixed | No | По окончании стрельбы стволы будут возвращаться в исходное положение |
@@ -183,28 +184,38 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Counterclockwise rotation | [user] MRIntW_ChaingunCounterClock | No | Много кастомизации не бывает |
 | Max. smoking barrels | [nosave] MRIntW_ChaingunMaxSmokes | 3 | Попытка оптимизировать струящийся дым для пулемёта. Помимо этого, длина дыма для пулемёта делиться на количество дымящихся стволов |
 
-**Ракетомёт**
+**Rocket Launcher**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Muzzle smoke | [nosave] MRIntW_RocketSmoke | 1 | Сила струящегося дыма для ракетомёта |
 
-**Плазмаган**
+**Plasma Rifle**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Firing particles | [nosave] MRIntW_PlasmaParticles | Только свечение | Красивое |
+| Firing particles | [nosave] MRIntW_PlasmaParticles | Only muzzle flare | Красивое |
 | Enable dyn. lighting for projectiles | [nosave] MRIntW_PlasmaLight | Yes | Динамическое освещение для снарядов плазмагана |
 | Disable dyn. lighting for every second projectile | [nosave] MRIntW_PlasmaSkipLight | No | При стрельбе очередями, каждый второй выстрел не будет излучать динамический свет |
 
-**BFG**
+**BFG 9000**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Firing particles | [nosave] MRIntW_BFGParticles | Yes | Делает анимацию выстрела в разы интересней |
 
+**Испепелитель**
+| Название | [тип квара] CVar | По умолчанию | Что делает |
+| --- | --- | --- | --- |
+| Дым из ствола | [nosave] MRIntW_InciniSmoke | Весь | Анимация дыма выходящего из отверстий в стволе |
 
-### Options --> Configure Interpolated weapons --> Настройки частиц
+**Клинок бед**
+| Название | [тип квара] CVar | По умолчанию | Что делает |
+| --- | --- | --- | --- |
+| Частицы заряда | [nosave] MRIntW_CalamityParticles | Весь | Анимация частиц исходящих из заряжающегося оружия |
+
+
+### Options --> Configure Interpolated weapons --> Particles settings
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Casings | [nosave] MRIntW_Casings | Только анимация | Включает гильзы для огнестрельного оружия |
+| Casings | [nosave] MRIntW_Casings | Animation only | Включает гильзы для огнестрельного оружия |
 | Max. casings speed | [user] MRIntW_CasingsRandom | 1 | С какой силой гильзы экстрагируются из оружия |
 | Casings bounce sound volume | [nosave] MRIntW_CasingsVolume | 1 | Забавный факт: звук сообщения о загрузке сохранения сделанного со старой версией мода, сделан из звуков отскока гильзы дробовика |
 | Max. casings amount | [nosave] MRIntW_CasingsAmount | 300 | Если количество гильз превысит это значение, старые гильзы начнут пропадать |
@@ -218,14 +229,14 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Flowing smoke particles amount | [nosave] MRIntW_FlowingSmokePrecision | 1 | Струи дыма сделаны из множества круглых (или не круглых, в зависимости от ваших настроек) частиц. Данная настройка регулирует плотность этих частиц. Более низкие значения улучшат производительность, но отдельные частицы станут более заметны |
 | Flowing smoke experimental texture | [nosave] MRIntW_FlowingSmokeBioTexture | No | Более детализированный струящийся дым, больше похожий на тот что был в Bioshock. Работает не идеально |
 | Long term smoke | [nosave] MRIntW_LongTermSmoke | No | Довольно экспериментальная функция. Включает постепенное появление большых облаков дыма при стрельбе в одном месте, которые после долго рассеиваются |
-| Particles texture | [nosave] MRIntW_ParticleTexture | Такая же как у остальных частиц | Эффекты в моде, которые включаются ниже в данном меню, используют данную настройку для выбора внешнего вида частиц. "Такая же как у остальных частиц" означает что будет использоваться текстура частиц выбранная в настройках дисплея вашего сорс порта |
-| Smoke particles texture | [nosave] MRIntW_ParticleSmokeTexture | Плавная | Данная настройка также распространяется только на эффекты ниже, но затрагивает только частицы дыма, на случай если текстура выбранная выше конкретно дыму может не подойти |
+| Particles texture | [nosave] MRIntW_ParticleTexture | Same as UZDoom particles | Эффекты в моде, которые включаются ниже в данном меню, используют данную настройку для выбора внешнего вида частиц. "Такая же как у остальных частиц" означает что будет использоваться текстура частиц выбранная в настройках дисплея вашего сорс порта |
+| Smoke particles texture | [nosave] MRIntW_ParticleSmokeTexture | Smooth | Данная настройка также распространяется только на эффекты ниже, но затрагивает только частицы дыма, на случай если текстура выбранная выше конкретно дыму может не подойти |
 | Player's weapon particles | [nosave] MRIntW_PlayerParticles | No | Включает эффекты для снарядов игрока, а также для всех буллет пафов (искры от попаданий по геометрии уровня).
 | Player weapon effects quality | [nosave] MRIntW_PlayerParticlesAmount | 1 | Количество частиц в эффектах игрока. Я на GTX970 и Intel Core i7 3770 ставлю все настройки частиц кроме декораций на х2 |
 | Selected player weapon effects | [nosave] MRIntW_PlayerWhichParticles | 134021019 | Все выбранные эффекты игрока хранятся в одном КВаре в формате флагов |
 | Monsters particles | [nosave] MRIntW_MonsterParticles | No | Включает эффекты для снарядов монстров и для них самих |
 | Monsters effects quality | [nosave] MRIntW_MonsterParticlesAmount | 1 | Количество частиц в эффектах монстров. На картах с большим количеством врагов может потребоваться снизить значение данной настройки |
-| Selected monsters effects | [nosave] MRIntW_MonsterWhichParticles и [nosave] MRIntW_MonsterWhichParticles2 | -33 и -2147483617 | Аналогично эффектам игрока, эффекты монстров хранятся в виде флагов, но из-за их количества пришлось использовать две переменные |
+| Selected monsters effects | [nosave] MRIntW_MonsterWhichParticles and [nosave] MRIntW_MonsterWhichParticles2 | -33 and -2147483617 | Аналогично эффектам игрока, эффекты монстров хранятся в виде флагов, но из-за их количества пришлось использовать две переменные |
 | Apply effects to custom monsters | [nosave] MRIntW_MonsterParticlesCustom | No | Если данная опция не включена, эффекты из мода будут работать только с монстрами и снарядами из Doom |
 | Particle flies | [nosave] MRIntW_ParticleFlies | No | Мухи летающие над трупами в стиле Quake 2 |
 | Flies buzz volume | [nosave] MRIntW_ParticleFliesVolume | 0.4 | Он точно будет кого-то бесить |
@@ -234,11 +245,11 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Decorations effects quality | [nosave] MRIntW_DecorationParticlesAmount | 1 | Количество частиц в эффектах декораций |
 | Selected decorations effects | [nosave] MRIntW_DecorationWhichParticles | 511 | То же самое что и с эффектами игрока и монстров |
 | Teleportation particles | [nosave] MRIntW_TeleportParticles | No | Включает эффекты на базе частиц для телепортации |
-| Teleport style | [nosave] MRIntW_TeleportParticlesStyle | Волна | Доступны варианты: 2 кольца, Взрыв, Испарение, Обратный взрыв, Двойное испарение, Странное облако, Волна |
-| Monster teleport style | [nosave] MRIntW_TeleportParticlesStyleMonsters | Испарение | Тоже самое, но для телепортации монстров |
+| Teleport style | [nosave] MRIntW_TeleportParticlesStyle | Wave | Доступны варианты: 2 кольца, Взрыв, Испарение, Обратный взрыв, Двойное испарение, Странное облако, Волна |
+| Monster teleport style | [nosave] MRIntW_TeleportParticlesStyleMonsters | Vapor | Тоже самое, но для телепортации монстров |
 | Items respawn particles | [nosave] MRIntW_RespawnParticles | No | Эффект респавна предметов. |
 
-### Options --> Configure Interpolated weapons --> Настройки звуков
+### Options --> Configure Interpolated weapons --> Sound settings
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Casings bounce sound voulme | [nosave] MRIntW_CasingsVolume | 1 | Дубликат настройки громкости гильз из меню частиц |
@@ -249,11 +260,11 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Weapon switch sound | [nosave] MRIntW_SwitchSounds | No | Проигрывать звуки при доставании и убирании оружия |
 | Chaingun custom firing sound | [nosave] MRIntW_ChaingunSound | No | Проигрывать кастомный звук стрельбы для пулемёта, вместо звука выстрела пистолета |
 
-### Настройки --> Настроить интерполированное оружие --> Настройки интерфейса
+### Настройки --> Configure Interpolated weapons --> Ui settings
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Smooth menus | [nosave] MRIntW_SmoothUi | Yes | Отключает ограничение на фпс в меню, сглаживает его прокрутку и отдельные элементы |
-| Smooth menu transitions | [nosave] MRIntW_SmoothUiTransitions | Везде | Добавляет анимацию перехода от одного меню к другому |
+| Smooth menu transitions | [nosave] MRIntW_SmoothUiTransitions | For all | Добавляет анимацию перехода от одного меню к другому |
 | Animated logo | [nosave] MRIntW_SmoothUiLogo | Yes | Добавляет анимации для лого в меню. |
 | Animated options | [nosave] MRIntW_SmoothUiOptions | Yes | Adds special animations for submenus |
 
@@ -326,4 +337,6 @@ Feel free check this mod's files, use its assets or code. Although it will be gr
 If you want to work with this mod, or add something to it, check the Mod info folder and TexturexEditing!.txt file
 ***
 ## $\color{#FF0000}{Give\ me\ the\ damn\ download\ you\ nerd}$
-Fine, here it is: https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/main.zip
+
+Verison for GZDoom 4.14.2-UZDoom 4.14.3 https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip
+Version for UZDoom 5.0+ https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/5.0+.zip
