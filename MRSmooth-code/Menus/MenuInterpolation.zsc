@@ -133,7 +133,7 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		}
 		if (CanScrollDown)
 		{
-			DrawOptionText(screen.GetWidth() - 11 * CleanXfac_1 , StaticY - 8*CleanYfac_1, OptionMenuSettings.mFontColorSelection, "▼");
+			DrawOptionText(screen.GetWidth() - 11 * CleanXfac_1 , lastrow, OptionMenuSettings.mFontColorSelection, "▼");
 		}
 	}
 }
