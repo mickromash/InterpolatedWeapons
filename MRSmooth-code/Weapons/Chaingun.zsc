@@ -53,7 +53,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 	
 	MRIntWeaps_Fist Handler;
 	int BobState, IdleDelay;
-	Float Rotation, Speed, InterSpeed, MaxSpeedM, GunFrame, HandPos, SpinVolume;
+	Float Rotation, Speed, InterVol, InterPitch, MaxSpeedM, GunFrame, HandPos, SpinVolume;
 	Bool ConterClock, DontStop, InterpolateBarrels;
 	Double ShotPower;
 	
@@ -71,9 +71,10 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self)Return;
 		
 		if(SpinVolume>0){
-			InterSpeed += (Speed-InterSpeed)*.5;
-			Owner.A_SoundVolume(CHAN_7, Min(1, abs(InterSpeed)/MaxSpeed)*SpinVolume);
-			Owner.A_SoundPitch(CHAN_7, Min(5, (abs(InterSpeed)/MaxSpeed-1)*.5+1)*i_timescale);
+			InterVol += (Speed-InterVol)*.5;
+			InterPitch += (Speed-InterPitch)*.3;
+			Owner.A_SoundVolume(CHAN_7, Min(1, abs(InterVol)/MaxSpeed)*SpinVolume);
+			Owner.A_SoundPitch(CHAN_7, Min(3, (abs(InterPitch)/MaxSpeed-1)*.5+1)*i_timescale);
 		}
 		
 		Handler = MRIntWeaps_Fist(Owner.FindInventory("MRIntWeaps_Fist"));
@@ -338,7 +339,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 			Wait;
 			
 		GunRaise:
-			CH1G A 3 {
+			CH1G AA 1 {
 				A_DoVanillaDisplay();
 				invoker.InterpolateBarrels = true;
 				invoker.HandPos = 1;
@@ -365,6 +366,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				A_OverlayOffset(Lay1, MRIntW_SwitchAnims?(invoker.SwitchAnim?-51:51)+Player.GetPSprite(PSP_WEAPON).X:Player.GetPSprite(PSP_WEAPON).X, 90);
 				invoker.SwitchState = 12;
 			}
+			CH1G # 1;
 			CH1G # 0 {
 				invoker.ConterClock = GetCVar("MRIntW_ChaingunCounterClock");
 				if(!invoker.Reload && CRandom(0, 1)>0)invoker.Speed = 205.6*GetCVar("MRIntW_ChaingunStopTime");
