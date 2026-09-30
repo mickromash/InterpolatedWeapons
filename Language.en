@@ -8,7 +8,7 @@ MRIntW_Smoke = "Firing smoke";
 MRIntW_FlowingSmoke = "Flowing smoke";
 MRIntW_FlowingSmokeLength = "Flowing smoke length";
 MRIntW_FlowingSmokeAlpha = "Flowing smoke opacity";
-MRIntW_FlowingSmokeMaxTime = "Max. smoke time";
+MRIntW_FlowingSmokeMaxTime = "Max. smoking time";
 MRIntW_FlowingSmokePrecision = "Flowing smoke particles amount";
 MRIntW_FlowingSmokeBioTexture = "Flowing smoke experimental texture";
 MRIntW_LongTermSmoke = "Long term smoke";
@@ -21,7 +21,7 @@ MRIntW_Casings2 = "Animation + object";
 MRIntW_CasingsRandom = "Max. casings speed";
 MRIntW_CasingsAmount = "Max. casings amount";
 MRIntW_CasingsVolume = "Casings bounce sound volume";
-MRIntW_CasingsClusteringReduce = "Reduce casings bunches";
+MRIntW_CasingsClusteringReduce = "Reduce casings clustering";
 MRIntW_CasingsLowRes = "Lowres casings";
 
 MRIntW_Lighting = "\cv⊛\c- Fix weapon dynamic lighting";
@@ -155,7 +155,7 @@ MRIntW_FlashFlare = "Muzzle flash flare";
 MRIntW_ShotgunsRecoil = "Shotguns firing animation recoil";
 
 MRIntW_BareHands = "Bare hands";
-MRIntW_GloveStrip = "Glove strip animation";
+MRIntW_GloveStrip = "Glove removal animation";
 
 MRIntW_RightPunch = "Switch main fist";
 MRIntW_SecondFist = "Second fist always on screen";
@@ -167,13 +167,13 @@ MRIntW_PunchingFist1 = "Random";
 MRIntW_PunchingFist2 = "Rotation";
 MRIntW_PunchingFist3 = "Based on player and camera movement";
 
-MRIntW_FinishPunch = "Finish punch";
+MRIntW_FinishPunch = "Finishing punch";
 MRIntW_FinishPunch0 = "No";
 MRIntW_FinishPunch1 = "Only berserk";
 MRIntW_FinishPunch2 = "Only gib";
 MRIntW_FinishPunch3 = "Yes";
 
-MRIntW_FinishPunchChance = "Finish punch chance";
+MRIntW_FinishPunchChance = "Finishing punch chance";
 MRIntW_MissPunch = "Miss animation";
 MRIntW_FistFixedOnTarget = "Fix fist on punched actor";
 MRIntW_SurfacePunchRecoil = "Kickback from punching surface with berserk";
@@ -182,19 +182,19 @@ MRIntW_ChainsawStart = "Starting animation";
 MRIntW_ChainsawCutting = "Improved chainsaw cutting animation";
 MRIntW_ChainsawCuttingWall = "Chainsaw surface cutting shaking";
 MRIntW_ChainsawSmoke = "Chainsaw smoke";
-MRIntW_ChainsawBlood0 = "Blood on the saw";
+MRIntW_ChainsawBlood0 = "Blood on the chainsaw";
 MRIntW_ChainsawBlood1 = "Blood dripping";
 MRIntW_ChainsawBloodLife = "Blood time (in seconds)";
 
-MRIntW_LHand = "Hold the pistol in the left hand";
-MRIntW_PistolSHand = "Hold gun with two hands";
+MRIntW_LHand = "Hold pistol in the left hand";
+MRIntW_PistolSHand = "Hold pistol with two hands";
 MRIntW_PistolSHand0 = "No";
-MRIntW_PistolSHand1 = "If enemy is far";
+MRIntW_PistolSHand1 = "If enemy is far away";
 MRIntW_PistolSHand2 = "Always";
-MRIntW_Rifle = "Replace the pistol with the rifle";
+MRIntW_Rifle = "Replace pistol with rifle";
 
 MRIntW_ShotgunSmoke = "Smoke from chamber";
-MRIntW_ShotgunPumpAngle = "Pump gun angle";
+MRIntW_ShotgunPumpAngle = "Pumping angle";
 MRIntW_ShotgunPumpRandom = "Randomize angle";
 MRIntW_ShotgunPumpRandRotation = "Random radius";
 MRIntW_ShotgunSparks = "Buckshot sparks";
@@ -203,14 +203,14 @@ MRIntW_SSGHandless = "Holding stock during reloading";
 MRIntW_SSGHandless0 = "No";
 MRIntW_SSGHandless1 = "Some times";
 MRIntW_SSGHandless2 = "Yes";
-MRIntW_SSGSmoke = "Smoke from barrels when reloading";
+MRIntW_SSGSmoke = "Smoke from barrels on reload";
 MRIntW_SSGSparks = "Buckshot sparks";
 
-MRIntW_ChaingunMaxSmokes = "Max smoking barrels";
+MRIntW_ChaingunMaxSmokes = "Max. smoking barrels";
 MRIntW_ChaingunSpeed = "Rotation speed";
 MRIntW_ChaingunFixed = "Fixed barrels position";
 MRIntW_ChaingunStopTime = "Stopping power";
-MRIntW_ChaingunCounterClock = "CounterClockwise rotation";
+MRIntW_ChaingunCounterClock = "Counterclockwise rotation";
 
 MRIntW_RocketSmoke = "Muzzle smoke";
 
