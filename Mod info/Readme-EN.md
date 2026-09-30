@@ -338,4 +338,5 @@ If you want to work with this mod, or add something to it, check the Mod info fo
 ***
 ## $\color{#FF0000}{Give\ me\ the\ damn\ download\ you\ nerd}$
 
-Fine, here it is https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/main.zip
+Verison for GZDoom 4.14.2-UZDoom 4.14.3 https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip
+Version for UZDoom 5.0+ https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/5.0+.zip
