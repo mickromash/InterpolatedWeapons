@@ -324,13 +324,15 @@ Extend Class MRIntWeaps_Handler
 	
 	Override Void WorldThingDied(WorldEvent e)
 	{
-		if(!e.Thing || (!e.Thing.bIsMonster && !PlayerPawn(e.Thing)) || e.Thing.bNOBLOOD || !MRIntW_ParticleFlies)Return;
+		if(!e.Thing || (!e.Thing.bIsMonster) || e.Thing.bNOBLOOD || !MRIntW_ParticleFlies)Return;
 		
-		Float Radius = GetDefaultByType(e.Thing.GetClass()).Radius;
+		Let Targ = e.Thing;
+		
+		Float Radius = GetDefaultByType(Targ.GetClass()).Radius;
 		int Start = CRandom(120, 240)*35;
 		For(int i=0;i<Radius/5;i++){
 			Let a = MRIntWeaps_ParticleFly(Level.SpawnVisualThinker('MRIntWeaps_ParticleFly'));
-			a.Master = e.Thing;
+			a.Master = Targ;
 			a.StartFly = Start;
 			if(i==0){
 				a.Main = true;
