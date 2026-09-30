@@ -220,8 +220,8 @@ Extend Class MRIntWeaps_Fist//Manual gun lowering
 				MenuTime = 0;
 			}
 		}
-		else {
-			if(Menuactive)MenuTime = 71;
+		else if(!demoplayback){
+			if(Menuactive || ConsoleState != c_up)MenuTime = 71;
 			else MenuTime = 0;
 		}
 		if(Allowed){
