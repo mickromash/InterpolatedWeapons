@@ -90,7 +90,7 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Quick switching | [server] MRIntW_QuickSwitch | No | Ability to switch weapon during reloading or similar animations |
 | Legacy of Rust Weapons | [server] MRIntW_LoRWeaps | Yes | Enables Legacy of Rust weapons in regular Doom and adds animations for weapons in Legacy of Rust |
 
-### Options  --> Configure Interpolated weapons --> Animations settings
+### Options --> Configure Interpolated weapons --> Animations settings
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Gloves color | [user] MRIntW_GlovesColor | Classic | Player's gloves color on weapon sprites |
