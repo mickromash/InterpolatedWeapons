@@ -204,12 +204,12 @@ faster pistol firing, quick switching and berserk fists kickback.
 **Incinerator**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Smoking | [nosave] MRIntW_InciniSmoke | Both | Smoke comming from the gun |
+| Smoking | [nosave] MRIntW_InciniSmoke | Both | Smoke coming from the gun |
 
 **Calamity Blade**
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Charging particles | [nosave] MRIntW_CalamityParticles | Yes | Particles comming from the charging gun |
+| Charging particles | [nosave] MRIntW_CalamityParticles | Yes | Particles coming from the charging gun |
 
 
 ### Options --> Configure Interpolated weapons --> Particles settings
@@ -338,6 +338,6 @@ If you want to work with this mod, or add something to it, check the Mod info fo
 ***
 ## $\color{#FF0000}{Give\ me\ the\ damn\ download\ you\ nerd}$
 
-[Verison for GZDoom 4.14.2-UZDoom 4.14.3](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip)
+[Version for GZDoom 4.14.2-UZDoom 4.14.3](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip)
 
 [Version for UZDoom 5.0+](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/5.0+.zip)
