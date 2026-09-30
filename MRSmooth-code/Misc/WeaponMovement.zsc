@@ -36,7 +36,7 @@ Extend Class MRIntWeaps_Fist
 		
 		if(MRIntW_DamageShake)DoDamageShake();
 		
-		if(LowerGun || RunKey>0 || MRIntW_RunKey>0)DoGunLower();
+		DoGunLower();
 		
 		if(MRIntW_Bounce)DoBounce();
 		
@@ -209,14 +209,25 @@ Extend Class MRIntWeaps_Fist//Damage shake
 }
 Extend Class MRIntWeaps_Fist//Manual gun lowering
 {
+	int MenuTime;
 	Bool LowerGun;
 	Double RunKey;
 	Void DoGunLower()
 	{
+		if(Players[ConsolePlayer].mo != Owner){
+			MenuTime++;
+			if(Owner.Player.Cmd.Yaw != 0 || Owner.Player.Cmd.Buttons != 0 && Owner.Player.Cmd.Buttons != BT_RUN){
+				MenuTime = 0;
+			}
+		}
+		else {
+			if(Menuactive)MenuTime = 71;
+			else MenuTime = 0;
+		}
 		if(Allowed){
 			Interpolate = true;
 			Bool Invert = MRIntW_RunKey>1;
-			Bool Pressing = (Owner.Player.Cmd.Buttons&BT_SPEED) || LowerGun;
+			Bool Pressing = MRIntW_RunKey && ((Owner.Player.Cmd.Buttons&BT_SPEED) || LowerGun) || MenuTime>70;
 			if(LowerGun && Owner.Player.Cmd.Buttons&BT_SPEED)Pressing = !Pressing;
 			
 			if(Pressing != Invert){
@@ -374,7 +385,7 @@ Extend Class MRIntWeaps_Fist//Weapon sway
 						Mult = -.6;
 						if(
 							(Owner.Player.FindPSprite(SecndLay) && !InStateSequence(Owner.Player.FindPSprite(SecndLay).CurState, weap.FindState("SecndHandWaitLoop")))
-							||(Owner.Player.FindPSprite(MainLay) && !InStateSequence(Owner.Player.FindPSprite(MainLay).CurState, weap.FindState("MainHandWait")))
+							||(Owner.Player.FindPSprite(MainLay) && Owner.Player.FindPSprite(MainLay).CurState && !InStateSequence(Owner.Player.FindPSprite(MainLay).CurState, weap.FindState("MainHandWait")))
 						)MultRot = 0;
 						else MultRot = .3;
 						
