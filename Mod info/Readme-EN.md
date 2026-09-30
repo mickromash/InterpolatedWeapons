@@ -1,5 +1,5 @@
 ﻿[![ru](https://img.shields.io/badge/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D1%8F_%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%8F_readme-green
-)](https://github.com/mickromash/InterpolatedWeapons/blob/main/Mod%20info/Readme-RU.md)
+)](https://github.com/mickromash/InterpolatedWeapons/blob/4.14.2/Mod%20info/Readme-RU.md)
 # Fluid Weapons (a.k.a. Interpolated Weapons)
 UZDoom weapon mod with interpolated weapon animations, particle effects and more.
 
@@ -201,15 +201,15 @@ faster pistol firing, quick switching and berserk fists kickback.
 | --- | --- | --- | --- |
 | Firing particles | [nosave] MRIntW_BFGParticles | Yes | Делает анимацию выстрела в разы интересней |
 
-**Испепелитель**
-| Название | [тип квара] CVar | По умолчанию | Что делает |
+**Incinerator**
+| Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Дым из ствола | [nosave] MRIntW_InciniSmoke | Весь | Анимация дыма выходящего из отверстий в стволе |
+| Smoking | [nosave] MRIntW_InciniSmoke | Both | Smoke comming from the gun |
 
-**Клинок бед**
-| Название | [тип квара] CVar | По умолчанию | Что делает |
+**Calamity Blade**
+| Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Частицы заряда | [nosave] MRIntW_CalamityParticles | Весь | Анимация частиц исходящих из заряжающегося оружия |
+| Charging particles | [nosave] MRIntW_CalamityParticles | Yes | Particles comming from the charging gun |
 
 
 ### Options --> Configure Interpolated weapons --> Particles settings
@@ -338,5 +338,6 @@ If you want to work with this mod, or add something to it, check the Mod info fo
 ***
 ## $\color{#FF0000}{Give\ me\ the\ damn\ download\ you\ nerd}$
 
-Verison for GZDoom 4.14.2-UZDoom 4.14.3 https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip
-Version for UZDoom 5.0+ https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/5.0+.zip
+[Verison for GZDoom 4.14.2-UZDoom 4.14.3](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip)
+
+[Version for UZDoom 5.0+](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/5.0+.zip)
