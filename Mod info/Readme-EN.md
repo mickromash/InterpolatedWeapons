@@ -240,32 +240,32 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Apply effects to custom monsters | [nosave] MRIntW_MonsterParticlesCustom | No | If this setting is disabled, only vanilla Doom monsters and projectile will have particle effects |
 | Particle flies | [nosave] MRIntW_ParticleFlies | No | Flies spawning on corpses like in Quake 2 |
 | Flies buzz volume | [nosave] MRIntW_ParticleFliesVolume | 0.4 | I think not everyone will like this sound |
-| Alternative lightnings | [nosave] MRIntW_AltLightnings | No | По умолчанию молнии в эффектах будут моментально появляться и медленно исчезать. С данной настройкой молнии будут "вырастать", а после пропадать с эффектом расщепления |
-| Decorations particles | [nosave] MRIntW_DecorationParticles | No | Включает эффекты для декораций. Помимо прочего добавляет ореолы на подобии блума для светящихся объектов |
-| Decorations effects quality | [nosave] MRIntW_DecorationParticlesAmount | 1 | Количество частиц в эффектах декораций |
-| Selected decorations effects | [nosave] MRIntW_DecorationWhichParticles | 511 | То же самое что и с эффектами игрока и монстров |
-| Teleportation particles | [nosave] MRIntW_TeleportParticles | No | Включает эффекты на базе частиц для телепортации |
-| Teleport style | [nosave] MRIntW_TeleportParticlesStyle | Wave | Доступны варианты: 2 кольца, Взрыв, Испарение, Обратный взрыв, Двойное испарение, Странное облако, Волна |
-| Monster teleport style | [nosave] MRIntW_TeleportParticlesStyleMonsters | Vapor | Тоже самое, но для телепортации монстров |
-| Items respawn particles | [nosave] MRIntW_RespawnParticles | No | Эффект респавна предметов. |
+| Alternative lightnings | [nosave] MRIntW_AltLightnings | No | By default, lightnings will appear instantly and slowly fade out. If that setting is tuned on, lightnings will quikly grow and then decompose |
+| Decorations particles | [nosave] MRIntW_DecorationParticles | No | Enables particle effects for decorations |
+| Decorations effects quality | [nosave] MRIntW_DecorationParticlesAmount | 1 | Amount of particles used in decorations effects |
+| Selected decorations effects | [nosave] MRIntW_DecorationWhichParticles | 511 | Same as with player and monsters effects |
+| Teleportation particles | [nosave] MRIntW_TeleportParticles | No | Enables particle effects for teleportations |
+| Teleport style | [nosave] MRIntW_TeleportParticlesStyle | Wave | The available variants are: 2 rings, Explosion, Vapor, Reverse explosion, Double vapor, Weird cloud, Wave |
+| Monster teleport style | [nosave] MRIntW_TeleportParticlesStyleMonsters | Vapor | Same as the previous one, but for monsters |
+| Items respawn particles | [nosave] MRIntW_RespawnParticles | No | The available variants are: Cloud, Wave, Dots (I prefer the last one) |
 
 ### Options --> Configure Interpolated weapons --> Sound settings
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Casings bounce sound voulme | [nosave] MRIntW_CasingsVolume | 1 | Дубликат настройки громкости гильз из меню частиц |
-| Chainsaw idle volume | [nosave] MRIntW_ChainsawVolume | 1 | Кому-то он может надоедать |
-| Chainsaw idle pitch randomness | [nosave] MRIntW_ChainsawRandomPitch | 0 | Добавляет вариативность звуку работы пилы |
-| BFG alt fire volume | [nosave] MRIntW_BFGAltVolume | .6 | Громкость гудения BFG во время проигрывания анимации на ПКМ |
-| High quality weapon sounds | [nosave] MRIntW_HQSounds | No | Использовать не сжатые звуки для оружия |
-| Weapon switch sound | [nosave] MRIntW_SwitchSounds | No | Проигрывать звуки при доставании и убирании оружия |
-| Chaingun custom firing sound | [nosave] MRIntW_ChaingunSound | No | Проигрывать кастомный звук стрельбы для пулемёта, вместо звука выстрела пистолета |
+| Casings bounce sound voulme | [nosave] MRIntW_CasingsVolume | 1 | The same setting as in particles menu |
+| Chainsaw idle volume | [nosave] MRIntW_ChainsawVolume | 1 | Some people might think the sound is anoying |
+| Chainsaw idle pitch randomness | [nosave] MRIntW_ChainsawRandomPitch | 0 | Makes the chainsaw noise more variable |
+| BFG alt fire volume | [nosave] MRIntW_BFGAltVolume | .6 | Volume of the BFG working sound during altfire animation |
+| High quality weapon sounds | [nosave] MRIntW_HQSounds | No | Use less compressed sounds |
+| Weapon switch sound | [nosave] MRIntW_SwitchSounds | No | Play sounds during weapon switch animations |
+| Chaingun custom firing sound | [nosave] MRIntW_ChaingunSound | No | Chaingun will use unique sound instead of pistol's |
 
 ### Настройки --> Configure Interpolated weapons --> Ui settings
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
-| Smooth menus | [nosave] MRIntW_SmoothUi | Yes | Отключает ограничение на фпс в меню, сглаживает его прокрутку и отдельные элементы |
-| Smooth menu transitions | [nosave] MRIntW_SmoothUiTransitions | For all | Добавляет анимацию перехода от одного меню к другому |
-| Animated logo | [nosave] MRIntW_SmoothUiLogo | Yes | Добавляет анимации для лого в меню. |
+| Smooth menus | [nosave] MRIntW_SmoothUi | Yes | Uncaps framerate in menu, smooths scrolling and some elements |
+| Smooth menu transitions | [nosave] MRIntW_SmoothUiTransitions | For all | Adds smooth transitions between menus |
+| Animated logo | [nosave] MRIntW_SmoothUiLogo | Yes | Adds animations to M_Doom |
 | Animated options | [nosave] MRIntW_SmoothUiOptions | Yes | Adds special animations for submenus |
 
 
