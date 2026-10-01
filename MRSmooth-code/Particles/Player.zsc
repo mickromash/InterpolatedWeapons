@@ -759,12 +759,17 @@ Extend Class MRIntWeaps_BFGBall
 		For(int i=0;i<Hit.Size();i++){
 			if(Hit.Size()-1>i && Hit[i+1]==Hit[i]){Mult++;Continue;}
 			
-			Vector3 Diff, Dir;
+			Vector3 Diff, Dir, Offst;
 			Diff = Hit[i].Pos-Who.Pos;
 			Double Pit4 = Who.PitchTo(Hit[i], Height, Hit[i].Height*.5);
 			Dir = (AngleToVector(Who.AngleTo(Hit[i]), 1)*Cos(Pit4), -Sin(Pit4));
+			Offst = (AngleToVector(Who.AngleTo(Hit[i])+90, 1)*Cos(Pit4+90), -Sin(Pit4+90));
+			Double OfstVal = CFRandom(-1.5, 1.5);
 			For(float j=3;j<=Diff.Length();j+=Mult){
-				MRSpawnParticle(Color(100,255,100), ParTex, SPF_FULLBRIGHT|SPF_REPLACE, STYLE_Add, 20, Mult*2, Who.Pos + (0,0,Height) + Dir*j, Alpha: .1*Mult);
+				if(OfstVal<=-1.5)OfstVal += .2;
+				else if(OfstVal>=1.5)OfstVal -= .2;
+				else OfstVal += CFRandom(-.2, .2);
+				MRSpawnParticle(Color(100,255,100), ParTex, SPF_FULLBRIGHT|SPF_REPLACE, STYLE_Add, 20, Mult*2, Who.Pos + (0,0,Height) + Dir*j + Offst*Mult*OfstVal, Alpha: .1*Mult);
 			}
 			
 			Mult = 1;
