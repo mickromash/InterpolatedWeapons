@@ -46,6 +46,14 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 		if(Owner && Owner.CountInv("ID24Incinerator")){
 			if(!MRIntW_LoRWeaps)Owner.A_TakeInventory("ID24Incinerator");
 			Destroy();
+			Return;
+		}
+		
+		Let Handler = MRIntWeaps_StaticHandler(StaticEventHandler.Find("MRIntWeaps_StaticHandler"));
+		if(!Handler)Return;
+		
+		if(Handler.IsLoR){
+			AmmoType1 = "Cell";
 		}
 	}
 	
@@ -288,8 +296,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				
 				if(Player.GetPSprite(OverlayId()).Alpha<=0)Player.GetPSprite(OverlayId()).FirstTic = true;
 				
-				Float Alph = CountInv("ID24Fuel");
-				Alph /= FindInventory("ID24Fuel").MaxAmount;
+				Float Alph = CountInv(invoker.AmmoType1);
+				Alph /= FindInventory(invoker.AmmoType1).MaxAmount;
 				A_OverlayAlpha(OverlayId(), (invoker.LEDs>.4?Clamp(Alph, CFRandom(-1, .7), invoker.LEDs):Min(invoker.LEDs, Alph)));
 				
 				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
