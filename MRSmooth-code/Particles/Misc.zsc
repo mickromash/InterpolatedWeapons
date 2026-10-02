@@ -324,15 +324,21 @@ Extend Class MRIntWeaps_Handler
 	
 	Override Void WorldThingDied(WorldEvent e)
 	{
-		if(!e.Thing || (!e.Thing.bIsMonster) || e.Thing.bNOBLOOD || !MRIntW_ParticleFlies)Return;
+		if(!e.Thing || (!e.Thing.bIsMonster && !PlayerPawn(e.Thing)) || e.Thing.bNOBLOOD || !MRIntW_ParticleFlies)Return;
 		
 		Let Targ = e.Thing;
 		
+		Vector3 Pos = Targ.Pos;
 		Float Radius = GetDefaultByType(Targ.GetClass()).Radius;
-		int Start = CRandom(120, 240)*35;
+		
+		Bool IsPlayer = PlayerPawn(e.Thing);
+		
+		int Start = 35;//CRandom(120, 240)*35;
 		For(int i=0;i<Radius/5;i++){
 			Let a = MRIntWeaps_ParticleFly(Level.SpawnVisualThinker('MRIntWeaps_ParticleFly'));
 			a.Master = Targ;
+			a.MasterPos = Pos;
+			a.MasterIsPlayer = IsPlayer;
 			a.StartFly = Start;
 			if(i==0){
 				a.Main = true;
@@ -1022,11 +1028,11 @@ Class MRIntWeaps_ParticleFly: VisualThinker
 {
 	Const Pit = 2.3;
 	Float Vol, SndVol, SndPitch, Amount;
-	Bool Main;
+	Bool Main, MasterIsPlayer;
 	Actor Master;
 	Vector2 Size;
 	int StartFly, StopFly;
-	Vector3 FlyAwayDir, Moving;
+	Vector3 MasterPos, FlyAwayDir, Moving;
 	Double Speed;
 	
 	Double StartScale;
@@ -1077,6 +1083,24 @@ Class MRIntWeaps_ParticleFly: VisualThinker
 		}
 		
 		StartFly--;
+		if(MasterIsPlayer){
+			if(Master.Health>0){//When a player respawns, corpse pointer switches to it, so we switch it back to corpse, finding it by its last pos
+				ThinkerIterator iter = ThinkerIterator.Create("PlayerPawn");
+				Actor mo;
+				Bool Found = false;
+
+				while(mo = PlayerPawn(iter.Next()))
+				{
+					if((mo.Pos == MasterPos || mo.Prev == MasterPos) && PlayerPawn(mo)){
+						Master = mo;
+						Found = true;
+						Break;
+					}
+				}
+				if(!Found)Destroy();
+			}
+			MasterPos = Master.Pos;
+		}
 		
 		if(StartFly>1)Return;
 		
@@ -1111,7 +1135,7 @@ Class MRIntWeaps_ParticleFly: VisualThinker
 			
 			Pos = Master.Pos;
 			Pos.XY += (Size.X*CFRandom(-1, 1), Size.Y*CFRandom(-1, 1));
-			Moving = Master.Pos + (Size.X*CFRandom(-1, 1), Size.Y*CFRandom(-1, 1), Master.Height*.5 + CFRandom(0, 60));
+			Moving = Pos + (Size.X*CFRandom(-1, 1), Size.Y*CFRandom(-1, 1), Master.Height*.5 + CFRandom(0, 60));
 			Speed = CFRandom(4, 10);
 			
 			if(Main && Vol>0){
