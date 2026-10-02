@@ -37,20 +37,20 @@ and even though it's possible to run the mod with, let's say, freedom, its sprit
 * Wad Smoosh is also supported
 
 ## Compatibility
-* Mod is supossed to work with most of the enemy randomizers or map packs, but I recommend to set it later in your mods loading order.
-* Thanks to weapon giving algorythm used in the mod that doesn't involves changes in playerpawn class, the mod is compatible with mods like ZMovement.
+* Mod is supposed to work with most of the enemy randomizers or map packs, but I recommend to set it later in your mods loading order.
+* Thanks to weapon giving algorithm used in the mod that doesn't involves changes in playerpawn class, the mod is compatible with mods like ZMovement.
 * Since almost every graphics in the mod is made in DOOM .lmp format, the mod is compatible with mods that changes the game color palette  
 however, only gloves with classic color will be changed by custom palette.
-* In theory, the mod should work with other weapon mods, but in most cases you won't be able to use weapon of either of the mods.
+* In theory, the mod should work with other weapon mods, but in most cases, you won't be able to use weapon of either of the mods.
 
 ## Mod features
 * Fluid weapon animations with no framerate cap.
 * Vanilla gameplay: mod doesn't affect weapon mechanics, including time of switching or firing, damage randomization or anything else.
-Weapon states that affect gameplay were directly coppied from code files within UZDoom.pk3 and was edited for audio/visual purposes only.
+Weapon states that affect gameplay were directly copied from code files within UZDoom.pk3 and was edited for audio/visual purposes only.
 However, there are some options in the mod settings that change gameplay, most of them are marked with "🌐" symbol. These options include
 better monsters alerting, instant firing (this option remove delay after players presses firing button and before weapon actually fires, without changing weapon firing rate),
 faster pistol firing, quick switching and berserk fists kickback.
-* Customization: almost every part of the mod, like speciffic animations or effects, can be turned on and off.
+* Customization: almost every part of the mod, like specific animations or effects, can be turned on and off.
 * Client-side: most of mod visual or audio settings do not affect other players game in multiplayer. All server settings are marked with "🌐" symbol.
 * Visual recoil and screen shake can be turned on and configured.
 * Gloves color: you can choose classic tan, black, red, blue, green or any color you want for your gloves. There's even a speci
@@ -58,11 +58,11 @@ faster pistol firing, quick switching and berserk fists kickback.
 * Various idle animations.
 * Casings can be set to appear only as animations or as an actual object inside the game.
 * There are 4 types of smoke in the mod:
-	* Overlay: simple animations inside weapon states, like chainsaw smoke or smoke comming from shotgun's chamber.
+	* Overlay: simple animations inside weapon states, like chainsaw smoke or smoke coming from shotgun's chamber.
 	* Firing smoke: clouds of smoke made via visual thinkers that comes from the weapon on firing. The amount of this smokes depends on last shot damage.
-	* Flowing smoke: you could've seen simillar concept in Bioshock games. Amount of the smoke is depends on how much you've been shooting.
-	* Long-term smoke: clouds of smoke that cluster on the ceilling after a player was shooting for a long time in one place.
-* A lot of different particle effects for projectiles, monsters and decorations, each can be turned on and off and combined with others. The amount of particles can be configured
+	* Flowing smoke: you could've seen similar concept in Bioshock games. Amount of the smoke depends on how much you've been shooting.
+	* Long-term smoke: clouds of smoke that cluster on the ceiling after a player was shooting for a long time in one place.
+* A lot of different particle effects for projectiles, monsters and decorations, each can be turned on and off and combined with others. The number of particles can be configured
 * Presets feature: there are 2 build in presets, vanilla, and advanced. One makes the game look and play as close to vanilla doom as possible, and the other toggles as much options as possible.
 * Simple dying animation with player dropping their weapon
 * Smooth animations in menus
@@ -94,7 +94,7 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Gloves color | [user] MRIntW_GlovesColor | Classic | Player's gloves color on weapon sprites |
-| Custom color shades | [user] MRIntW_GlovesColorShade | 2 2 2 | If gloves color is set to "Custom", gloves will be colored with gradient of MRIntW_GlovesColorShade and MRIntW_GlovesColorLight. I recomend you to set MRIntW_GlovesColorShade to the darkest value possible |
+| Custom color shades | [user] MRIntW_GlovesColorShade | 2 2 2 | If gloves color is set to "Custom", gloves will be colored with gradient of MRIntW_GlovesColorShade and MRIntW_GlovesColorLight. I recommend you to set MRIntW_GlovesColorShade to the darkest value possible |
 | Custom color lights | [user] MRIntW_GlovesColorLight | EF EF EF | Gloves hue mostly depends on this one |
 | Pickup and reload animations | [nosave] MRIntW_ReloadAnims | Reload only | Если на оружии кончаются патроны, или при первом его подборе, будет проигрываться альтернативная анимация выбора |
 | Disable muzzle flashes | [nosave] MRIntW_NoMuzzleFlash | No | Disables muzzle flashes for weapons like in Doom Retro source port |
@@ -113,10 +113,10 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Original (DOS) Doom firing bob | [nosave] MRIntW_VanillaFireBob | No | During firing weapon will stay in the same spot instead of continue bobbing or moving to the screen center |
 | Switch animations | [nosave] MRIntW_SwitchAnims | Random variants | Animations that will play when switching weapons |
 | Bounce on land | [nosave] MRIntW_Bounce | Regular | Realistic weapon movement in air and on landing |
-| Run key | [nosave] MRIntW_RunKey | Does nothing | Lowers weapon - if the run key (Shift) is being holded, the weapon will go to the bottom of the screen; Raises weapon - the weapon is always at the bottom of the screen and is raised when the run key is being holded |
+| Run key | [nosave] MRIntW_RunKey | Does nothing | Lowers weapon - if the run key (Shift) is being held, the weapon will go to the bottom of the screen; Raises weapon - the weapon is always at the bottom of the screen and is raised when the run key is being holded |
 | Weapon sway | [nosave] MRIntW_WeaponSway | No | Realistic weapon reaction to player moving the camera |
 | Weapon sway style | [nosave] MRIntW_WeaponSwayStyle | Battlefront 2015 | Half Life 2 - the weapon lags behind the camera movement, stays in place when it stops moving, resets its offset on firing; Battlefront 2015 - depending on the weapon, it lags behind or outstrips the camera movement and tilts. When the camera stops, the weapon resets its offset with wobble effect |
-| Idle animations | [nosave] MRIntW_IdleAnims | Yes | Breathing, warmping-up etc while idling. Some weapons got unique idle animations (also when pressing alt fire or reloading key the weapon plays more expressed animations) |
+| Idle animations | [nosave] MRIntW_IdleAnims | Yes | Breathing, warming-up e.t.c. while idling. Some weapons got unique idle animations (also when pressing alt fire or reloading key the weapon plays more expressed animations) |
 | Shake hands on damage | [nosave] MRIntW_DamageShake | Yes | Quick weapon shaking when receiving damage, like in Doom (2016). Shaking amount depends on the damage |
 | Low health hands shaking | [nosave] MRIntW_LowHealthShake | No | Small weapon shaking when the player's health is or lower than 25 |
 | Weapon offset | [nosave] MRIntW_BaseOffset | No | Moves the weapon away from the screen center |
@@ -128,15 +128,15 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Switch main fist | [user] MRIntW_RightPunch | No | Switches the hand with the brass knuckles |
-| Hands shaking on berserk | [user] MRIntW_BersShake | Only without weapon | After picking up berserk the player's hands will start shaking and the fist with brass knuckles will shown on the screen |
+| Hands shaking on berserk | [user] MRIntW_BersShake | Only without weapon | After picking up berserk the player's hands will start shaking and the fist with brass knuckles will show on the screen |
 | Bare hands | [user] MRIntW_BareHands | Yes | Use gloveles sprite for fists |
-| Gloves removal animation | [user] MRIntW_GlovesStrip | Yes | When selecting fists the gloves removal animation will play (if the option above is turned on) |
+| Gloves removal animation | [user] MRIntW_GlovesStrip | Yes | When selecting fists, the gloves removal animation will play (if the option above is turned on) |
 | Second fist always on screen | [user] MRIntW_SecondFist | No | The hand with brass knuckles will be always shown on the screen |
 | Punching fist | [user] MRIntW_PunchingFist | Main | With which hand the player will be punching |
 | Finishing punch | [user] MRIntW_FinishPunch | Only berserk | Play special animation when the target is killed |
 | Miss animation | [user] MRIntW_MissPunch | No | Play special animation when nothing is hit |
 | Finishing punch chance | [user] MRIntW_FinishPunchChance | 0.7 | Chance of playing the finishing animation |
-| Kickback from punching surface with berserk | [user] MRIntW_SurfacePunchRecoil | No | When hitting the level geometry (walls/floor/ceilling) after picking up berserk, the player will be thrusted in the opposite direction |
+| Kickback from punching surface with berserk | [user] MRIntW_SurfacePunchRecoil | No | When hitting the level geometry (walls/floor/ceiling) after picking up berserk, the player will be thrusted in the opposite direction |
 | Fix fist on punched actor | [nosave] MRIntW_FistFixedOnTarget | No | If the actor is hit, the fist will be fixed on it, ignoring the camera angle |
 
 **Chainsaw**
@@ -144,7 +144,7 @@ faster pistol firing, quick switching and berserk fists kickback.
 | --- | --- | --- | --- |
 | Starting animation | [user] MRIntW_ChainsawStart | No | Special chainsaw select animation |
 | Improved chainsaw cutting animation | [user] MRIntW_ChainsawCutting | Yes | When cutting through actor, procedural animations with random angle and speed will be played |
-| Chainsaw surface cutting shaking | [user] MRIntW_ChainsawCuttingWall | Yes | When cutting the level geometry (walls/floor/ceilling) hands with the chainsaw will be shaking |
+| Chainsaw surface cutting shaking | [user] MRIntW_ChainsawCuttingWall | Yes | When cutting the level geometry (walls/floor/ceiling) hands with the chainsaw will be shaking |
 | Chainsaw smoke | [nosave] MRIntW_ChainsawSmoke | Yes | Smoke coming from chainsaw |
 | Blood on the chainsaw | [nosave] MRIntW_ChainsawBlood | No | When cutting monsters or liquids on the level the chainsaw will be getting dirty |
 | Blood dripping | [nosave] MRIntW_ChainsawBlood | No | Liquids dripping from the chainsaw |
@@ -171,7 +171,7 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Holding stock while reloading | [user] MRIntW_SSGHandless | Always | The animation makes a bit more sense when the player got time to lower the hand to grab shells before loading them |
-| Smoke from barrels on reload | [nosave] MRIntW_SSGSmoke | Yes | Smoke coming from the barrels after openning them |
+| Smoke from barrels on reload | [nosave] MRIntW_SSGSmoke | Yes | Smoke coming from the barrels after opening them |
 | Buckshot sparks | [nosave] MRIntW_SSGSparks | No | Sparks coming from the muzzle when firing |
 | Shotguns firing animation recoil | [nosave] MRIntW_ShotgunsRecoil | 1 | How much the SSG and shotgun sprite is affected by recoil |
 
@@ -182,7 +182,7 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Rotation speed | [user] MRIntW_ChaingunSpeed | 1 | This setting doesn't affect gameplay (like almost every other setting in this section) |
 | Stopping power | [user] MRIntW_ChaingunStopTime | .3 | How fast the barrels stop spinning |
 | Counterclockwise rotation | [user] MRIntW_ChaingunCounterClock | No | The more customization the better |
-| Max. smoking barrels | [nosave] MRIntW_ChaingunMaxSmokes | 3 | Might help with the pefromance on the weakier devices. Besides that, the length of the smoke is divided by barrels amount |
+| Max. smoking barrels | [nosave] MRIntW_ChaingunMaxSmokes | 3 | Might help with the performance on the weakier devices. Besides that, the length of the smoke is divided by barrels amount |
 
 **Rocket Launcher**
 | Setting name | [CVar type] CVar | Default | Description |
@@ -226,7 +226,7 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Flowing smoke length | [nosave] MRIntW_FlowingSmokeLength | 0.6 | If the values is lower than 0.6 the smoke flow might have breaks |
 | Flowing smoke opacity | [nosave] MRIntW_FlowingSmokeAlpha | 0.2 | How visible the smoke is |
 | Max. smoking time | [nosave] MRIntW_FlowingSmokeMaxTime | 1 | For how long the smoke will coming from the weapon |
-| Flowing smoke particles amount | [nosave] MRIntW_FlowingSmokePrecision | 1 | Controls the density of the flowing smoke particles. Lower values will increase performance, but individual particles might became more visible |
+| Flowing smoke particles amount | [nosave] MRIntW_FlowingSmokePrecision | 1 | Controls the density of the flowing smoke particles. Lower values will increase performance, but individual particles might become more visible |
 | Flowing smoke experimental texture | [nosave] MRIntW_FlowingSmokeBioTexture | No | The more detailed smoke more similar to the smoke from Bioshock. Doesn't work perfectly |
 | Long term smoke | [nosave] MRIntW_LongTermSmoke | No | A pretty much experimental feature. When firing for a long time in the same spot, the room will be clustered with clouds of smoke |
 | Particles texture | [nosave] MRIntW_ParticleTexture | Same as UZDoom particles | Mod's effects which are turned on in this menu use this setting to determine particles appearance. If set to "Same as UZDoom particles", source port's particles texture will be used |
@@ -235,15 +235,15 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Player weapon effects quality | [nosave] MRIntW_PlayerParticlesAmount | 1 | Amount of the particles used by player effects. My GTX970 and Core i7 3770 can handle x2 value |
 | Selected player weapon effects | [nosave] MRIntW_PlayerWhichParticles | 134021019 | All selected player effects are contained in one CVar as flags |
 | Monsters particles | [nosave] MRIntW_MonsterParticles | No | Adds effects for monsters and their projectiles |
-| Monsters effects quality | [nosave] MRIntW_MonsterParticlesAmount | 1 | Amount of the particles used by monsters effects. Maps with the big amount of monsters might require lower this value |
+| Monsters effects quality | [nosave] MRIntW_MonsterParticlesAmount | 1 | Amount of the particles used by monsters' effects. Maps with the big amount of monsters might require lower this value |
 | Selected monsters effects | [nosave] MRIntW_MonsterWhichParticles and [nosave] MRIntW_MonsterWhichParticles2 | -33 and -2147483617 | Same as the player effects, but because of the amount of effects I had to use two CVars to contain them |
 | Apply effects to custom monsters | [nosave] MRIntW_MonsterParticlesCustom | No | If this setting is disabled, only vanilla Doom monsters and projectile will have particle effects |
 | Particle flies | [nosave] MRIntW_ParticleFlies | No | Flies spawning on corpses like in Quake 2 |
 | Flies buzz volume | [nosave] MRIntW_ParticleFliesVolume | 0.4 | I think not everyone will like this sound |
-| Alternative lightnings | [nosave] MRIntW_AltLightnings | No | By default, lightnings will appear instantly and slowly fade out. If that setting is tuned on, lightnings will quikly grow and then decompose |
+| Alternative lightnings | [nosave] MRIntW_AltLightnings | No | By default, lightnings will appear instantly and slowly fade out. If that setting is tuned on, lightnings will quickly grow and then decompose |
 | Decorations particles | [nosave] MRIntW_DecorationParticles | No | Enables particle effects for decorations |
-| Decorations effects quality | [nosave] MRIntW_DecorationParticlesAmount | 1 | Amount of particles used in decorations effects |
-| Selected decorations effects | [nosave] MRIntW_DecorationWhichParticles | 511 | Same as with player and monsters effects |
+| Decorations effects quality | [nosave] MRIntW_DecorationParticlesAmount | 1 | Number of particles used in decorations effects |
+| Selected decorations effects | [nosave] MRIntW_DecorationWhichParticles | 511 | Same as with player and monsters' effects |
 | Teleportation particles | [nosave] MRIntW_TeleportParticles | No | Enables particle effects for teleportations |
 | Teleport style | [nosave] MRIntW_TeleportParticlesStyle | Wave | The available variants are: 2 rings, Explosion, Vapor, Reverse explosion, Double vapor, Weird cloud, Wave |
 | Monster teleport style | [nosave] MRIntW_TeleportParticlesStyleMonsters | Vapor | Same as the previous one, but for monsters |
@@ -253,7 +253,7 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Casings bounce sound voulme | [nosave] MRIntW_CasingsVolume | 1 | The same setting as in particles menu |
-| Chainsaw idle volume | [nosave] MRIntW_ChainsawVolume | 1 | Some people might think the sound is anoying |
+| Chainsaw idle volume | [nosave] MRIntW_ChainsawVolume | 1 | Some people might think the sound is annoying |
 | Chainsaw idle pitch randomness | [nosave] MRIntW_ChainsawRandomPitch | 0 | Makes the chainsaw noise more variable |
 | BFG alt fire volume | [nosave] MRIntW_BFGAltVolume | .6 | Volume of the BFG working sound during altfire animation |
 | High quality weapon sounds | [nosave] MRIntW_HQSounds | No | Use less compressed sounds |
