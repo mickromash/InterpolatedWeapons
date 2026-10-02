@@ -10,6 +10,7 @@ Class MRIntWeaps_Handler: EventHandler
 		,"ID24Incinerator", "ID24CalamityBlade"
 	};
 	
+	MRIntWeaps_StaticHandler StaticHandler;
 	Array<Actor> Berserks;
 	MRIntWeaps_Smoker Smokers[MAXPLAYERS];
 	MRIntWeaps_WeaponChecker WeaponChecker[MAXPLAYERS];
@@ -21,6 +22,17 @@ Class MRIntWeaps_Handler: EventHandler
 		if(!(e.Replacee is 'DoomWeapon'))Return;
 		
 		String ActName = e.Replacee.GetClassName();
+		
+		if(StaticHandler && StaticHandler.IsLoR){
+			if(ActName == "PlasmaRifle"){
+				e.Replacement = "MRIntWeaps_ID24Incinerator";
+				Return;
+			}
+			if(ActName == "BFG9000"){
+				e.Replacement = "MRIntWeaps_ID24CalamityBlade";
+				Return;
+			}
+		}
 		
 		if(!((Class<Weapon>)("MRIntWeaps_"..ActName)))Return;
 		
@@ -498,6 +510,8 @@ Class MRIntWeaps_Handler: EventHandler
 	
 	Override Void OnRegister()
 	{
+		StaticHandler = MRIntWeaps_StaticHandler(StaticEventHandler.Find("MRIntWeaps_StaticHandler"));
+		if(!StaticHandler)Return;
 		New('MRIntWeaps_DifVersionMessage');
 		//Console.Printf("Register");
 	}
@@ -708,6 +722,29 @@ Class MRIntWeaps_DifVersionMessage: Thinker
 */
 Class MRIntWeaps_StaticHandler: StaticEventHandler
 {
+	Bool IsLoR;//Playing Legacy of Rust
+	
+	Override Void OnRegister()
+	{
+		IsLoR = false;
+		
+		int LumpNum = 0;
+		While(Wads.FindLump("WADINFO", LumpNum+1)>-1){
+			LumpNum = Wads.FindLump("WADINFO", LumpNum+1);
+			String WadInfo = Wads.ReadLump(LumpNum);
+			
+			if(WadInfo.IndexOf("Title")<0)Continue;
+			
+			WadInfo = WadInfo.Mid(WadInfo.IndexOf("Title"));
+			WadInfo = WadInfo.Mid(WadInfo.IndexOf(":")+2);
+			WadInfo = WadInfo.Left(WadInfo.IndexOf("\r"));
+			if(WadInfo == "Legacy of Rust"){
+				IsLoR = true;
+				Break;
+			}
+		}
+	}
+	
 	Override Void OnUnregister()
 	{
 		CVar.FindCVar("wbobfire").SetFloat(MRIntW_SavedWbobFire);

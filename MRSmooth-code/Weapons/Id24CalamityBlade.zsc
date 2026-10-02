@@ -36,6 +36,14 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 			Destroy();
 			Return;
 		}
+		
+		Let Handler = MRIntWeaps_StaticHandler(StaticEventHandler.Find("MRIntWeaps_StaticHandler"));
+		if(!Handler)Return;
+		
+		if(Handler.IsLoR){
+			AmmoType1 = "Cell";
+		}
+		
 		SwitchAnim = CRandom(0, 1);
 	}
 	
