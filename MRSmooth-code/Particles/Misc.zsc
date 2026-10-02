@@ -326,20 +326,22 @@ Extend Class MRIntWeaps_Handler
 	{
 		if(!e.Thing || (!e.Thing.bIsMonster && !PlayerPawn(e.Thing)) || e.Thing.bNOBLOOD || !MRIntW_ParticleFlies)Return;
 		
-		Let Targ = e.Thing;
-		
-		Vector3 Pos = Targ.Pos;
-		Float Radius = GetDefaultByType(Targ.GetClass()).Radius;
-		
 		Bool IsPlayer = PlayerPawn(e.Thing);
 		
-		int Start = 35;//CRandom(120, 240)*35;
+		ApplyCorpseFlies(e.Thing, CRandom(120, 240)*35, IsPlayer);
+	}
+	
+	Void ApplyCorpseFlies(Actor Thing, int Delay = 2, Bool IsPlayer = false)
+	{
+		Vector3 Pos = Thing.Pos;
+		Float Radius = GetDefaultByType(Thing.GetClass()).Radius;
+		
 		For(int i=0;i<Radius/5;i++){
 			Let a = MRIntWeaps_ParticleFly(Level.SpawnVisualThinker('MRIntWeaps_ParticleFly'));
-			a.Master = Targ;
+			a.Master = Thing;
 			a.MasterPos = Pos;
 			a.MasterIsPlayer = IsPlayer;
-			a.StartFly = Start;
+			a.StartFly = Delay;
 			if(i==0){
 				a.Main = true;
 				a.Amount = .6+Radius/50;

@@ -226,7 +226,7 @@ Class MRIntWeaps_Handler: EventHandler
 	Override Void WorldThingSpawned(WorldEvent e)
 	{
 		if(!e.Thing)Return;
-				
+		
 		if((e.Thing is "BulletPuff" || Actor.GetReplacee(e.Thing.GetClass()) == "BulletPuff") &&
 			MRIntW_PlayerWhichParticles&MRIWPP_Puff)
 		{
@@ -358,6 +358,13 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 		if(e.name ~== "MRIntWeaps_ApplyParticles"){
 			UpdateOnStartupParticles();
+			Return;
+		}
+		if(e.name ~== "MRIntWeaps_Stinky"){
+			Let Victim = Players[e.Args[0]].mo;
+			if(!Victim)Return;
+			
+			ApplyCorpseFlies(Victim);
 			Return;
 		}
 		if(e.name ~== "MRIntWeaps_RandomizePlayer"){
