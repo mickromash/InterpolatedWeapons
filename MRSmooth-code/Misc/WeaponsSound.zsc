@@ -66,7 +66,7 @@ Extend Class MRIntWeaps_Fist
 		// turn to face target
 		if (t.linetarget)
 		{
-			A_StartSound(invoker.SndPunch, CHAN_WEAPON);
+			A_StartSound(invoker.SndPunch, CHAN_WEAPON, pitch:i_timescale);
 			angle = t.angleFromSource;
 		}
 	}
