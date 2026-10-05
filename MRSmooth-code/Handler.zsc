@@ -573,7 +573,7 @@ Class MRIntWeaps_Handler: EventHandler
 				CVar.GetCVar("MRIntW_GlovesColor", Players[PlrNum]).SetInt(Random[MRIntWRand](0, 7));
 				Break;
 			Case 95:
-				CVar.GetCVar("MRIntW_GlovesColor", Players[PlrNum]).SetInt(Random[MRIntWRand](8, 9));
+				CVar.GetCVar("MRIntW_GlovesColor", Players[PlrNum]).SetInt(RandomPick[MRIntWRand](8, 9, 12));
 				Break;
 			Case 96:
 				CVar.GetCVar("MRIntW_GlovesColor", Players[PlrNum]).SetInt(Random[MRIntWRand](19, 24));
