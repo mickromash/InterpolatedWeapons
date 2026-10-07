@@ -444,8 +444,8 @@ Extend Class MRIntWeaps_Chainsaw
 		Player.GetPSprite(Lay).Scale = Player.GetPSprite(Lay1).Scale;
 		Player.GetPSprite(Lay).Pivot = Player.GetPSprite(Lay1).Pivot;
 		Player.GetPSprite(Lay).Rotation = Player.GetPSprite(Lay1).Rotation;
-		Player.GetPSprite(Lay).bInterpolate = Player.GetPSprite(Lay1).bInterpolate;
-		Player.GetPSprite(Lay).FirstTic = Player.GetPSprite(Lay1).FirstTic;
+		Player.GetPSprite(Lay).bInterpolate = Player.GetPSprite(Lay1).bInterpolate && !Player.GetPSprite(Lay).FirstTic;
+		if(!Player.GetPSprite(Lay).FirstTic)Player.GetPSprite(Lay).FirstTic = Player.GetPSprite(Lay1).FirstTic;
 		Player.GetPSprite(Lay).bAddWeapon = Player.GetPSprite(Lay1).bAddWeapon;
 		
 		if(Num<6 && invoker.Dripping[Num]>0 && !invoker.Cutting && WaterLevel<2){
