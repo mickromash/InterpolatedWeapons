@@ -320,8 +320,6 @@ Extend Class MRIntWeaps_Chainsaw
 		if(invoker.BldFrame[Num]==0)invoker.BldFrame[Num] = Num;
 		
 		A_Overlay(LayBlood+Num, "SawBlood");
-		A_BloodLayTick(LayBlood+Num);
-		Player.GetPSprite(LayBlood+Num).FirstTic = true;
 		if(Force==-1)invoker.BldAlpha[Num] = .1;
 		invoker.BldCooldown[Num] = CoolDown;
 		
