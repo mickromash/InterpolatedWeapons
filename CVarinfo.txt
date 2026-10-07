@@ -144,7 +144,7 @@ nosave float MRIntW_ParticleFliesVolume = .4;//Flies buzzing volume
 
 //-1 - UZDoom, 0 - Smooth, 1 - Round, 2 - Square
 nosave int MRIntW_ParticleTexture = -1;
-nosave int MRIntW_ParticleSmokeTexture = -1;
+nosave int MRIntW_ParticleSmokeTexture = 0;
 
 nosave bool MRIntW_SmoothUi = true;//Interpolated menus
 nosave int MRIntW_SmoothUiTransitions = 2;//Smooth transitions in menus
