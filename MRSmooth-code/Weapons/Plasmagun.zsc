@@ -301,6 +301,7 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 		GunLower:
 			#### # 0 A_JumpIf(!Player.FindPSprite(Lay2) || Player.FindPSprite(Lay2).Frame>7, "GunLowerAlt");
 			PL1G A 1 {
+				A_OverlayFlags(Lay2, PSPF_FLIP, false);
 				invoker.IdleEnd = false;
 				if(MRIntW_SwitchAnims>1)invoker.LowerDir = CRandomPick(-1, 1);
 				invoker.InterpolateMuzzle = 2;
