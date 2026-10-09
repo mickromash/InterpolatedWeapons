@@ -65,6 +65,17 @@ MRIntW/BFGSelect ""
 MRIntW/BFGDeselect ""
 MRIntW/BFGCharge "Sounds/MRIntW/MRIntFly.wav"
 
+MRIntW/IncineratorStartFire DSINCBRN
+MRIntW/IncineratorFire1 DSINCFI1
+MRIntW/IncineratorFire2 DSINCFI2
+MRIntW/IncineratorHit1 DSINCHT1
+MRIntW/IncineratorHit2 DSINCHT2
+MRIntW/IncineratorHit3 DSINCHT3
+
+MRIntW/CalamityCharge DSHETCHG
+MRIntW/CalamityFire DSHETSHT
+MRIntW/CalamityHit DSHETXPL
+
 MRIntW/PistolCasing "Sounds/MRIntW/Casings/dsding.ogg"
 MRIntW/ShotgunCasingLand "Sounds/MRIntW/Casings/SDIE1.ogg"
 
