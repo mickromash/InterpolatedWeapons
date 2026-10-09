@@ -49,6 +49,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			Return;
 		}
 		
+		MarkPrecacheSounds();
+		
 		Let Handler = MRIntWeaps_StaticHandler(StaticEventHandler.Find("MRIntWeaps_StaticHandler"));
 		if(!Handler)Return;
 		
@@ -90,6 +92,11 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			mo.Vel3DFromAngle(mo.Speed, mo.angle, Pitch);
 
 			mo.tracer = t.linetarget;
+		}
+		
+		if(realmo){
+			MRIntWeaps_ID24IncineratorFlame(realmo).StartFireSound = invoker.SndStartFire;
+			MRIntWeaps_ID24IncineratorFlame(realmo).HitSound = invoker.SndHit;
 		}
 		
 		if(realmo && MRIntW_PlayerParticles){
@@ -643,6 +650,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				else A_Overlay(Lay1, "GunRaiseVanilla");
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
 				
+				A_StartSound(invoker.SndSelect, CHAN_AUTO, pitch:CFRandom(1, 1.2)*i_timescale);
+				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("FLMGA0");
 			}
 		Raise:
@@ -668,6 +677,8 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				else A_Overlay(Lay1, "GunLowerVanilla");
 				//Player.GetPSprite(PSP_WEAPON).Y = 32;
 				
+				A_StartSound(invoker.SndDeselect, CHAN_AUTO, pitch:CFRandom(1, 1.2)*i_timescale);
+				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("FLMGA0");
 			}
 		Lower:
@@ -683,10 +694,10 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 			}
 		FireLoop:
 			#### A 0 BRIGHT A_Jump(128, "FireAltSound");
-			#### A 0 BRIGHT A_StartSound("weapons/incinerator/fire1", CHAN_WEAPON, pitch:i_timescale);
+			#### A 0 BRIGHT A_StartSound(invoker.SndFire.."1", CHAN_WEAPON, pitch:i_timescale);
 			Goto DoFire;
 		FireAltSound:
-			#### A 0 BRIGHT A_StartSound("weapons/incinerator/fire2", CHAN_WEAPON, pitch:i_timescale);
+			#### A 0 BRIGHT A_StartSound(invoker.SndFire.."2", CHAN_WEAPON, pitch:i_timescale);
 			Goto DoFire;
 		DoFire:
 			#### A 0 BRIGHT A_GunFlash();
@@ -765,9 +776,43 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 
 class MRIntWeaps_ID24IncineratorFlame : ID24IncineratorFlame
 {
+	String StartFireSound, HitSound;
 	Override int SpecialMissileHit(Actor Victim)
 	{
 		if(Victim && Victim!=Target && Victim.bShootable)Master = Victim;
 		Return Super.SpecialMissileHit(Victim);
+	}
+	
+	States
+	{
+	Spawn:
+		TNT1 A 1 BRIGHT;
+		IFLM A 2 BRIGHT;
+		IFLM B 2 BRIGHT A_StartSound(StartFireSound, CHAN_BODY, pitch:CFRandom(.9, 1.1)*i_timescale);
+		IFLM CDEFGH 2 BRIGHT;
+		Stop;
+	Death:
+		IFLM A 0 BRIGHT A_Jump(128, "DeathSoundAlt");
+		IFLM A 0 BRIGHT A_StartSound(HitSound.."1", CHAN_BODY, pitch:CFRandom(.9, 1.1)*i_timescale);
+		Goto DeathExplosion;
+	DeathSoundAlt:
+		IFLM A 0 BRIGHT A_StartSound(HitSound.."2", CHAN_BODY, pitch:CFRandom(.9, 1.1)*i_timescale);
+		Goto DeathExplosion;
+	DeathExplosion:
+		IFLM I 2 BRIGHT A_RadiusDamage(5, 64);
+		IFLM JI 2 BRIGHT;
+		IFLM J 2 BRIGHT A_RadiusDamage(5, 64);
+		IFLM KJ 2 BRIGHT;
+		IFLM K 2 BRIGHT A_RadiusDamage(5, 64);
+		IFLM L 2 BRIGHT;
+		IFLM K 2 BRIGHT A_StartSound(HitSound.."3", CHAN_BODY, pitch:CFRandom(.9, 1.1)*i_timescale);
+		IFLM L 2 BRIGHT A_RadiusDamage(5, 64);
+		IFLM ML 2 BRIGHT;
+		IFLM M 2 BRIGHT A_RadiusDamage(5, 64);
+		IFLM NM 2 BRIGHT;
+		IFLM N 2 BRIGHT A_RadiusDamage(5, 64);
+		IFLM ONO 2 BRIGHT;
+		IFLM POP 2 BRIGHT;
+		Stop;
 	}
 }
