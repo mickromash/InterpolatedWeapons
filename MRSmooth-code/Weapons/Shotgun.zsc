@@ -137,7 +137,9 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			Wait;
 		GunLowerVanilla://Vanilla deselect animation
 			SH1G A 1 A_GlovesColor();
-			#### A 1;
+			#### A 1 {
+				if(Player.GetPSprite(PSP_WEAPON).Y>=WEAPONBOTTOM-60)A_StartSound(invoker.SndDeselect, CHAN_WEAPON, CHANF_NOSTOP, pitch:CFRandom(.8, 1)*i_timescale);
+			}
 			Wait;
 		GunRaise:
 			TNT1 A 0 A_JumpIf(invoker.Reload, "GunRaiseReload");
@@ -210,6 +212,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					A_OverlayMoveTo(Lay1, -2, 32, .7);
 					A_OverlayScale(Lay1, -.02, -.02, WOF_ADD);
 					A_OverlayRotate(Lay1, 1, WOF_ADD);
+					A_StartSound(invoker.SndReady, CHAN_AUTO, pitch:CFRandom(.7, .9)*i_timescale);
 				}
 				invoker.SwitchState--;
 			}
@@ -331,6 +334,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					invoker.SwitchState = -1;
 					A_OverlayFlags(Lay1, PSPF_INTERPOLATE, false);
 				}
+				
+				if(Player.GetPSprite(PSP_WEAPON).Y>=WEAPONBOTTOM-60)A_StartSound(invoker.SndDeselect, CHAN_WEAPON, CHANF_NOSTOP, pitch:CFRandom(.8, 1)*i_timescale);
 			}
 			Wait;
 		LeftHandRaise:
@@ -351,6 +356,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				A_OverlayScale(LHand, .023, .023, WOF_ADD);
 				A_OverlayFlags(LHand, PSPF_INTERPOLATE, !Player.GetPSprite(LHand).FirstTic);
 			}
+			#### # 0 A_StartSound(invoker.SndReady, CHAN_AUTO, pitch:CFRandom(.9, 1.1));
 			Stop;
 		LeftHandRaise2:
 			#### GGGGG 1{
@@ -364,6 +370,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				Player.GetPSprite(LHand).Scale = (1,1)+(Player.GetPSprite(LHand).Scale-(1,1))*.7;
 				A_OverlayFlags(LHand, PSPF_INTERPOLATE, !Player.GetPSprite(LHand).FirstTic);
 			}
+			#### # 0 A_StartSound(invoker.SndReady, CHAN_AUTO, pitch:CFRandom(.9, 1.1));
 			Stop;
 		LeftHandLower:
 			MRD1 G 1 {
@@ -652,6 +659,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				Player.GetPSprite(LHand).Scale.X = (Player.GetPSprite(LHand).Scale.X-.93)*.6+.93;
 				Player.GetPSprite(LHand).Scale.Y = (Player.GetPSprite(LHand).Scale.Y-.9)*.6+.9;
 			}
+			#### # 0 A_StartSound(invoker.SndReady, CHAN_AUTO, volume:.6, pitch:CFRandom(.8, 1));
 			Stop;
 			
 		GunFire:
@@ -1083,6 +1091,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 					A_ClearOverlays(OverlayId(), OverlayId());
 					Return;
 				}
+				A_StartSound("MRIntW/HQ/ShotgunCatch", CHAN_AUTO, volume:CFRandom(.05, .2), pitch:CFRandom(.7, .9));
 								
 				A_OverlayMoveTo(OverlayId(), Player.GetPSprite(Casing).X + (Player.GetPSprite(Casing).X-invoker.OldCasingPos[Casing-PSP_FLASH-30].X)*3,
 					Player.GetPSprite(Casing).Y-32 + (Player.GetPSprite(Casing).Y-invoker.OldCasingPos[Casing-PSP_FLASH-30].Y), .3);
@@ -1165,6 +1174,8 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 				if(MRIntW_SwitchAnims)A_Overlay(Lay1, "GunRaise");
 				else A_Overlay(Lay1, "GunRaiseVanilla");
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
+				
+				A_StartSound(invoker.SndSelect, CHAN_AUTO, pitch:CFRandom(.8, 1)*i_timescale);
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("SHTGA0");
 			}

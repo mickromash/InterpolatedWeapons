@@ -451,12 +451,14 @@ Extend Class MRIntWeaps_SuperShotgun//'Particles'
 
 Extend Class MRIntWeaps_SuperShotgun//Sounds
 {
-	String SndSelect, SndFire, SndOpen, SndLoad, SndClose;
+	String SndSelect, SndDeselect, SndReady, SndFire, SndOpen, SndLoad, SndClose;
 	
 	Override Void MarkPrecacheSounds()
 	{
 		SetupSounds();
 		MarkSound(SndSelect);
+		MarkSound(SndDeselect);
+		MarkSound(SndReady);
 		MarkSound(SndFire);
 		MarkSound(SndOpen);
 		MarkSound(SndLoad);
@@ -466,6 +468,14 @@ Extend Class MRIntWeaps_SuperShotgun//Sounds
 	Void SetupSounds()
 	{
 		if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_HQSounds") && CVar.FindCVar("MRIntW_HQSounds").GetBool()){
+			if(CVar.FindCVar("MRIntW_SwitchSounds").GetBool()){
+				SndSelect = "MRIntW/HQ/RifleSelect";
+				SndDeselect = "MRIntW/HQ/RifleDeselect";
+				SndReady = "MRIntW/HQ/RifleReady";
+			}
+			else {
+				SndSelect = SndDeselect = SndReady = "";
+			}
 			SndFire = "MRIntW/HQ/SSGFire";
 			SndOpen = "MRIntW/HQ/SSGOpen";
 			SndLoad = "MRIntW/HQ/SSGLoad";
@@ -473,6 +483,15 @@ Extend Class MRIntWeaps_SuperShotgun//Sounds
 			Return;
 		}
 		
+		
+		if(CVar.FindCVar("MRIntW_SwitchSounds").GetBool()){
+			SndSelect = "MRIntW/RifleSelect";
+			SndDeselect = "MRIntW/RifleDeselect";
+			SndReady = "MRIntW/RifleReady";
+		}
+		else {
+			SndSelect = SndDeselect = SndReady = "";
+		}
 		SndFire = "MRIntW/SSGFire";
 		SndOpen = "MRIntW/SSGOpen";
 		SndLoad = "MRIntW/SSGLoad";

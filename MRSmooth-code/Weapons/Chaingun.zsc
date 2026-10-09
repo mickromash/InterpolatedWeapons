@@ -900,6 +900,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("CHGGA0");
 				
+				A_StartSound(invoker.SndSelect, CHAN_AUTO, volume:CFRandom(.7, 1), pitch:CFRandom(.7, 1)*i_timescale);
+				
 				invoker.MaxSpeedM = GetCVar("MRIntW_ChaingunSpeed");
 				
 				if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_ChaingunVolume")){
@@ -918,6 +920,8 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				//A_Overlay(Lay1, "GunLower");
 				Player.SetPsprite(Lay1, invoker.FindState("GunLower"));
 				//Player.GetPSprite(PSP_WEAPON).Y = 32;
+				
+				A_StartSound(invoker.SndDeselect, CHAN_AUTO, volume:CFRandom(.5, 1), pitch:CFRandom(.8, 1)*i_timescale);
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("CHGGA0");
 			}

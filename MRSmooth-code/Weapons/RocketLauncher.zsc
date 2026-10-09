@@ -70,7 +70,10 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 	States{
 		GunRaiseVanilla://Vanilla select animation
 			MI1G C 1 {
-				if(Player.GetPSprite(PSP_WEAPON).Y<=32)Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
+				if(Player.GetPSprite(PSP_WEAPON).Y<=32){
+					A_StartSound(invoker.SndSelect, CHAN_AUTO, pitch:CFRandom(.6, .8)*i_timescale);
+					Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
+				}
 			}
 			Wait;
 		GunLowerVanilla://Vanilla deselect animation
@@ -97,6 +100,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				A_OverlayRotate(Lay1, invoker.SwitchAnim?-2:2, WOF_ADD);
 				invoker.SwitchState--;
 			}
+			#### # 0 A_StartSound(invoker.SndSelect, CHAN_AUTO, pitch:CFRandom(.6, .8)*i_timescale);
 			MI1G CCC 1 {
 				int XMove = invoker.SwitchAnim?3:-3;
 				A_OverlayMoveTo(Lay1, XMove, 35, .8, .5);
@@ -175,6 +179,7 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 				Player.GetPSprite(Lay1).Scale = (1.05,.95)+(Player.GetPSprite(Lay1).Scale-(1.05,.95))*.7;
 				A_OverlayMoveTo(Lay1, 0, 20, .7);
 			}
+			#### # 0 A_StartSound(invoker.SndSelect, CHAN_AUTO, pitch:CFRandom(.6, .8)*i_timescale);
 			#### BA 1 {
 				Player.GetPSprite(Lay1).Scale = (1.05,.95)+(Player.GetPSprite(Lay1).Scale-(1.05,.95))*.7;
 				A_OverlayMoveTo(Lay1, 0, 20, .7);
@@ -465,6 +470,8 @@ class MRIntWeaps_RocketLauncher : RocketLauncher Replaces RocketLauncher
 					else A_Overlay(Lay1, "GunLowerVanilla");
 				}
 				//Player.GetPSprite(PSP_WEAPON).Y = 32;
+				
+				A_StartSound(invoker.SndDeselect, CHAN_AUTO, pitch:CFRandom(.7, .9)*i_timescale);
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("MISGA0");
 			}

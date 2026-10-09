@@ -616,6 +616,8 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				else A_Overlay(Lay1, "GunRaiseVanilla");
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
 				
+				A_StartSound(invoker.SndSelect, CHAN_AUTO, pitch:CFRandom(1, 1.2)*i_timescale);
+				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
 			}
 		Raise:
@@ -626,6 +628,8 @@ Class MRIntWeaps_PlasmaRifle: PlasmaRifle Replaces PlasmaRifle
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
 				Player.SetPsprite(Lay1, invoker.FindState("GunLower"));
 				//Player.GetPSprite(PSP_WEAPON).Y = 32;
+				
+				A_StartSound(invoker.SndDeselect, CHAN_AUTO, pitch:CFRandom(.7, .9)*i_timescale);
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("PLSGA0");
 			}
