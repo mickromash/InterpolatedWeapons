@@ -6,13 +6,27 @@ Fist
 	PUN1 D (textures) - Left hand punch brass knuckles
 	PUN1 B - Left hand raise animation brass knuckles
 	PUN1 C - Left hand ready brass knuckles
+	PUN1 H (textures) - Left hand with brass knuckles in idle animation
+	PUN1 L (textures) - Left hand with brass knuckles holding a demon
+	PUN1 I (textures) - Part of the left hand covering a demon
+	PUN1 J (textures) - Right hand holding a demon
+	PUN1 M (textures) - Part of the right hand covering a demon
+	PUN1 K (textures) - Hand holding a wide demon
 		
 	//No gloves
-	PUN1 A - Right hand ready
-	PUN1 E - Left hand punch
-	PUN1 D (textures) - Left hand punch brass knuckles
-	PUN1 B - Left hand raise animation brass knuckles
-	PUN1 C - Left hand ready brass knuckles
+	PUN3 A - Right hand ready
+	PUN3 E - Left hand punch
+	PUN3 D (textures) - Left hand punch brass knuckles
+	PUN3 B - Left hand raise animation brass knuckles
+	PUN3 C - Left hand ready brass knuckles
+	PUN3 H (textures) - Left hand with brass knuckles in idle animation
+	PUN3 L (textures) - Left hand with brass knuckles holding a demon
+	PUN3 I (textures) - Part of the left hand covering a demon
+	PUN3 J (textures) - Right hand holding a demon
+	PUN3 M (textures) - Part of the right hand covering a demon
+	PUN3 K (textures) - Hand holding a wide demon
+	
+	PUN1 F (textures) - Glove
 }
 
 Chainsaw
@@ -36,8 +50,10 @@ Chainsaw
 Pistol
 {
 	P1SG A (textures) - Ready
-	P1SG HBCFJGEDI (textures) - Firing animation
+	P1SG HBCFJGEDKI (textures) - Firing animation
 	P2SG A (textures) - Second hand
+	P2SG B (textures) - Background of second hand
+	P2SG C (textures) - Pointing hand
 		
 	P1SF ABC (texture) - Flash animation
 }
@@ -53,9 +69,7 @@ Rifle
 Shotgun
 {
 	SH1G A (textures) - Ready
-	SH1G B - Pump animation
-	SH1G C (textures) - Pump animation
-	SH1G DEFGH - Pump animation
+	SH1G BCEFGH (textures) - Pump animation
 	
 	SH1F AB - Flash animation
 	SH1G Z - Switch handless sprite
@@ -74,6 +88,10 @@ Super Shotgun
 	
 	SH12 NO - Flash animation
 	SH12 Z - Switch handless sprite
+	
+	SH22 BCD (textures) - Opening animation with no hand on the stock
+	
+	MRD1 IJ (textures) - Shell catching hand
 }
 
 Chaingun
@@ -81,7 +99,7 @@ Chaingun
 	CH1M ABCDE (textures) - Muzzle end rotation
 	CH2M ABCDE (textures) - Muzzle end rotation firing
 	CH1G ABCD (textures) - Body rotation
-	CH2G ABCD (textures) - BOdy rotation firing
+	CH2G ABCD (textures) - Body rotation firing
 	CH1S A - Barrel shadow
 	CH1B ABCDEFG (textures) - Barrel rotation
 	CH2B BCDEF (textures) - Barrel reflection rotation
@@ -135,6 +153,16 @@ Incinerator (Legacy of Rust)
 	FL1L C (textures) - Light inside the barrel
 	FL1M A (textures) - Muzzle light
 	FL1U ABCDEFGH (textures) - Flame under muzzle
+}
+
+Calamity Blade (Legacy of Rust)
+{
+	H1TG A - Ready sprite
+	H1TO ABCD - Left limb
+	H2TO ABCD (textures) - Right limb
+	
+	H1TF AB (textures) - Explosion
+	H1TC ABCDEFGHIJKLMNOPQRST (textures) - Charging overlay
 }
 
 Particles
@@ -330,4 +358,6 @@ Dead Hands
 	==++++++===                     
 	====+++=                        
 	  ====                          
+	 
+	MRD1 H - Same as MRD1 G but with different offset
 }
