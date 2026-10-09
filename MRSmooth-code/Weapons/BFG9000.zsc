@@ -79,11 +79,15 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 			#### # 0 A_ClearOverlays(Lay2, Lay2);
 			BFG1 C 1{
 				if(Player.GetPSprite(PSP_WEAPON).Y<=32){
-					A_Overlay(Lay2, "GunMuzzle");
-					Player.SetPsprite(Lay1, invoker.FindState("GunWait"));
+					Player.SetPsprite(Lay1, invoker.FindState("GunPreWait"));
+					A_OverlayOffset(Lay1, 0, 6);
 				}
 			}
 			Wait;
+		GunPreWait:
+			BFG1 C 1 A_OverlayOffset(Lay1, 0, 0, WOF_INTERPOLATE);
+			#### # 0 A_Overlay(Lay2, "GunMuzzle");
+			Goto GunWait;
 		GunLowerVanilla://Vanilla select animation
 			#### # 0 A_ClearOverlays(Lay2, Lay2);
 			BFG1 C 1;
@@ -551,6 +555,8 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				else A_Overlay(Lay1, "GunRaiseVanilla");
 				Player.GetPSprite(PSP_WEAPON).Y = WEAPONBOTTOM;
 				
+				A_StartSound(invoker.SndSelect, CHAN_AUTO, pitch:CFRandom(.9, 1.1)*i_timescale);
+				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("BFGGA0");
 			}
 		Raise:
@@ -561,8 +567,10 @@ Class MRIntWeaps_BFG9000: BFG9000 Replaces BFG9000
 				A_StopSound(CHAN_6);
 				if(Health<1){A_Overlay(Lay1, "GunDie");Return;}
 				if(MRIntW_SwitchAnims)A_Overlay(Lay1, "GunLower");
-				else A_Overlay(Lay1, "GunLowerVanilla");
+				else Player.SetPsprite(Lay1, invoker.FindState("GunLowerVanilla"));
 				//Player.GetPSprite(PSP_WEAPON).Y = 32;
+				
+				A_StartSound(invoker.SndDeselect, CHAN_AUTO, pitch:CFRandom(.8, 1)*i_timescale);
 				
 				if(MRIntW_DisplayVanilla)Player.GetPSprite(PSP_WEAPON).Sprite = GetSpriteIndex("BFGGA0");
 			}
