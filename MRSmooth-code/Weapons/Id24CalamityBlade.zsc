@@ -559,7 +559,7 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 		Goto FireAnim;
 	FireAnim:
 		TNT1 A 0 BRIGHT {
-			A_StartSound(invoker.SndFire, CHAN_WEAPON);
+			A_StartSound(invoker.SndFire, CHAN_WEAPON, pitch:i_timescale);
 			
 			Player.SetPsprite(Lay1, invoker.FindState("GunFire"));
 			Player.SetPsprite(Flash, invoker.FindState("GunFlash2"));
