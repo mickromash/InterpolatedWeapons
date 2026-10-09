@@ -260,7 +260,7 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Weapon switch sound | [nosave] MRIntW_SwitchSounds | No | Play sounds during weapon switch animations |
 | Chaingun custom firing sound | [nosave] MRIntW_ChaingunSound | No | Chaingun will use unique sound instead of pistol's |
 
-### Настройки --> Configure Interpolated weapons --> Ui settings
+### Options --> Configure Interpolated weapons --> Ui settings
 | Setting name | [CVar type] CVar | Default | Description |
 | --- | --- | --- | --- |
 | Smooth menus | [nosave] MRIntW_SmoothUi | Yes | Uncaps framerate in menu, smooths scrolling and some elements |
@@ -335,6 +335,9 @@ faster pistol firing, quick switching and berserk fists kickback.
 Feel free check this mod's files, use its assets or code. Although it will be great if you credit me or other authors.
 
 If you want to work with this mod, or add something to it, check the Mod info folder and TexturexEditing!.txt file
+
+Oh, and in case you wondering, **NO A.I. WAS USED IN THIS MOD**. All code was either written by me or taken from other mods. All text files including this readme in both languages were written by me.
+No AI was used for any assets of the mod too.
 ***
 ## $\color{#FF0000}{Give\ me\ the\ damn\ download\ you\ nerd}$
 
