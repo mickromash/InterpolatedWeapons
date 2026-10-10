@@ -343,4 +343,4 @@ Textures.txt, который ничего кроме этого списка н�
 ***
 ## $\color{#FF0000}{Дай\ уже\ скачать\ мод\ долбаный\ задрот}$
 
-[Нате нате](https://github.com/mickromash/InterpolatedWeapons/releases/tag/1.0)
+[Нате нате](https://github.com/mickromash/InterpolatedWeapons/releases)
