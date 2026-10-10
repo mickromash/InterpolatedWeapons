@@ -343,6 +343,4 @@ Textures.txt, который ничего кроме этого списка н�
 ***
 ## $\color{#FF0000}{Дай\ уже\ скачать\ мод\ долбаный\ задрот}$
 
-[Версия для GZDoom 4.14.2 - UZDoom 4.14.3](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip)
-
-[Версия для UZDoom 5.0+](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/5.0+.zip)
+[Нате нате](https://github.com/mickromash/InterpolatedWeapons/releases/tag/1.0)
