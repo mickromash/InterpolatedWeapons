@@ -341,4 +341,4 @@ No AI was used for any assets of the mod too.
 ***
 ## $\color{#FF0000}{Give\ me\ the\ damn\ download\ you\ nerd}$
 
-[Here's your download](https://github.com/mickromash/InterpolatedWeapons/releases/tag/1.0)
+[Here's your download](https://github.com/mickromash/InterpolatedWeapons/releases)
