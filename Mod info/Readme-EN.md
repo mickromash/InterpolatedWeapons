@@ -341,6 +341,4 @@ No AI was used for any assets of the mod too.
 ***
 ## $\color{#FF0000}{Give\ me\ the\ damn\ download\ you\ nerd}$
 
-[Version for GZDoom 4.14.2-UZDoom 4.14.3](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/4.14.2.zip)
-
-[Version for UZDoom 5.0+](https://github.com/mickromash/InterpolatedWeapons/archive/refs/heads/5.0+.zip)
+[Here's your download](https://github.com/mickromash/InterpolatedWeapons/releases/tag/1.0)
