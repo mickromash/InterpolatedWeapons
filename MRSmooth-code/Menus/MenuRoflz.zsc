@@ -600,11 +600,11 @@ class OptionMenuItemMRIntWeaps_ModSubMenu: OptionMenuItemSubmenu//Animated subme
 					}
 					else {
 						if(ChPYs[i]>-.01){
-							ChPYs[i] == 0;
+							ChPYs[i] = ChPs[i] = 0;
 						}
 						else {
-							ChPYs[i] *= CFRandom(.65, .75)*((FPSScale-1)*.1+1);
-							ChPs[i] *= .7*((FPSScale-1)*.1+1);
+							ChPYs[i] *= Min(.99, CFRandom(.65, .75)*((FPSScale-1)*.1+1));
+							ChPs[i] *= Min(.99, .7*((FPSScale-1)*.1+1));
 							AllLanded = false;
 						}
 					}
