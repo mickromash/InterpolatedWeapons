@@ -539,7 +539,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 						Player.GetPSprite(Lay2).bInterpolate = false;
 					}
 				}
-				invoker.MaxSpeedM = GetCVar("MRIntW_ChaingunSpeed");
+				invoker.MaxSpeedM = Max(.01, GetCVar("MRIntW_ChaingunSpeed"));
 				if(invoker.Speed<MaxSpeed*invoker.MaxSpeedM)invoker.Speed+=8*invoker.MaxSpeedM;
 				invoker.Speed = Min(MaxSpeed*invoker.MaxSpeedM, invoker.Speed);
 				
@@ -902,7 +902,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 				
 				A_StartSound(invoker.SndSelect, CHAN_AUTO, volume:CFRandom(.7, 1), pitch:CFRandom(.7, 1)*i_timescale);
 				
-				invoker.MaxSpeedM = GetCVar("MRIntW_ChaingunSpeed");
+				invoker.MaxSpeedM = Max(.01, GetCVar("MRIntW_ChaingunSpeed"));
 				
 				if(CVar.FindCVar("MRIntW_SoundAddon") && CVar.FindCVar("MRIntW_ChaingunVolume")){
 					invoker.SpinVolume = CVar.FindCVar("MRIntW_ChaingunVolume").GetFloat();
