@@ -34,7 +34,7 @@ Class MRIntWeaps_Shotgun: Shotgun Replaces Shotgun
 			Owner.A_SetPitch(Owner.Pitch+Recover*Owner.GetCVar("MRIntW_RecoilAmount"));
 		}
 		
-		if(!InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
+		if(!Owner.Player.FindPSprite(PSP_WEAPON) || !InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
 		if((Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD) && !Catch){
 			Catch = true;

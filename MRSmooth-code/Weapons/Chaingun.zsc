@@ -68,7 +68,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		
 		MuzzleSmoke();
 		
-		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self)Return;
+		if(!Owner.Player || Owner.Player.ReadyWeapon!=Self || !Owner.Player.FindPSprite(PSP_WEAPON))Return;
 		
 		if(SpinVolume>0){
 			InterVol += (Speed-InterVol)*.5;

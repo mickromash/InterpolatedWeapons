@@ -44,7 +44,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		}
 		
 		if(!Catch && ((Owner.Player.Cmd.Buttons&BT_ALTATTACK && !(!IsRifle && Owner.Player.Cmd.Buttons&BT_USE)) || 
-			(IsRifle && Owner.Player.Cmd.Buttons&BT_RELOAD)) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready"))
+			(IsRifle && Owner.Player.Cmd.Buttons&BT_RELOAD)) && Owner.Player.FindPSprite(PSP_WEAPON) && InStateSequence(Owner.Player.FindPSprite(PSP_WEAPON).CurState, FindState("Ready"))
 		){
 			Catch = true;
 			Owner.Player.SetPsprite(Lay1, FindState("GunCoolIdle"));

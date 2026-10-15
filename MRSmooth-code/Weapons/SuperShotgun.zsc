@@ -41,7 +41,7 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		}
 		
 		
-		if(!InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
+		if(!Owner.Player.FindPSprite(PSP_WEAPON) || !InStateSequence(Owner.Player.GetPSprite(PSP_WEAPON).CurState, FindState("Ready")))Return;
 		
 		if((Owner.Player.Cmd.Buttons&BT_ALTATTACK || Owner.Player.Cmd.Buttons&BT_RELOAD) && !Catch && Owner.Player.FindPSprite(Lay1) && Owner.Player.FindPSprite(Lay1).bAddWeapon){
 			Catch = true;
