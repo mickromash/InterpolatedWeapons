@@ -1,7 +1,7 @@
 Class MRIntWeaps_Fist: Fist Replaces Fist
 {
 	Default{
-		Inventory.Icon "PUN1A0";
+		Inventory.Icon "PUN3A0";
 		Weapon.SlotNumber 1;
 		+Weapon.NOALERT//Monsters alerting is performed manually from firing state if MRIntW_BetterAlert is off
 	}
