@@ -1152,14 +1152,21 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 		
 		//Default states
 		Spawn:
-			RIFA A 0 A_JumpIf(CVar.FindCVar("MRIntW_Rifle").GetBool(), 2);
-			PIST A 0;
+			PIST A 0 A_JumpIf(!CVar.FindCVar("MRIntW_Rifle").GetBool(), 2);
+			RIFA A 0;
 			#### # -1;
 			Stop;
 		Select:
 			TNT1 A 0 {
-				if(invoker.IsRifle)invoker.SetTag("$TAG_RIFLE");
-				else invoker.SetTag("$TAG_PISTOL");
+				if(invoker.IsRifle){
+					invoker.SetTag("$TAG_RIFLE");
+					invoker.Icon = Texman.CheckForTexture("RIFAA0");
+				}
+				else {
+					invoker.Icon = Texman.CheckForTexture("PISTA0");
+					invoker.SetTag("$TAG_PISTOL");
+				
+				}
 				if(invoker.Dropped)invoker.Dropped.Destroy();
 				if(MRIntW_SwitchAnims)A_Overlay(Lay1, "GunRaise");
 				else A_Overlay(Lay1, "GunRaiseVanilla");
