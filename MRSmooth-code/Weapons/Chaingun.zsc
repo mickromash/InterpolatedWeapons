@@ -197,7 +197,7 @@ Class MRIntWeaps_Chaingun: Chaingun Replaces Chaingun
 		
 		if(!DrawFuzz){
 			A_OverlayFlags(Lay, PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
-			if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+			if(GetRenderStyle()!=STYLE_Normal && Alpha<1 && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
 				if(Reflection)A_OverlayRenderStyle(Lay, STYLE_None);
 				else A_OverlayRenderStyle(Lay, STYLE_Normal);
 				A_OverlayAlpha(Lay, .01);
