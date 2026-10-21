@@ -307,8 +307,10 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				Alph /= FindInventory(invoker.AmmoType1).MaxAmount;
 				A_OverlayAlpha(OverlayId(), Max(.01, (invoker.LEDs>.4?Clamp(Alph, CFRandom(-1, .7), invoker.LEDs):Min(invoker.LEDs, Alph))));
 				
-				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
-					A_OverlayRenderStyle(OverlayID(), STYLE_None);
+				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+					A_OverlayRenderStyle(OverlayId(), STYLE_Add);
+					A_OverlayAlpha(OverlayId(), Player.GetPSprite(OverlayId()).Alpha*Alpha);
+				}
 				else 
 					A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
 				
@@ -322,7 +324,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				Alph /= 3;
 				A_OverlayAlpha(OverlayId(), Max(.01, Min(invoker.Heat*2, Alph)));
 				
-				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+				if(GetRenderStyle()!=STYLE_Normal && Alpha<1 && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
 					A_OverlayRenderStyle(OverlayID(), STYLE_None);
 				else 
 					A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
@@ -336,7 +338,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayRenderStyle(OverlayId(), STYLE_Add);
 				A_OverlayAlpha(OverlayId(), Clamp(invoker.Heat, .01, CFRandom(.6, .8)));
 				
-				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+				if(GetRenderStyle()!=STYLE_Normal && Alpha<1 && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
 					A_OverlayRenderStyle(OverlayID(), STYLE_None);
 				else 
 					A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
@@ -463,7 +465,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayFlags(OverlayId(), PSPF_ALPHA|PSPF_FORCEALPHA|PSPF_RENDERSTYLE|PSPF_FORCESTYLE, true);
 				A_OverlayAlpha(OverlayId(), Clamp(invoker.Heat, .01, CFRandom(.2, 1)));
 				
-				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+				if(GetRenderStyle()!=STYLE_Normal && Alpha<1 && GetCVar("r_drawfuzz")!=0)//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
 					A_OverlayRenderStyle(OverlayID(), STYLE_None);
 				else 
 					A_OverlayRenderStyle(OverlayId(), STYLE_Translucent);
@@ -501,7 +503,7 @@ Class MRIntWeaps_ID24Incinerator: ID24Incinerator
 				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
 				A_OverlayPivot(OverlayId(), .5, .7);
 				
-				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+				if(GetRenderStyle()!=STYLE_Normal && Alpha<1 && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
 					A_OverlayRenderStyle(OverlayID(), STYLE_None);
 				}
 				else {
