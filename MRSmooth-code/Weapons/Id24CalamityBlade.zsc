@@ -289,12 +289,12 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 		H1TG AAAAAA 1 {
 			invoker.FireState += 2;
 			invoker.FireState = Min(3, invoker.FireState);
-			A_OverlayMoveTo(Lay1, 0, 30, .7);
+			A_OverlayMoveTo(Lay1, 0, 30+invoker.LastFireFrame*5, 1-(((invoker.LastFireFrame+1)/9)));
 		}
 		H1TG ### 1 {
 			if(invoker.FireState>1)invoker.FireState -= .5;
 			else invoker.FireState *= .5;
-			A_OverlayMoveTo(Lay1, 0, 30, .7);
+			A_OverlayMoveTo(Lay1, 0, 30+invoker.LastFireFrame*6, 1-(((invoker.LastFireFrame+1)/9)));
 		}
 		H1TG # 1 {
 			if(invoker.FireState>1)invoker.FireState -= .5;
@@ -304,7 +304,7 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 		H1TG ########## 1 {
 			if(invoker.FireState>1)invoker.FireState -= .5;
 			else invoker.FireState *= .5;
-			A_OverlayMoveTo(Lay1, 0, 0, .8);
+			A_OverlayMoveTo(Lay1, 0, 0, .7);
 		}
 		Goto GunWait;
 	
@@ -350,6 +350,7 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 			
 			invoker.FireState *= .5;
 			
+			A_OverlayOffset(Lay1, CFRandom(-.5, .5)*Stayt, CFRandom(-.5, .5)*Stayt, WOF_INTERPOLATE);
 			A_OverlayRotate(LLimb, CFRandom(-.1, .1)*Stayt, WOF_INTERPOLATE);
 			A_OverlayRotate(RLimb, CFRandom(-.1, .1)*Stayt, WOF_INTERPOLATE);
 			
@@ -381,7 +382,7 @@ class MRIntWeaps_ID24CalamityBlade : ID24CalamityBlade // Heatwave Generator
 			A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
 			A_OverlayPivot(OverlayId(), .5, .7);
 			
-			if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+			if(GetRenderStyle()!=STYLE_Normal && Alpha<1 && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
 				A_OverlayRenderStyle(OverlayID(), STYLE_None);
 			}
 			else {
