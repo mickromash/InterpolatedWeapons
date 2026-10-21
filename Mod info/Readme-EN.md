@@ -89,6 +89,8 @@ faster pistol firing, quick switching and berserk fists kickback.
 | Fast pistol | [server] MRIntW_FastPistol | No | Increases pistol firing rate making it a bit more useful |
 | Quick switching | [server] MRIntW_QuickSwitch | No | Ability to switch weapon during reloading or similar animations |
 | Legacy of Rust Weapons | [server] MRIntW_LoRWeaps | Yes | Enables Legacy of Rust weapons in regular Doom and adds animations for weapons in Legacy of Rust |
+| Plane decals | [nosave] MRIntW_PlaneDecals | Yes | Bullet holes on the floor and ceiling. Works only in UZDoom version of the mod |
+| Max plane decals | [nosave] MRIntW_MaxPlaneDecals | 300 | When reaching this limit, the oldest decals will be removed |
 
 ### Options --> Configure Interpolated weapons --> Animations settings
 | Setting name | [CVar type] CVar | Default | Description |
