@@ -10,6 +10,13 @@ Extend Class MRIntWeaps_Handler
 	Static Const String Nukes [] = {"NUKE", "NUKAGE", "GOOP", "SLUGDE"};//1
 	Static Const String Lavas [] = {"LAVA", "LAV", "MAGMA", "FLTWAWA"};//3
 	Static Const String Waters [] = {"SEWER", "WATER", "WATR", "WTR", "FLATHUH", "FLTFLWW", "X_0", "OICYWA"};//0
+	Static Const String Liquids [] = {
+		"SLIME0", "SLM",
+		"BLOOD", "BLOD", "BLD",
+		"NUKE", "NUKAGE", "GOOP", "SLUGDE",
+		"LAVA", "LAV", "MAGMA", "FLTWAWA",
+		"SEWER", "WATER", "WATR", "WTR", "FLATHUH", "FLTFLWW", "X_0", "OICYWA"
+	};
 	
 	Static Void SpawnLiquidSplash(Vector3 Pos, int Type=0, Float Scale=1)
 	{
@@ -92,7 +99,7 @@ Extend Class MRIntWeaps_Handler
 		}
 	}
 	
-	Void SpawnPuffParticles(Actor Obj)
+	Bool SpawnPuffParticles(Actor Obj)
 	{
 		if(Obj.Pos.Z<Obj.FloorZ+8 && Obj.FloorPic.IsValid() &&
 			MRIntW_PlayerWhichParticles&MRIWPP_PuffLiquid){//Liquid Splash
@@ -109,7 +116,7 @@ Extend Class MRIntWeaps_Handler
 			if(IsSlime){
 				SpawnLiquidSplash(Obj.Pos, 4);
 				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
-				Return;
+				Return true;
 			}
 			
 			For(int i=0;i<Bloods.Size();i++){
@@ -120,7 +127,7 @@ Extend Class MRIntWeaps_Handler
 			if(IsBlood){
 				SpawnLiquidSplash(Obj.Pos, 2);
 				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
-				Return;
+				Return true;
 			}
 			
 			For(int i=0;i<Nukes.Size();i++){
@@ -131,7 +138,7 @@ Extend Class MRIntWeaps_Handler
 			if(IsNuke){
 				SpawnLiquidSplash(Obj.Pos, 1);
 				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
-				Return;
+				Return true;
 			}
 			
 			For(int i=0;i<Lavas.Size();i++){
@@ -142,7 +149,7 @@ Extend Class MRIntWeaps_Handler
 			if(IsLava){
 				SpawnLiquidSplash(Obj.Pos, 3);
 				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
-				Return;
+				Return true;
 			}
 			
 			For(int i=0;i<Waters.Size();i++){
@@ -153,7 +160,7 @@ Extend Class MRIntWeaps_Handler
 			if(IsLiquid){
 				SpawnLiquidSplash(Obj.Pos);
 				Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
-				Return;
+				Return true;
 			}
 		}
 		
@@ -188,6 +195,8 @@ Extend Class MRIntWeaps_Handler
 				0,0,0, CFRandom(.2, .4)*Dist,0,CFRandom(.2, .4)*Dist, 0,0,-CFRandom(-.00001, .01), .4, .4/33., CFRandom(.7, 1)*Dist, CRandom(0, 360), CRandom(2, 3)*CRandomPick(-1, 1));
 		}
 		Obj.A_SetRenderStyle(Obj.Alpha, STYLE_None);
+		
+		Return false;
 	}
 	
 	Void SpawnDecorationParticleEffects(Actor Thing)
