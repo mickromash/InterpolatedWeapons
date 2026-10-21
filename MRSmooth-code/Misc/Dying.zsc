@@ -192,7 +192,7 @@ Extend Class MRIntWeaps_Fist
 	{
 		SecndHandDie:
 			#### # 0 {
-				if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);
+				A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, GetCVar("MRIntW_RightPunch"));
 				A_ClearOverlays(MainLay+1, MainLay+10);
 			}
 			PUN1 A 0 A_SetHandsSprite();
@@ -200,6 +200,8 @@ Extend Class MRIntWeaps_Fist
 				A_OverlayOffset(SecndLay, 8, 4, WOF_ADD);
 				A_OverlayScale(SecndLay, .2, .2, WOF_ADD);
 				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
+				
+				if(InStateSequence(CurState, FindState("XDeath")) || InStateSequence(CurState, FindState("XDeath1")))A_ClearOverlays(SecndLay, MainLay);
 			}
 			#### # 0 A_Overlay(MainLay, "MainHandDead");
 		SecndHandDead:
@@ -232,7 +234,7 @@ Extend Class MRIntWeaps_Fist
 			Wait;
 			
 		MainHandDie:
-			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
+			#### # 0 {A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, GetCVar("MRIntW_RightPunch"));}
 			PUN1 D 0 A_SetHandsSprite();
 			#### ### 1 {
 				A_OverlayOffset(MainLay, CFRandom(-1, 1), 15, WOF_ADD);
@@ -240,7 +242,7 @@ Extend Class MRIntWeaps_Fist
 			}
 			#### D 1 A_OverlayOffset(MainLay, -3, Player.ViewZ-FloorZ, WOF_INTERPOLATE);
 		MainHandDead:
-			#### # 0 {if(GetCVar("MRIntW_RightPunch"))A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, true);}
+			#### # 0 {A_OverlayFlags(OverlayId(), PSPF_MIRROR|PSPF_FLIP, GetCVar("MRIntW_RightPunch"));}
 			PUN1 D 1 {
 				Player.GetPSprite(OverlayID()).Translation = invoker.PistolGlovesTrans;
 				A_SetHandsSprite();
@@ -286,6 +288,8 @@ Extend Class MRIntWeaps_Chainsaw
 			
 		DyingLeftHand:
 			MRD1 E 1 {
+				if(InStateSequence(CurState, FindState("XDeath")) || InStateSequence(CurState, FindState("XDeath1")))A_ClearOverlays(OverlayId(), OverlayId());
+			
 				A_GlovesColor(1);
 				A_OverlayFlags(DieLay, PSPF_FLIP, true);
 				A_OverlayFlags(DieLay, PSPF_ADDWEAPON, false);
@@ -293,6 +297,8 @@ Extend Class MRIntWeaps_Chainsaw
 				A_OverlayRotate(DieLay, -20);
 			}
 			#### # 1 {
+				if(InStateSequence(CurState, FindState("XDeath")) || InStateSequence(CurState, FindState("XDeath1")))A_ClearOverlays(OverlayId(), OverlayId());
+				
 				A_OverlayOffset(DieLay, -20, -15, WOF_ADD);
 				A_OverlayRotate(DieLay, -5, WOF_ADD);
 				A_OverlayScale(DieLay, .1, .1, WOF_ADD);
@@ -573,9 +579,12 @@ Class MRIntWeaps_DyingAnimation: CustomInventory
 		+Inventory.AUTOACTIVATE
 	}
 	
+	Bool RemoveSelf;
+	
 	Override Void DoEffect()
 	{
-		if(Owner.Health>0){
+		if(Owner.Health>0 || InStateSequence(Owner.CurState, Owner.FindState("XDeath")) || InStateSequence(Owner.CurState, Owner.FindState("XDeath1"))){
+			RemoveSelf = true;
 			Owner.UseInventory(Self);
 			Destroy();
 			Return;
@@ -612,10 +621,10 @@ Class MRIntWeaps_DyingAnimation: CustomInventory
 	States{
 		Use:
 			TNT1 A 1 {
-				if(Health>0){
+				if(invoker.RemoveSelf){
 					A_ClearOverlays(Lay1, Lay1);
 					A_ClearOverlays(Lay2, Lay2);
-					if(invoker.LastWeapon!="")A_SelectWeapon(invoker.LastWeapon);
+					if(invoker.LastWeapon!="" && Health>0)A_SelectWeapon(invoker.LastWeapon);
 				}
 				else {
 					if(Player.ReadyWeapon)invoker.LastWeapon = Player.ReadyWeapon.GetClassName();
