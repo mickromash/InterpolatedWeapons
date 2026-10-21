@@ -451,6 +451,9 @@ MRIntW_ReturnPlayerSettings = "Вернуть мои настройки каст
 MRIntW_ChangeFiringBob = "Покачивание оружия при стрельбе";
 MRIntW_LoRWeaps = "Оружие из Legacy of Rust";
 
+MRIntW_PlaneDecals = "Пулевые отверстия на полу и потолке";
+MRIntW_MaxPlaneDecals = "Макс. кол-во пулевых отверстий на полу и потолque";
+
 
 TAG_RIFLE = "Винтовка";
 PICKUP_RIFLE_DROPPED = "Получена винтовка";

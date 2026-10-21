@@ -14,6 +14,8 @@ Class MRIntWeaps_Handler: EventHandler
 	Array<Actor> Berserks;
 	MRIntWeaps_Smoker Smokers[MAXPLAYERS];
 	MRIntWeaps_WeaponChecker WeaponChecker[MAXPLAYERS];
+	
+	Array<Actor> PlaneDecals;
 		
 	Override Void CheckReplacement(ReplaceEvent e)
 	{
@@ -227,10 +229,10 @@ Class MRIntWeaps_Handler: EventHandler
 	{
 		if(!e.Thing)Return;
 		
-		if((e.Thing is "BulletPuff" || Actor.GetReplacee(e.Thing.GetClass()) == "BulletPuff") &&
-			MRIntW_PlayerWhichParticles&MRIWPP_Puff)
+		if((e.Thing is "BulletPuff" || Actor.GetReplacee(e.Thing.GetClass()) == "BulletPuff"))
 		{
-			SpawnPuffParticles(e.Thing);
+			if(MRIntW_PlayerWhichParticles&MRIWPP_Puff)SpawnPuffParticles(e.Thing);
+			if(MRIntW_PlaneDecals)SpawnPlaneDecal(e.Thing);
 			Return;
 		}
 		
@@ -257,6 +259,50 @@ Class MRIntWeaps_Handler: EventHandler
 		}
 		
 		if(Level.Time<2 && MRIntW_DecorationParticles)SpawnDecorationParticleEffects(e.Thing);
+	}
+	
+	Void SpawnPlaneDecal(Actor Thing)
+	{
+		if(Actor.InStateSequence(Thing.CurState, Thing.FindState("Melee")))Return;
+		int Plane = -1;
+		if(Thing.Pos.Z < Thing.FloorZ + 8)Plane = 0;
+		else if(Thing.Pos.Z > Thing.CeilingZ - 8)Plane = 1;
+		
+		if(Plane<0)Return;
+		
+		
+		String PicName;
+		if(Plane<1){
+			if(Thing.FloorPic.IsValid())PicName = Texman.GetName(Thing.FloorPic);
+		}
+		else {
+			if(Thing.CeilingPic.IsValid())PicName = Texman.GetName(Thing.CeilingPic);
+		}
+
+		PicName.MakeUpper();
+		
+		For(int i=0;i<Liquids.Size();i++){
+			if(PicName.IndexOf(Liquids[i])>-1){
+				Return;
+			}
+		}
+		
+		if(Plane>0 && (PicName ~== "F_SKY1"||
+			PicName ~== "F_SKY"||
+			PicName ~== "F_SKY001")
+		)Return;
+		
+		
+		Let a = MRIntWeaps_PlaneDecal(Thing.Spawn("MRIntWeaps_PlaneDecal", (Thing.Pos.XY, (Plane?Thing.CeilingZ:Thing.FloorZ))));
+		if(!a)Return;
+		
+		For(int i=0;i<Max(0, PlaneDecals.Size()-Max(1, MRIntW_MaxPlaneDecals)+1);i++)
+		{
+			if(PlaneDecals[i]){PlaneDecals[i].Destroy();PlaneDecals.Delete(i);i--;}
+		}
+		PlaneDecals.Push(a);
+		
+		a.Plane = Plane;
 	}
 	
 	Override Void WorldTick()
@@ -322,17 +368,25 @@ Class MRIntWeaps_Handler: EventHandler
 			TakeOtherWeapons(Plr);
 			Return;
 		}
-		if(e.Name ~== "MRIntW_Casings")
-		{
+		if(e.Name ~== "MRIntW_Casings"){
 			Console.Printf("Casings: "..Casings.Size());
 			Return;
 		}
-		if(e.name ~== "MRIntWeaps_ClearCasings")
-		{
+		if(e.name ~== "MRIntWeaps_ClearCasings"){
 			foreach(Casing : Casings){
 				if(Casing)Casing.Destroy();
 			}
 			Casings.Clear();
+		}
+		if(e.Name ~== "MRIntW_PlaneDecals"){
+			Console.Printf("Plane decals: "..PlaneDecals.Size());
+			Return;
+		}
+		if(e.name ~== "MRIntWeaps_ClearPlaneDecals"){
+			foreach(PDecal : PlaneDecals){
+				if(PDecal)PDecal.Destroy();
+			}
+			PlaneDecals.Clear();
 		}
 		if(e.name ~== "MRIntWeaps_RandomGlovesColor"){
 			Color Rand = Color(Random[MRIntWRand](0,255), Random[MRIntWRand](0,255), Random[MRIntWRand](0,255));
@@ -755,5 +809,44 @@ Class MRIntWeaps_StaticHandler: StaticEventHandler
 	Override Void OnUnregister()
 	{
 		CVar.FindCVar("wbobfire").SetFloat(MRIntW_SavedWbobFire);
+	}
+}
+
+
+Class MRIntWeaps_PlaneDecal: Actor
+{
+	int Plane;
+	Default{
+		+ClientSide
+		+NoInteraction
+		+FlatSprite
+		Scale .5;
+		Alpha .85;
+	}
+	
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		A_SetRenderStyle(1, STYLE_SHADED);
+		SetShade(Color(0,0,0));
+		Angle = Players[ConsolePlayer].Camera.Angle;
+		bXFlip = CRandom(0, 1);
+		bYFlip = CRandom(0, 1);
+	}
+	
+	Override Void Tick()
+	{
+		Super.Tick();
+		
+		if(Plane<1)SetOrigin((Pos.XY, CurSector.CenterFloor()), true);
+		else SetOrigin((Pos.XY, CurSector.CenterCeiling()), true);
+	}
+	
+	States{
+		Spawn:
+			MRDC A 0;
+			MRDC # -1 {Frame = CRandom(0, 4);}
+			Stop;
 	}
 }

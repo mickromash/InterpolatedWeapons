@@ -156,6 +156,9 @@ nosave bool MRIntW_RandomDemo = true;//Use random values instead of user setting
 
 user float MRIntW_ChangeFiringBob = 1;//Move weapon to center on firing
 
+nosave bool MRIntW_PlaneDecals = true;
+nosave float MRIntW_MaxPlaneDecals = 300;
+
 user string MRIntW_Braindead = "";//Enables some goofy animations
 
 nosave int MRIntW_WhichPresset = 0;//Selected custom presset number

@@ -450,6 +450,9 @@ MRIntW_ReturnPlayerSettings = "Return saved customization settings";
 MRIntW_ChangeFiringBob = "Weapon bob when firing";
 MRIntW_LoRWeaps = "Legacy of Rust weapons";
 
+MRIntW_PlaneDecals = "Plane decals";
+MRIntW_MaxPlaneDecals = "Max plane decals";
+
 TAG_RIFLE = "Rifle";
 PICKUP_RIFLE_DROPPED = "Picked up a rifle";
 
