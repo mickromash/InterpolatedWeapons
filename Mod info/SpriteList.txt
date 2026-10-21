@@ -55,14 +55,16 @@ Pistol
 	P2SG B (textures) - Background of second hand
 	P2SG C (textures) - Pointing hand
 		
-	P1SF ABC (texture) - Flash animation
+	P1SF ABC (texture) - Light on the barrel from flash
+	P1SF DEF - Flash animation
 }
 
 Rifle
 {
 	R1FG A (textures) - Ready
 	
-	RIFF ABCD (textires) - Flash animation
+	RIFF ABCD (textires) - Light on the barrel from flash
+	RIFF EFGH - Flash animation
 	RIFA A - World sprite
 }
 
@@ -71,7 +73,8 @@ Shotgun
 	SH1G A (textures) - Ready
 	SH1G BCEFGH (textures) - Pump animation
 	
-	SH1F AB - Flash animation
+	SH1F AB (textures) - Light on the barrel from flash
+	SH1F CD - Flash animation
 	SH1G Z - Switch handless sprite
 }
 
@@ -86,7 +89,8 @@ Super Shotgun
 	
 	SH12 GH - Loading hand
 	
-	SH12 NO - Flash animation
+	SH12 NO (textures) - Light on the barrels from flash
+	SH2F AB - Flash animation
 	SH12 Z - Switch handless sprite
 	
 	SH22 BCD (textures) - Opening animation with no hand on the stock

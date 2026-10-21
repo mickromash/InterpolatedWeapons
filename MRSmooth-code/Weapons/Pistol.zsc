@@ -6,9 +6,10 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 	}
 
 	Const Lay1 = 2;//Main animations layer
-	Const Lay2 = PSP_FLASH+1;//Flash animation
+	Const Lay2 = PSP_FLASH+1;//Flash light on the gun
 	Const DieLay = 3;//Second hand in dead animation
-	Const Lay3 = -PSP_FLASH;//Flash flayer
+	Const Lay3 = -PSP_FLASH;//Flash flare
+	Const Lay4 = -PSP_FLASH-1;//Muzzle flash
 	Const SHand = -2;//Second hand raising/lower
 	Const SHand2 = 4;//Second hand holding
 	Const CtchHand = PSP_FLASH+5;
@@ -570,8 +571,6 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot, WOF_ADD);
 				
-				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
-
 				Player.GetPSprite(Lay2).Pivot = Player.GetPSprite(Lay1).Pivot;
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
@@ -588,8 +587,6 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayScale(Lay1, Scal, Scal, WOF_ADD);
 				A_OverlayOffset(Lay1, Ofst.X, Ofst.Y, WOF_ADD);
 				A_OverlayRotate(Lay1, invoker.RecRot, WOF_ADD);
-
-				A_OverlayOffset(Lay3, Ofst.X, Ofst.Y, WOF_ADD);
 
 				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
 				Player.GetPSprite(Lay2).Rotation = Player.GetPSprite(Lay1).Rotation;
@@ -613,6 +610,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
 					A_OverlayOffset(PSP_FLASH+10+index, 170+Player.GetPSprite(PSP_WEAPON).X, 115+Player.GetPSprite(PSP_WEAPON).Y);
+					if(Player.GetPSprite(Lay1).bMirror)Player.GetPSprite(PSP_FLASH+10+index).X -= Player.GetPSprite(PSP_WEAPON).X*2;
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
 				}
 			}
@@ -706,8 +704,8 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 			}
 			Goto GunWait;
-		GunFlash:
-			#### # 0 A_JumpIf(invoker.IsRifle, "RifleFlash");
+		GunLight:
+			#### # 0 A_JumpIf(invoker.IsRifle, "RifleLight");
 			P1SF A 1 BRIGHT {
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
 				Player.GetPSprite(Lay1).Scale = Player.GetPSprite(Lay1).Scale;
@@ -718,44 +716,52 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			}
 			P1SF BBC 1 BRIGHT;
 			Stop;
+		GunFlash:
+			#### # 0 A_JumpIf(invoker.IsRifle, "RifleFlash");
+			P1SF D 1 BRIGHT {
+				A_OverlayScale(Lay4, .85, .85);
+				A_OverlayPivot(Lay4, .5, 1);
+				A_OverlayFlags(Lay4, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_OverlayFlags(Lay4, PSPF_MIRROR|PSPF_FLIP, invoker.LeftHanded);
+				A_OverlayRenderStyle(Lay4, STYLE_ColorAdd);
+				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
+			}
+			#### E 1 BRIGHT A_OverlayScale(Lay4, 1, 1, WOF_INTERPOLATE);
+			P1SF EF 1 BRIGHT A_OverlayFlags(Lay4, PSPF_INTERPOLATE, !Player.GetPSprite(Lay4).FirstTic);
+			#### FFF 1 BRIGHT {Player.GetPSprite(Lay4).Scale *= .6;}
+			Stop;
 		GunMuzzleFlashFlare:
+			#### # 0 A_JumpIf(invoker.IsRifle, "RifleMuzzleFlashFlare");
 			NSHS B 1 BRIGHT{
-				if(invoker.LastScal == 0){
-					invoker.LastScal = 1;
-					invoker.LastPos = (0,0);
-				}
-				
-				Player.GetPSprite(OverlayId()).bFlip = Player.GetPSprite(Lay1).bFlip;
-				Player.GetPSprite(OverlayId()).bMirror = Player.GetPSprite(Lay1).bMirror;
-				A_OverlayOffset(OverlayId(), 127, 70);
-				if(invoker.LeftHanded)A_OverlayOffset(OverlayId(), 130, 70);
-				if(invoker.IsRifle)A_OverlayOffset(OverlayId(), 130+invoker.LastPos.X, 78+invoker.LastPos.Y);
-
-				A_OverlayTranslation(OverlayId(), "MrIntWParFlash");
-				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
-				
-				if(GetRenderStyle()!=STYLE_Normal && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+				if(GetRenderStyle()!=STYLE_Normal && Alpha<1 && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
 					A_OverlayRenderStyle(OverlayID(), STYLE_None);
 				}
 				else {
 					A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
 					A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
 				}
-				
 				if(!MRIntW_FlashFlare)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
-				A_OverlayScale(OverlayId(), .6, .6);
-				if(invoker.IsRifle)A_OverlayScale(OverlayId(), .5, .5);
+				
+				A_OverlayTranslation(OverlayId(), "MrIntWParFlash");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				
+				Player.GetPSprite(OverlayId()).bFlip = Player.GetPSprite(Lay1).bFlip;
+				Player.GetPSprite(OverlayId()).bMirror = Player.GetPSprite(Lay1).bMirror;
+				
+				A_OverlayOffset(OverlayId(), 127, 70);
+				
+				A_OverlayScale(OverlayId(), .5, .6);
 				A_OverlayPivot(OverlayId(), .5, .5);
 			}
 			#### ## 1 BRIGHT{
 				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
-				A_OverlayScale(OverlayId(), .8, .9, WOF_INTERPOLATE);
-				if(invoker.IsRifle)A_OverlayScale(OverlayId(), .6, .7, WOF_INTERPOLATE);
+				A_OverlayScale(OverlayId(), .7, .8, WOF_INTERPOLATE);
+				A_OverlayOffset(OverlayId(), 128, 63, WOF_INTERPOLATE);
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
 			}
-			#### # 1 BRIGHT{
-				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
-				A_OverlayScale(OverlayId(), .5, .5, WOF_INTERPOLATE);
-				if(invoker.IsRifle)A_OverlayScale(OverlayId(), .5, .5, WOF_INTERPOLATE);
+			#### ### 1 BRIGHT{
+				A_OverlayOffset(OverlayId(), 0, 3, WOF_ADD);
+				Player.GetPSprite(OverlayId()).Scale *= .6;
 			}
 			Stop;
 			
@@ -905,6 +911,7 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 
 					invoker.CasingDir[index] = CFRandom(-.7, 1.5);
 					A_OverlayOffset(PSP_FLASH+10+index, 175+Player.GetPSprite(PSP_WEAPON).X, 133+Player.GetPSprite(PSP_WEAPON).Y);
+					if(Player.GetPSprite(Lay1).bMirror)Player.GetPSprite(PSP_FLASH+10+index).X -= Player.GetPSprite(PSP_WEAPON).X*2;
 					A_OverlayScale(PSP_FLASH+10+index, .8, .8);
 					Player.GetPSprite(PSP_FLASH+10+index).bMirror = Player.GetPSprite(PSP_FLASH+10+index).bFlip + Player.GetPSprite(Lay1).bMirror;
 				}
@@ -1213,8 +1220,9 @@ Class MRIntWeaps_Pistol: Pistol Replaces Pistol
 			}
 			#### B 6 {
 				A_FirePistol();
-				A_Overlay(Lay2, "GunFlash");
+				A_Overlay(Lay2, "GunLight");
 				A_Overlay(Lay3, "GunMuzzleFlashFlare");
+				A_Overlay(Lay4, "GunFlash");
 				if(GetCVar("MRIntW_Recoil")){invoker.Recoil=1.25;A_SetPitch(Pitch-1.25*GetCVar("MRIntW_RecoilAmount"), GetCVar("MRIntW_RecoilRecover")?0:SPF_INTERPOLATE);}//Recoil
 			}
 			#### C 4 {invoker.IncreaseSmoke();}

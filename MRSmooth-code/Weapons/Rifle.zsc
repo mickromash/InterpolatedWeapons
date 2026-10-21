@@ -256,16 +256,67 @@ Extend Class MRIntWeaps_Pistol
 				A_OverlayRotate(Lay1, 0, WOF_INTERPOLATE);
 			}
 			Goto GunWait;
-		RifleFlash:
-			RIFF A 1 BRIGHT {
+		RifleLight:
+			RIFF E 1 BRIGHT {
 				A_OverlayOffset(Lay2, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
-				Player.GetPSprite(Lay1).Scale = Player.GetPSprite(Lay1).Scale;
+				Player.GetPSprite(Lay2).Scale = Player.GetPSprite(Lay1).Scale;
 				A_OverlayFlags(Lay2, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
 				A_OverlayRenderStyle(Lay2, STYLE_ColorAdd);
 				Player.GetPSprite(OverlayId()).Pivot = Player.GetPSprite(Lay1).Pivot;
 				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
 			}
-			RIFF BCD 1 BRIGHT;
+			RIFF FGH 1 BRIGHT;
+			Stop;
+		RifleFlash:
+			RIFF A 1 BRIGHT {
+				A_OverlayOffset(Lay4, Player.GetPSprite(Lay1).X, Player.GetPSprite(Lay1).Y);
+				A_OverlayScale(Lay4, .7, .7);
+				A_OverlayFlags(Lay4, PSPF_RENDERSTYLE|PSPF_ALPHA, true);
+				A_OverlayRenderStyle(Lay4, STYLE_ColorAdd);
+				A_OverlayPivot(Lay4, .5, .5);
+				if(GetCVar("MRIntW_NoMuzzleFlash"))A_OverlayRenderStyle(OverlayId(), STYLE_None);
+			}
+			RIFF BC 1 BRIGHT{
+				A_OverlayScale(Lay4, 1, 1, WOF_INTERPOLATE);
+				A_OverlayFlags(Lay4, PSPF_INTERPOLATE, !Player.GetPSprite(Lay4).FirstTic);
+			}
+			#### DDD 1 BRIGHT {
+				A_OverlayPivot(Lay4, .5, 1);
+				Player.GetPSprite(Lay4).Scale *= .6;
+			}
+			Stop;
+		RifleMuzzleFlashFlare:
+			NSHS B 1 BRIGHT{
+				if(GetRenderStyle()!=STYLE_Normal && Alpha<1 && GetCVar("r_drawfuzz")!=0){//Not drawing overlays if got partial invisibility and fuzz mode is not set to tranlsucent
+					A_OverlayRenderStyle(OverlayID(), STYLE_None);
+				}
+				else {
+					A_OverlayRenderStyle(OverlayId(), STYLE_ADD);
+					A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
+				}
+				if(!MRIntW_FlashFlare)A_OverlayRenderStyle(OverlayId(), STYLE_NONE);
+				
+				A_OverlayTranslation(OverlayId(), "MrIntWParFlash");
+				A_OverlayFlags(OverlayId(), PSPF_RENDERSTYLE|PSPF_FORCESTYLE|PSPF_FORCEALPHA, true);
+				
+				Player.GetPSprite(OverlayId()).bFlip = Player.GetPSprite(Lay1).bFlip;
+				Player.GetPSprite(OverlayId()).bMirror = Player.GetPSprite(Lay1).bMirror;
+				
+				A_OverlayOffset(OverlayId(), 128+Player.GetPSprite(Lay1).X, 76+Player.GetPSprite(Lay1).Y);
+				
+				A_OverlayScale(OverlayId(), .45, .45);
+				A_OverlayPivot(OverlayId(), .5, .5);
+			}
+			#### ## 1 BRIGHT{
+				A_OverlayAlpha(OverlayId(), CFRandom(.15, .4));
+				A_OverlayScale(OverlayId(), .7, .8, WOF_INTERPOLATE);
+				A_OverlayOffset(OverlayId(), 130+Player.GetPSprite(Lay4).X, 76+Player.GetPSprite(Lay4).Y, WOF_INTERPOLATE);
+				A_OverlayFlags(OverlayId(), PSPF_INTERPOLATE, !Player.GetPSprite(OverlayId()).FirstTic);
+			}
+			#### ### 1 BRIGHT{
+				A_OverlayOffset(OverlayId(), 0, 8, WOF_ADD);
+				Player.GetPSprite(OverlayId()).Scale *= .4;
+			}
 			Stop;
 		
 		RifleCoolIdle:
