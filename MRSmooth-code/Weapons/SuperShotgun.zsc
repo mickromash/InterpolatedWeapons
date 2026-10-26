@@ -67,7 +67,11 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 		}
 		player.mo.PlayAttacking2 ();
 
-		double pitch = BulletSlope ();
+		double pitch = BulletSlope();
+		
+		Bool Gib = GetCVar("MRIntW_SSGGib");
+		Array<Actor> ShotAct;
+		Array<int> Dmg, Health, Heights;
 		
 		invoker.ShotPower = 0;
 		for (int i = 0 ; i < 20 ; i++)
@@ -75,9 +79,72 @@ Class MRIntWeaps_SuperShotgun: SuperShotgun Replaces SuperShotgun
 			int damage = 5 * random[FireSG2](1, 3);
 			invoker.ShotPower += Damage;
 			double ang = angle + Random2[FireSG2]() * (11.25 / 256);
-
-			LineAttack (ang, PLAYERMISSILERANGE, pitch + Random2[FireSG2]() * (7.097 / 256), damage, 'Hitscan', "BulletPuff");
+			double pit = pitch + Random2[FireSG2]() * (7.097 / 256);
+			
+			if(Gib){
+				FLineTraceData Puff;
+				
+				double PZ = height * 0.5 - floorclip + player.mo.AttackZOffset*player.crouchFactor;
+				LineTrace(ang, PLAYERMISSILERANGE, pit, 0, PZ, data:Puff);
+				
+				if(Puff.HitActor)
+				{
+					if((PlayerPawn(Puff.HitActor) || Puff.HitActor.bISMONSTER) && Puff.HitActor.FindState("Death") != Puff.HitActor.FindState("XDeath")){
+						int index = ShotAct.Find(Puff.HitActor);
+						if(index==ShotAct.Size()){
+							ShotAct.Push(Puff.HitActor);
+							Dmg.Push(0);
+							Health.Push(0);
+							Heights.Push(0);
+						}
+						
+						if(Puff.HitActor.Health>0){
+							Health[index] = Puff.HitActor.Health;
+							Heights[index] = Puff.HitActor.Height;
+						}
+						else Dmg[index] += damage;
+					}
+				}
+				else if(ShotAct.Size()>0){
+					For(int i1=0;i1<ShotAct.Size();i1++){
+						if(ShotAct[i1].Health>0)Continue;
+						
+						Double a1, a2;
+						Vector2 Dif = Levellocals.Vec2Diff(Pos.XY, ShotAct[i1].Pos.XY + AngleToVector(Angle+90, ShotAct[i1].Radius));
+						a1 = DeltaAngle(Angle, VectorAngle(Dif.X, Dif.Y));
+						Dif = Levellocals.Vec2Diff(Pos.XY, ShotAct[i1].Pos.XY - AngleToVector(Angle+90, ShotAct[i1].Radius));
+						a2 = DeltaAngle(Angle, VectorAngle(Dif.X, Dif.Y));
+						
+						Double an = DeltaAngle(Angle, ang);
+						
+						//Console.Printf(a1.." "..a2.." "..an.." "..ang);
+						
+						if(a1<a2 && (an<a1 || an>a2))Continue;
+						if(a1>a2 && (an>a1 || an<a2))Continue;
+						
+						a1 = PitchTo(ShotAct[i1], PZ, true);
+						a2 = PitchTo(ShotAct[i1], PZ, Heights[i1], true);
+						
+						if(a1<a2 && (pit<a1 || pit>a2))Continue;
+						if(a1>a2 && (pit>a1 || pit<a2))Continue;
+						
+						Dmg[i1] += damage;
+					}
+				}
+			}
+			
+			LineAttack(ang, PLAYERMISSILERANGE, pit, damage, 'Hitscan', "BulletPuff");
 		}
+		
+		if(Gib){
+			For(int i=0;i<ShotAct.Size();i++){
+				if(ShotAct[i].Health>0)Continue;
+				if(Health[i] - Dmg[i] < -GetDefaultByType(ShotAct[i].GetClass()).Health){
+					ShotAct[i].SetStateLabel("XDeath");
+				}
+			}
+		}
+		
 		//Recoil and smoke alpha from last shot damage (min dmg 145, max dmg 255)
 		invoker.ShotPower -= 145;
 		invoker.ShotPower /= 255-145;

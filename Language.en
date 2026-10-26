@@ -201,8 +201,9 @@ MRIntW_ShotgunSparks = "Buckshot sparks";
 
 MRIntW_SSGHandless = "Holding stock during reloading";
 MRIntW_SSGHandless0 = "No";
-MRIntW_SSGHandless1 = "Some times";
+MRIntW_SSGHandless1 = "Sometimes";
 MRIntW_SSGHandless2 = "Yes";
+MRIntW_SSGGib = "SSG can gib actors";
 MRIntW_SSGSmoke = "Smoke from barrels on reload";
 MRIntW_SSGSparks = "Buckshot sparks";
 

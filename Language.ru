@@ -204,6 +204,7 @@ MRIntW_SSGHandless = "Держать цевьё во время перезаря
 MRIntW_SSGHandless0 = "Да";
 MRIntW_SSGHandless1 = "Иногда";
 MRIntW_SSGHandless2 = "Нет";
+MRIntW_SSGGib = "Двустволка разносит врагов";
 MRIntW_SSGSmoke = "Дым из казённика";
 MRIntW_SSGSparks = "Искры при выстреле";
 
