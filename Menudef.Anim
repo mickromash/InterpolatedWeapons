@@ -101,6 +101,7 @@ OptionMenu "MRIntWeaps_WeaponsMenu"
 	StaticText ""
 	StaticText "$TAG_SuperShotgun", "Fire"
 	Option "$MRIntW_SSGHandless", "MRIntW_SSGHandless", "MRIntW_SSGHandlessValues"
+	Option "$MRIntW_SSGGib", "MRIntW_SSGGib", "YesNo"
 	Option "$MRIntW_SSGSmoke", "MRIntW_SSGSmoke", "YesNo"
 	Option "$MRIntW_SSGSparks", "MRIntW_SSGSparks", "YesNo"
 	Slider "$MRIntW_ShotgunsRecoil", "MRIntW_ShotgunsRecoil", 0, 2, .1

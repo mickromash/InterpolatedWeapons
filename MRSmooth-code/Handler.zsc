@@ -591,7 +591,7 @@ Class MRIntWeaps_Handler: EventHandler
 		//Console.Printf("World Loaded");
 	}
 		
-	Void RandomizePlayer(int PlrNum){
+	Void RandomizePlayer(int PlrNum, Bool ForDemo = false){
 		Bool UnRandomize = PlrNum<0;
 		if(PlrNum<0)PlrNum = ConsolePlayer;
 		if(!playeringame[PlrNum])Return;
@@ -614,6 +614,7 @@ Class MRIntWeaps_Handler: EventHandler
 			CVar.GetCVar("MRIntW_ShotgunPumpRandRotation", Players[PlrNum]).SetFloat(CVar.FindCVar("MRIntW_ShotgunPumpRandRotation").GetFloat());
 			
 			CVar.GetCVar("MRIntW_SSGHandless", Players[PlrNum]).SetInt(CVar.FindCVar("MRIntW_SSGHandless").GetInt());
+			CVar.GetCVar("MRIntW_SSGGib", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_SSGGib").GetBool());
 			
 			CVar.GetCVar("MRIntW_ChaingunFixed", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_ChaingunFixed").GetBool());
 			CVar.GetCVar("MRIntW_ChaingunCounterClock", Players[PlrNum]).SetBool(CVar.FindCVar("MRIntW_ChaingunCounterClock").GetBool());
@@ -649,6 +650,7 @@ Class MRIntWeaps_Handler: EventHandler
 		CVar.GetCVar("MRIntW_ShotgunPumpRandRotation", Players[PlrNum]).SetFloat(FRandom[MRIntWRand](-2, 2));
 		
 		CVar.GetCVar("MRIntW_SSGHandless", Players[PlrNum]).SetInt(Random[MRIntWRand](0, 2));
+		if(ForDemo)CVar.GetCVar("MRIntW_SSGGib", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
 		
 		CVar.GetCVar("MRIntW_ChaingunFixed", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
 		CVar.GetCVar("MRIntW_ChaingunCounterClock", Players[PlrNum]).SetBool(Random[MRIntWRand](0, 1));
@@ -735,7 +737,7 @@ Class MRIntWeaps_DifVersionMessage: Thinker
 		{
 			Case 2:
 				if(demoplayback || (MRIntW_Version==CVar.GetCVar("MRIntW_Version").GetDefaultInt())){
-					if(demoplayback && MRIntW_RandomDemo)MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler")).RandomizePlayer(Plr.PlayerNumber());
+					if(demoplayback && MRIntW_RandomDemo)MRIntWeaps_Handler(EventHandler.Find("MRIntWeaps_Handler")).RandomizePlayer(Plr.PlayerNumber(), true);
 					Destroy();
 					Return;
 				}
