@@ -443,15 +443,15 @@ Extend Class MRIntWeaps_Fist//Weapon sway
 			
 				//Y
 				Target = -Sin(Owner.Pitch)*20;//Where to move
-
-				Sway.Y += (Target - CurSway.Y)*.1;//Velocity
-				Sway.Y = Clamp(Sway.Y, -5, 5);
+				
+				Sway.Y += (Target - CurSway.Y)*.05;//Velocity
+				if(Sway.Y<0)Sway.Y = Max(-abs(Weap.FloatSpeed*6.5) - (CurSway.Y + Sway.Y), Sway.Y);
 				
 				if((Sway.Y<0 && CurSway.Y<Target)||
-					(Sway.Y>0 && CurSway.Y>Target))Sway.Y *= .2*abs(Mult);//Wobbling
+					(Sway.Y>0 && CurSway.Y>Target))Sway.Y *= .4*abs(Mult);//Wobbling
 				
 				CurSway.Y += Sway.Y;//Current offset
-				
+
 				//X
 				Target = Owner.Player.Cmd.Yaw*.01*Mult;//Where to move
 				
