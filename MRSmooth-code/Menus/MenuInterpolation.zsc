@@ -69,7 +69,7 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		
 		int StaticY = Y;
 		
-		Y += DiffY;
+		Y += DiffY - mDesc.mScrollPos*fontheight;
 		
 		mDesc.mDrawTop = Y / CleanYfac_1; // mouse checks are done in clean space.
 
@@ -97,22 +97,16 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		int hoverY;
 		int i;
 		int lastDrawnItemIndex = -1;
-		for (i = 0; i < mDesc.mItems.Size() && StaticY <= lastrow+fontheight; i++)
+		for (i = 0; i < mDesc.mItems.Size() && StaticY <= lastrow+fontheight - DiffY + mDesc.mScrollPos*FontHeight; i++)
 		{
-			// Don't scroll the uppermost items
-			if (i == mDesc.mScrollTop)
-			{
-				i += mDesc.mScrollPos;
-				if (i >= mDesc.mItems.Size()) break;	// skipped beyond end of menu
-				if (i < 0) i = 0;
-			}
+			if(i>=mDesc.mItems.Size())Break;
 			
 			if (!mDesc.mItems[i].Visible())
 			{
 				continue;
 			}
 
-			if(StaticY <= lastrow)lastDrawnItemIndex = i;
+			if(StaticY <= lastrow - DiffY + mDesc.mScrollPos*FontHeight)lastDrawnItemIndex = i;
 			
 			bool isSelected = mDesc.mSelectedItem == i;
 			int cur_indent = mDesc.mItems[i].Draw(mDesc, Y, indent, isSelected);
