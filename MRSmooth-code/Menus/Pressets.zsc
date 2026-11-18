@@ -33,13 +33,25 @@ Class MRIntWeaps_PressetsMenu: MRIntWeaps_OptionMenu
 		"MRIntW_CalamityParticles 126", "MRIntW_SSGGib 129"
 	};
 	
+	int CVarsIdSize(){
+		int Size = 0;
+		
+		For(int i=0;i<CVarsId.Size();i++){
+			String Index = CVarsId[i];
+			Index = Index.Mid(Index.IndexOf(" "));
+			
+			if(Size<Index.ToInt())Size = Index.ToInt();
+		}
+		Return Size+1;
+	}
+	
 	//Presset CVar syntax: "[Index] Value,[Index] Value,"
 	
 	Void WriteSettingsPresset()
 	{
 		Array<String> CVars;
 		
-		For(int i=0;i<CVarsId.Size();i++)CVars.Push("");
+		For(int i=0;i<CVarsIdSize();i++)CVars.Push("");
 		
 		For(int i=0;i<CVarsId.Size();i++){
 			String CVa = CVarsId[i];
@@ -87,7 +99,7 @@ Class MRIntWeaps_PressetsMenu: MRIntWeaps_OptionMenu
 		
 		Array<String> CVars;
 		
-		For(int i=0;i<CVarsId.Size();i++)CVars.Push("");
+		For(int i=0;i<CVarsIdSize();i++)CVars.Push("");
 		
 		For(int i=0;i<CVarsId.Size();i++){
 			String CVa = CVarsId[i];
@@ -208,9 +220,8 @@ Class MRIntWeaps_ViewPressetMenu: MRIntWeaps_PressetsMenu
 	Void FillMenu(int Which)
 	{
 		mDesc.mItems.Clear();
-		mDesc.mItems.Push(New('OptionMenuItemStaticText'));
 				
-		if(!CVar.FindCVar("MRIntW_PressetCust"..Which) || CVar.FindCVar("MRIntW_PressetCust"..Which).GetString()==""){
+		if(!CVar.FindCVar("MRIntW_PressetCust"..Which) || CVar.FindCVar("MRIntW_PressetCust"..Which).GetString().Length()<4){
 						
 			Let Temp = New('OptionMenuItemStaticText');
 			Temp.mLabel = "$MRIntW_EmptyPresset";
@@ -223,7 +234,7 @@ Class MRIntWeaps_ViewPressetMenu: MRIntWeaps_PressetsMenu
 		
 		Array<String> CVars;
 		
-		For(int i=0;i<CVarsId.Size();i++)CVars.Push("");
+		For(int i=0;i<CVarsIdSize();i++)CVars.Push("");
 		
 		For(int i=0;i<CVarsId.Size();i++){
 			String CVa = CVarsId[i];
@@ -267,9 +278,10 @@ Class MRIntWeaps_ViewPressetMenu: MRIntWeaps_PressetsMenu
 			Let CVa = CVar.FindCVar(CVars[i]);
 			if(PresCVars[i]=="" || !CVa)Continue;
 			
-			Let Temp = New('OptionMenuItemCommand');
+			Let Temp = New('OptionMenuItemMRIntWeaps_PresCVar');
 			Temp.mLabel = "\cg"..StringTable.Localize("$"..CVars[i])..": \c-";
 			Temp.mLabel.Replace("\c-", "\cg");
+			Temp.Odd = i%2==1;
 			
 			String Value;
 			if(CVa.GetRealType()==CVar.CVar_Bool)Value = (PresCVars[i].ToInt()?StringTable.Localize("$TXT_YES"):StringTable.Localize("$TXT_NO"));
@@ -289,5 +301,23 @@ Class MRIntWeaps_ViewPressetMenu: MRIntWeaps_PressetsMenu
 			
 			mDesc.mItems.Push(Temp);
 		}
+	}
+}
+
+Class OptionMenuItemMRIntWeaps_PresCVar: OptionMenuItemCommand
+{
+	Bool Odd;
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		Color Dim = Color(40,40,40);
+		if(Odd)Dim = Color(20,20,20);
+		
+		int x;
+		int w = Menu.OptionWidth(Stringtable.Localize(mLabel)) * CleanXfac_1;
+		if (!mCentered) x = indent - w;
+		else x = (screen.GetWidth() - w) / 2;
+		Screen.Dim(Dim, .5, x, y, w, OptionMenuSettings.mLinespacing * CleanYfac_1, STYLE_Translucent);
+		
+		Return Super.Draw(desc, y, indent, selected);
 	}
 }
