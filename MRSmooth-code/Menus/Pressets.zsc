@@ -274,14 +274,17 @@ Class MRIntWeaps_ViewPressetMenu: MRIntWeaps_PressetsMenu
 			if(SpaceLeng<Compare.CodePointCount())SpaceLeng = Compare.CodePointCount();
 		}
 		
+		Bool Odd = false;
 		For(int i=0;i<PresCVars.Size();i++){
 			Let CVa = CVar.FindCVar(CVars[i]);
 			if(PresCVars[i]=="" || !CVa)Continue;
 			
+			Odd = !Odd;
+			
 			Let Temp = New('OptionMenuItemMRIntWeaps_PresCVar');
 			Temp.mLabel = "\cg"..StringTable.Localize("$"..CVars[i])..": \c-";
 			Temp.mLabel.Replace("\c-", "\cg");
-			Temp.Odd = i%2==1;
+			Temp.Odd = Odd;
 			
 			String Value;
 			if(CVa.GetRealType()==CVar.CVar_Bool)Value = (PresCVars[i].ToInt()?StringTable.Localize("$TXT_YES"):StringTable.Localize("$TXT_NO"));
