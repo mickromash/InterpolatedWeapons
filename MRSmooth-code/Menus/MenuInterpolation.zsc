@@ -85,7 +85,7 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		
 		int StaticY = Y;
 		
-		Y += DiffY;
+		Y += DiffY - mDesc.mScrollPos*fontheight;
 		
 		mDesc.mDrawTop = Y / CleanYfac_1; // mouse checks are done in clean space.
 
@@ -98,15 +98,14 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		[OldClip.X, OldClip.Y, OldClipW.X, OldClipW.Y] = Screen.GetClipRect();
 		Screen.SetClipRect(0, StaticY, Screen.GetWidth(), Screen.GetHeight());
 		
-		int i;
-		for (i = 0; i < mDesc.mItems.Size() && Y <= lastrow+fontheight; i++)
+		int i1 = 0;
+		for (int i = 0; i < mDesc.mItems.Size() && StaticY <= lastrow+fontheight - DiffY + mDesc.mScrollPos*FontHeight; i++)
 		{
-			// Don't scroll the uppermost items
-			if (i == mDesc.mScrollTop)
-			{
-				i += mDesc.mScrollPos;
-				if (i >= mDesc.mItems.Size()) break;	// skipped beyond end of menu 
-			}
+			if(i>=mDesc.mItems.Size())Break;
+			
+			if(i1 == mDesc.mScrollTop)i1 += mDesc.mScrollPos;
+			if(i1<mDesc.mItems.Size() && StaticY <= lastrow+fontheight)i1++;
+			
 			bool isSelected = mDesc.mSelectedItem == i;
 			int cur_indent = mDesc.mItems[i].Draw(mDesc, Y, indent, isSelected);
 			if (cur_indent >= 0 && isSelected && mDesc.mItems[i].Selectable())
@@ -120,12 +119,13 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 				Screen.DrawText(OptionFont(), OptionMenuSettings.mFontColorSelection, cur_indent + 3 * CleanXfac_1 + SelX, Y, "◄", DTA_CleanNoMove_1, true);
 			}
 			Y += fontheight;
+			StaticY += fontheight;
 		}
 		Screen.SetClipRect(OldClip.X, OldClip.Y, OldClipW.X, OldClipW.Y);
 
 		CanScrollUp = (mDesc.mScrollPos > 0);
-		CanScrollDown = (i < mDesc.mItems.Size());
-		VisBottom = i - 1;
+		CanScrollDown = (i1 < mDesc.mItems.Size());
+		VisBottom = i1 - 1;
 
 		if (CanScrollUp)
 		{
