@@ -85,10 +85,12 @@ Class MRIntWeaps_OptionMenu: OptionMenu
 		
 		int StaticY = Y;
 		
-		Y += DiffY - mDesc.mScrollPos*fontheight;
+		Y += DiffY;
 		
 		mDesc.mDrawTop = Y / CleanYfac_1; // mouse checks are done in clean space.
-
+		
+		Y -= mDesc.mScrollPos*fontheight;
+		
 		int indent = GetIndent();
 
 		Double ytop = StaticY + mDesc.mScrollTop * 8 * CleanYfac_1;
