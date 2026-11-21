@@ -407,9 +407,6 @@ MRIntW_SwitchSounds = "Звуки смены оружия";
 MRIntW_ChaingunSound = "Звуки пулемёта из аддона";
 MRIntW_ChaingunVolume = "Громкость звука вращения пулемёта";
 
-MRIntW_Braindead = "Склько вам лет";
-MRIntW_Braindead4 = "You are the youngest person ever!";
-
 MRIntWeaps_PressetsMenu = "Пресеты настроек";
 
 MRIntW_PressetDefault = "Настройки по умолчанию";
